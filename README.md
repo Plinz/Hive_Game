@@ -66,7 +66,7 @@ http://www.redblobgames.com/grids/hexagons Comment construire une grille d'hexag
 
 **Autres insectes trouvés :**
 
-- [ ] Cloporte : une case sur le coté, peut se mettre sous une pièce et la soulever
+- [ ] Cloporte : une case sur le coté, peut se mettre sous une pièce et la déplacer
 - [ ] Moustique : Copie un insecte adjacent 
 - [ ] Coccinelle : Escalade sur deux cases puis redescend
 
