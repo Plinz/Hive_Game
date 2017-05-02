@@ -77,8 +77,9 @@ http://www.redblobgames.com/grids/hexagons Comment construire une grille d'hexag
 * Placer les araignées au début car elles sont puissantes sur les courtes distances quand la ruche est petite.
 * Garder un oeil sur les pièces de l'adversaire, on peut le bloquer si il n'a plus de scarabé/sauterelles.
 * Ne pas hésiter à bouger sa reine pour éviter les encerclements 
-* Si l'adversaire joue deux pièces en ligne, il est facile de les bloquer et de l'empêcher de les utiliser.
+* Si l'adversaire joue deux pièces en ligne, il est facile de les bloquer et de l'empêcher de les utiliser. (2 pour un)
 * Opening classique : Reine,Araignée,Fourmi ou Araignée,Reine,Araignée de cette forme : /\ (une de chaque coté de la reine)
 * Garder ses pièces à l'extérieur de la ruche et celles de l'ennemi à l'intérieur.
 * Il n'y a pas d'avantage à être le premier à jouer, par contre il y en a un à garder sa reine mobile : on peut jouer de manière agressive et forcer son adversaire à jouer de manière défensive.
 * Y'en a qui disent qu'en fait si t'as un avantage à être le premier à jouer, si chaque joueur fait le "play" parfait ^^ ( Et les nouvelles pièces ont été ajoutées pour réduire l'avantage du mec qui commence. )
+* Celui qui commence a l'initiative, le second joue de manière défense, jusqu'à que celui qui commence ne le menace plus.
