@@ -66,3 +66,15 @@ https://fr.boardgamearena.com/#!gamepanel?game=hive  Il faut s'y inscrire
 - [ ] Moustique : Copie un insecte adjacent 
 - [ ] Coccinelle : Escalade sur deux cases puis redescend
 
+## Stratégies 
+
+* Poser le scarabé sur la reine pour l'empêcher de bouger.
+* Garder les sauterelles pour la fin du jeu ou elles pourront traverser facilement la ruche.
+* Placer les araignées au début car elles sont puissantes sur les courtes distances quand la ruche est petite.
+* Garder un oeil sur les pièces de l'adversaire, on peut le bloquer si il n'a plus de scarabé/sauterelles.
+* Ne pas hésiter à bouger sa reine pour éviter les encerclements 
+* Si l'adversaire joue deux pièces en ligne, il est facile de les bloquer et de l'empêcher de les utiliser.
+* Opening classique : Reine,Araignée,Fourmi ou Araignée,Reine,Araignée de cette forme : /\ (une de chaque coté de la reine)
+* Garder ses pièces à l'extérieur de la ruche et celles de l'ennemi à l'intérieur.
+* Il n'y a pas d'avantage à être le premier à jouer, par contre il y en a un à garder sa reine mobile : on peut jouer de manière agressive et forcer son adversaire à jouer de manière défensive.
+* Y'en a qui disent qu'en fait si t'as un avantage à être le premier à jouer !
