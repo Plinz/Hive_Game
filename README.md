@@ -14,6 +14,22 @@ http://www.gen42.com/downloads/rules/Hive_Carbon_French_Rules.pdf
 
 ***
 
+**Exemple de code**
+
+https://github.com/jclopes/hive
+
+https://github.com/hexparrot/hive-ai
+
+https://github.com/mobeets/hive
+
+https://github.com/shaw3257/hive
+
+***
+
+**Exemple de jeu en ligne **
+
+https://fr.boardgamearena.com/#!gamepanel?game=hive  Il faut s'y inscrire
+
 
 ## Membres du groupe
 
