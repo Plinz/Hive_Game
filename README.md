@@ -34,6 +34,10 @@ https://github.com/shaw3257/hive
 
 https://fr.boardgamearena.com/#!gamepanel?game=hive  Il faut s'y inscrire
 
+** Ressources**
+
+http://www.redblobgames.com/grids/hexagons Comment construire une grille d'hexagones
+
 
 ## Membres du groupe
 
