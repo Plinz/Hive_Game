@@ -12,6 +12,8 @@ https://fr.wikipedia.org/wiki/Hive_(jeu_de_soci%C3%A9t%C3%A9)
 
 http://www.gen42.com/downloads/rules/Hive_Carbon_French_Rules.pdf
 
+http://www.gen42.com/downloads/rules/hive_pocket_rules.pdf
+
 ***
 
 **Exemple de code**
@@ -26,7 +28,7 @@ https://github.com/shaw3257/hive
 
 ***
 
-**Exemple de jeu en ligne **
+**Exemple de jeu en ligne**
 
 https://fr.boardgamearena.com/#!gamepanel?game=hive  Il faut s'y inscrire
 
