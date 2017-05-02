@@ -8,6 +8,8 @@ L'objectif de ce projet est d’implémenter le jeu de plateau Hive, ainsi qu'un
 
 **Règles du jeu**
 
+http://inf362.forge.imag.fr/Projet/Regles/french_rules_for_hexagonal_box.pdf
+
 https://fr.wikipedia.org/wiki/Hive_(jeu_de_soci%C3%A9t%C3%A9)
 
 http://www.gen42.com/downloads/rules/Hive_Carbon_French_Rules.pdf
