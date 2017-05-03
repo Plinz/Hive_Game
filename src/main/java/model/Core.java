@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.utils.Coord;
+
 public class Core {
 	
 	private History history;
@@ -16,6 +18,16 @@ public class Core {
 		this.history = history;
 		this.currentState = currentState;
 		this.mode = mode;
+	}
+	
+	public void addPiece(Piece piece, Coord coord){
+		this.history.saveState(this.currentState);
+		this.currentState.getBoard().addPiece(piece, coord);
+		this.currentState.getPlayer1().removePiece(piece);
+	}
+	
+	public void movePiece(Coord source, Coord target){
+		this.history.saveState(this.currentState);
 	}
 		
 	public History getHistory() {

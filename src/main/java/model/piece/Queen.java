@@ -8,8 +8,9 @@ import main.java.utils.Coord;
 
 public class Queen extends Piece{
 
-	public Queen(String name, String color) {
-		super(name, color);
+	public Queen(int team) {
+		super("Queen", team, "Queen description");
+
 		// TODO Auto-generated constructor stub
 	}
 

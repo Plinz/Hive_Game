@@ -8,8 +8,8 @@ import main.java.utils.Coord;
 
 public class Ant extends Piece{
 	
-	public Ant(String name, String color) {
-		super(name, color);
+	public Ant(int team) {
+		super("Fourmi", team, "Fourmi description");
 	}
 
 	@Override

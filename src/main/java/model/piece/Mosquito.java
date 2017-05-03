@@ -8,8 +8,8 @@ import main.java.utils.Coord;
 
 public class Mosquito extends Piece{
 
-	public Mosquito(String name, String color) {
-		super(name, color);
+	public Mosquito(int team) {
+		super("Mosquito", team, "Mosquito description");
 		// TODO Auto-generated constructor stub
 	}
 

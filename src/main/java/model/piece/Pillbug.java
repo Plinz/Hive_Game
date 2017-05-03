@@ -8,9 +8,8 @@ import main.java.utils.Coord;
 
 public class Pillbug extends Piece{
 
-	public Pillbug(String name, String color) {
-		super(name, color);
-		// TODO Auto-generated constructor stub
+	public Pillbug(int team) {
+		super("Pillbug", team, "Pillbug description");
 	}
 
 	@Override

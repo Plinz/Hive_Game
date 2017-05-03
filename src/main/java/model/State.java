@@ -12,10 +12,16 @@ public class State {
 		this.player2 = player2;
 	}
 	
+	public State(State s) {
+		this.board = new Board(s.getBoard());
+		this.player1 = new Player(s.getPlayer1());
+		this.player2 = new Player(s.getPlayer2());
+	}
+	
 	public State() {
 		this.board = new Board();
-		this.player1 = new Player();
-		this.player2 = new Player();
+		this.player1 = new Player(0);
+		this.player2 = new Player(1);
 	}
 
 	public Board getBoard() {

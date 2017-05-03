@@ -13,8 +13,17 @@ public class Board {
 		this.board = new ArrayList<ArrayList<Tile>>(24);
 	}
 	
-	public Board(List<ArrayList<Tile>> board) {
-		this.board = board;
+	public Board(Board b) {
+		this.board = new ArrayList<ArrayList<Tile>>(24);
+		for (ArrayList<Tile> list : b.getBoard()){
+			if (list != null){
+				ArrayList<Tile> tmp = new ArrayList<Tile>();
+				for(Tile t : list){
+					tmp.add(new Tile(t));
+				}
+				this.board.add(tmp);
+			}
+		}
 	}
 
 	public List<ArrayList<Tile>> getBoard() {
@@ -93,14 +102,28 @@ public class Board {
 			this.resize(x, y);
 	}
 	
-	//TODO
 	public Piece removePiece(Coord coord){
-		return null;
+		Piece piece = null;
+		if(this.board.size() > coord.getX()){
+			List<Tile> list = this.board.get(coord.getX());
+			Tile t = null;
+			for(Tile tile : list){
+				if(tile.getY() == coord.getY()){
+					if (t == null || t.getZ()< tile.getZ())
+						t = tile;
+				}
+			}
+			if (t != null)
+				piece = t.getPiece();
+			list.remove(t);
+		}
+		return piece;
+			
 	}
 	
-	//TODO
 	public void movePiece(Coord coordSource, Coord coordTarget){
-		
+		Piece piece = this.removePiece(coordSource);
+		this.addPiece(piece, coordTarget);
 	}
 	
 //	//TODO

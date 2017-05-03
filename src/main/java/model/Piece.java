@@ -1,20 +1,22 @@
 package main.java.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import main.java.utils.Coord;
 
-public abstract class Piece {
+public abstract class Piece implements Cloneable{
 	
 	protected String name;
-	protected String color;
+	protected int team;
 	protected String description;
 	
 	public abstract List<Coord> getPossibleMovement(Coord coord, int floor, Board board);
 
-	public Piece(String name, String color) {
+	public Piece(String name, int team, String description) {
 		this.name = name;
-		this.color = color;
+		this.team = team;
+		this.description = description;
 	}
 	
 	public String getName() {
@@ -25,13 +27,38 @@ public abstract class Piece {
 		this.name = name;
 	}
 
-	public String getColor() {
-		return color;
+	public int getTeam() {
+		return team;
 	}
 
-	public void setColor(String color) {
-		this.color = color;
+	public void setTeam(int team) {
+		this.team = team;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public Piece clone(){
+		
+		Piece clone = null;
+	    try {
+			clone = (Piece) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+	    clone.description = new String(this.description);
+	    clone.name = new String(this.name);
+	    clone.team = this.team;
+	    
+	    return clone;
+	}
+
 
 //	//TODO
 //	public boolean accepte(Visitor v){

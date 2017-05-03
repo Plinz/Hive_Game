@@ -15,6 +15,14 @@ public class Tile {
 		this.y = y;
 		this.z = z;
 	}
+	public Tile(Tile t) {
+		this.piece = t.getPiece().clone();
+		this.blocked = t.isBlocked();
+		this.x = t.getX();
+		this.y = t.getY();
+		this.z = t.getZ();
+	}
+	
 	public Piece getPiece() {
 		return piece;
 	}

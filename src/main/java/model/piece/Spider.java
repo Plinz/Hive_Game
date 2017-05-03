@@ -8,8 +8,8 @@ import main.java.utils.Coord;
 
 public class Spider extends Piece{
 
-	public Spider(String name, String color) {
-		super(name, color);
+	public Spider(int team) {
+		super("Spider", team, "Spider description");
 		// TODO Auto-generated constructor stub
 	}
 

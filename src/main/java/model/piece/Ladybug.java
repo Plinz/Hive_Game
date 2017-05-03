@@ -8,9 +8,10 @@ import main.java.utils.Coord;
 
 public class Ladybug extends Piece{
 
-	public Ladybug(String name, String color) {
-		super(name, color);
+	public Ladybug(int team) {
+		super("Ladybug", team, "Ladybug description");
 		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override

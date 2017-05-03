@@ -8,8 +8,8 @@ import main.java.utils.Coord;
 
 public class Beetle extends Piece{
 
-	public Beetle(String name, String color) {
-		super(name, color);
+	public Beetle(int team) {
+		super("Beetle", team, "Beetle description");
 	}
 
 	@Override

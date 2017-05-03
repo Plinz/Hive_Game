@@ -9,8 +9,9 @@ import main.java.utils.Coord;
 
 public class Grasshopper extends Piece{
 
-	public Grasshopper(String name, String color) {
-		super(name, color);
+	public Grasshopper(int team) {
+		super("Grasshopper", team, "Grasshopper description");
+
 	}
 
 	@Override
