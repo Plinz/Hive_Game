@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="1" width="1280" height="720" text="Hive" measuredWidth="1280" measuredHeight="720"/>
+  <widgets xsi:type="model:Button" id="8" x="1027" y="612" width="201" height="39" text="Charger partie" measuredWidth="201" measuredHeight="39" link="GameScene.screen">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="10" x="443" y="46" width="392" text="Charger partie" measuredWidth="392" measuredHeight="46">
+    <font size="28px"/>
+  </widgets>
+  <widgets xsi:type="model:List" id="12" x="418" y="141" width="453" height="401" text="Partie 1 &#xA;|Partie 2 &#xA;Partie 3 &#xA;&#xA;" measuredWidth="453" measuredHeight="401">
+    <font/>
+    <items x="0" y="2" width="453" height="23" text="Partie 1 "/>
+    <items x="0" y="25" width="453" height="23" text="|Partie 2 "/>
+    <items x="0" y="48" width="453" height="23" text="Partie 3 "/>
+    <items x="0" y="71" width="453" height="23"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="13" x="680" y="612" width="325" height="39" text="Revenir au menu principal" measuredWidth="325" measuredHeight="39" link="MainMenu.screen">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

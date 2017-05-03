@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="1" width="1277" height="720" text="Hive" measuredWidth="1277" measuredHeight="720"/>
+  <widgets xsi:type="model:Panel" id="13" x="916" y="22" width="360" height="696" measuredWidth="360" measuredHeight="696"/>
+  <widgets xsi:type="model:Panel" id="14" x="919" y="85" width="360" height="307" measuredWidth="360" measuredHeight="307"/>
+  <widgets xsi:type="model:Label" id="15" x="931" y="100" width="125" text="Joueur 1 " measuredWidth="125" measuredHeight="28">
+    <font size="15px"/>
+  </widgets>
+  <widgets xsi:type="model:HLine" id="16" x="922" y="131" width="354" measuredWidth="354" measuredHeight="6"/>
+  <widgets xsi:type="model:Image" id="17" x="927" y="134" width="83" height="77" measuredWidth="83" measuredHeight="77" src="assets/SpriteQueenBee.png"/>
+  <widgets xsi:type="model:Image" id="18" x="1032" y="142" width="70" height="59" measuredWidth="70" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="19" x="1124" y="143" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="22" x="931" y="460" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="23" x="1032" y="459" width="70" height="59" measuredWidth="70" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="24" x="1124" y="460" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="25" x="931" y="219" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="26" x="1032" y="218" width="70" height="59" measuredWidth="70" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="27" x="1124" y="219" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:HLine" id="28" x="919" y="440" width="354" measuredWidth="354" measuredHeight="6"/>
+  <widgets xsi:type="model:Label" id="29" x="931" y="404" width="125" text="Joueur 2 " measuredWidth="125" measuredHeight="28">
+    <font size="15px"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="30" x="934" y="536" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="31" x="1035" y="535" width="70" height="59" measuredWidth="70" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="32" x="1128" y="536" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:Button" id="33" x="835" y="584" width="42" height="38" text="+" measuredWidth="42" measuredHeight="38">
+    <font size="17px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="34" x="835" y="651" width="42" height="38" text="-" measuredWidth="42" measuredHeight="38">
+    <font size="17px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="35" x="23" y="349" width="44" height="42" text="&lt;" measuredWidth="44" measuredHeight="42">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="36" x="858" y="338" width="44" height="42" text=">" measuredWidth="44" measuredHeight="42">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="37" x="463" y="34" width="47" height="38" text="^" measuredWidth="47" measuredHeight="38">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="38" x="463" y="660" width="47" height="38" text="v" measuredWidth="47" measuredHeight="38">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="44" x="1205" y="22" width="66" height="62" measuredWidth="66" measuredHeight="62" link="MainScreenGearClick.screen" src="assets/gear.png"/>
+  <widgets xsi:type="model:Image" id="45" x="1032" y="24" width="57" height="63" measuredWidth="57" measuredHeight="63" src="assets/redo.png"/>
+  <widgets xsi:type="model:Image" id="46" x="944" y="26" width="68" height="62" measuredWidth="68" measuredHeight="62" src="assets/undo.png"/>
+  <hRuler/>
+  <vRuler>
+    <guides position="14"/>
+  </vRuler>
+  <font size="12px"/>
+</model:Screen>

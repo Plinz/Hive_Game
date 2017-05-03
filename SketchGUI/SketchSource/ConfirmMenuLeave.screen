@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="1" width="1280" height="720" text="Hive" measuredWidth="1280" measuredHeight="720"/>
+  <widgets xsi:type="model:Image" id="2" x="347" y="70" width="617" height="189" measuredWidth="617" measuredHeight="189"/>
+  <widgets xsi:type="model:Panel" id="10" x="347" y="294" width="617" height="394" measuredWidth="617" measuredHeight="394"/>
+  <widgets xsi:type="model:Button" id="3" x="573" y="565" width="165" height="39" text="Options" measuredWidth="165" measuredHeight="39">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="5" x="573" y="624" width="165" height="39" text="Quitter" measuredWidth="165" measuredHeight="39">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="6" x="562" y="447" width="189" height="39" text="Règles" measuredWidth="189" measuredHeight="39">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="7" x="562" y="506" width="189" height="39" text="Didacticiel" measuredWidth="189" measuredHeight="39">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="8" x="556" y="388" width="201" height="39" text="Charger partie" measuredWidth="201" measuredHeight="39">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="9" x="552" y="329" width="207" height="39" text="Nouvelle partie" measuredWidth="207" measuredHeight="39">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Alert" id="11" x="424" y="250" width="465" height="200" text="Confirmation&#xA;Voulez-vous quitter le jeu ?&#xA;OK,Annuler" measuredWidth="465" measuredHeight="200" icon="warning (large)">
+    <items link="ClosedWindow.screen" x="275" y="159" width="80" height="26" text="OK"/>
+    <items link="MainMenuScene.screen" x="370" y="159" width="80" height="26" text="Annuler"/>
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

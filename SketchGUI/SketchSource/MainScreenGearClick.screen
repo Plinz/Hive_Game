@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="11" width="1277" height="720" text="Hive" measuredWidth="1277" measuredHeight="720"/>
+  <widgets xsi:type="model:Panel" id="12" x="916" y="22" width="360" height="697" measuredWidth="360" measuredHeight="697"/>
+  <widgets xsi:type="model:Panel" id="13" x="919" y="86" width="360" height="307" measuredWidth="360" measuredHeight="307"/>
+  <widgets xsi:type="model:Label" id="14" x="930" y="101" width="126" text="Joueur 1 " measuredWidth="126" measuredHeight="28">
+    <font size="15px"/>
+  </widgets>
+  <widgets xsi:type="model:HLine" id="15" x="921" y="131" width="355" measuredWidth="355" measuredHeight="6"/>
+  <widgets xsi:type="model:Image" id="16" x="930" y="143" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="17" x="1032" y="142" width="71" height="59" measuredWidth="71" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="18" x="1124" y="143" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="19" x="930" y="461" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="20" x="1032" y="460" width="71" height="59" measuredWidth="71" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="21" x="1124" y="461" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="22" x="930" y="220" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="23" x="1032" y="219" width="71" height="59" measuredWidth="71" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="24" x="1124" y="220" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:HLine" id="25" x="919" y="441" width="355" measuredWidth="355" measuredHeight="6"/>
+  <widgets xsi:type="model:Label" id="26" x="930" y="405" width="126" text="Joueur 2 " measuredWidth="126" measuredHeight="28">
+    <font size="15px"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="27" x="933" y="536" width="79" height="58" measuredWidth="79" measuredHeight="58"/>
+  <widgets xsi:type="model:Image" id="28" x="1035" y="535" width="71" height="59" measuredWidth="71" measuredHeight="59"/>
+  <widgets xsi:type="model:Image" id="29" x="1127" y="536" width="82" height="58" measuredWidth="82" measuredHeight="58"/>
+  <widgets xsi:type="model:Button" id="30" x="834" y="584" width="43" height="39" text="+" measuredWidth="43" measuredHeight="39">
+    <font size="17px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="31" x="834" y="651" width="43" height="39" text="-" measuredWidth="43" measuredHeight="39">
+    <font size="17px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="32" x="23" y="349" width="44" height="43" text="&lt;" measuredWidth="44" measuredHeight="43">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="33" x="858" y="339" width="44" height="43" text=">" measuredWidth="44" measuredHeight="43">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="34" x="463" y="34" width="47" height="39" text="^" measuredWidth="47" measuredHeight="39">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="35" x="463" y="661" width="47" height="39" text="v" measuredWidth="47" measuredHeight="39">
+    <font size="19px" bold="true"/>
+  </widgets>
+  <widgets xsi:type="model:Image" id="36" x="1182" y="23" width="79" height="62" measuredWidth="79" measuredHeight="62" link="GameScene.screen" src="assets/gear.png"/>
+  <widgets xsi:type="model:Image" id="37" x="1032" y="25" width="71" height="64" measuredWidth="71" measuredHeight="64" src="assets/redo.png"/>
+  <widgets xsi:type="model:Image" id="38" x="936" y="26" width="76" height="62" measuredWidth="76" measuredHeight="62" src="assets/undo.png"/>
+  <widgets xsi:type="model:VButtonBar" id="74" x="1061" y="88" width="210" height="218" text="Lancer nouvelle Partie&#xA;Enregistrer&#xA;Enregistrer sous ...&#xA;Charger partie&#xA;Afficher l'historique&#xA;Quitter partie" measuredWidth="210" measuredHeight="218" selection="0">
+    <font/>
+    <items link="ConfirmNewGame.screen" x="0" y="0" width="210" height="36" text="Lancer nouvelle Partie"/>
+    <items link="GameScene.screen" x="0" y="36" width="210" height="35" text="Enregistrer"/>
+    <items link="ConfirmSaveAs.screen" x="0" y="71" width="210" height="35" text="Enregistrer sous ..."/>
+    <items link="ConfirmLoadScreen.screen" x="0" y="106" width="210" height="35" text="Charger partie"/>
+    <items x="0" y="141" width="210" height="35" text="Afficher l'historique"/>
+    <items link="ConfirmLeaveScreen.screen" x="0" y="176" width="210" height="42" text="Quitter partie"/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
