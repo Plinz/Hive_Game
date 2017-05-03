@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="22" width="1280" height="720" text="Hive" measuredWidth="1280" measuredHeight="720"/>
+  <widgets xsi:type="model:Panel" id="23" x="31" y="58" width="1201" height="630" measuredWidth="1201" measuredHeight="630"/>
+  <widgets xsi:type="model:Label" id="24" x="287" y="105" width="706" text="Configuration de la partie :" measuredWidth="706" measuredHeight="46">
+    <font size="28px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="25" x="560" y="253" width="159" text="Mode de jeu :" measuredWidth="159" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Combo" id="26" x="500" y="317" width="287" text="Joueur contre joueur&#xA;Joueur contre ordinateur" measuredWidth="287" measuredHeight="48">
+    <font/>
+    <items link="NewGamePVP.screen" x="0" y="0" width="286" height="24" text="Joueur contre joueur"/>
+    <items link="" x="0" y="25" width="286" height="23" text="Joueur contre ordinateur"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="27" x="992" y="627" width="211" height="39" text="Lancer la partie" measuredWidth="211" measuredHeight="39" link="GameScene.screen">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="28" x="321" y="465" width="207" text="Nom du joueur 1 :" measuredWidth="207" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="29" x="646" y="627" width="309" height="39" text="Revenir au menu principal" measuredWidth="309" measuredHeight="39" link="NewGamePVP.screen">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:TextField" id="30" x="536" y="465" width="278" text="Joueur 1" measuredWidth="278" measuredHeight="25">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>
