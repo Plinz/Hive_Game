@@ -18,6 +18,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import main.java.model.Core;
+import main.java.model.piece.Ant;
+import main.java.utils.Coord;
 
 /**
  *
@@ -25,15 +28,28 @@ import javafx.stage.Stage;
  */
 public class InterfaceJavaFX extends Application{
     
+    private Core core;
+    
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        
+        /*Initialisation du core*/
+        core = new Core(2);
+        core.addPiece(new Ant(2), new Coord(0,0));
+        System.err.println(core.getCurrentState().getBoard().getBoard().size());
+        for(int i = 0; i < core.getCurrentState().getBoard().getBoard().size();i++){
+            System.out.println(i);
+        }
+        /************************/
+        
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
         Canvas gameCanvas = new Canvas();
         gameBorderPane.setLeft(gameCanvas);
         Scene gameScene = new Scene(gameBorderPane,800,800);   
         primaryStage.setScene(gameScene);
+        primaryStage.setTitle("Hive_Test");
         primaryStage.show();
         /*******************************/
         
@@ -50,11 +66,11 @@ public class InterfaceJavaFX extends Application{
         for(double i = 0; i<6;i++){
             ArrayList<Polygon> tmp = new ArrayList<>();
             for(double j = 0;j<6;j++){
-                if(i%2 == 0){
-                      tmp.add(drawPoly(gameCanvas,x+(2*size*j),y+(size*i)+(i*(size/2)),size));   
+                if(j%2 == 0){
+                      tmp.add(drawPoly(gameCanvas,x+(2*size*i)+((2*size)*Math.floor(j/2)),y+(size*j)+(j*(size/2)),size));   
                 }
                 else
-                    tmp.add(drawPoly(gameCanvas,x+(2*size*j)+size,y+(size*i)+(i*(size/2)),size));   
+                    tmp.add(drawPoly(gameCanvas,x+(2*size*i)+size+((2*size)*Math.floor(j/2)),y+(size*j)+(j*(size/2)),size));   
             }
             poly.add(tmp);
         }
