@@ -5,12 +5,13 @@ import java.util.List;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 public class Spider extends Piece{
 
 	public Spider(int team) {
-		super("Spider", team, "Spider description");
+		super(Consts.SPIDER_NAME, team, "Spider description");
 		// TODO Auto-generated constructor stub
 	}
 

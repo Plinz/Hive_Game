@@ -15,4 +15,11 @@ public class Consts {
     public static final int ANT1 = 8;
     public static final int ANT2 = 9;
     public static final int ANT3 = 10;
+    
+    //MACROS NOMS PIECES
+    public static final String ANT_NAME = "Ant";
+    public static final String SPIDER_NAME = "Spider";
+    public static final String QUEEN_NAME = "Queen";
+    public static final String BEETLE_NAME = "Beetle";
+    public static final String GRASSHOPPER_NAME = "Grass hopper";
 }

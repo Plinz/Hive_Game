@@ -6,7 +6,7 @@ package main.java.ia;
 public class LoopingConfigNode {
     
     byte x, y, z, piece;
-    boolean stuck, isVisited, bool3 ;
+    byte stuck, isVisited, bool3 ;
     LoopingConfigNode next;
     
     public LoopingConfigNode(StoringConfig config, int index){
