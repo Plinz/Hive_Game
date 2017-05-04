@@ -37,11 +37,11 @@ public class InterfaceJavaFX extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         
+        /* Position d'origine des hexagones */
         double size = 15;
         double x = 70;
         double y = 30;
-        
-        
+        /************************************/
         
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
@@ -64,9 +64,9 @@ public class InterfaceJavaFX extends Application{
         
         core.addPiece(new Ant(0), new Coord(0, 0));
         core.addPiece(new Ant(1), new Coord(0 , 1));
-        //core.addPiece(new Beetle(1), new Coord(1 , 0));
-        //core.addPiece(new Beetle(1), new Coord(0 , 3));
-        //core.addPiece(new Beetle(1), new Coord(2 , 3));
+        core.addPiece(new Beetle(1), new Coord(1 , 0));
+        core.addPiece(new Beetle(2), new Coord(0 , 3));
+        core.addPiece(new Beetle(3), new Coord(2 , 3));
         //core.movePiece(new Coord(1, 1), new Coord(0, 1));
         initPoly(core, gameCanvas, x, y, size);
         
