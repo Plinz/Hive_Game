@@ -34,6 +34,109 @@ public class Board {
 		this.board = board;
 	}
 	
+	public List<Tile> getNeighbors(Tile tile){
+		List<Tile> list = new ArrayList<Tile>();
+		list.add(this.getEast(tile));
+		list.add(this.getNorthEast(tile));
+		list.add(this.getNorthWest(tile));
+		list.add(this.getSouthEast(tile));
+		list.add(this.getSouthWest(tile));
+		list.add(this.getWest(tile));
+		list.addAll(this.getAboveAndBelow(tile));
+		return list;
+	}
+	
+	public List<Tile> getAboveAndBelow(Tile tile){
+		List<Tile> column = this.board.get(tile.getX());
+		List<Tile> list = new ArrayList<Tile>();
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY() && tile.getZ() != t.getZ()){
+					list.add(t);
+				}
+			}
+		}
+		return list;
+	}
+	
+	public Tile getEast(Tile tile){
+		List<Tile> column = this.board.get(tile.getX()+1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY() && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getSouthEast(Tile tile){
+		List<Tile> column = this.board.get(tile.getX());
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY()+1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getSouthWest(Tile tile){
+		List<Tile> column = this.board.get(tile.getX()-1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY()+1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getWest(Tile tile){
+		List<Tile> column = this.board.get(tile.getX()-1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY() && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getNorthWest(Tile tile){
+		List<Tile> column = this.board.get(tile.getX());
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY()-1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getNorthEast(Tile tile){
+		List<Tile> column = this.board.get(tile.getX()+1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY()-1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
 	public Tile getTile(Coord coord){
 		Tile ret = null;
 		if(this.board.size() > coord.getX()){
@@ -83,12 +186,10 @@ public class Board {
 		if (coord.getX() == 0){
 			resize = true;
 			x = 1;
-			this.board.remove(23);
 			this.board.add(0, null);
 		} else if (coord.getX() == 23){
 			resize = true;
 			x = -1;
-			this.board.remove(0);
 			this.board.add(null);
 		}
 		if (coord.getY() == 0){
