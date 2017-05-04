@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -22,6 +23,8 @@ import main.java.model.Core;
 import main.java.model.Tile;
 import main.java.model.piece.Ant;
 import main.java.model.piece.Beetle;
+import main.java.model.piece.Spider;
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 /**
@@ -36,12 +39,6 @@ public class InterfaceJavaFX extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
-        /* Position d'origine des hexagones */
-        double size = 15;
-        double x = 70;
-        double y = 30;
-        /************************************/
         
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
@@ -59,20 +56,17 @@ public class InterfaceJavaFX extends Application{
         /******************/
         
         /*Initialisation du core et tests basiques*/
-        poly = new ArrayList();
         core = new Core(2);
         
-        core.addPiece(new Ant(0), new Coord(0, 0));
-        core.addPiece(new Ant(1), new Coord(0 , 1));
-        core.addPiece(new Beetle(1), new Coord(1 , 0));
-        core.addPiece(new Beetle(2), new Coord(0 , 3));
-        core.addPiece(new Beetle(3), new Coord(2 , 3));
-        //core.movePiece(new Coord(1, 1), new Coord(0, 1));
-        initPoly(core, gameCanvas, x, y, size);
+        //core.addPiece(new Ant(0), new Coord(0, 0));
+        //core.addPiece(new Ant(1), new Coord(0 , 1));
+        //core.addPiece(new Beetle(1), new Coord(1 , 0));
+        //core.addPiece(new Beetle(2), new Coord(0 , 3));
+        //core.addPiece(new Beetle(3), new Coord(2 , 3));
+        //core.movePiece(new Coord(1, 1), new Coord(2, 2));
+        initPoly(core);
         
-        System.out.println(core.getCurrentState().getBoard().getBoard().size());
         
-            
         /************************/
         
         /* Initialisation du tableau de polygones 
@@ -80,7 +74,7 @@ public class InterfaceJavaFX extends Application{
         for(double i = 0; i<3;i++){
             ArrayList<Polygon> tmp = new ArrayList<>();
             for(double j = 0;j<3;j++){
-                //tmp.add(addPoly(gameCanvas, x, y, i, j, size));
+                //tmp.add(addPoly(gameCanvas, x, y, i, j, Consts.SIDE_SIZE));
             }
             poly.add(tmp);
         }
@@ -91,44 +85,80 @@ public class InterfaceJavaFX extends Application{
             @Override
             public void handle(MouseEvent m) {
                 Point2D fdp = new Point2D.Double(m.getX(), m.getY());
-                for(int i = 0;i<poly.size();i++){
-                    for(int j = 0;j<poly.get(i).size();j++){
-                        if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
-                            if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
-                                System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " !  " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
+                if(m.getButton() == MouseButton.PRIMARY){
+                    for(int i = 0;i<poly.size();i++){
+                        for(int j = 0;j<poly.get(i).size();j++){
+                            if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
+                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
+                                    System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " !  " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
+                                    core.getCurrentState().getBoard().removePiece(new Coord(i, j));
+                                }
+                                else{
+                                    System.err.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
+                                }
+                            }
+                            else 
+                                if(poly.get(i).get(j).contains(fdp))
+                                    System.err.println("Pas cliquable  " + i + " " + j + " !  ");
+                        }
+                    } 
+                }
+                else{
+                    for(int i = 0;i<poly.size();i++){
+                        for(int j = 0;j<poly.get(i).size();j++){
+                            if(poly.get(i).get(j).contains(fdp)){
+                                System.out.println("Clidroit" + i + " " + j);
+                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
+                                    core.addPiece(new Spider(1), new Coord(i, j));
+                                    initPoly(core);
+                                }
+                                else{
+                                    System.err.println("On ajoute pas sur une case non cliquable");
+                                }
+                                
                             }
                         }
                     }
-                } 
+                    
+                }
             }
         });
         /********************************/
         
+        gameCanvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent m) {
+                Point2D fdp = new Point2D.Double(m.getX(), m.getY());
+                for(int i = 0;i<poly.size();i++){
+                    for(int j = 0;j<poly.get(i).size();j++){
+                        if(poly.get(i).get(j).contains(fdp)){
+                            //System.out.println(" Pos : " + i + " "+ j);
+                        }
+                    }
+                } 
+            }
+        }
         
+        );
+        
+        RefreshJavaFX r = new RefreshJavaFX(core, gameCanvas);
+        r.start();
         
     }
     
-    public void initPoly(Core c,Canvas gameCanvas,double x, double y,double size){
-        for(int i = 0; i<c.getCurrentState().getBoard().getBoard().size();i++){
+    public void initPoly(Core c){
+        System.err.println("Init lancé");
+        poly = new ArrayList();
+        for(int i = 0; i < c.getCurrentState().getBoard().getBoard().size();i++){
             ArrayList<Polygon> tmp = new ArrayList<>();
-            for(int j = 0; j<c.getCurrentState().getBoard().getBoard().get(i).size();j++){
-                
-               if(core.getCurrentState().getBoard().getBoard().get(i).get(j).size() != 0){
-                   if (core.getCurrentState().getBoard().getBoard().get(i).get(j).get(0).getPiece()!=null)
-                       tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.RED));
-                   else{
-                        tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.BLUE));
-                   }
-                }
-               else
-                   tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.BLACK));
-                
+            for(int j = 0; j<c.getCurrentState().getBoard().getBoard().get(i).size();j++){ 
+                   tmp.add(addPoly(/*gameCanvas,*/ Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE/*,Color.BLACK*/));
             }
             poly.add(tmp);
         }
     }
     
-    public Polygon addPoly(Canvas can,double x,double y,double i,double j,double size, Color color){
+    public Polygon addPoly(/*Canvas can,*/double x,double y,double i,double j,double size/*, Color color*/){
         double[] xd = new double[6];
         double[] yd = new double[6];
         double originX,originY;
@@ -141,7 +171,7 @@ public class InterfaceJavaFX extends Application{
             
         }
         originY = y+(size*j)+(j*(size/2));
-        GraphicsContext gc = can.getGraphicsContext2D();
+        //GraphicsContext gc = can.getGraphicsContext2D();
         
         int [] rx = new int[6];
         int [] ry = new int[6];
@@ -151,8 +181,8 @@ public class InterfaceJavaFX extends Application{
         xd[3] = originX;yd[3] = originY+2*size;
         xd[4] = originX-size;yd[4] = (originY+size)+size/2;
         xd[5] = originX-size;yd[5] = originY+size/2;
-        gc.setStroke(color);
-        gc.strokePolygon(xd, yd, 6);
+        //gc.setStroke(color);
+        //gc.strokePolygon(xd, yd, 6);
         for(int a = 0; a<6;a++){
             rx[a] = (int) xd[a];
             ry[a] = (int) yd[a];

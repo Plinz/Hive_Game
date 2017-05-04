@@ -22,4 +22,9 @@ public class Consts {
     public static final String QUEEN_NAME = "Queen";
     public static final String BEETLE_NAME = "Beetle";
     public static final String GRASSHOPPER_NAME = "Grass hopper";
+    
+    //MACROS COORDONNEES DESSIN PIECES
+    public static final double SIDE_SIZE = 15;
+    public static final double X_ORIGIN = 70;
+    public static final double Y_ORIGIN = 30;
 }
