@@ -5,12 +5,13 @@ import java.util.List;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 public class Ant extends Piece{
 	
 	public Ant(int team) {
-		super("Fourmi", team, "Fourmi description");
+		super(Consts.ANT_NAME, team, "Fourmi description");
 	}
 
 	@Override
