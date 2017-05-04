@@ -24,7 +24,7 @@ public class StoringConfig {
 
     public StoringConfig(State state) {
 
-        List<ArrayList<Tile>> board = state.getBoard().getBoard();
+        List<List<List<Tile>>> board = state.getBoard().getBoard();
 
         /// first we find out the total amount of pieces in the game
         //->pieces on the board
@@ -44,41 +44,44 @@ public class StoringConfig {
         int index = 0;
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.get(i).size(); j++) {
-                ///dirty -> getting one short from lots of infos
-                current = board.get(i).get(j);
-                if (current.getPiece().getTeam() == 1) {
-                    index += total_pieces_nb / 2;
+                for (int k = 0; k < board.get(i).get(j).size(); k++) ///dirty -> getting one short from lots of infos
+                {
+                    current = board.get(i).get(j).get(k);
+
+                    if ((current != null) && (current.getPiece() != null) && (current.getPiece().getTeam() == 1)) {
+                        index += total_pieces_nb / 2;
+                    }
+                    // get the piece byte from the team and name
+                    switch (current.getPiece().getName()) {
+                        case Consts.ANT_NAME:
+                            if (config[index + Consts.ANT1] == 0) {
+                                index += Consts.ANT1;
+                            } else if (config[index + Consts.ANT2] == 0) {
+                                index += Consts.ANT2;
+                            } else if (config[index + Consts.ANT3] == 0) {
+                                index += Consts.ANT3;
+                            } else {
+                                //means there are 4 Ants with same color in the field -> should never happen
+                                System.err.println("Erreur : 4 fourmis de la même couleur sur la board");
+                            }
+                            break;
+                        case Consts.BEETLE_NAME:
+
+                            break;
+                        case Consts.QUEEN_NAME:
+
+                            break;
+                        case Consts.SPIDER_NAME:
+
+                            break;
+                    }
                 }
-                // get the piece byte from the team and name
-                switch (current.getPiece().getName()) {
-                    case Consts.ANT_NAME:
-                        if (config[index + Consts.ANT1] == 0) {
-                            index += Consts.ANT1;
-                        } else if (config[index+Consts.ANT2] == 0) {
-                            index += Consts.ANT2;
-                        } else if (config[index+Consts.ANT3] == 0) {
-                            index += Consts.ANT3;
-                        } else {
-                            //means there are 4 Ants with same color in the field -> should never happen
-                            System.err.println("Erreur : 4 fourmis de la même couleur sur la board");
-                        }
-                        break;
-                    case Consts.BEETLE_NAME:
 
-                        break;
-                    case Consts.QUEEN_NAME:
-
-                        break;
-                    case Consts.SPIDER_NAME:
-
-                        break;
-                }
             }
-
         }
     }
+    //////     getters
 
-//////     getters
     public byte getX(int index) {
         return (byte) ((config[index] & 0xF800) >> 11);
     }
@@ -138,7 +141,7 @@ public class StoringConfig {
         config[index] &= 0xFFFE;
         config[index] |= newBool3;
     }
-
+/*
     // Tile to short -> Used to create the config from the state
     public short TileToShort(Tile tile) {
 
@@ -162,4 +165,5 @@ public class StoringConfig {
                 break;
         }
     }
+*/
 }
