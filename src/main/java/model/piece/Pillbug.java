@@ -4,6 +4,7 @@ import java.util.List;
 
 import main.java.model.Board;
 import main.java.model.Piece;
+import main.java.model.Tile;
 import main.java.utils.Coord;
 
 public class Pillbug extends Piece{
@@ -13,7 +14,7 @@ public class Pillbug extends Piece{
 	}
 
 	@Override
-	public List<Coord> getPossibleMovement(Coord coord, int floor, Board board) {
+	public List<Coord> getPossibleMovement(Tile tile, Board board) {
 		// TODO Auto-generated method stub
 		return null;
 	}

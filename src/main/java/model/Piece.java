@@ -1,6 +1,5 @@
 package main.java.model;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import main.java.utils.Coord;
@@ -11,7 +10,7 @@ public abstract class Piece implements Cloneable{
 	protected int team;
 	protected String description;
 	
-	public abstract List<Coord> getPossibleMovement(Coord coord, int floor, Board board);
+	public abstract List<Coord> getPossibleMovement(Tile tile, Board board);
 
 	public Piece(String name, int team, String description) {
 		this.name = name;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.utils.Coord;
+import main.java.view.BoardDrawer;
 
 public class Board {
 	
@@ -12,7 +13,7 @@ public class Board {
 	public Board(){
 		this.board = new ArrayList<ArrayList<Tile>>(24);
 	}
-	
+      
 	public Board(Board b) {
 		this.board = new ArrayList<ArrayList<Tile>>(24);
 		for (ArrayList<Tile> list : b.getBoard()){
@@ -25,6 +26,7 @@ public class Board {
 			}
 		}
 	}
+        
 
 	public List<ArrayList<Tile>> getBoard() {
 		return board;
@@ -33,6 +35,11 @@ public class Board {
 	public void setBoard(List<ArrayList<Tile>> board) {
 		this.board = board;
 	}
+
+    public boolean accept(BoardDrawer b){
+        b.visit(this);
+        return false;
+    }
 	
 	public Tile getTile(Coord coord){
 		Tile ret = null;
@@ -83,12 +90,10 @@ public class Board {
 		if (coord.getX() == 0){
 			resize = true;
 			x = 1;
-			this.board.remove(23);
 			this.board.add(0, null);
 		} else if (coord.getX() == 23){
 			resize = true;
 			x = -1;
-			this.board.remove(0);
 			this.board.add(null);
 		}
 		if (coord.getY() == 0){
@@ -124,6 +129,120 @@ public class Board {
 	public void movePiece(Coord coordSource, Coord coordTarget){
 		Piece piece = this.removePiece(coordSource);
 		this.addPiece(piece, coordTarget);
+	}
+	
+	public List<Tile> getNeighbors(Coord coord){
+		List<Tile> list = new ArrayList<Tile>();
+		list.add(this.getEast(coord));
+		list.add(this.getNorthEast(coord));
+		list.add(this.getNorthWest(coord));
+		list.add(this.getSouthEast(coord));
+		list.add(this.getSouthWest(coord));
+		list.add(this.getWest(coord));
+		return list;
+	}
+	
+	public List<Tile> getNeighbors(Tile tile){
+		List<Tile> list = new ArrayList<Tile>();
+		list.add(this.getEast(tile.getCoord()));
+		list.add(this.getNorthEast(tile.getCoord()));
+		list.add(this.getNorthWest(tile.getCoord()));
+		list.add(this.getSouthEast(tile.getCoord()));
+		list.add(this.getSouthWest(tile.getCoord()));
+		list.add(this.getWest(tile.getCoord()));
+		list.addAll(this.getAboveAndBelow(tile));
+		return list;
+	}
+	
+	public List<Tile> getAboveAndBelow(Tile tile){
+		List<Tile> column = this.board.get(tile.getX());
+		List<Tile> list = new ArrayList<Tile>();
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == tile.getY() && tile.getZ() != t.getZ()){
+					list.add(t);
+				}
+			}
+		}
+		return list;
+	}
+	
+	public Tile getEast(Coord coord){
+		List<Tile> column = this.board.get(coord.getX()+1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == coord.getY() && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getSouthEast(Coord coord){
+		List<Tile> column = this.board.get(coord.getX());
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == coord.getY()+1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getSouthWest(Coord coord){
+		List<Tile> column = this.board.get(coord.getX()-1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == coord.getY()+1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getWest(Coord coord){
+		List<Tile> column = this.board.get(coord.getX()-1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == coord.getY() && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getNorthWest(Coord coord){
+		List<Tile> column = this.board.get(coord.getX());
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == coord.getY()-1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
+	}
+	
+	public Tile getNorthEast(Coord coord){
+		List<Tile> column = this.board.get(coord.getX()+1);
+		Tile ret = null;
+		if (column != null){
+			for(Tile t : column){
+				if (t.getY() == coord.getY()-1 && (ret == null || ret.getZ() < t.getZ())){
+					ret = t;
+				}
+			}
+		}
+		return ret;
 	}
 	
 //	//TODO

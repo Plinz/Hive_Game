@@ -5,6 +5,7 @@ import java.util.List;
 
 import main.java.model.Board;
 import main.java.model.Piece;
+import main.java.model.Tile;
 import main.java.utils.Coord;
 
 public class Grasshopper extends Piece{
@@ -15,45 +16,49 @@ public class Grasshopper extends Piece{
 	}
 
 	@Override
-	public List<Coord> getPossibleMovement(Coord coord, int floor, Board board) {
+	public List<Coord> getPossibleMovement(Tile tile, Board board) {
 		ArrayList<Coord> pos = new ArrayList<Coord>();
-		if (board.getTile(coord, floor).isBlocked())
+		if (tile.isBlocked())
 			return pos;
 		
-		int i = coord.getX();
-		int j = coord.getY();
+		Tile tmp;
+		Coord coord = tile.getCoord();
+		while ((tmp = board.getEast(coord)) != null)
+			coord = tmp.getCoord();
+		addCoord(coord, tile, pos);
 		
-		while (board.getTile(new Coord(++i, j)) != null);
-		if (i != coord.getX()+1)
-			pos.add(new Coord(i, j));
+		coord = tile.getCoord();
+		while ((tmp = board.getSouthEast(coord)) != null)
+			coord = tmp.getCoord();
+		addCoord(coord, tile, pos);
 		
-		i = coord.getX();
-		while (board.getTile(new Coord(i, ++j)) != null);
-		if (j != coord.getY()+1)
-			pos.add(new Coord(i, j));
+		coord = tile.getCoord();
+		while ((tmp = board.getSouthWest(coord)) != null)
+			coord = tmp.getCoord();
+		addCoord(coord, tile, pos);
 		
-		j = coord.getY();
-		while (board.getTile(new Coord(--i, ++j)) != null);
-		if (i != coord.getX()+1 && j != coord.getY()+1)
-			pos.add(new Coord(i, j));
+		coord = tile.getCoord();
+		while ((tmp = board.getWest(coord)) != null)
+			coord = tmp.getCoord();
+		addCoord(coord, tile, pos);
 		
-		i = coord.getX();
-		j = coord.getY();
-		while (board.getTile(new Coord(--i, j)) != null);
-		if (i != coord.getX()+1)
-			pos.add(new Coord(i, j));
+		coord = tile.getCoord();
+		while ((tmp = board.getNorthWest(coord)) != null)
+			coord = tmp.getCoord();
+		addCoord(coord, tile, pos);
 		
-		i = coord.getX();
-		while (board.getTile(new Coord(i, --j)) != null);
-		if (j != coord.getY()+1)
-			pos.add(new Coord(i, j));
-		
-		j = coord.getY();
-		while (board.getTile(new Coord(++i, --j)) != null);
-		if (i != coord.getX()+1 && j != coord.getY()+1)
-			pos.add(new Coord(i, j));
+		coord = tile.getCoord();
+		while ((tmp = board.getNorthEast(coord)) != null)
+			coord = tmp.getCoord();
+		addCoord(coord, tile, pos);
 		
 		return pos;
+	}
+	
+	private void addCoord(Coord coord, Tile tile, List<Coord> list){
+		if (! coord.equals(tile))
+			list.add(new Coord(coord.getX(), coord.getY()));
+	
 	}
 
 }
