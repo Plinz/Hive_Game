@@ -18,7 +18,7 @@ public class Tile {
 		this.z = z;
 	}
 	public Tile(Tile t) {
-		this.piece = t.getPiece().clone();
+		this.piece = t.piece != null ? t.getPiece().clone() : null;
 		this.blocked = t.isBlocked();
 		this.x = t.getX();
 		this.y = t.getY();
