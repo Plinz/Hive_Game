@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.utils.Coord;
+import main.java.view.BoardDrawer;
 
 public class Board {
 	
@@ -12,7 +13,7 @@ public class Board {
 	public Board(){
 		this.board = new ArrayList<ArrayList<Tile>>(24);
 	}
-	
+      
 	public Board(Board b) {
 		this.board = new ArrayList<ArrayList<Tile>>(24);
 		for (ArrayList<Tile> list : b.getBoard()){
@@ -25,6 +26,7 @@ public class Board {
 			}
 		}
 	}
+        
 
 	public List<ArrayList<Tile>> getBoard() {
 		return board;
@@ -34,6 +36,11 @@ public class Board {
 		this.board = board;
 	}
 
+    public boolean accept(BoardDrawer b){
+        b.visit(this);
+        return false;
+    }
+	
 	public Tile getTile(Coord coord){
 		Tile ret = null;
 		if(this.board.size() > coord.getX()){

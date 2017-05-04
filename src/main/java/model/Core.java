@@ -1,6 +1,7 @@
 package main.java.model;
 
 import main.java.utils.Coord;
+import main.java.view.BoardDrawer;
 
 public class Core {
 	
@@ -19,6 +20,12 @@ public class Core {
 		this.currentState = currentState;
 		this.mode = mode;
 	}
+        
+        public boolean accept(BoardDrawer b){
+            b.visit(this);
+            this.currentState.getBoard().accept(b);
+            return false;
+        }
 	
 	public void addPiece(Piece piece, Coord coord){
 		this.history.saveState(this.currentState);
