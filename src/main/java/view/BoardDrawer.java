@@ -29,6 +29,11 @@ public class BoardDrawer {
     }
     
     public boolean visit(Board b){
+        for(int i = 0;i<b.getBoard().size();i++){
+            for(int j = 0;j<b.getBoard().get(i).size();j++){
+                
+            }
+        }
         
         return false;
     }
