@@ -77,9 +77,12 @@ public class Board {
 	}
 	
 	public void addPiece(Piece piece, Coord coord){
-		Tile tile = new Tile(piece, false, coord.getX(), coord.getY(), 0);
+		Tile added = null;
 		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
-		box.add(tile);
+		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
+			added.setPiece(piece);
+		else
+			box.add(added = (new Tile(piece, false, coord.getX(), coord.getY(), box.size())));
 
 		boolean resize = false;
 		int x = 0;
@@ -100,24 +103,24 @@ public class Board {
 		}
 		if (resize){
 			this.resize(x, y);
-			while(this.board.get(tile.getX()+1).size() < tile.getY()+1)
-				this.board.get(tile.getX()+1).add(new ArrayList<Tile>());
-			while(this.board.get(tile.getX()-1).size() < tile.getY()+2)
-				this.board.get(tile.getX()-1).add(new ArrayList<Tile>());
-			if(this.board.get(tile.getX()).size() < tile.getY()+2)
-				this.board.get(tile.getX()+1).add(new ArrayList<Tile>());
-			if(this.board.get(tile.getX()+1).get(tile.getY()).size() == 0)
-				this.board.get(tile.getX()+1).get(tile.getY()).add(new Tile(tile.getX()+1, tile.getY(), 0));
-			if(this.board.get(tile.getX()).get(tile.getY()+1).size() == 0)
-				this.board.get(tile.getX()).get(tile.getY()+1).add(new Tile(tile.getX(), tile.getY()+1, 0));
-			if(this.board.get(tile.getX()-1).get(tile.getY()+1).size() == 0)
-				this.board.get(tile.getX()-1).get(tile.getY()+1).add(new Tile(tile.getX()-1, tile.getY()+1, 0));
-			if(this.board.get(tile.getX()-1).get(tile.getY()).size() == 0)
-				this.board.get(tile.getX()-1).get(tile.getY()).add(new Tile(tile.getX()-1, tile.getY(), 0));
-			if(this.board.get(tile.getX()).get(tile.getY()-1).size() == 0)
-				this.board.get(tile.getX()).get(tile.getY()-1).add(new Tile(tile.getX(), tile.getY()-1, 0));
-			if(this.board.get(tile.getX()+1).get(tile.getY()-1).size() == 0)
-				this.board.get(tile.getX()+1).get(tile.getY()-1).add(new Tile(tile.getX()+1, tile.getY()-1, 0));
+			while(this.board.get(added.getX()+1).size() < added.getY()+1)
+				this.board.get(added.getX()+1).add(new ArrayList<Tile>());
+			while(this.board.get(added.getX()-1).size() < added.getY()+2)
+				this.board.get(added.getX()-1).add(new ArrayList<Tile>());
+			if(this.board.get(added.getX()).size() < added.getY()+2)
+				this.board.get(added.getX()+1).add(new ArrayList<Tile>());
+			if(this.board.get(added.getX()+1).get(added.getY()).size() == 0)
+				this.board.get(added.getX()+1).get(added.getY()).add(new Tile(added.getX()+1, added.getY(), 0));
+			if(this.board.get(added.getX()).get(added.getY()+1).size() == 0)
+				this.board.get(added.getX()).get(added.getY()+1).add(new Tile(added.getX(), added.getY()+1, 0));
+			if(this.board.get(added.getX()-1).get(added.getY()+1).size() == 0)
+				this.board.get(added.getX()-1).get(added.getY()+1).add(new Tile(added.getX()-1, added.getY()+1, 0));
+			if(this.board.get(added.getX()-1).get(added.getY()).size() == 0)
+				this.board.get(added.getX()-1).get(added.getY()).add(new Tile(added.getX()-1, added.getY(), 0));
+			if(this.board.get(added.getX()).get(added.getY()-1).size() == 0)
+				this.board.get(added.getX()).get(added.getY()-1).add(new Tile(added.getX(), added.getY()-1, 0));
+			if(this.board.get(added.getX()+1).get(added.getY()-1).size() == 0)
+				this.board.get(added.getX()+1).get(added.getY()-1).add(new Tile(added.getX()+1, added.getY()-1, 0));
 		}
 	}
 	
