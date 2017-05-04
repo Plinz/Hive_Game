@@ -1,6 +1,5 @@
 package main.java.model;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import main.java.utils.Coord;
