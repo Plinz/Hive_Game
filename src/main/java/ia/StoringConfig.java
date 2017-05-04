@@ -1,6 +1,6 @@
 /*
 this class is used to store a game configuration in an optimal way
-the short(16b) contains :
+each short(16b) contains :
     ________________________
    |  x |  y |  z | b | b| b| , x,y :5 bits each ; z : 3 bits ; and 3 booleans
 
