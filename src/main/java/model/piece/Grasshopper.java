@@ -23,32 +23,32 @@ public class Grasshopper extends Piece{
 		
 		Tile tmp;
 		Coord coord = tile.getCoord();
-		while ((tmp = board.getEast(coord)) != null)
+		while ((tmp = board.getTile(coord.getEast())) != null)
 			coord = tmp.getCoord();
 		addCoord(coord, tile, pos);
 		
 		coord = tile.getCoord();
-		while ((tmp = board.getSouthEast(coord)) != null)
+		while ((tmp = board.getTile(coord.getSouthEast())) != null)
 			coord = tmp.getCoord();
 		addCoord(coord, tile, pos);
 		
 		coord = tile.getCoord();
-		while ((tmp = board.getSouthWest(coord)) != null)
+		while ((tmp = board.getTile(coord.getSouthWest())) != null)
 			coord = tmp.getCoord();
 		addCoord(coord, tile, pos);
 		
 		coord = tile.getCoord();
-		while ((tmp = board.getWest(coord)) != null)
+		while ((tmp = board.getTile(coord.getWest())) != null)
 			coord = tmp.getCoord();
 		addCoord(coord, tile, pos);
 		
 		coord = tile.getCoord();
-		while ((tmp = board.getNorthWest(coord)) != null)
+		while ((tmp = board.getTile(coord.getNorthWest())) != null)
 			coord = tmp.getCoord();
 		addCoord(coord, tile, pos);
 		
 		coord = tile.getCoord();
-		while ((tmp = board.getNorthEast(coord)) != null)
+		while ((tmp = board.getTile(coord.getNorthEast())) != null)
 			coord = tmp.getCoord();
 		addCoord(coord, tile, pos);
 		

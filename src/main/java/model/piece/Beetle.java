@@ -30,18 +30,18 @@ public class Beetle extends Piece{
 		}
 		else {
 			Coord coord = tile.getCoord();
-			if (board.getNeighbors(new Coord(tile.getX()+1, tile.getY())).size()!=1 && (board.getSouthEast(coord) == null || board.getNorthEast(coord) == null))
-				list.add(new Coord(tile.getX()+1, tile.getY()));
-			if (board.getNeighbors(new Coord(tile.getX(), tile.getY()+1)).size()!=1 && (board.getSouthWest(coord) == null || board.getEast(coord) == null))
-				list.add(new Coord(tile.getX(), tile.getY()+1));
-			if (board.getNeighbors(new Coord(tile.getX()-1, tile.getY()+1)).size()!=1 && (board.getWest(coord) == null || board.getSouthEast(coord) == null))
-				list.add(new Coord(tile.getX()-1, tile.getY()+1));
-			if (board.getNeighbors(new Coord(tile.getX()-1, tile.getY())).size()!=1 && (board.getNorthWest(coord) == null || board.getSouthWest(coord) == null))
-				list.add(new Coord(tile.getX()-1, tile.getY()));
-			if (board.getNeighbors(new Coord(tile.getX(), tile.getY()-1)).size()!=1 && (board.getNorthEast(coord) == null || board.getWest(coord) == null))
-				list.add(new Coord(tile.getX(), tile.getY()-1));
-			if (board.getNeighbors(new Coord(tile.getX()+1, tile.getY()-1)).size()!=1 && (board.getEast(coord) == null || board.getNorthWest(coord) == null))
-				list.add(new Coord(tile.getX()+1, tile.getY()-1));		
+//			if (board.getNeighbors(new Coord(tile.getX()+1, tile.getY())).size()!=1 && (board.getSouthEast(coord.getSouthEast()) == null || board.getNorthEast(coord) == null))
+//				list.add(new Coord(tile.getX()+1, tile.getY()));
+//			if (board.getNeighbors(new Coord(tile.getX(), tile.getY()+1)).size()!=1 && (board.getSouthWest(coord) == null || board.getEast(coord) == null))
+//				list.add(new Coord(tile.getX(), tile.getY()+1));
+//			if (board.getNeighbors(new Coord(tile.getX()-1, tile.getY()+1)).size()!=1 && (board.getWest(coord) == null || board.getSouthEast(coord) == null))
+//				list.add(new Coord(tile.getX()-1, tile.getY()+1));
+//			if (board.getNeighbors(new Coord(tile.getX()-1, tile.getY())).size()!=1 && (board.getNorthWest(coord) == null || board.getSouthWest(coord) == null))
+//				list.add(new Coord(tile.getX()-1, tile.getY()));
+//			if (board.getNeighbors(new Coord(tile.getX(), tile.getY()-1)).size()!=1 && (board.getNorthEast(coord) == null || board.getWest(coord) == null))
+//				list.add(new Coord(tile.getX(), tile.getY()-1));
+//			if (board.getNeighbors(new Coord(tile.getX()+1, tile.getY()-1)).size()!=1 && (board.getEast(coord) == null || board.getNorthWest(coord) == null))
+//				list.add(new Coord(tile.getX()+1, tile.getY()-1));		
 		}
 		return list;
 	}

@@ -50,28 +50,19 @@ public class Board {
 	
 	public Tile getTile(Coord coord){
 		Tile ret = null;
-		List<List<Tile>> column;
-		if((column = this.board.get(coord.getX())).size() != 0){
-			List<Tile> box = new ArrayList<Tile>();
-			if (column.get(coord.getY()).size() != 0){
-				for (Tile t: box){
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-				}
-			}
-		}
+		if(coord.getX() > 0 && coord.getY() > 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
+			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
+				if (ret == null || ret.getZ() < t.getZ())
+					ret = t;
 		return ret;
 	}
 	
 	public Tile getTile(Coord coord, int floor){
-		Tile ret = null;
-		List<List<Tile>> column;
-		if((column = this.board.get(coord.getX())).size() != 0){
-			List<Tile> box = new ArrayList<Tile>();
-			if (column.get(coord.getY()).size() >= floor+1)
-				ret = box.get(floor);
-		}
-		return ret;
+		if(coord.getX() > 0 && coord.getY() > 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
+			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
+				if (t.getZ() == floor)
+					return t;
+		return null;
 	}
 	
 	public void resize(int xOffset, int yOffset){
@@ -236,23 +227,24 @@ public class Board {
 	
 	public List<Tile> getNeighbors(Coord coord){
 		List<Tile> list = new ArrayList<Tile>();
-		list.add(this.getEast(coord));
-		list.add(this.getNorthEast(coord));
-		list.add(this.getNorthWest(coord));
-		list.add(this.getSouthEast(coord));
-		list.add(this.getSouthWest(coord));
-		list.add(this.getWest(coord));
+		list.add(this.getTile(coord.getEast()));
+		list.add(this.getTile(coord.getSouthEast()));
+		list.add(this.getTile(coord.getSouthWest()));
+		list.add(this.getTile(coord.getWest()));
+		list.add(this.getTile(coord.getNorthWest()));
+		list.add(this.getTile(coord.getNorthEast()));
 		return list;
 	}
 	
 	public List<Tile> getNeighbors(Tile tile){
 		List<Tile> list = new ArrayList<Tile>();
-		list.add(this.getEast(tile.getCoord()));
-		list.add(this.getNorthEast(tile.getCoord()));
-		list.add(this.getNorthWest(tile.getCoord()));
-		list.add(this.getSouthEast(tile.getCoord()));
-		list.add(this.getSouthWest(tile.getCoord()));
-		list.add(this.getWest(tile.getCoord()));
+		Coord coord = tile.getCoord();
+		list.add(this.getTile(coord.getEast()));
+		list.add(this.getTile(coord.getSouthEast()));
+		list.add(this.getTile(coord.getSouthWest()));
+		list.add(this.getTile(coord.getWest()));
+		list.add(this.getTile(coord.getNorthWest()));
+		list.add(this.getTile(coord.getNorthEast()));
 		list.addAll(this.getAboveAndBelow(tile));
 		return list;
 	}
@@ -264,66 +256,6 @@ public class Board {
 			if (tile.getZ() != t.getZ())
 				list.add(t);
 		return list;
-	}
-	
-	public Tile getEast(Coord coord){
-		Tile ret = null;
-		if(coord.getX()+1 > 0 && coord.getX()+1 < this.board.size())
-			if (coord.getY() > 0 && coord.getY() < this.board.get(coord.getX()+1).size())
-				for(Tile t : this.board.get(coord.getX()+1).get(coord.getY()))
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-		return ret;
-	}
-	
-	public Tile getSouthEast(Coord coord){
-		Tile ret = null;
-		if(coord.getX() > 0 && coord.getX() < this.board.size())
-			if (coord.getY()+1 > 0 && coord.getY()+1 < this.board.get(coord.getX()).size())
-				for(Tile t : this.board.get(coord.getX()).get(coord.getY()+1))
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-		return ret;
-	}
-	
-	public Tile getSouthWest(Coord coord){
-		Tile ret = null;
-		if(coord.getX()-1 > 0 && coord.getX()-1 < this.board.size())
-			if (coord.getY()+1 > 0 && coord.getY()+1 < this.board.get(coord.getX()-1).size())
-				for(Tile t : this.board.get(coord.getX()-1).get(coord.getY()+1))
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-		return ret;
-	}
-	
-	public Tile getWest(Coord coord){
-		Tile ret = null;
-		if(coord.getX()-1 > 0 && coord.getX()-1 < this.board.size())
-			if (coord.getY() > 0 && coord.getY() < this.board.get(coord.getX()-1).size())
-				for(Tile t : this.board.get(coord.getX()-1).get(coord.getY()))
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-		return ret;
-	}
-	
-	public Tile getNorthWest(Coord coord){
-		Tile ret = null;
-		if(coord.getX() > 0 && coord.getX() < this.board.size())
-			if (coord.getY()-1 > 0 && coord.getY()-1 < this.board.get(coord.getX()).size())
-				for(Tile t : this.board.get(coord.getX()).get(coord.getY()-1))
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-		return ret;
-	}
-	
-	public Tile getNorthEast(Coord coord){
-		Tile ret = null;
-		if(coord.getX()+1 > 0 && coord.getX()+1 < this.board.size())
-			if (coord.getY()-1 > 0 && coord.getY()-1 < this.board.get(coord.getX()+1).size())
-				for(Tile t : this.board.get(coord.getX()+1).get(coord.getY()-1))
-					if (ret == null || ret.getZ() < t.getZ())
-						ret = t;
-		return ret;
 	}
 
 }
