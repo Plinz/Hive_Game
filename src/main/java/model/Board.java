@@ -50,7 +50,7 @@ public class Board {
 	
 	public Tile getTile(Coord coord){
 		Tile ret = null;
-		if(coord.getX() > 0 && coord.getY() > 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
+		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
 			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
 				if (ret == null || ret.getZ() < t.getZ())
 					ret = t;
@@ -58,7 +58,7 @@ public class Board {
 	}
 	
 	public Tile getTile(Coord coord, int floor){
-		if(coord.getX() > 0 && coord.getY() > 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
+		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
 			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
 				if (t.getZ() == floor)
 					return t;
