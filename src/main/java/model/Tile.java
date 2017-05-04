@@ -1,5 +1,7 @@
 package main.java.model;
 
+import main.java.utils.Coord;
+
 public class Tile {
 	
 	private Piece piece;
@@ -54,4 +56,7 @@ public class Tile {
 		this.z = z;
 	}
 
+	public Coord getCoord(){
+		return new Coord(this.x, this.y);
+	}
 }
