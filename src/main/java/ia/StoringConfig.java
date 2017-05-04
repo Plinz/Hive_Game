@@ -16,11 +16,17 @@ import main.java.utils.Consts;
 public class StoringConfig {
 
     public short config[];
-
+    //useless constructor
     public StoringConfig(int nb_pieces) {
         config = new short[nb_pieces];
     }
-
+    
+    /*
+    This is the translator -> translates a state given by the 
+    core into a Storing config.
+    Advantage -> this is much lighter (about 44 bytes heavy for a whole
+    game configuration.
+    */
     public StoringConfig(State state) {
 
         List<List<List<Tile>>> board = state.getBoard().getBoard();

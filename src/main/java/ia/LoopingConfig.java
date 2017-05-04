@@ -25,4 +25,19 @@ public class LoopingConfig {
             this.array[stconf.getX(i)] = node;
         }
     }
+    
+    //getters
+        //search by coordinates
+    public LoopingConfigNode getNode(byte x, byte y){
+        LoopingConfigNode node = array[x];
+        while ((node != null) && (node.y != y)){
+            node = node.next;
+        }
+        return node;
+    }
+        //search by type (eg search white spider 2)
+    
+    
+    
+    
 }
