@@ -25,6 +25,13 @@ public class Tile {
 		this.z = t.getZ();
 	}
 	
+	public Tile(int i, int j, int k) {
+		this.piece = null;
+		this.blocked = false;
+		this.x = i;
+		this.y = j;
+		this.z = k;
+	}
 	public Piece getPiece() {
 		return piece;
 	}
