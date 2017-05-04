@@ -37,11 +37,11 @@ public class InterfaceJavaFX extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         
+        /* Position d'origine des hexagones */
         double size = 15;
         double x = 70;
         double y = 30;
-        
-        
+        /************************************/
         
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
@@ -63,27 +63,15 @@ public class InterfaceJavaFX extends Application{
         core = new Core(2);
         
         core.addPiece(new Ant(0), new Coord(0, 0));
-        core.movePiece(new Coord(1, 1), new Coord(0, 1));
-        System.err.println("toto"+core.getCurrentState().getBoard().getTile(new Coord(1, 1)).getPiece());
+        core.addPiece(new Ant(1), new Coord(0 , 1));
+        core.addPiece(new Beetle(1), new Coord(1 , 0));
+        core.addPiece(new Beetle(2), new Coord(0 , 3));
+        core.addPiece(new Beetle(3), new Coord(2 , 3));
+        //core.movePiece(new Coord(1, 1), new Coord(0, 1));
+        initPoly(core, gameCanvas, x, y, size);
         
         System.out.println(core.getCurrentState().getBoard().getBoard().size());
-        for(int i = 0; i<core.getCurrentState().getBoard().getBoard().size();i++){
-            ArrayList<Polygon> tmp = new ArrayList<>();
-            for(int j = 0; j<core.getCurrentState().getBoard().getBoard().get(i).size();j++){
-                
-               if(core.getCurrentState().getBoard().getBoard().get(i).get(j).size() != 0){
-                   if (core.getCurrentState().getBoard().getBoard().get(i).get(j).get(0).getPiece()!=null)
-                       tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.RED));
-                   else{
-                        tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.BLUE));
-                   }
-                }
-               else
-                   tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.BLACK));
-                
-            }
-            poly.add(tmp);
-        }
+        
             
         /************************/
         
@@ -106,12 +94,8 @@ public class InterfaceJavaFX extends Application{
                 for(int i = 0;i<poly.size();i++){
                     for(int j = 0;j<poly.get(i).size();j++){
                         if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
-                            System.err.println("T'as cliqué dans un polygone");
                             if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
                                 System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " !  " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                            }
-                            else{
-                                System.err.println("Tile mais pas de pieces " + i + " " + j);
                             }
                         }
                     }
@@ -124,8 +108,24 @@ public class InterfaceJavaFX extends Application{
         
     }
     
-    public void initPoly(Core c){
-        
+    public void initPoly(Core c,Canvas gameCanvas,double x, double y,double size){
+        for(int i = 0; i<c.getCurrentState().getBoard().getBoard().size();i++){
+            ArrayList<Polygon> tmp = new ArrayList<>();
+            for(int j = 0; j<c.getCurrentState().getBoard().getBoard().get(i).size();j++){
+                
+               if(core.getCurrentState().getBoard().getBoard().get(i).get(j).size() != 0){
+                   if (core.getCurrentState().getBoard().getBoard().get(i).get(j).get(0).getPiece()!=null)
+                       tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.RED));
+                   else{
+                        tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.BLUE));
+                   }
+                }
+               else
+                   tmp.add(addPoly(gameCanvas, x, y, i, j, size,Color.BLACK));
+                
+            }
+            poly.add(tmp);
+        }
     }
     
     public Polygon addPoly(Canvas can,double x,double y,double i,double j,double size, Color color){

@@ -9,6 +9,11 @@ public abstract class Piece implements Cloneable{
 	protected String name;
 	protected int team;
 	protected String description;
+
+    @Override
+    public String toString() {
+        return "Piece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
+    }
 	
 	public abstract List<Coord> getPossibleMovement(Tile tile, Board board);
 
