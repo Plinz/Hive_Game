@@ -12,9 +12,9 @@ POUR FAIRE UN PLANNING PREVISIONNEL POUR CHAQUE PARTIES (IHM,MOTEUR,IA)
 
 ( Même si c'est en brouillon osef : Lister les différentes parties que l'on aura à développer, le temps que l'on va devoir mettre à les developper, dans un diagramme de Gant )
 
-Mettre a jour la partie project de Github !
+Mettre à jour la partie project de Github !
 
-MARDI FIN DE MATINEE : 10h30 - REUNION
+MARDI : 10h30 - REUNION
 
 S'inscrire sur Boardgamearena et jouer un peu quand même ! 
 
@@ -84,10 +84,10 @@ http://www.redblobgames.com/grids/hexagons Comment construire une grille d'hexag
 
 ## Stratégies 
 
-* Poser le scarabé sur la reine pour l'empêcher de bouger.
+* Poser le scarabée sur la reine pour l'empêcher de bouger.
 * Garder les sauterelles pour la fin du jeu ou elles pourront traverser facilement la ruche.
 * Placer les araignées au début car elles sont puissantes sur les courtes distances quand la ruche est petite.
-* Garder un oeil sur les pièces de l'adversaire, on peut le bloquer si il n'a plus de scarabé/sauterelles.
+* Garder un oeil sur les pièces de l'adversaire, on peut le bloquer si il n'a plus de scarabée/sauterelle.
 * Ne pas hésiter à bouger sa reine pour éviter les encerclements 
 * Si l'adversaire joue deux pièces en ligne, il est facile de les bloquer et de l'empêcher de les utiliser. (2 pour un)
 * Opening classique : Reine,Araignée,Fourmi ou Araignée,Reine,Araignée de cette forme : /\ (une de chaque coté de la reine)
