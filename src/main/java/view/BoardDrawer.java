@@ -14,6 +14,7 @@ import main.java.model.Board;
 import main.java.model.Core;
 import main.java.model.Tile;
 import main.java.utils.Consts;
+import main.java.utils.CoordGene;
 
 /**
  *
@@ -22,10 +23,12 @@ import main.java.utils.Consts;
 public class BoardDrawer {
     Canvas can;
     GraphicsContext gc;
+    TraducteurBoard traducteur;
     
     public BoardDrawer(Canvas c){
         this.can = c;
-        this.gc = can.getGraphicsContext2D();   
+        this.gc = can.getGraphicsContext2D(); 
+        traducteur = new TraducteurBoard();
     }
     
     public boolean visit(Core c){
@@ -56,8 +59,31 @@ public class BoardDrawer {
     }
     
     public boolean visit(Tile t){
-        
-        
+               
+              GraphicsContext gc = can.getGraphicsContext2D();            
+              double sizeHex = traducteur.getSizeHex();
+              
+              double a = Math.sqrt((sizeHex*sizeHex)- ((sizeHex/2)*(sizeHex/2)));
+              gc.setStroke(Color.BLACK);
+                    
+              CoordGene<Double> coord = new CoordGene(t.getX(),t.getY()); 
+              CoordGene<Double> coordPix =traducteur.axialToPixel(coord);
+              
+              double X = coordPix.getX()+sizeHex;
+              double Y = coordPix.getY()+sizeHex;
+              
+              double[] x = new double[6];
+              double[] y = new double[6];
+              
+              x[0] = X ; y[0] = Y-sizeHex;
+              x[1] = X +a; y[1] = Y - (sizeHex/2);
+              x[2] = X +a; y[2] = Y+ (sizeHex/2);
+              x[3] = X; y[3] = Y+ sizeHex;
+              x[4] = X - a; y[4] = Y + (sizeHex/2);
+              x[5] = X - a; y[5] = Y-(sizeHex/2);
+              
+              gc.strokePolygon(x, y, 6);       
+         
         return false;
     }
     
