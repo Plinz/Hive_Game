@@ -22,19 +22,19 @@ public class Queen extends Piece{
 		if (tile.isBlocked())
 			return list;
 		
-//		Coord coord = tile.getCoord();
-//		if (board.getEast(coord) == null && board.getNeighbors(new Coord(tile.getX()+1, tile.getY())).size()!=1 && (board.getSouthEast(coord) == null || board.getNorthEast(coord) == null))
-//			list.add(new Coord(tile.getX()+1, tile.getY()));
-//		if (board.getSouthEast(coord) == null && board.getNeighbors(new Coord(tile.getX(), tile.getY()+1)).size()!=1 && (board.getSouthWest(coord) == null || board.getEast(coord) == null))
-//			list.add(new Coord(tile.getX(), tile.getY()+1));
-//		if (board.getSouthWest(coord) == null && board.getNeighbors(new Coord(tile.getX()-1, tile.getY()+1)).size()!=1 && (board.getWest(coord) == null || board.getSouthEast(coord) == null))
-//			list.add(new Coord(tile.getX()-1, tile.getY()+1));
-//		if (board.getWest(coord) == null && board.getNeighbors(new Coord(tile.getX()-1, tile.getY())).size()!=1 && (board.getNorthWest(coord) == null || board.getSouthWest(coord) == null))
-//			list.add(new Coord(tile.getX()-1, tile.getY()));
-//		if (board.getNorthWest(coord) == null && board.getNeighbors(new Coord(tile.getX(), tile.getY()-1)).size()!=1 && (board.getNorthEast(coord) == null || board.getWest(coord) == null))
-//			list.add(new Coord(tile.getX(), tile.getY()-1));
-//		if (board.getNorthEast(coord) == null && board.getNeighbors(new Coord(tile.getX()+1, tile.getY()-1)).size()!=1 && (board.getEast(coord) == null || board.getNorthWest(coord) == null))
-//			list.add(new Coord(tile.getX()+1, tile.getY()-1));
+		Coord coord = tile.getCoord();
+		if (board.getTile(coord.getEast()) == null && board.getNeighbors(coord.getEast()).size()!=1 && (board.getTile(coord.getSouthEast()) == null || board.getTile(coord.getNorthEast()) == null))
+			list.add(coord.getEast());
+		if (board.getTile(coord.getSouthEast()) == null && board.getNeighbors(coord.getSouthEast()).size()!=1 && (board.getTile(coord.getSouthWest()) == null || board.getTile(coord.getEast()) == null))
+			list.add(coord.getSouthEast());
+		if (board.getTile(coord.getSouthWest()) == null && board.getNeighbors(coord.getSouthWest()).size()!=1 && (board.getTile(coord.getWest()) == null || board.getTile(coord.getSouthEast()) == null))
+			list.add(coord.getSouthWest());
+		if (board.getTile(coord.getWest()) == null && board.getNeighbors(coord.getWest()).size()!=1 && (board.getTile(coord.getNorthWest()) == null || board.getTile(coord.getSouthWest()) == null))
+			list.add(coord.getWest());
+		if (board.getTile(coord.getNorthWest()) == null && board.getNeighbors(coord.getNorthWest()).size()!=1 && (board.getTile(coord.getNorthEast()) == null || board.getTile(coord.getWest()) == null))
+			list.add(coord.getNorthWest());
+		if (board.getTile(coord.getNorthEast()) == null && board.getNeighbors(coord.getNorthEast()).size()!=1 && (board.getTile(coord.getEast()) == null || board.getTile(coord.getNorthWest()) == null))
+			list.add(coord.getNorthEast());
 		
 		return list;
 	}

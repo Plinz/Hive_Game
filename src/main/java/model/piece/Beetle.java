@@ -20,30 +20,29 @@ public class Beetle extends Piece{
 		if (tile.isBlocked())
 			return list;
 		
-		if (tile.getZ() != 0){
-			list.add(new Coord(tile.getX()+1, tile.getY()));
-			list.add(new Coord(tile.getX(), tile.getY()+1));
-			list.add(new Coord(tile.getX()-1, tile.getY()+1));
-			list.add(new Coord(tile.getX()-1, tile.getY()));
-			list.add(new Coord(tile.getX(), tile.getY()-1));
-			list.add(new Coord(tile.getX()+1, tile.getY()-1));
-		}
-		else {
-			Coord coord = tile.getCoord();
-//			if (board.getNeighbors(new Coord(tile.getX()+1, tile.getY())).size()!=1 && (board.getSouthEast(coord.getSouthEast()) == null || board.getNorthEast(coord) == null))
-//				list.add(new Coord(tile.getX()+1, tile.getY()));
-//			if (board.getNeighbors(new Coord(tile.getX(), tile.getY()+1)).size()!=1 && (board.getSouthWest(coord) == null || board.getEast(coord) == null))
-//				list.add(new Coord(tile.getX(), tile.getY()+1));
-//			if (board.getNeighbors(new Coord(tile.getX()-1, tile.getY()+1)).size()!=1 && (board.getWest(coord) == null || board.getSouthEast(coord) == null))
-//				list.add(new Coord(tile.getX()-1, tile.getY()+1));
-//			if (board.getNeighbors(new Coord(tile.getX()-1, tile.getY())).size()!=1 && (board.getNorthWest(coord) == null || board.getSouthWest(coord) == null))
-//				list.add(new Coord(tile.getX()-1, tile.getY()));
-//			if (board.getNeighbors(new Coord(tile.getX(), tile.getY()-1)).size()!=1 && (board.getNorthEast(coord) == null || board.getWest(coord) == null))
-//				list.add(new Coord(tile.getX(), tile.getY()-1));
-//			if (board.getNeighbors(new Coord(tile.getX()+1, tile.getY()-1)).size()!=1 && (board.getEast(coord) == null || board.getNorthWest(coord) == null))
-//				list.add(new Coord(tile.getX()+1, tile.getY()-1));		
-		}
+		Coord coord = tile.getCoord();
+		if (board.getNeighbors(coord.getEast()).size()!=1 && respectMovementRule(tile, coord.getSouthEast(), coord.getNorthEast(), coord.getEast(), board))
+			list.add(coord.getEast());
+		if (board.getNeighbors(coord.getSouthEast()).size()!=1 && respectMovementRule(tile, coord.getSouthWest(), coord.getEast(), coord.getSouthEast(), board))
+			list.add(coord.getSouthEast());
+		if (board.getNeighbors(coord.getSouthWest()).size()!=1 && respectMovementRule(tile, coord.getWest(), coord.getSouthEast(), coord.getSouthWest(), board))
+			list.add(coord.getSouthWest());
+		if (board.getNeighbors(coord.getWest()).size()!=1 && respectMovementRule(tile, coord.getNorthWest(), coord.getSouthWest(), coord.getWest(), board))
+			list.add(coord.getWest());
+		if (board.getNeighbors(coord.getNorthWest()).size()!=1 && respectMovementRule(tile, coord.getNorthEast(), coord.getWest(), coord.getNorthWest(), board))
+			list.add(coord.getNorthWest());
+		if (board.getNeighbors(coord.getNorthEast()).size()!=1 && respectMovementRule(tile, coord.getEast(), coord.getNorthWest(), coord.getNorthEast(), board))
+			list.add(coord.getNorthEast());
+	
 		return list;
 	}
 
+	
+	private boolean respectMovementRule(Tile from, Coord leftCoord, Coord rightCoord, Coord targetCoord, Board board){
+		Tile target = board.getTile(targetCoord);
+		Tile left = board.getTile(leftCoord);
+		Tile right = board.getTile(rightCoord);
+		int floor = target.getZ() < from.getZ() ? from.getZ() : target.getZ();
+		return (left == null || left.getZ() < floor || right == null || right.getZ() < floor);
+	}
 }
