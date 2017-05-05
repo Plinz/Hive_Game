@@ -14,7 +14,7 @@ public abstract class Piece implements Cloneable{
 
     @Override
     public String toString() {
-        return "Piece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
+        return "\nPiece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
     }
 	
 	public abstract List<Coord> getPossibleMovement(Tile tile, Board board);

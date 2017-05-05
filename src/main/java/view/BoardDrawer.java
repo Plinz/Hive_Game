@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import main.java.model.Board;
 import main.java.model.Core;
+import main.java.model.Tile;
 import main.java.utils.Consts;
 
 /**
@@ -36,24 +37,31 @@ public class BoardDrawer {
         for(int i = 0;i<b.getBoard().size();i++){
             for(int j = 0;j<b.getBoard().get(i).size();j++){
                 if(b.getBoard().get(i).get(j).size() != 0){
-                    if (b.getBoard().get(i).get(j).get(0).getPiece()!=null){
+                    if (b.getBoard().get(i).get(j).get(0).getPiece() != null){
                         if(b.getBoard().get(i).get(j).get(0).getPiece().getTeam() == 0)
-                            drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.ORANGE,true);
-                        else
-                            drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.PURPLE,true);
+                            drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,"Tile_Empty_White.png");
+                        else 
+                            drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,"Tile_Empty_Black.png");
                     }
                    else{
-                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLUE, false);
+                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,"Placable");
                    }
                 }
-                else
-                 drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLACK,false);
+                else{
+                    drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,"Vide");
+                }
             }
         } 
         return false;
     }
     
-    public void drawPolygon(double x, double y, double i, double j, double size, Color color, boolean full){
+    public boolean visit(Tile t){
+        
+        
+        return false;
+    }
+    
+    public void drawPolygon(double x, double y, double i, double j, double size,String name){
         double[] xd = new double[6];
         double[] yd = new double[6];
         double originX,originY;
@@ -73,14 +81,21 @@ public class BoardDrawer {
         xd[3] = originX;yd[3] = originY+2*size;
         xd[4] = originX-size;yd[4] = (originY+size)+size/2;
         xd[5] = originX-size;yd[5] = originY+size/2;
-        if(!full){
-            gc.setStroke(color);
-            gc.strokePolygon(xd, yd, 6);
-        }
-        else{
-            gc.setFill(color);
-            gc.fillPolygon(xd, yd, 6);
-            //gc.setFill(new ImagePattern(new Image("Tile_Queen_Black.png")));
+        switch (name) {
+            case "Placable":
+                gc.setStroke(Color.BLUE);
+                gc.strokePolygon(xd, yd, 6);
+                break;
+            case "Vide":
+                gc.setStroke(Color.GREY);
+                gc.strokePolygon(xd, yd, 6);
+                break;
+            default:
+                gc.setFill(new ImagePattern(new Image(name)));
+                gc.setStroke(Color.RED);
+                gc.strokePolygon(xd, yd, 6);
+                gc.fillPolygon(xd, yd, 6);
+                break;
         }
     }
 }

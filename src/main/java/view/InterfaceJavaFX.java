@@ -44,7 +44,7 @@ public class InterfaceJavaFX extends Application{
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
         
-        Canvas gameCanvas = new Canvas(1000,1000);
+        Canvas gameCanvas = new Canvas(800,800);
         ScrollPane scrollPane = new ScrollPane(gameCanvas);
         
         gameBorderPane.setLeft(scrollPane);
@@ -54,7 +54,8 @@ public class InterfaceJavaFX extends Application{
         primaryStage.setTitle("Hive_Test");
         primaryStage.show();
         
-        Label choice = new Label("Choisir une piece :");
+        Label choice = new Label("Le joueur " + team + " doit choisir sa pièce !");
+        choice.setWrapText(true);
         
         VBox piecesToAdd = new VBox();
         
@@ -138,11 +139,11 @@ public class InterfaceJavaFX extends Application{
                                 
                                 if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
                                     System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    System.out.println("Déplacements possibles : " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));
+                                    System.out.println("Déplacements possibles : \n" + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));
                                     pieceChoose = new Coord(i,j);
                                 }
                                 else if( core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()==null && pieceChoose != null){
-                                    System.err.println("Piece choisie, on essaye de la déplacer " + pieceChoose.getX() + pieceChoose.getY());
+                                    System.err.println("Déplacement de la piece choisie");
                                     core.getCurrentState().getBoard().movePiece(pieceChoose, new Coord(i, j));
                                     pieceChoose = null;
                                     initPoly(core);
@@ -167,6 +168,7 @@ public class InterfaceJavaFX extends Application{
                                         core.addPiece(piece, new Coord(i, j));
                                         piece = null;
                                         team = (team+1)%2;
+                                        choice.setText("Le joueur " + team + " doit choisir sa pièce !");
                                         initPoly(core);
                                     }
                                     else{
@@ -188,6 +190,7 @@ public class InterfaceJavaFX extends Application{
                             if(poly.get(i).get(j).contains(fdp)){
                                 if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null && pieceChoose == null){
                                     core.getCurrentState().getBoard().removePiece(new Coord(i, j));
+                                    initPoly(core);
                                 }
                             }
                         }
