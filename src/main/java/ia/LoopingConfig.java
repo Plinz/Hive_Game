@@ -152,4 +152,29 @@ public class LoopingConfig {
     private boolean RespectsOneHive(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    //may not be necessary
+    /*public boolean noGateFound(LoopingConfigNode source, LoopingConfigNode destination) throws Exception
+    {
+        //method to be used only on adjacent tiles
+        //does not test the freeness of the destination tile
+        //does not test the constant contact
+        
+        LoopingConfigNode neighbors[] = this.getNeighbors(source);
+        int destIndex = 0;
+        
+        // /!\ CORRECTNESS OF THE SECOND CONDITION TO BE CHECKED
+        while((destIndex < neighbors.length) && (neighbors[destIndex] != destination))
+        {
+            destIndex += 1;
+        }
+        if (destIndex> neighbors.length)
+            throw new Exception("Source and destination nodes do not represent adjacent tiles !");
+        
+        if ((neighbors[(destIndex+1)%neighbors.length].getPiece() == (byte)0) || (neighbors[(destIndex-1)%neighbors.length].getPiece() == (byte)0))
+            return true;
+       
+        return false;
+           
+    }*/
 }
