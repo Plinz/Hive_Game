@@ -2,7 +2,11 @@
 this class is used to store a game configuration in an optimal way
 each short(16b) contains :
     _________________________
-   |__x_|__y_|_z_|_b_|_b_|_b_| , x,y :5 bits each ; z : 3 bits ; and 3 booleans
+   |__x_|__y_|_z_|_b_|_b_|_b_| , x,y,z :1 byte each and up to 8 booleans
+    
+    (real booleans, 1 bit each, not java (16 bytes).
+
+Booleans (from left to right) :1- isStuck ;2- isOnBoard
 
 The pieces are associated to int between 0 and 10 in Consts.
  */
@@ -15,11 +19,11 @@ import main.java.utils.Consts;
 
 public class StoringConfig {
 
-    public short config[];
+    public int config[];
 
     //useless constructor
     public StoringConfig(int nb_pieces) {
-        config = new short[nb_pieces];
+        config = new int[nb_pieces];
     }
 
     /*
@@ -51,7 +55,7 @@ public class StoringConfig {
         total_pieces_nb += state.getPlayers()[1].getInventory().size();
 
         //now it's possible to allocate the config tab
-        config = new short[total_pieces_nb];
+        config = new int[total_pieces_nb];
 
         //now filling up from the infos found in the board
         for (int i = 0; i < board.size(); i++) {
@@ -133,9 +137,8 @@ public class StoringConfig {
                         this.setX(index, (byte) current.getX());
                         this.setY(index, (byte) current.getY());
                         this.setZ(index, (byte) current.getZ());
-                        this.setStuck(index, (current.isBlocked() == true ? (byte) 1 : (byte) 0));
-                        this.setIsVisited(index, (byte) 0);
-                        this.setBool3(index, (byte) 1);///set to 1 to prevent mistakes with a bug on (0,0,0) unblocked
+                        this.setIsStuck(index, current.isBlocked());
+                        this.setIsOnBoard(index, true);
                     }
 
                 }
@@ -146,62 +149,64 @@ public class StoringConfig {
     //////     getters
 
     public byte getX(int index) {
-        return (byte) (config[index] >> 11);
+        return (byte) (config[index] >> 24);
     }
 
     public byte getY(int index) {
-        return (byte) ((config[index] & 0x07C0) >> 6);
+        return (byte) ((config[index] & 0x00FF0000) >> 16);
     }
 
     public byte getZ(int index) {
-        return (byte) ((config[index] & 0x0038) >> 3);
+        return (byte) ((config[index] & 0x0000FF00) >> 8);
     }
 
-    public byte getStuck(int index) { //tells if there's a bug atop that bug
-        return (byte) ((config[index] & 0x0004) >> 2);
+    public boolean isStuck(int index) { //tells if there's a bug atop that bug
+        return  ((config[index] & 0x00000080) >> 7)==1;
     }
 
-    public byte getIsVisited(int index) { //needed to perform search algorithm (one hive check)
-        return (byte) ((config[index] & 0x0002) >> 1);
+    public boolean isOnBoard(int index) { //tells if the piece is on the board or not
+        return ((config[index] & 0x00000040) >> 6)==1;
     }
 
-    public byte getBool3(int index) { //set to 1 during construction -> useless after
-        return (byte) (config[index] & 1);
-    }
 
     //////    Setters
     public void setX(int index, byte newX) {
-        config[index] &= 0x07FF;
-        short toAdd = (short) (newX << 11);
+        config[index] &= 0x00FFFFFF;
+        int toAdd = (int) (newX << 24);
         config[index] |= toAdd;
     }
 
     public void setY(int index, byte newY) {
-        config[index] &= 0xF83F;
-        short toAdd = (short) (newY << 6);
+        config[index] &= 0xFF00FFFF;
+        int toAdd = (int) (newY << 16);
         config[index] |= toAdd;
     }
 
     public void setZ(int index, byte newZ) {
-        config[index] &= 0xFFC7;
-        short toAdd = (short) (newZ << 3);
+        config[index] &= 0xFFFF00FF;
+        int toAdd = (int) (newZ << 8);
         config[index] |= toAdd;
     }
 
-    public void setStuck(int index, byte newStuck) {
-        config[index] &= 0xFFFB;
-        short toAdd = (short) (newStuck << 2);
+    public void setIsStuck(int index, boolean newIsStuck) {
+        config[index] &= 0xFFFFFF7F;
+        int toAdd;
+        if (newIsStuck) 
+            toAdd=1;
+        else 
+            toAdd=0;
+        toAdd  <<= 7;
         config[index] |= toAdd;
     }
 
-    public void setIsVisited(int index, byte newIsVisited) {
+    public void setIsOnBoard(int index, boolean newIsVisited) {
         config[index] &= 0xFFFD;
-        short toAdd = (short) (newIsVisited << 1);
+        int toAdd;
+        if (newIsVisited)
+            toAdd=1;
+        else
+            toAdd=0;
+        toAdd <<= 6;
         config[index] |= toAdd;
-    }
-
-    public void setBool3(int index, byte newBool3) {
-        config[index] &= 0xFFFE;
-        config[index] |= newBool3;
     }
 }

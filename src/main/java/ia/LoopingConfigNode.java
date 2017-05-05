@@ -14,7 +14,7 @@ package main.java.ia;
 public class LoopingConfigNode {
     
     byte x, y, z, piece;
-    byte stuck, isVisited, bool3 ;
+    boolean stuck, isVisited, isOnBoard ;
     LoopingConfigNode next;
     
     public LoopingConfigNode(StoringConfig config, int index){
@@ -22,9 +22,9 @@ public class LoopingConfigNode {
         y = config.getY(index);
         z = config.getZ(index);
         piece = (byte) index;
-        stuck = config.getStuck(index);
-        isVisited = config.getIsVisited(index);
-        bool3 = config.getBool3(index);
+        stuck = config.isStuck(index);
+        isOnBoard = config.isOnBoard(index);
+        isVisited = false;
         next = null;
     }
 }
