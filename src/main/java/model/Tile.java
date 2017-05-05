@@ -70,6 +70,11 @@ public class Tile {
 	public boolean isHighlight() {
 		return highlight;
 	}
+
+    @Override
+    public String toString() {
+        return "Tile{" + "x=" + x + ", y=" + y + '}';
+    }
 	public void setHighlight(boolean highlight) {
 		this.highlight = highlight;
 	}
