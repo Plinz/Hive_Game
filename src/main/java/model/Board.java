@@ -82,7 +82,7 @@ public class Board {
 		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
 			added.setPiece(piece);
 		else
-			box.add(added = (new Tile(piece, false, coord.getX(), coord.getY(), box.size())));
+			box.add(added = (new Tile(piece, false, false, coord.getX(), coord.getY(), box.size())));
 
         if (coord.getY() == 0){
 			for (List<List<Tile>> column : this.board)
@@ -139,8 +139,11 @@ public class Board {
 	}
 	
 	public void movePiece(Coord coordSource, Coord coordTarget){
-		Piece piece = this.removePiece(coordSource);
-		this.addPiece(piece, coordTarget);
+		Tile source = this.getTile(coordSource);
+		//Tile target = this.getTile(coordTarget);
+		this.addPiece(source.getPiece(), coordTarget);
+		this.removePiece(source.getCoord());
+		//this.addPiece(piece, coordTarget);
 	}
 	
 	private void checkBoardSize(Coord coord){
