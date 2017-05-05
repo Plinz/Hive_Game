@@ -18,13 +18,54 @@ public class LoopingConfigNode {
     LoopingConfigNode next;
     
     public LoopingConfigNode(StoringConfig config, int index){
-        x = config.getX(index);
-        y = config.getY(index);
-        z = config.getZ(index);
-        piece = (byte) index;
-        stuck = config.isStuck(index);
-        isOnBoard = config.isOnBoard(index);
-        isVisited = false;
-        next = null;
+        this.x = config.getX(index);
+        this.y = config.getY(index);
+        this.z = config.getZ(index);
+        this.piece = (byte) index;
+        this.stuck = config.isStuck(index);
+        this.isOnBoard = config.isOnBoard(index);
+        this.isVisited = false;
+        this.next = null;
     }
+    
+    public byte getX()
+    {
+        return this.x;
+    }
+    
+    public byte getY()
+    {
+        return this.y;
+    }
+    
+    public byte getZ()
+    {
+        return this.z;
+    }
+    
+    public byte getPiece()
+    {
+        return this.getPiece();
+    }
+    
+    public boolean isStuck()
+    {
+        return this.stuck;
+    }
+ 
+    public boolean isOnBoard()
+    {
+        return this.isOnBoard;
+    }
+    
+    public boolean isVisited()
+    {
+        return this.isVisited;
+    }
+    
+    public LoopingConfigNode getNext()
+    {
+        return this.next;
+    }
+    
 }
