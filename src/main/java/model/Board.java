@@ -144,33 +144,41 @@ public class Board {
 		boolean resize = false;
 		int x = 0;
 		int y = 0;
+		int i = 0;
 		
 		if (coord.getX() == 1){
-			for (List<Tile> box : this.board.get(0)){
-				if(box.size() != 0){
-					isEmpty = false;
-					break;
+			while (isEmpty && i<this.board.size()){
+				for (List<Tile> box : this.board.get(i)){
+					if(box.size() != 0){
+						isEmpty = false;
+						break;
+					}
 				}
-			}
-			if (this.board.get(0).size() == 0 || isEmpty){
-				resize = true;
-				x = -1;
-				this.board.remove(0);
-			} else
-				isEmpty = true;
-		}
-		if (coord.getX() == this.board.size()-2){		
-			for (List<Tile> box : this.board.get(this.board.size()-1)){
-				if(box.size() != 0){
-					isEmpty = false;
-					break;
+				if (this.board.get(i).size() == 0 || isEmpty){
+					resize = true;
+					x -= 1;
+					this.board.remove(i);
 				}
+				i++;
 			}
-			if (this.board.get(this.board.size()-1).size() == 0 || isEmpty)
-				this.board.remove(this.board.size()-1);
-			else
-				isEmpty = true;
 		}
+		isEmpty = true;
+		
+		if (coord.getX() == this.board.size()-2){
+			i = this.board.size()-1;
+			while (isEmpty && i>=0){
+				for (List<Tile> box : this.board.get(i)){
+					if(box.size() != 0){
+						isEmpty = false;
+						break;
+					}
+				}
+				if (this.board.get(i).size() == 0 || isEmpty)
+					this.board.remove(i);
+				i--;
+			}
+		}
+		
 		if (coord.getY() == 1){
 			for(List<List<Tile>> column : this.board){
 				if(!column.isEmpty() && column.get(0).size() != 0){
