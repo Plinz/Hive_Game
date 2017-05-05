@@ -49,6 +49,6 @@ public class Beetle extends Piece {
 		Tile left = board.getTile(leftCoord);
 		Tile right = board.getTile(rightCoord);
 		int floor = target.getZ() < from.getZ() ? from.getZ() : target.getZ();
-		return (left == null || left.getZ() < floor || right == null || right.getZ() < floor);
+		return (left.getPiece() == null || left.getZ() < floor || right.getPiece() == null || right.getZ() < floor);
 	}
 }
