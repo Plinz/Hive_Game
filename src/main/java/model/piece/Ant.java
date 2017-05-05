@@ -34,9 +34,8 @@ public class Ant extends Piece {
 					while (curr != null && !curr.equals(tile.getCoord())) {
 						System.err.println("coord=" + curr);
 						list.add(curr);
-						curr = nextBox(curr, board, list);
+						curr = nextBox(curr, board, list, tile);
 					}
-					break;
 				}
 			}
 		}
@@ -45,7 +44,7 @@ public class Ant extends Piece {
 
 	}
 
-	private Coord nextBox(Coord coord, Board board, List<Coord> list) {
+	private Coord nextBox(Coord coord, Board board, List<Coord> list, Tile tile) {
 		List<Coord> neighbors = coord.getNeighbors();
 		for (int i = 0; i < neighbors.size(); i++) {
 			Coord curr = neighbors.get(i);
@@ -54,7 +53,8 @@ public class Ant extends Piece {
 			if (!list.contains(curr) && board.getTile(curr) != null && board.getTile(curr).getPiece() == null
 					&& board.getPieceNeighbors(curr).size() != 0
 					&& (board.getTile(prev) == null || board.getTile(next) == null
-							|| board.getTile(prev).getPiece() == null || board.getTile(next).getPiece() == null))
+							|| board.getTile(prev).getPiece() == null || board.getTile(next).getPiece() == null)
+					&& !curr.getNeighbors().contains(tile.getCoord()))
 				return curr;
 		}
 		return null;
