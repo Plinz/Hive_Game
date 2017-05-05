@@ -19,8 +19,9 @@ public class TraducteurBoard {
     private CoordGene<Double> moveOrigin; 
     
     TraducteurBoard(){
-        moveOrigin.setX(sizeHex);
-        moveOrigin.setY(sizeHex);
+        moveOrigin = new CoordGene<>(sizeHex,sizeHex);
+        centerPix = new CoordGene<>(0.0,0.0);
+        centerAxial = new CoordGene<>(0.0,0.0);
     }
  
     private CoordGene<Double> cubeToAxial(Cube<Double> cube){

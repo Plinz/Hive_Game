@@ -85,11 +85,10 @@ public class Tile {
     }
     
     public boolean accept(Visitor v){  
-            if(piece!=null){
+            v.visit(this);
+            if(piece!=null)
                 piece.accept(v);
-            }else{
-                v.visit(this);
-            }
+
             return false;
     }
 }

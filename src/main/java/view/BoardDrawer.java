@@ -70,7 +70,7 @@ public class BoardDrawer extends Visitor {
               double a = Math.sqrt((sizeHex*sizeHex)- ((sizeHex/2)*(sizeHex/2)));
               gc.setStroke(Color.BLACK);
                     
-              CoordGene<Double> coord = new CoordGene(t.getX(),t.getY()); 
+              CoordGene<Double> coord = new CoordGene((double)t.getX(),(double)t.getY()); 
               CoordGene<Double> coordPix =traducteur.axialToPixel(coord);
               
               double X = coordPix.getX()+sizeHex;
@@ -86,6 +86,7 @@ public class BoardDrawer extends Visitor {
               x[4] = X - a; y[4] = Y + (sizeHex/2);
               x[5] = X - a; y[5] = Y-(sizeHex/2);
               
+              gc.setStroke(Color.GREY);
               gc.strokePolygon(x, y, 6);       
          
         return false;
@@ -93,8 +94,7 @@ public class BoardDrawer extends Visitor {
 
     @Override
     protected boolean visit(Piece p) {
-        gc.setFill(new ImagePattern(new Image("Tile_Empty_White.png")));
-        
+        gc.setFill(new ImagePattern(new Image("Tile_Empty_White.png")));      
         return false;
     }
 
