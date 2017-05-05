@@ -1,8 +1,8 @@
 /*
 this class is used to store a game configuration in an optimal way
 each short(16b) contains :
-    ________________________
-   |  x |  y |  z | b | b| b| , x,y :5 bits each ; z : 3 bits ; and 3 booleans
+    _________________________
+   |__x_|__y_|_z_|_b_|_b_|_b_| , x,y :5 bits each ; z : 3 bits ; and 3 booleans
 
 The pieces are associated to int between 0 and 10 in Consts.
  */

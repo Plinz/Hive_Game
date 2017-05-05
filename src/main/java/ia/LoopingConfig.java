@@ -16,11 +16,11 @@ public class LoopingConfig {
     final private StoringConfig stconf;
     LoopingConfigNode array[];
     byte nbPiecesPerColor;
-    
+
     public LoopingConfig(StoringConfig stconf) {
         this.stconf = stconf;
         this.array = new LoopingConfigNode[stconf.config.length];
-        this.nbPiecesPerColor = (byte) (stconf.config.length/2);
+        this.nbPiecesPerColor = (byte) (stconf.config.length / 2);
         int i;
         LoopingConfigNode node;
         //head insertion
@@ -32,7 +32,7 @@ public class LoopingConfig {
     }
 
     /**
-     * **************************** getters      ****************************
+     * **************************** getters ****************************
      */
     //search by coordinates
     public LoopingConfigNode getNode(byte x, byte y) {
@@ -51,7 +51,7 @@ public class LoopingConfig {
 
     //Neighbors getters
     public LoopingConfigNode getNorthEast(LoopingConfigNode node) {
-        return this.getNode((byte) (node.x+1), (byte) (node.y - 1));
+        return this.getNode((byte) (node.x + 1), (byte) (node.y - 1));
     }
 
     public LoopingConfigNode getNorthWest(LoopingConfigNode node) {
@@ -59,23 +59,23 @@ public class LoopingConfig {
     }
 
     public LoopingConfigNode getEast(LoopingConfigNode node) {
-        return this.getNode((byte)(node.x+1), (byte)(node.y));
+        return this.getNode((byte) (node.x + 1), (byte) (node.y));
     }
 
     public LoopingConfigNode getWest(LoopingConfigNode node) {
-        return this.getNode((byte)(node.x-1), (byte)(node.y));
+        return this.getNode((byte) (node.x - 1), (byte) (node.y));
     }
 
     public LoopingConfigNode getSouthEast(LoopingConfigNode node) {
-        return this.getNode((byte)(node.x), (byte)(node.y+1));
+        return this.getNode((byte) (node.x), (byte) (node.y + 1));
     }
 
     public LoopingConfigNode getSouthWest(LoopingConfigNode node) {
-        return this.getNode((byte)(node.x-1), (byte)(node.y+1));
+        return this.getNode((byte) (node.x - 1), (byte) (node.y + 1));
     }
-    
+
     //get all neighbors of a tile in an array list
-    public ArrayList<LoopingConfigNode> getNeighbors(LoopingConfigNode node){
+    public ArrayList<LoopingConfigNode> getNeighbors(LoopingConfigNode node) {
         ArrayList<LoopingConfigNode> result = new ArrayList<LoopingConfigNode>();
         result.add(this.getEast(node));
         result.add(this.getNorthEast(node));
@@ -85,10 +85,13 @@ public class LoopingConfig {
         result.add(this.getWest(node));
         return result;
     }
-    
-    public ArrayList<Coord> getPossibleDestinations(LoopingConfigNode node){
+
+    /**
+     * ************ Deplacements            ****************************
+     */
+    public ArrayList<Coord> getPossibleDestinations(LoopingConfigNode node) {
         byte piece_type = (byte) (node.piece % nbPiecesPerColor);
-        if (piece_type <= Consts.QUEEN){
+        if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
         } else if (piece_type <= Consts.SPIDER2) {
             return getPossibleSpiderDestinations(node);
@@ -98,13 +101,11 @@ public class LoopingConfig {
             return getPossibleBeetleDestinations(node);
         } else if (piece_type <= Consts.ANT3) {
             return getPossibleAntDestinations(node);
-        } else  {
+        } else {
             System.err.println("Erreur : Impossible de reconnaitre le type de pièce");
             return null;
         }
     }
-    
-    
 
     private ArrayList<Coord> getPossibleAntDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -126,4 +127,7 @@ public class LoopingConfig {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private boolean RespectsOneHive(byte piece) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
