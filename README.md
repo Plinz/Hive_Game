@@ -6,6 +6,18 @@ L'objectif de ce projet est d’implémenter le jeu de plateau Hive, ainsi qu'un
 
 ***
 
+**TODO**
+
+POUR FAIRE UN PLANNING PREVISIONNEL POUR CHAQUE PARTIES (IHM,MOTEUR,IA)
+
+( Même si c'est en brouillon osef : Lister les différentes parties que l'on aura à développer, le temps que l'on va devoir mettre à les developper, dans un diagramme de Gant )
+
+Mettre a jour la partie project de Github !
+
+MARDI FIN DE MATINEE : 10h30 - REUNION
+
+S'inscrire sur Boardgamearena et jouer un peu quand même ! 
+
 **Règles du jeu**
 
 http://inf362.forge.imag.fr/Projet/Regles/french_rules_for_hexagonal_box.pdf
@@ -34,7 +46,7 @@ https://github.com/shaw3257/hive
 
 https://fr.boardgamearena.com/#!gamepanel?game=hive  Il faut s'y inscrire
 
-** Ressources**
+**Ressources**
 
 http://www.redblobgames.com/grids/hexagons Comment construire une grille d'hexagones
 
