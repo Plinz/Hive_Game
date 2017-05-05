@@ -89,7 +89,7 @@ public class LoopingConfig {
     /**
      * ************ Deplacements            ****************************
      */
-    public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) throws CloneNotSupportedException {
         byte piece_type = (byte) (node.piece % nbPiecesPerColor);
         if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
@@ -123,16 +123,30 @@ public class LoopingConfig {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) 
+    public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) throws CloneNotSupportedException 
     {
-        if (node.isStuck())
-            return null;
+        if ((!(this.RespectsOneHive(node))) || node.isStuck())
+            return new ArrayList<>();
         
         LoopingConfigNode neighbors[] = this.getNeighbors(node);
-        
-        
-        //to be changed
-        return null;
+        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
+        int i;
+        for (i=0; i < neighbors.length; i++)
+        {
+            //testing gates : function to be implemented
+            if ((neighbors[i].getPiece() == (byte)0) &&
+                    ((neighbors[(i+1)%neighbors.length].getPiece() == (byte)0) && (neighbors[(i-1)%neighbors.length].getPiece() != (byte)0)
+                    || (neighbors[(i+1)%neighbors.length].getPiece() != (byte)0) && (neighbors[(i-1)%neighbors.length].getPiece() == (byte)0)))
+            {
+                StoringConfig newConf = this.stconf.clone();
+                
+                //actualizing the coordinates of the queen
+                newConf.setX((int)node.getPiece(), neighbors[i].getX());
+                newConf.setY((int)node.getPiece(), neighbors[i].getY());
+                possibleDest.add(newConf);
+            } 
+        }
+        return possibleDest;
     }
 
     private boolean RespectsOneHive(LoopingConfigNode node) {
