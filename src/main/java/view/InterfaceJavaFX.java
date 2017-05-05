@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.java.model.Core;
-import main.java.model.piece.Spider;
+import main.java.model.piece.Queen;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
 
@@ -32,6 +32,7 @@ public class InterfaceJavaFX extends Application{
     private Core core;
     private ArrayList<ArrayList<Polygon>> poly;
     private Coord pieceChoose;
+    int team = 1;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,28 +55,8 @@ public class InterfaceJavaFX extends Application{
         
         /*Initialisation du core et tests basiques*/
         core = new Core(2);
-        
-        //core.addPiece(new Ant(0), new Coord(0, 0));
-        //core.addPiece(new Ant(1), new Coord(0 , 1));
-        //core.addPiece(new Beetle(1), new Coord(1 , 0));
-        //core.addPiece(new Beetle(2), new Coord(0 , 3));
-        //core.addPiece(new Beetle(3), new Coord(2 , 3));
-        //core.movePiece(new Coord(1, 1), new Coord(2, 2));
         initPoly(core);
-        
-        
-        /************************/
-        
-        /* Initialisation du tableau de polygones 
-        poly = new ArrayList<>();
-        for(double i = 0; i<3;i++){
-            ArrayList<Polygon> tmp = new ArrayList<>();
-            for(double j = 0;j<3;j++){
-                //tmp.add(addPoly(gameCanvas, x, y, i, j, Consts.SIDE_SIZE));
-            }
-            poly.add(tmp);
-        }
-        /*******************************************/
+
         
         /* Clic sur le canvas principal */
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -86,9 +67,10 @@ public class InterfaceJavaFX extends Application{
                     for(int i = 0;i<poly.size();i++){
                         for(int j = 0;j<poly.get(i).size();j++){
                             if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
+                                
                                 if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null && pieceChoose == null){
-                                    System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " !  " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    //core.getCurrentState().getBoard().removePiece(new Coord(i, j));
+                                    System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
+                                    System.out.println(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));
                                     pieceChoose = new Coord(i,j);
                                 }
                                 else if( core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()==null && pieceChoose != null){
@@ -107,13 +89,14 @@ public class InterfaceJavaFX extends Application{
                         }
                     } 
                 }
-                else{
+                else if(m.getButton() == MouseButton.SECONDARY){
                     for(int i = 0;i<poly.size();i++){
                         for(int j = 0;j<poly.get(i).size();j++){
                             if(poly.get(i).get(j).contains(fdp)){
                                 System.out.println("Clidroit" + i + " " + j);
                                 if(core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
-                                    core.addPiece(new Spider(1), new Coord(i, j));
+                                    core.addPiece(new Queen(team), new Coord(i, j));
+                                    team = (team+1)%2;
                                     initPoly(core);
                                 }
                                 else{
@@ -124,6 +107,17 @@ public class InterfaceJavaFX extends Application{
                         }
                     }
                     
+                }
+                else{
+                    for(int i = 0;i<poly.size();i++){
+                        for(int j = 0;j<poly.get(i).size();j++){
+                            if(poly.get(i).get(j).contains(fdp)){
+                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null && pieceChoose == null){
+                                    core.getCurrentState().getBoard().removePiece(new Coord(i, j));
+                                }
+                            }
+                        }
+                    } 
                 }
             }
         });
@@ -136,13 +130,11 @@ public class InterfaceJavaFX extends Application{
                 for(int i = 0;i<poly.size();i++){
                     for(int j = 0;j<poly.get(i).size();j++){
                         if(poly.get(i).get(j).contains(fdp)){
-                            //System.out.println(" Pos : " + i + " "+ j);
                         }
                     }
                 } 
             }
-        }
-        
+        }    
         );
         
         RefreshJavaFX r = new RefreshJavaFX(core, gameCanvas);
