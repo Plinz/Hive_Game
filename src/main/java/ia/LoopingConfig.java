@@ -1,5 +1,8 @@
 package main.java.ia;
 
+import java.util.ArrayList;
+import main.java.utils.Coord;
+
 /*
 this class is used to run algorithms on in an optimal way
 representation : it's an array of nodes
@@ -11,11 +14,12 @@ public class LoopingConfig {
 
     final private StoringConfig stconf;
     LoopingConfigNode array[];
-
+    byte nbPiecesPerColor;
+    
     public LoopingConfig(StoringConfig stconf) {
         this.stconf = stconf;
         this.array = new LoopingConfigNode[stconf.config.length];
-
+        this.nbPiecesPerColor = (byte) (stconf.config.length/2);
         int i;
         LoopingConfigNode node;
         //head insertion
@@ -25,19 +29,63 @@ public class LoopingConfig {
             this.array[stconf.getX(i)] = node;
         }
     }
-    
-    //getters
-        //search by coordinates
-    public LoopingConfigNode getNode(byte x, byte y){
+
+    /**
+     * **************************** getters      ****************************
+     */
+    //search by coordinates
+    public LoopingConfigNode getNode(byte x, byte y) {
         LoopingConfigNode node = array[x];
-        while ((node != null) && (node.y != y)){
+        while ((node != null) && (node.y != y)) {
             node = node.next;
         }
         return node;
     }
-        //search by type (eg search white spider 2)
+    //search by type (eg get coords of white spider 2)
+    // -> careful, there's no info about 
+
+    public Coord getCoord(int piece) {
+        return new Coord((int) stconf.getX(piece), (int) stconf.getY(piece));
+    }
+
+    //Neighbors getters
+    public LoopingConfigNode getNorthEast(LoopingConfigNode node) {
+        return this.getNode((byte) (node.x+1), (byte) (node.y - 1));
+    }
+
+    public LoopingConfigNode getNorthWest(LoopingConfigNode node) {
+        return this.getNode((byte) (node.x), (byte) (node.y - 1));
+    }
+
+    public LoopingConfigNode getEast(LoopingConfigNode node) {
+        return this.getNode((byte)(node.x+1), (byte)(node.y));
+    }
+
+    public LoopingConfigNode getWest(LoopingConfigNode node) {
+        return this.getNode((byte)(node.x-1), (byte)(node.y));
+    }
+
+    public LoopingConfigNode getSouthEast(LoopingConfigNode node) {
+        return this.getNode((byte)(node.x), (byte)(node.y+1));
+    }
+
+    public LoopingConfigNode getSouthWest(LoopingConfigNode node) {
+        return this.getNode((byte)(node.x-1), (byte)(node.y+1));
+    }
     
+    //get all neighbors of a tile in an array list
+    public ArrayList<LoopingConfigNode> getNeighbors(LoopingConfigNode node){
+        ArrayList<LoopingConfigNode> result = new ArrayList<LoopingConfigNode>();
+        result.add(this.getEast(node));
+        result.add(this.getNorthEast(node));
+        result.add(this.getNorthWest(node));
+        result.add(this.getSouthEast(node));
+        result.add(this.getSouthWest(node));
+        result.add(this.getWest(node));
+        return result;
+    }
     
+    /*public ArrayList<Coord> getPossibleDestinations(LoopingConfigNode node){
     
-    
+    }*/
 }
