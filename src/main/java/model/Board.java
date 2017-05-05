@@ -115,8 +115,7 @@ public class Board {
 			this.board.get(added.getX()+1).get(added.getY()-1).add(new Tile(added.getX()+1, added.getY()-1, 0));
 	}
 	
-	public Piece removePiece(Coord coord){
-		Piece piece = null;
+	public void removePiece(Coord coord){
 		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
 		Tile tile = null;
 		for (Tile tmp : box)
@@ -124,7 +123,6 @@ public class Board {
 				tile = tmp;
 		
 		if (tile != null){
-			piece = tile.getPiece();
 			if (box.size() == 1){
 				tile.setPiece(null);
 				this.updateNeighbors(tile);
@@ -132,18 +130,13 @@ public class Board {
 			}
 			else
 				box.remove(tile);
-                }
-		
-		return piece;
-			
+		}
 	}
 	
 	public void movePiece(Coord coordSource, Coord coordTarget){
 		Tile source = this.getTile(coordSource);
-		//Tile target = this.getTile(coordTarget);
 		this.addPiece(source.getPiece(), coordTarget);
 		this.removePiece(source.getCoord());
-		//this.addPiece(piece, coordTarget);
 	}
 	
 	private void checkBoardSize(Coord coord){
@@ -204,6 +197,7 @@ public class Board {
 	
 	private void updateNeighbors(Tile tile){
 		List<Tile> neighbors = this.getNeighbors(tile);
+		neighbors.add(tile);
 		for (Tile neighbor : neighbors){
 			if (neighbor.getPiece() == null){
 				List<Tile> subNeighbors = this.getNeighbors(neighbor);
