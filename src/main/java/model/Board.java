@@ -43,10 +43,16 @@ public class Board {
 		this.board = board;
 	}
 
-    public boolean accept(BoardDrawer b){
-        b.visit(this);
-        return false;
-    }
+        public boolean accept(Visitor v){
+                v.visit(this);
+                for (int i = 0; i < board.size(); i++)
+                     for (int j = 0; j < board.get(i).size(); j++)                       
+                        for (int k = 0; k < board.get(i).get(j).size(); k++) {
+                            board.get(i).get(j).get(k).accept(v);
+                        }
+
+            return false;
+        }
 	
 	public Tile getTile(Coord coord){
 		Tile ret = null;

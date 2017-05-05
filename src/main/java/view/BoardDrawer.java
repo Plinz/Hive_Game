@@ -5,6 +5,7 @@
  */
 package main.java.view;
 
+import java.awt.Polygon;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -12,7 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import main.java.model.Board;
 import main.java.model.Core;
+import main.java.model.Piece;
 import main.java.model.Tile;
+import main.java.model.Visitor;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
@@ -20,7 +23,7 @@ import main.java.utils.CoordGene;
  *
  * @author gontardb
  */
-public class BoardDrawer {
+public class BoardDrawer extends Visitor {
     Canvas can;
     GraphicsContext gc;
     TraducteurBoard traducteur;
@@ -31,11 +34,7 @@ public class BoardDrawer {
         traducteur = new TraducteurBoard();
     }
     
-    public boolean visit(Core c){
-        gc.clearRect(0, 0, can.getWidth(), can.getHeight());
-        return false;
-    }
-    
+    /*
     public boolean visit(Board b){
         for(int i = 0;i<b.getBoard().size();i++){
             for(int j = 0;j<b.getBoard().get(i).size();j++){
@@ -56,11 +55,16 @@ public class BoardDrawer {
             }
         } 
         return false;
+    }*/
+    
+    public boolean visit(Board b){
+        gc.clearRect(0, 0, can.getWidth(), can.getHeight());
+        
+        return false;
     }
     
     public boolean visit(Tile t){
-               
-              GraphicsContext gc = can.getGraphicsContext2D();            
+                          
               double sizeHex = traducteur.getSizeHex();
               
               double a = Math.sqrt((sizeHex*sizeHex)- ((sizeHex/2)*(sizeHex/2)));
@@ -86,42 +90,12 @@ public class BoardDrawer {
          
         return false;
     }
-    
-    public void drawPolygon(double x, double y, double i, double j, double size,String name){
-        double[] xd = new double[6];
-        double[] yd = new double[6];
-        double originX,originY;
+
+    @Override
+    protected boolean visit(Piece p) {
+        gc.setFill(new ImagePattern(new Image("Tile_Empty_White.png")));
         
-        if(j%2 == 0){
-            originX = x+(2*size*i)+((2*size)*Math.floor(j/2));
-        }
-        else{
-            originX = x+(2*size*i)+size+((2*size)*Math.floor(j/2));
-            
-        }
-        originY = y+(size*j)+(j*(size/2));
-        
-        xd[0] = originX; yd[0] = originY;
-        xd[1] = originX+size;yd[1] = originY+size/2;
-        xd[2] = originX+size;yd[2] = (originY+size)+size/2;
-        xd[3] = originX;yd[3] = originY+2*size;
-        xd[4] = originX-size;yd[4] = (originY+size)+size/2;
-        xd[5] = originX-size;yd[5] = originY+size/2;
-        switch (name) {
-            case "Placable":
-                gc.setStroke(Color.BLUE);
-                gc.strokePolygon(xd, yd, 6);
-                break;
-            case "Vide":
-                gc.setStroke(Color.GREY);
-                gc.strokePolygon(xd, yd, 6);
-                break;
-            default:
-                gc.setFill(new ImagePattern(new Image(name)));
-                gc.setStroke(Color.RED);
-                gc.strokePolygon(xd, yd, 6);
-                gc.fillPolygon(xd, yd, 6);
-                break;
-        }
+        return false;
     }
+
 }

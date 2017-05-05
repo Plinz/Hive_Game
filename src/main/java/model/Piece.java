@@ -79,10 +79,12 @@ public abstract class Piece implements Cloneable{
 	    return clone;
 	}
 
+	public boolean accepte(Visitor v){
+		return v.visit(this);
+	}
 
-//	//TODO
-//	public boolean accepte(Visitor v){
-//		v.visit(this);
-//	}
-//	
+    public boolean accept(Visitor v) {
+        return v.visit(this);
+    }
+	
 }

@@ -21,9 +21,8 @@ public class Core {
 		this.mode = mode;
 	}
 
-	public boolean accept(BoardDrawer b) {
-		b.visit(this);
-		this.currentState.getBoard().accept(b);
+	public boolean accept(Visitor v) {
+		currentState.getBoard().accept(v);
 		return false;
 	}
 

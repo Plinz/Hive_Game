@@ -75,10 +75,21 @@ public class Tile {
     public String toString() {
         return "Tile{" + "x=" + x + ", y=" + y + '}';
     }
-	public void setHighlight(boolean highlight) {
-		this.highlight = highlight;
-	}
-	public Coord getCoord(){
-		return new Coord(this.x, this.y);
-	}
+    
+    
+    public void setHighlight(boolean highlight) {
+            this.highlight = highlight;
+    }
+    public Coord getCoord(){
+            return new Coord(this.x, this.y);
+    }
+    
+    public boolean accept(Visitor v){  
+            if(piece!=null){
+                piece.accept(v);
+            }else{
+                v.visit(this);
+            }
+            return false;
+    }
 }
