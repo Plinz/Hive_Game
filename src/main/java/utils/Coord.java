@@ -56,11 +56,11 @@ public class Coord {
 	public List<Coord> getNeighbors(){
 		List<Coord> list = new ArrayList<Coord>();
 		list.add(getEast());
-		list.add(getNorthEast());
-		list.add(getNorthWest());
 		list.add(getSouthEast());
 		list.add(getSouthWest());
 		list.add(getWest());
+		list.add(getNorthWest());
+		list.add(getNorthEast());
 		return list;
 	}
 
