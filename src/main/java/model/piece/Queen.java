@@ -25,12 +25,13 @@ public class Queen extends Piece {
 		List<Coord> list = new ArrayList<Coord>();
 		if (!tile.isBlocked()) {
 			List<Coord> neighbors = tile.getCoord().getNeighbors();
-			for (int i=0; i<neighbors.size(); i++){
+			for (int i = 0; i < neighbors.size(); i++) {
 				Coord curr = neighbors.get(i);
-				Coord prev = i==0 ? neighbors.get(neighbors.size()-1) : neighbors.get(i-1);
-				Coord next = i==neighbors.size()-1 ? neighbors.get(0) : neighbors.get(i+1);
+				Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
+				Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
 				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
-						&& (board.getTile(prev).getPiece() == null || board.getTile(next).getPiece() == null))
+						&& ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
+								|| (board.getTile(prev).getPiece() == null & board.getTile(next).getPiece() != null)))
 					list.add(curr);
 			}
 		}
