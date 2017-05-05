@@ -47,8 +47,8 @@ public class StoringConfig {
             }
         }
         // + pieces in hands of p1 & p2
-        total_pieces_nb += state.getPlayer1().getInventory().size();
-        total_pieces_nb += state.getPlayer2().getInventory().size();
+        total_pieces_nb += state.getPlayers()[0].getInventory().size();
+        total_pieces_nb += state.getPlayers()[1].getInventory().size();
 
         //now it's possible to allocate the config tab
         config = new short[total_pieces_nb];
