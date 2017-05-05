@@ -23,7 +23,7 @@ public abstract class Piece implements Cloneable{
 		this.name = name;
 		this.team = team;
 		this.description = description;
-		this.possibleMovement = new ArrayList<Coord>();
+		this.possibleMovement = null;
 	}
 	
 	public String getName() {
