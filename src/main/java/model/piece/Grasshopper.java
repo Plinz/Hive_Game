@@ -23,34 +23,41 @@ public class Grasshopper extends Piece {
 		if (!tile.isBlocked()) {
 			Tile tmp;
 			Coord coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getEast())) != null)
+			List<Coord> neighbors = coord.getNeighbors();
+			while ((tmp = board.getTile(coord.getEast())).getPiece() != null)
 				coord = tmp.getCoord();
-			addCoord(coord, tile, pos);
+			if (!neighbors.contains(coord))
+				addCoord(coord, tile, pos);
 
 			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getSouthEast())) != null)
+			while ((tmp = board.getTile(coord.getSouthEast())).getPiece() != null)
 				coord = tmp.getCoord();
-			addCoord(coord, tile, pos);
+			if (!neighbors.contains(coord))
+				addCoord(coord, tile, pos);
 
 			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getSouthWest())) != null)
+			while ((tmp = board.getTile(coord.getSouthWest())).getPiece()!= null)
 				coord = tmp.getCoord();
-			addCoord(coord, tile, pos);
+			if (!neighbors.contains(coord))
+				addCoord(coord, tile, pos);
 
 			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getWest())) != null)
+			while ((tmp = board.getTile(coord.getWest())).getPiece() != null)
 				coord = tmp.getCoord();
-			addCoord(coord, tile, pos);
+			if (!neighbors.contains(coord))
+				addCoord(coord, tile, pos);
 
 			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getNorthWest())) != null)
+			while ((tmp = board.getTile(coord.getNorthWest())).getPiece() != null)
 				coord = tmp.getCoord();
-			addCoord(coord, tile, pos);
+			if (!neighbors.contains(coord))
+				addCoord(coord, tile, pos);
 
 			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getNorthEast())) != null)
+			while ((tmp = board.getTile(coord.getNorthEast())).getPiece() != null)
 				coord = tmp.getCoord();
-			addCoord(coord, tile, pos);
+			if (!neighbors.contains(coord))
+				addCoord(coord, tile, pos);
 		}
 		this.possibleMovement = pos;
 		return pos;

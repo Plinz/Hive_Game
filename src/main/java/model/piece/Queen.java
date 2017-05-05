@@ -24,22 +24,22 @@ public class Queen extends Piece {
 		List<Coord> list = new ArrayList<Coord>();
 		if (!tile.isBlocked()) {
 			Coord coord = tile.getCoord();
-			if (board.getTile(coord.getEast()).getPiece() == null && board.getNeighbors(coord.getEast()).size() != 1
+			if (board.getTile(coord.getEast()).getPiece() == null && board.getPieceNeighbors(coord.getEast()).size() != 1
 					&& (board.getTile(coord.getSouthEast()).getPiece() == null || board.getTile(coord.getNorthEast()).getPiece() == null))
 				list.add(coord.getEast());
-			if (board.getTile(coord.getSouthEast()).getPiece() == null && board.getNeighbors(coord.getSouthEast()).size() != 1
+			if (board.getTile(coord.getSouthEast()).getPiece() == null && board.getPieceNeighbors(coord.getSouthEast()).size() != 1
 					&& (board.getTile(coord.getSouthWest()).getPiece() == null || board.getTile(coord.getEast()).getPiece() == null))
 				list.add(coord.getSouthEast());
-			if (board.getTile(coord.getSouthWest()).getPiece() == null && board.getNeighbors(coord.getSouthWest()).size() != 1
+			if (board.getTile(coord.getSouthWest()).getPiece() == null && board.getPieceNeighbors(coord.getSouthWest()).size() != 1
 					&& (board.getTile(coord.getWest()).getPiece() == null || board.getTile(coord.getSouthEast()).getPiece() == null))
 				list.add(coord.getSouthWest());
-			if (board.getTile(coord.getWest()).getPiece() == null && board.getNeighbors(coord.getWest()).size() != 1
+			if (board.getTile(coord.getWest()).getPiece() == null && board.getPieceNeighbors(coord.getWest()).size() != 1
 					&& (board.getTile(coord.getNorthWest()).getPiece() == null || board.getTile(coord.getSouthWest()).getPiece() == null))
 				list.add(coord.getWest());
-			if (board.getTile(coord.getNorthWest()).getPiece() == null && board.getNeighbors(coord.getNorthWest()).size() != 1
+			if (board.getTile(coord.getNorthWest()).getPiece() == null && board.getPieceNeighbors(coord.getNorthWest()).size() != 1
 					&& (board.getTile(coord.getNorthEast()).getPiece() == null || board.getTile(coord.getWest()).getPiece() == null))
 				list.add(coord.getNorthWest());
-			if (board.getTile(coord.getNorthEast()).getPiece() == null && board.getNeighbors(coord.getNorthEast()).size() != 1
+			if (board.getTile(coord.getNorthEast()).getPiece() == null && board.getPieceNeighbors(coord.getNorthEast()).size() != 1
 					&& (board.getTile(coord.getEast()).getPiece() == null || board.getTile(coord.getNorthWest()).getPiece() == null))
 				list.add(coord.getNorthEast());
 		}
