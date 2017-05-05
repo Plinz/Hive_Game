@@ -17,7 +17,7 @@ import main.java.model.State;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 
-public class StoringConfig {
+public class StoringConfig implements Cloneable{
 
     public int config[];
 
@@ -26,6 +26,11 @@ public class StoringConfig {
         config = new int[nb_pieces];
     }
 
+    protected StoringConfig(StoringConfig stconf) throws CloneNotSupportedException
+    {
+        this.config = stconf.config;
+    }
+    
     /*
     This is the translator -> translates a state given by the 
     core into a Storing config.
@@ -208,5 +213,11 @@ public class StoringConfig {
             toAdd=0;
         toAdd <<= 6;
         config[index] |= toAdd;
+    }
+    
+    @Override
+    public StoringConfig clone() throws CloneNotSupportedException
+    {
+        return new StoringConfig(this);
     }
 }

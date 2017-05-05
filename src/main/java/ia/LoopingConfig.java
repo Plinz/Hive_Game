@@ -110,7 +110,7 @@ public class LoopingConfig {
     private ArrayList<Coord> getPossibleAntDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     private ArrayList<Coord> getPossibleBeetleDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
