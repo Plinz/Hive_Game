@@ -21,7 +21,7 @@ public class Coord {
 	public void setY(int y) {
 		this.y = y;
 	}
-	//**********************   ATTENTION -> FONCTIONS FOIREUSES, ELLES NE MARCHENT PAS ************/
+	
 	public Coord getEast(){
 		return new Coord(this.x+1, this.y);
 	}
@@ -40,7 +40,7 @@ public class Coord {
 	public Coord getNorthEast(){
 		return new Coord(this.x+1, this.y-1);
 	}
-////*************************   FIN DES FONCTIONS FOIREUSES *************************/
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj.getClass().getCanonicalName() == "Coord"){
