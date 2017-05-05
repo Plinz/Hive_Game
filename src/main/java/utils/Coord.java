@@ -1,5 +1,8 @@
 package main.java.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Coord {
 
 	private int x;
@@ -48,6 +51,17 @@ public class Coord {
 
 	public Coord getNorthEast() {
 		return new Coord(this.x + 1, this.y - 1);
+	}
+	
+	public List<Coord> getNeighbors(){
+		List<Coord> list = new ArrayList<Coord>();
+		list.add(getEast());
+		list.add(getNorthEast());
+		list.add(getNorthWest());
+		list.add(getSouthEast());
+		list.add(getSouthWest());
+		list.add(getWest());
+		return list;
 	}
 
 	@Override

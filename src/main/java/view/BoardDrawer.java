@@ -7,7 +7,9 @@ package main.java.view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import main.java.model.Board;
 import main.java.model.Core;
 import main.java.utils.Consts;
@@ -78,6 +80,7 @@ public class BoardDrawer {
         else{
             gc.setFill(color);
             gc.fillPolygon(xd, yd, 6);
+            //gc.setFill(new ImagePattern(new Image("Tile_Queen_Black.png")));
         }
     }
 }

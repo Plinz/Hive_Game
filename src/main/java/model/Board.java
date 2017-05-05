@@ -244,15 +244,19 @@ public class Board {
 	public List<Tile> getNeighbors(Tile tile){
 		List<Tile> list = new ArrayList<Tile>();
 		Coord coord = tile.getCoord();
-		list.add(this.getTile(coord.getEast()));
-		list.add(this.getTile(coord.getSouthEast()));
-		list.add(this.getTile(coord.getSouthWest()));
-		list.add(this.getTile(coord.getWest()));
-		list.add(this.getTile(coord.getNorthWest()));
-		list.add(this.getTile(coord.getNorthEast()));
+		list.addAll(getNeighbors(coord));
 		list.addAll(this.getAboveAndBelow(tile));
 		return list;
 	}
+	
+	public List<Tile> getPieceNeighbors(Coord coord){
+		List<Tile> list = new ArrayList<Tile>();
+		for (Tile t : getNeighbors(coord))
+			if (t != null && t.getPiece() != null)
+				list.add(t);
+		return list;
+	}
+	
 	
 	public List<Tile> getAboveAndBelow(Tile tile){
 		List<Tile> box = this.board.get(tile.getX()).get(tile.getY());
