@@ -49,5 +49,12 @@ public class Coord {
 		}
 		return super.equals(obj);
 	}
+
+    @Override
+    public String toString() {
+        return "Coord{" + "x=" + x + ", y=" + y + '}' + '\n';
+    }
+        
+        
 	
 }

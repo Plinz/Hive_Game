@@ -34,8 +34,12 @@ public class BoardDrawer {
         for(int i = 0;i<b.getBoard().size();i++){
             for(int j = 0;j<b.getBoard().get(i).size();j++){
                 if(b.getBoard().get(i).get(j).size() != 0){
-                    if (b.getBoard().get(i).get(j).get(0).getPiece()!=null)
-                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.RED,true);
+                    if (b.getBoard().get(i).get(j).get(0).getPiece()!=null){
+                        if(b.getBoard().get(i).get(j).get(0).getPiece().getTeam() == 0)
+                            drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.ORANGE,true);
+                        else
+                            drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.PURPLE,true);
+                    }
                    else{
                         drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLUE, false);
                    }
