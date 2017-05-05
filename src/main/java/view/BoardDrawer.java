@@ -35,18 +35,19 @@ public class BoardDrawer {
             for(int j = 0;j<b.getBoard().get(i).size();j++){
                 if(b.getBoard().get(i).get(j).size() != 0){
                     if (b.getBoard().get(i).get(j).get(0).getPiece()!=null)
-                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.RED);
+                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j,Consts.SIDE_SIZE,Color.RED,true);
                    else{
-                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLUE);
+                        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLUE, false);
                    }
                 }
                 else
-                 drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLACK);
+                 drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE,Color.BLACK,false);
             }
         } 
         return false;
     }
-    public void drawPolygon(double x, double y, double i, double j, double size, Color color){
+    
+    public void drawPolygon(double x, double y, double i, double j, double size, Color color, boolean full){
         double[] xd = new double[6];
         double[] yd = new double[6];
         double originX,originY;
@@ -66,7 +67,13 @@ public class BoardDrawer {
         xd[3] = originX;yd[3] = originY+2*size;
         xd[4] = originX-size;yd[4] = (originY+size)+size/2;
         xd[5] = originX-size;yd[5] = originY+size/2;
-        gc.setStroke(color);
-        gc.strokePolygon(xd, yd, 6);
+        if(!full){
+            gc.setStroke(color);
+            gc.strokePolygon(xd, yd, 6);
+        }
+        else{
+            gc.setFill(color);
+            gc.fillPolygon(xd, yd, 6);
+        }
     }
 }

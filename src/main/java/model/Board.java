@@ -132,7 +132,7 @@ public class Board {
 			}
 			else
 				box.remove(tile);
-		}
+                }
 		
 		return piece;
 			
@@ -206,7 +206,7 @@ public class Board {
 				List<Tile> subNeighbors = this.getNeighbors(neighbor);
 				boolean hasPieceAround = false;
 				for (Tile subNeighbor : subNeighbors){
-					if (subNeighbor.getPiece() != null){
+					if (subNeighbor != null && subNeighbor.getPiece() != null){
 						hasPieceAround = true;
 						break;
 					}
