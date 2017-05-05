@@ -22,6 +22,7 @@ public class State {
 
 	public State() {
 		this.board = new Board();
+		this.players = new Player[2];
 		this.players[0] = new Player(0);
 		this.players[1] = new Player(1);
 		this.currentPlayer = 0;

@@ -71,8 +71,10 @@ public abstract class Piece implements Cloneable{
 	    clone.name = new String(this.name);
 	    clone.team = this.team;
 	    clone.possibleMovement = new ArrayList<Coord>();
-	    for (Coord coord : this.possibleMovement)
-	    	clone.possibleMovement.add(new Coord(coord.getX(), coord.getY()));
+	    if (this.possibleMovement != null){
+		    for (Coord coord : this.possibleMovement)
+		    	clone.possibleMovement.add(new Coord(coord.getX(), coord.getY()));
+	    }
 	    
 	    return clone;
 	}
