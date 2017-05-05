@@ -6,12 +6,13 @@ import java.util.List;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 public class Beetle extends Piece {
 
 	public Beetle(int team) {
-		super("Beetle", team, "Beetle description");
+		super(Consts.BEETLE_NAME, team, "Beetle description");
 	}
 
 	@Override
@@ -20,25 +21,15 @@ public class Beetle extends Piece {
 			return this.possibleMovement;
 		List<Coord> list = new ArrayList<Coord>();
 		if (!tile.isBlocked()) {
-			Coord coord = tile.getCoord();
-			if (board.getPieceNeighbors(coord.getEast()).size() != 1
-					&& respectMovementRule(tile, coord.getSouthEast(), coord.getNorthEast(), coord.getEast(), board))
-				list.add(coord.getEast());
-			if (board.getPieceNeighbors(coord.getSouthEast()).size() != 1
-					&& respectMovementRule(tile, coord.getSouthWest(), coord.getEast(), coord.getSouthEast(), board))
-				list.add(coord.getSouthEast());
-			if (board.getPieceNeighbors(coord.getSouthWest()).size() != 1
-					&& respectMovementRule(tile, coord.getWest(), coord.getSouthEast(), coord.getSouthWest(), board))
-				list.add(coord.getSouthWest());
-			if (board.getPieceNeighbors(coord.getWest()).size() != 1
-					&& respectMovementRule(tile, coord.getNorthWest(), coord.getSouthWest(), coord.getWest(), board))
-				list.add(coord.getWest());
-			if (board.getPieceNeighbors(coord.getNorthWest()).size() != 1
-					&& respectMovementRule(tile, coord.getNorthEast(), coord.getWest(), coord.getNorthWest(), board))
-				list.add(coord.getNorthWest());
-			if (board.getPieceNeighbors(coord.getNorthEast()).size() != 1
-					&& respectMovementRule(tile, coord.getEast(), coord.getNorthWest(), coord.getNorthEast(), board))
-				list.add(coord.getNorthEast());
+			List<Coord> neighbors = tile.getCoord().getNeighbors();
+			for (int i=0; i<neighbors.size(); i++){
+				Coord curr = neighbors.get(i);
+				Coord prev = i==0 ? neighbors.get(neighbors.size()-1) : neighbors.get(i-1);
+				Coord next = i==neighbors.size()-1 ? neighbors.get(0) : neighbors.get(i+1);
+				if (board.getPieceNeighbors(curr).size() != 1
+						&& respectMovementRule(tile, prev, next, curr, board))
+					list.add(curr);
+			}
 		}
 		this.possibleMovement = list;
 		return list;

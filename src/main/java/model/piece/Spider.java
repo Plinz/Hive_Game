@@ -13,7 +13,6 @@ public class Spider extends Piece {
 
 	public Spider(int team) {
 		super(Consts.SPIDER_NAME, team, "Spider description");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -34,41 +33,17 @@ public class Spider extends Piece {
 
 	private void nextBox(Coord coord, List<Coord> list, Board board, int deep) {
 		if (deep++ < 3) {
-			if (board.getTile(coord.getEast()).getPiece() == null && !list.contains(coord.getEast())
-					&& board.getPieceNeighbors(coord.getEast()).size() != 1
-					&& (board.getTile(coord.getSouthEast()).getPiece() == null || board.getTile(coord.getNorthEast()).getPiece() == null)) {
-				list.add(coord.getEast());
-				nextBox(coord.getEast(), list, board, deep);
-			}
-			if (board.getTile(coord.getSouthEast()).getPiece() == null && !list.contains(coord.getSouthEast())
-					&& board.getPieceNeighbors(coord.getSouthEast()).size() != 1
-					&& (board.getTile(coord.getSouthWest()).getPiece() == null || board.getTile(coord.getEast()).getPiece() == null)) {
-				list.add(coord.getSouthEast());
-				nextBox(coord.getSouthEast(), list, board, deep);
-			}
-			if (board.getTile(coord.getSouthWest()).getPiece() == null && !list.contains(coord.getSouthWest())
-					&& board.getPieceNeighbors(coord.getSouthWest()).size() != 1
-					&& (board.getTile(coord.getWest()).getPiece() == null || board.getTile(coord.getSouthEast()).getPiece() == null)) {
-				list.add(coord.getSouthWest());
-				nextBox(coord.getSouthWest(), list, board, deep);
-			}
-			if (board.getTile(coord.getWest()).getPiece() == null && !list.contains(coord.getWest())
-					&& board.getPieceNeighbors(coord.getWest()).size() != 1
-					&& (board.getTile(coord.getNorthWest()).getPiece() == null || board.getTile(coord.getSouthWest()).getPiece() == null)) {
-				list.add(coord.getWest());
-				nextBox(coord.getWest(), list, board, deep);
-			}
-			if (board.getTile(coord.getNorthWest()).getPiece() == null && !list.contains(coord.getNorthWest())
-					&& board.getPieceNeighbors(coord.getNorthWest()).size() != 1
-					&& (board.getTile(coord.getNorthEast()).getPiece() == null || board.getTile(coord.getWest()).getPiece() == null)) {
-				list.add(coord.getNorthWest());
-				nextBox(coord.getNorthWest(), list, board, deep);
-			}
-			if (board.getTile(coord.getNorthEast()).getPiece() == null && !list.contains(coord.getNorthEast())
-					&& board.getPieceNeighbors(coord.getNorthEast()).size() != 1
-					&& (board.getTile(coord.getEast()).getPiece() == null || board.getTile(coord.getNorthWest()).getPiece() == null)) {
-				list.add(coord.getNorthEast());
-				nextBox(coord.getNorthEast(), list, board, deep);
+			List<Coord> neighbors = coord.getNeighbors();
+			for (int i=0; i<neighbors.size(); i++){
+				Coord curr = neighbors.get(i);
+				Coord prev = i==0 ? neighbors.get(neighbors.size()-1) : neighbors.get(i-1);
+				Coord next = i==neighbors.size()-1 ? neighbors.get(0) : neighbors.get(i+1);
+				if (board.getTile(curr) != null && board.getTile(curr).getPiece() == null && !list.contains(curr)
+						&& board.getPieceNeighbors(curr).size() != 1
+						&& (board.getTile(prev).getPiece() == null || board.getTile(next).getPiece() == null)){
+					list.add(curr);
+					nextBox(curr, list, board, deep);
+				}
 			}
 		}
 	}

@@ -23,10 +23,21 @@ public class Ant extends Piece {
 		List<Coord> list = new ArrayList<Coord>();
 		if (!tile.isBlocked()) {
 			Coord coord = tile.getCoord();
-			coord = nextBox(coord, board);
-			while (coord != null && !coord.equals(tile.getCoord())) {
-				list.add(coord);
-				coord = nextBox(coord, board);
+
+			List<Coord> neighbors = coord.getNeighbors();
+			for (int i = 0; i < neighbors.size(); i++) {
+				Coord curr = neighbors.get(i);
+				Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
+				Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
+				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
+						&& (board.getTile(prev).getPiece() == null || board.getTile(next).getPiece() == null)) {
+					while (curr != null && !curr.equals(tile.getCoord())) {
+						System.err.println("coord=" + curr);
+						list.add(curr);
+						curr = nextBox(curr, board, list);
+					}
+					break;
+				}
 			}
 		}
 		this.possibleMovement = list;
@@ -34,25 +45,18 @@ public class Ant extends Piece {
 
 	}
 
-	private Coord nextBox(Coord coord, Board board) {
-		if (board.getTile(coord.getEast()) == null && board.getPieceNeighbors(coord.getEast()).size() != 1
-				&& (board.getTile(coord.getSouthEast()).getPiece() == null || board.getTile(coord.getNorthEast()).getPiece() == null))
-			return coord.getEast();
-		if (board.getTile(coord.getSouthEast()) == null && board.getPieceNeighbors(coord.getSouthEast()).size() != 1
-				&& (board.getTile(coord.getSouthWest()).getPiece() == null || board.getTile(coord.getEast()).getPiece() == null))
-			return coord.getSouthEast();
-		if (board.getTile(coord.getSouthWest()) == null && board.getPieceNeighbors(coord.getSouthWest()).size() != 1
-				&& (board.getTile(coord.getWest()).getPiece() == null || board.getTile(coord.getSouthEast()).getPiece() == null))
-			return coord.getSouthWest();
-		if (board.getTile(coord.getWest()) == null && board.getPieceNeighbors(coord.getWest()).size() != 1
-				&& (board.getTile(coord.getNorthWest()).getPiece() == null || board.getTile(coord.getSouthWest()).getPiece() == null))
-			return coord.getWest();
-		if (board.getTile(coord.getNorthWest()) == null && board.getPieceNeighbors(coord.getNorthWest()).size() != 1
-				&& (board.getTile(coord.getNorthEast()).getPiece() == null || board.getTile(coord.getWest()).getPiece() == null))
-			return coord.getNorthWest();
-		if (board.getTile(coord.getNorthEast()) == null && board.getPieceNeighbors(coord.getNorthEast()).size() != 1
-				&& (board.getTile(coord.getEast()).getPiece() == null || board.getTile(coord.getNorthWest()).getPiece() == null))
-			return coord.getNorthEast();
-		return coord;
+	private Coord nextBox(Coord coord, Board board, List<Coord> list) {
+		List<Coord> neighbors = coord.getNeighbors();
+		for (int i = 0; i < neighbors.size(); i++) {
+			Coord curr = neighbors.get(i);
+			Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
+			Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
+			if (!list.contains(curr) && board.getTile(curr) != null && board.getTile(curr).getPiece() == null
+					&& board.getPieceNeighbors(curr).size() != 0
+					&& (board.getTile(prev) == null || board.getTile(next) == null
+							|| board.getTile(prev).getPiece() == null || board.getTile(next).getPiece() == null))
+				return curr;
+		}
+		return null;
 	}
 }

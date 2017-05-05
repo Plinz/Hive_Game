@@ -6,12 +6,13 @@ import java.util.List;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 public class Grasshopper extends Piece {
 
 	public Grasshopper(int team) {
-		super("Grasshopper", team, "Grasshopper description");
+		super(Consts.GRASSHOPPER_NAME, team, "Grasshopper description");
 
 	}
 
@@ -19,54 +20,55 @@ public class Grasshopper extends Piece {
 	public List<Coord> getPossibleMovement(Tile tile, Board board) {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
-		ArrayList<Coord> pos = new ArrayList<Coord>();
+		
+		ArrayList<Coord> list = new ArrayList<Coord>();
 		if (!tile.isBlocked()) {
-			Tile tmp;
 			Coord coord = tile.getCoord();
-			List<Coord> neighbors = coord.getNeighbors();
-			while ((tmp = board.getTile(coord.getEast())).getPiece() != null)
-				coord = tmp.getCoord();
-			if (!neighbors.contains(coord))
-				addCoord(coord, tile, pos);
-
-			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getSouthEast())).getPiece() != null)
-				coord = tmp.getCoord();
-			if (!neighbors.contains(coord))
-				addCoord(coord, tile, pos);
-
-			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getSouthWest())).getPiece()!= null)
-				coord = tmp.getCoord();
-			if (!neighbors.contains(coord))
-				addCoord(coord, tile, pos);
-
-			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getWest())).getPiece() != null)
-				coord = tmp.getCoord();
-			if (!neighbors.contains(coord))
-				addCoord(coord, tile, pos);
-
-			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getNorthWest())).getPiece() != null)
-				coord = tmp.getCoord();
-			if (!neighbors.contains(coord))
-				addCoord(coord, tile, pos);
-
-			coord = tile.getCoord();
-			while ((tmp = board.getTile(coord.getNorthEast())).getPiece() != null)
-				coord = tmp.getCoord();
-			if (!neighbors.contains(coord))
-				addCoord(coord, tile, pos);
+			
+			Tile tmp = board.getTile(coord.getEast());
+			if (tmp.getPiece() != null){
+				while ((tmp = board.getTile(tmp.getCoord().getEast())).getPiece() != null)
+					coord = tmp.getCoord();
+				list.add(tmp.getCoord());
+			}
+			
+			tmp = board.getTile(coord.getSouthEast());
+			if (tmp.getPiece() != null){
+				while ((tmp = board.getTile(tmp.getCoord().getSouthEast())).getPiece() != null)
+					coord = tmp.getCoord();
+				list.add(tmp.getCoord());
+			}
+			
+			tmp = board.getTile(coord.getSouthWest());
+			if (tmp.getPiece() != null){
+				while ((tmp = board.getTile(tmp.getCoord().getSouthWest())).getPiece() != null)
+					coord = tmp.getCoord();
+				list.add(tmp.getCoord());
+			}
+			
+			tmp = board.getTile(coord.getWest());
+			if (tmp.getPiece() != null){
+				while ((tmp = board.getTile(tmp.getCoord().getWest())).getPiece() != null)
+					coord = tmp.getCoord();
+				list.add(tmp.getCoord());
+			}
+			
+			tmp = board.getTile(coord.getNorthWest());
+			if (tmp.getPiece() != null){
+				while ((tmp = board.getTile(tmp.getCoord().getNorthWest())).getPiece() != null)
+					coord = tmp.getCoord();
+				list.add(tmp.getCoord());
+			}
+			
+			tmp = board.getTile(coord.getNorthEast());
+			if (tmp.getPiece() != null){
+				while ((tmp = board.getTile(tmp.getCoord().getNorthEast())).getPiece() != null)
+					coord = tmp.getCoord();
+				list.add(tmp.getCoord());
+			}
 		}
-		this.possibleMovement = pos;
-		return pos;
-	}
-
-	private void addCoord(Coord coord, Tile tile, List<Coord> list) {
-		if (!coord.equals(tile))
-			list.add(new Coord(coord.getX(), coord.getY()));
-
+		this.possibleMovement = list;
+		return list;
 	}
 
 }
