@@ -3,7 +3,7 @@ package main.java.utils;
 
 public class Consts {
     
-    //MACROS PIECES
+    //MACROS PIECES -> PLEASE DO NOT MODIFY /!\
     public static final int QUEEN = 0;
     public static final int SPIDER1 = 1;
     public static final int SPIDER2 = 2;

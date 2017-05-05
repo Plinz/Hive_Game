@@ -1,6 +1,7 @@
 package main.java.ia;
 
 import java.util.ArrayList;
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 /*
@@ -85,7 +86,44 @@ public class LoopingConfig {
         return result;
     }
     
-    /*public ArrayList<Coord> getPossibleDestinations(LoopingConfigNode node){
+    public ArrayList<Coord> getPossibleDestinations(LoopingConfigNode node){
+        byte piece_type = (byte) (node.piece % nbPiecesPerColor);
+        if (piece_type <= Consts.QUEEN){
+            return getPossibleQueenDestinations(node);
+        } else if (piece_type <= Consts.SPIDER2) {
+            return getPossibleSpiderDestinations(node);
+        } else if (piece_type <= Consts.GRASSHOPPER3) {
+            return getPossibleGrassHopperDestinations(node);
+        } else if (piece_type <= Consts.BEETLE2) {
+            return getPossibleBeetleDestinations(node);
+        } else if (piece_type <= Consts.ANT3) {
+            return getPossibleAntDestinations(node);
+        } else  {
+            System.err.println("Erreur : Impossible de reconnaitre le type de pièce");
+            return null;
+        }
+    }
     
-    }*/
+    
+
+    private ArrayList<Coord> getPossibleAntDestinations(LoopingConfigNode node) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private ArrayList<Coord> getPossibleBeetleDestinations(LoopingConfigNode node) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private ArrayList<Coord> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private ArrayList<Coord> getPossibleSpiderDestinations(LoopingConfigNode node) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private ArrayList<Coord> getPossibleQueenDestinations(LoopingConfigNode node) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

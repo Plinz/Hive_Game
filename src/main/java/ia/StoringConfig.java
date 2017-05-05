@@ -204,29 +204,4 @@ public class StoringConfig {
         config[index] &= 0xFFFE;
         config[index] |= newBool3;
     }
-    /*
-    // Tile to short -> Used to create the config from the state
-    public short TileToShort(Tile tile) {
-
-        short result = 0;
-        if (tile.getPiece().getTeam() == 1) {
-            result = 
-        }
-        // get the piece byte from the team and name
-        switch (tile.getPiece().getName()) {
-            case Consts.ANT_NAME:
-
-                break;
-            case Consts.BEETLE_NAME:
-
-                break;
-            case Consts.QUEEN_NAME:
-
-                break;
-            case Consts.SPIDER_NAME:
-
-                break;
-        }
-    }
-     */
 }
