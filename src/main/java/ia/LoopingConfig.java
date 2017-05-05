@@ -74,22 +74,22 @@ public class LoopingConfig {
         return this.getNode((byte) (node.x - 1), (byte) (node.y + 1));
     }
 
-    //get all neighbors of a tile in an array list
-    public ArrayList<LoopingConfigNode> getNeighbors(LoopingConfigNode node) {
-        ArrayList<LoopingConfigNode> result = new ArrayList<LoopingConfigNode>();
-        result.add(this.getEast(node));
-        result.add(this.getNorthEast(node));
-        result.add(this.getNorthWest(node));
-        result.add(this.getSouthEast(node));
-        result.add(this.getSouthWest(node));
-        result.add(this.getWest(node));
+    //get all neighbors of a tile in an array
+    public LoopingConfigNode[] getNeighbors(LoopingConfigNode node) {
+        LoopingConfigNode result[] = new LoopingConfigNode[6];
+        result[0] = this.getEast(node);
+        result[1] = this.getNorthEast(node);
+        result[2] = this.getNorthWest(node);
+        result[3] = this.getSouthEast(node);
+        result[4] = this.getSouthWest(node);
+        result[5] = this.getWest(node);
         return result;
     }
 
     /**
      * ************ Deplacements            ****************************
      */
-    public ArrayList<Coord> getPossibleDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) {
         byte piece_type = (byte) (node.piece % nbPiecesPerColor);
         if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
@@ -107,24 +107,31 @@ public class LoopingConfig {
         }
     }
 
-    private ArrayList<Coord> getPossibleAntDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleAntDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    private ArrayList<Coord> getPossibleBeetleDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private ArrayList<Coord> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private ArrayList<Coord> getPossibleSpiderDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private ArrayList<Coord> getPossibleQueenDestinations(LoopingConfigNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) 
+    {
+        if (node.isStuck())
+            return null;
+        
+        LoopingConfigNode neighbors[] = this.getNeighbors(node);
+        
+        //to be changed
+        return null;
     }
 
     private boolean RespectsOneHive(byte piece) {
