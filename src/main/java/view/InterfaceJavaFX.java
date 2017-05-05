@@ -13,16 +13,12 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import main.java.model.Core;
-import main.java.model.Tile;
-import main.java.model.piece.Ant;
-import main.java.model.piece.Beetle;
 import main.java.model.piece.Spider;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
@@ -35,15 +31,16 @@ public class InterfaceJavaFX extends Application{
     
     private Core core;
     private ArrayList<ArrayList<Polygon>> poly;
-    
+    private Coord pieceChoose;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
-        Canvas gameCanvas = new Canvas();
-        gameBorderPane.setLeft(gameCanvas);
+        Canvas gameCanvas = new Canvas(1000,1000);
+        ScrollPane scrollPane = new ScrollPane(gameCanvas);
+        gameBorderPane.setLeft(scrollPane);
         Scene gameScene = new Scene(gameBorderPane,800,800);   
         primaryStage.setScene(gameScene);
         primaryStage.setTitle("Hive_Test");
@@ -89,9 +86,16 @@ public class InterfaceJavaFX extends Application{
                     for(int i = 0;i<poly.size();i++){
                         for(int j = 0;j<poly.get(i).size();j++){
                             if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
-                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
+                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null && pieceChoose == null){
                                     System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " !  " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    core.getCurrentState().getBoard().removePiece(new Coord(i, j));
+                                    //core.getCurrentState().getBoard().removePiece(new Coord(i, j));
+                                    pieceChoose = new Coord(i,j);
+                                }
+                                else if( core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()==null && pieceChoose != null){
+                                    System.err.println("Piece choisie, on essaye de la déplacer " + pieceChoose.getX() + pieceChoose.getY());
+                                    core.getCurrentState().getBoard().movePiece(pieceChoose, new Coord(i, j));
+                                    pieceChoose = null;
+                                    initPoly(core);
                                 }
                                 else{
                                     System.err.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
@@ -152,13 +156,13 @@ public class InterfaceJavaFX extends Application{
         for(int i = 0; i < c.getCurrentState().getBoard().getBoard().size();i++){
             ArrayList<Polygon> tmp = new ArrayList<>();
             for(int j = 0; j<c.getCurrentState().getBoard().getBoard().get(i).size();j++){ 
-                   tmp.add(addPoly(/*gameCanvas,*/ Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE/*,Color.BLACK*/));
+                   tmp.add(addPoly(Consts.X_ORIGIN, Consts.Y_ORIGIN, i, j, Consts.SIDE_SIZE));
             }
             poly.add(tmp);
         }
     }
     
-    public Polygon addPoly(/*Canvas can,*/double x,double y,double i,double j,double size/*, Color color*/){
+    public Polygon addPoly(double x,double y,double i,double j,double size){
         double[] xd = new double[6];
         double[] yd = new double[6];
         double originX,originY;
@@ -171,7 +175,6 @@ public class InterfaceJavaFX extends Application{
             
         }
         originY = y+(size*j)+(j*(size/2));
-        //GraphicsContext gc = can.getGraphicsContext2D();
         
         int [] rx = new int[6];
         int [] ry = new int[6];
@@ -181,8 +184,6 @@ public class InterfaceJavaFX extends Application{
         xd[3] = originX;yd[3] = originY+2*size;
         xd[4] = originX-size;yd[4] = (originY+size)+size/2;
         xd[5] = originX-size;yd[5] = originY+size/2;
-        //gc.setStroke(color);
-        //gc.strokePolygon(xd, yd, 6);
         for(int a = 0; a<6;a++){
             rx[a] = (int) xd[a];
             ry[a] = (int) yd[a];

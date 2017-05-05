@@ -16,17 +16,18 @@ import main.java.utils.Consts;
 public class StoringConfig {
 
     public short config[];
+
     //useless constructor
     public StoringConfig(int nb_pieces) {
         config = new short[nb_pieces];
     }
-    
+
     /*
     This is the translator -> translates a state given by the 
     core into a Storing config.
     Advantage -> this is much lighter (about 44 bytes heavy for a whole
     game configuration.
-    */
+     */
     public StoringConfig(State state) {
 
         List<List<List<Tile>>> board = state.getBoard().getBoard();
@@ -53,15 +54,15 @@ public class StoringConfig {
         config = new short[total_pieces_nb];
 
         //now filling up from the infos found in the board
-        int index = 0;
         for (int i = 0; i < board.size(); i++) {
             for (int j = 0; j < board.get(i).size(); j++) {
                 for (int k = 0; k < board.get(i).get(j).size(); k++) ///dirty -> getting one short from lots of infos
                 {
+                    int index = 0;
                     current = board.get(i).get(j).get(k);
 
                     //check if tile exists & if there's a piece in it
-                    if ((current != null) && (current.getPiece() != null)) {
+                    if ((current != null) && (current.getPiece() != null)) { ///current != null ->> probably useless
                         // get the piece byte from the team and name
                         //first team & type
                         //team
@@ -91,7 +92,7 @@ public class StoringConfig {
                                     index += Consts.BEETLE2;
                                 } else {
                                     //means there are 3 beetles with same color in the field -> should never happen
-                                    System.err.println("Erreur : 3 scarabés de la même couleur sur la board");
+                                    System.err.println("Erreur : 3 scarabées de la même couleur sur la board");
                                 }
                                 break;
                             //Queens
@@ -132,9 +133,9 @@ public class StoringConfig {
                         this.setX(index, (byte) current.getX());
                         this.setY(index, (byte) current.getY());
                         this.setZ(index, (byte) current.getZ());
-                        this.setStuck(index, (current.isBlocked()==true?(byte)1:(byte)0));
-                        this.setIsVisited(index, (byte)0);
-                        this.setBool3(index,(byte) 1);///set to 1 to prevent mistakes with white queen on (0,0,0) unblocked
+                        this.setStuck(index, (current.isBlocked() == true ? (byte) 1 : (byte) 0));
+                        this.setIsVisited(index, (byte) 0);
+                        this.setBool3(index, (byte) 1);///set to 1 to prevent mistakes with a bug on (0,0,0) unblocked
                     }
 
                 }
@@ -145,7 +146,7 @@ public class StoringConfig {
     //////     getters
 
     public byte getX(int index) {
-        return (byte) ((config[index] & 0xF800) >> 11);
+        return (byte) (config[index] >> 11);
     }
 
     public byte getY(int index) {

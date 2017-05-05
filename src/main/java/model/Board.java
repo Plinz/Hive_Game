@@ -132,7 +132,7 @@ public class Board {
 			}
 			else
 				box.remove(tile);
-		}
+                }
 		
 		return piece;
 			
