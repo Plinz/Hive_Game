@@ -13,13 +13,16 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.java.model.Core;
-import main.java.model.piece.Queen;
+import main.java.model.*;
+import main.java.model.piece.*;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
 
@@ -32,25 +35,90 @@ public class InterfaceJavaFX extends Application{
     private Core core;
     private ArrayList<ArrayList<Polygon>> poly;
     private Coord pieceChoose;
-    int team = 1;
+    int team = 0;
+    private Piece piece;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         
         /*Initialisation de la fenêtre */
         BorderPane gameBorderPane = new BorderPane();
+        
         Canvas gameCanvas = new Canvas(1000,1000);
         ScrollPane scrollPane = new ScrollPane(gameCanvas);
+        
         gameBorderPane.setLeft(scrollPane);
         Scene gameScene = new Scene(gameBorderPane,800,800);   
+        
         primaryStage.setScene(gameScene);
         primaryStage.setTitle("Hive_Test");
         primaryStage.show();
-        /*******************************/
         
-        /* Bind du canvas */
-        gameCanvas.widthProperty().bind(gameBorderPane.widthProperty());
-        gameCanvas.heightProperty().bind(gameBorderPane.heightProperty());
+        Label choice = new Label("Choisir une piece :");
+        
+        VBox piecesToAdd = new VBox();
+        
+        Button grassHopper = new Button("GrassHoper");
+        Button queen = new Button("Queen");
+        Button beetle = new Button("Beetle");
+        Button ant = new Button("Ant");
+        Button  spider = new Button("Spider");
+        
+        grassHopper.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                piece = new Grasshopper(team);
+                choice.setText(piece.getName()+piece.getTeam());
+            }
+        });
+        
+        queen.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                piece = new Queen(team);
+                choice.setText(piece.getName()+piece.getTeam());
+            }
+        });
+        
+        beetle.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                piece = new Beetle(team);
+                choice.setText(piece.getName()+piece.getTeam());
+            }
+        });
+        
+        ant.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                piece = new Ant(team);
+                choice.setText(piece.getName()+piece.getTeam());
+            }
+        });
+        
+        spider.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                piece = new Spider(team);
+                choice.setText(piece.getName()+piece.getTeam());
+            }
+        });
+        
+        piecesToAdd.getChildren().addAll(grassHopper,queen,beetle,ant,spider,choice);
+        
+        gameBorderPane.setRight(piecesToAdd);
+        /*******************************/
+        /* Bind du canvas et du scrollPane*/
+        scrollPane.vvalueProperty().bind(primaryStage.widthProperty().multiply(0.80));
+        scrollPane.hvalueProperty().bind(primaryStage.heightProperty());
+       
+        gameCanvas.widthProperty().bind(scrollPane.vvalueProperty());
+        gameCanvas.heightProperty().bind(scrollPane.hvalueProperty());
         /******************/
         
         /*Initialisation du core et tests basiques*/
@@ -68,9 +136,9 @@ public class InterfaceJavaFX extends Application{
                         for(int j = 0;j<poly.get(i).size();j++){
                             if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
                                 
-                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null && pieceChoose == null){
+                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
                                     System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    System.out.println(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));
+                                    System.out.println("Déplacements possibles : " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));
                                     pieceChoose = new Coord(i,j);
                                 }
                                 else if( core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()==null && pieceChoose != null){
@@ -93,11 +161,17 @@ public class InterfaceJavaFX extends Application{
                     for(int i = 0;i<poly.size();i++){
                         for(int j = 0;j<poly.get(i).size();j++){
                             if(poly.get(i).get(j).contains(fdp)){
-                                System.out.println("Clidroit" + i + " " + j);
+                                System.out.println("Clic droit" + i + " " + j);
                                 if(core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
-                                    core.addPiece(new Queen(team), new Coord(i, j));
-                                    team = (team+1)%2;
-                                    initPoly(core);
+                                    if(piece != null){
+                                        core.addPiece(piece, new Coord(i, j));
+                                        piece = null;
+                                        team = (team+1)%2;
+                                        initPoly(core);
+                                    }
+                                    else{
+                                        System.out.println("Pas de pieces choisies");
+                                    }
                                 }
                                 else{
                                     System.err.println("On ajoute pas sur une case non cliquable");
