@@ -1,47 +1,54 @@
 package main.java.model;
 
 public class State {
-	
+
 	private Board board;
-	private Player player1;
-	private Player player2;
-	
-	public State(Board board, Player player1, Player player2) {
+	private Player[] players;
+	private int currentPlayer;
+
+	public State(Board board, Player[] players, int currentPlayer) {
 		this.board = board;
-		this.player1 = player1;
-		this.player2 = player2;
+		this.players = players;
+		this.currentPlayer = currentPlayer;
 	}
-	
+
 	public State(State s) {
 		this.board = new Board(s.getBoard());
-		this.player1 = new Player(s.getPlayer1());
-		this.player2 = new Player(s.getPlayer2());
+		this.players = new Player[2];
+		this.players[0] = new Player(s.getPlayers()[0]);
+		this.players[1] = new Player(s.getPlayers()[1]);
+		this.currentPlayer = s.getCurrentPlayer();
 	}
-	
+
 	public State() {
 		this.board = new Board();
-		this.player1 = new Player(0);
-		this.player2 = new Player(1);
+		this.players[0] = new Player(0);
+		this.players[1] = new Player(1);
+		this.currentPlayer = 0;
 	}
 
 	public Board getBoard() {
 		return board;
 	}
+
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	public Player getPlayer1() {
-		return player1;
+
+	public Player[] getPlayers() {
+		return players;
 	}
-	public void setPlayer1(Player player1) {
-		this.player1 = player1;
+
+	public void setPlayers(Player[] players) {
+		this.players = players;
 	}
-	public Player getPlayer2() {
-		return player2;
+
+	public int getCurrentPlayer() {
+		return currentPlayer;
 	}
-	public void setPlayer2(Player player2) {
-		this.player2 = player2;
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
-	
 
 }
