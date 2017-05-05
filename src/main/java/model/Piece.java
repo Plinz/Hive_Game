@@ -1,5 +1,6 @@
 package main.java.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import main.java.utils.Coord;
@@ -9,6 +10,7 @@ public abstract class Piece implements Cloneable{
 	protected String name;
 	protected int team;
 	protected String description;
+	protected List<Coord> possibleMovement;
 
     @Override
     public String toString() {
@@ -21,6 +23,7 @@ public abstract class Piece implements Cloneable{
 		this.name = name;
 		this.team = team;
 		this.description = description;
+		this.possibleMovement = new ArrayList<Coord>();
 	}
 	
 	public String getName() {
@@ -47,6 +50,14 @@ public abstract class Piece implements Cloneable{
 		this.description = description;
 	}
 
+	public List<Coord> getPossibleMovement() {
+		return possibleMovement;
+	}
+
+	public void setPossibleMovement(List<Coord> possibleMovement) {
+		this.possibleMovement = possibleMovement;
+	}
+
 	@Override
 	public Piece clone(){
 		
@@ -59,6 +70,9 @@ public abstract class Piece implements Cloneable{
 	    clone.description = new String(this.description);
 	    clone.name = new String(this.name);
 	    clone.team = this.team;
+	    clone.possibleMovement = new ArrayList<Coord>();
+	    for (Coord coord : this.possibleMovement)
+	    	clone.possibleMovement.add(new Coord(coord.getX(), coord.getY()));
 	    
 	    return clone;
 	}

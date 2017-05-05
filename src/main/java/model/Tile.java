@@ -6,13 +6,15 @@ public class Tile {
 	
 	private Piece piece;
 	private boolean blocked;
+	private boolean highlight;
 	private int x;
 	private int y;
 	private int z;
 	
-	public Tile(Piece piece, boolean blocked, int x, int y, int z) {
+	public Tile(Piece piece, boolean blocked, boolean highlight, int x, int y, int z) {
 		this.piece = piece;
 		this.blocked = blocked;
+		this.highlight = highlight;
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -20,6 +22,7 @@ public class Tile {
 	public Tile(Tile t) {
 		this.piece = t.piece != null ? t.getPiece().clone() : null;
 		this.blocked = t.isBlocked();
+		this.highlight = t.isHighlight();
 		this.x = t.getX();
 		this.y = t.getY();
 		this.z = t.getZ();
@@ -28,6 +31,7 @@ public class Tile {
 	public Tile(int i, int j, int k) {
 		this.piece = null;
 		this.blocked = false;
+		this.highlight = false;
 		this.x = i;
 		this.y = j;
 		this.z = k;
@@ -63,6 +67,12 @@ public class Tile {
 		this.z = z;
 	}
 
+	public boolean isHighlight() {
+		return highlight;
+	}
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
+	}
 	public Coord getCoord(){
 		return new Coord(this.x, this.y);
 	}
