@@ -35,23 +35,23 @@ public class Ant extends Piece {
 	}
 
 	private Coord nextBox(Coord coord, Board board) {
-		if (board.getTile(coord.getEast()) == null && board.getNeighbors(coord.getEast()).size() != 1
-				&& (board.getTile(coord.getSouthEast()) == null || board.getTile(coord.getNorthEast()) == null))
+		if (board.getTile(coord.getEast()) == null && board.getPieceNeighbors(coord.getEast()).size() != 1
+				&& (board.getTile(coord.getSouthEast()).getPiece() == null || board.getTile(coord.getNorthEast()).getPiece() == null))
 			return coord.getEast();
-		if (board.getTile(coord.getSouthEast()) == null && board.getNeighbors(coord.getSouthEast()).size() != 1
-				&& (board.getTile(coord.getSouthWest()) == null || board.getTile(coord.getEast()) == null))
+		if (board.getTile(coord.getSouthEast()) == null && board.getPieceNeighbors(coord.getSouthEast()).size() != 1
+				&& (board.getTile(coord.getSouthWest()).getPiece() == null || board.getTile(coord.getEast()).getPiece() == null))
 			return coord.getSouthEast();
-		if (board.getTile(coord.getSouthWest()) == null && board.getNeighbors(coord.getSouthWest()).size() != 1
-				&& (board.getTile(coord.getWest()) == null || board.getTile(coord.getSouthEast()) == null))
+		if (board.getTile(coord.getSouthWest()) == null && board.getPieceNeighbors(coord.getSouthWest()).size() != 1
+				&& (board.getTile(coord.getWest()).getPiece() == null || board.getTile(coord.getSouthEast()).getPiece() == null))
 			return coord.getSouthWest();
-		if (board.getTile(coord.getWest()) == null && board.getNeighbors(coord.getWest()).size() != 1
-				&& (board.getTile(coord.getNorthWest()) == null || board.getTile(coord.getSouthWest()) == null))
+		if (board.getTile(coord.getWest()) == null && board.getPieceNeighbors(coord.getWest()).size() != 1
+				&& (board.getTile(coord.getNorthWest()).getPiece() == null || board.getTile(coord.getSouthWest()).getPiece() == null))
 			return coord.getWest();
-		if (board.getTile(coord.getNorthWest()) == null && board.getNeighbors(coord.getNorthWest()).size() != 1
-				&& (board.getTile(coord.getNorthEast()) == null || board.getTile(coord.getWest()) == null))
+		if (board.getTile(coord.getNorthWest()) == null && board.getPieceNeighbors(coord.getNorthWest()).size() != 1
+				&& (board.getTile(coord.getNorthEast()).getPiece() == null || board.getTile(coord.getWest()).getPiece() == null))
 			return coord.getNorthWest();
-		if (board.getTile(coord.getNorthEast()) == null && board.getNeighbors(coord.getNorthEast()).size() != 1
-				&& (board.getTile(coord.getEast()) == null || board.getTile(coord.getNorthWest()) == null))
+		if (board.getTile(coord.getNorthEast()) == null && board.getPieceNeighbors(coord.getNorthEast()).size() != 1
+				&& (board.getTile(coord.getEast()).getPiece() == null || board.getTile(coord.getNorthWest()).getPiece() == null))
 			return coord.getNorthEast();
 		return coord;
 	}
