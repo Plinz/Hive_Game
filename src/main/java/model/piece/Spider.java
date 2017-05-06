@@ -11,6 +11,8 @@ import main.java.utils.Coord;
 
 public class Spider extends Piece {
 
+	private static final long serialVersionUID = 1194394371161156625L;
+
 	public Spider(int team) {
 		super(Consts.SPIDER_NAME, team, "Spider description");
 	}

@@ -1,12 +1,14 @@
 package main.java.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import main.java.utils.Coord;
 
-public abstract class Piece implements Cloneable{
+public abstract class Piece implements Cloneable, Serializable{
 	
+	private static final long serialVersionUID = 673440018064999695L;
 	protected String name;
 	protected int team;
 	protected String description;
@@ -50,14 +52,6 @@ public abstract class Piece implements Cloneable{
 		this.description = description;
 	}
 
-	public List<Coord> getPossibleMovement() {
-		return possibleMovement;
-	}
-
-	public void setPossibleMovement(List<Coord> possibleMovement) {
-		this.possibleMovement = possibleMovement;
-	}
-
 	@Override
 	public Piece clone(){
 		
@@ -79,10 +73,9 @@ public abstract class Piece implements Cloneable{
 	    return clone;
 	}
 
+	public void clear() {
+		this.possibleMovement = null;
+		//this.highlighted = false;
+	}
 
-//	//TODO
-//	public boolean accepte(Visitor v){
-//		v.visit(this);
-//	}
-//	
 }

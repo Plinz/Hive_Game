@@ -1,5 +1,6 @@
 package main.java.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,9 @@ import main.java.model.piece.Grasshopper;
 import main.java.model.piece.Queen;
 import main.java.model.piece.Spider;
 
-public class Player {
+public class Player implements Serializable{
 	
+	private static final long serialVersionUID = 4185691264228822669L;
 	private String name;
 	private int team;
 	private List<Piece> inventory;

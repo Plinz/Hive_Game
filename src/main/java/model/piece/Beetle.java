@@ -11,6 +11,8 @@ import main.java.utils.Coord;
 
 public class Beetle extends Piece {
 
+	private static final long serialVersionUID = -8993644035879598044L;
+
 	public Beetle(int team) {
 		super(Consts.BEETLE_NAME, team, "Beetle description");
 	}

@@ -1,13 +1,15 @@
 package main.java.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import main.java.utils.Coord;
 import main.java.view.BoardDrawer;
 
-public class Board {
+public class Board implements Serializable{
 	
+	private static final long serialVersionUID = -9006505176631946800L;
 	private List<List<List<Tile>>> board;
 	
 	public Board(){
@@ -265,6 +267,17 @@ public class Board {
 			if (tile.getZ() != t.getZ())
 				list.add(t);
 		return list;
+	}
+
+	public void clearPossibleMovement() {
+		for(List<List<Tile>> column : this.board){
+			for(List<Tile> box : column){
+				for(Tile tile : box){
+					if(tile != null && tile.getPiece() != null)
+						tile.getPiece().clear();
+				}
+			}
+		}
 	}
 
 }
