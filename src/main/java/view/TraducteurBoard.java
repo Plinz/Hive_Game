@@ -19,6 +19,7 @@ public class TraducteurBoard {
     private CoordGene<Double> moveOrigin; 
     
     TraducteurBoard(){
+        moveOrigin = new CoordGene<Double>(sizeHex,sizeHex);
         moveOrigin.setX(sizeHex);
         moveOrigin.setY(sizeHex);
     }
