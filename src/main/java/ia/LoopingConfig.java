@@ -5,7 +5,7 @@ import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 /*
-this class is used to run algorithms on in an optimal way
+this class is used to run movements & heuristics algorithms on in an optimal way
 It has a double representation : 
     _-_-_Array -> Used for a O(1) access to a tile given the coords
                     each node contents : piece (type & team), coords (x,y,z) + some bools (stuck, visited ...)
@@ -38,20 +38,31 @@ public class LoopingConfig {
         }
     }
 
+    /*
+    ****************************     Testers   *************************
+     */
+    public boolean isFreeNode(LoopingConfigNode node) {
+        return (node.piece == 0);
+    }
+
+    public boolean isFreeCoord(Coord coord) {
+        return (this.getNode(coord.getX(), coord.getY()).piece == 0);
+    }
+
     /**
      * **************************** getters ****************************
      */
     //search by coordinates
-    public LoopingConfigNode getNode(byte x, byte y) {
+    public LoopingConfigNode getNode(int x, int y) {
         LoopingConfigNode node = array[x];
         while ((node != null) && (node.getY() != y)) {
             node = node.getNext();
         }
         return node;
     }
+
     //search by type (eg get coords of white spider 2)
     // -> careful, there's no info about height
-
     public Coord getCoord(int piece) {
         return new Coord((int) stconf.getX(piece), (int) stconf.getY(piece));
     }
@@ -61,27 +72,27 @@ public class LoopingConfig {
      */
     ///One by one
     public LoopingConfigNode getNorthEast(LoopingConfigNode node) {
-        return this.getNode((byte) (node.getX() + 1), (byte) (node.getY() - 1));
+        return this.getNode((node.getX() + 1), (node.getY() - 1));
     }
 
     public LoopingConfigNode getNorthWest(LoopingConfigNode node) {
-        return this.getNode((byte) (node.getX()), (byte) (node.getY() - 1));
+        return this.getNode((node.getX()), (node.getY() - 1));
     }
 
     public LoopingConfigNode getEast(LoopingConfigNode node) {
-        return this.getNode((byte) (node.getX() + 1), (byte) (node.getY()));
+        return this.getNode((node.getX() + 1), (node.getY()));
     }
 
     public LoopingConfigNode getWest(LoopingConfigNode node) {
-        return this.getNode((byte) (node.getX() - 1), (byte) (node.getY()));
+        return this.getNode((node.getX() - 1), (node.getY()));
     }
 
     public LoopingConfigNode getSouthEast(LoopingConfigNode node) {
-        return this.getNode((byte) (node.getX()), (byte) (node.getY() + 1));
+        return this.getNode((node.getX()), (node.getY() + 1));
     }
 
     public LoopingConfigNode getSouthWest(LoopingConfigNode node) {
-        return this.getNode((byte) (node.getX() - 1), (byte) (node.getY() + 1));
+        return this.getNode((node.getX() - 1), (node.getY() + 1));
     }
 
     //All of them -> 2 implementations 
@@ -139,7 +150,7 @@ public class LoopingConfig {
     /**
      * ************ Deplacements ****************************
      */
-    public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) throws CloneNotSupportedException {
+    public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) {
         byte piece_type = (byte) (node.piece % nbPiecesPerColor);
         if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
@@ -153,10 +164,79 @@ public class LoopingConfig {
             return getPossibleAntDestinations(node);
         } else {
             System.err.println("Erreur : Impossible de reconnaitre le type de pièce");
-            return null;
+            return new ArrayList<>();
         }
     }
 
+    /**
+     * ***************************** Sliding Bugs ******************
+     */
+    ///Getting the available neighbors when sliding -> method used to calculate
+    ///displacements of the ant, spider & queen.
+    /// it's a Cube->Cube method so for spider & ant move, we can use result to call method on it
+    /// this method does check both freedom_to_move & permanent_contact rules, but not one_hive
+    public ArrayList<Coord> getPossibleSlidingDestinations(Coord coord) {
+        Coord neighbors[] = coord.getNeighborsInArray();
+        ArrayList<Coord> result = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            // tricky condition -> if neighbor[i] is free 
+            if (this.isFreeCoord(neighbors[i])) {
+                // and if one & only one of both (i-1,i+1) neighbors are free 
+                if ((this.isFreeCoord(neighbors[(i - 1) % 6])) && (!this.isFreeCoord(neighbors[(i + 1) % 6]))
+                        || (!this.isFreeCoord(neighbors[(i - 1) % 6])) && (this.isFreeCoord(neighbors[(i + 1) % 6]))) {
+                    result.add(neighbors[i]);
+                }
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }
+
+        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        ArrayList<StoringConfig> DestAfterOneMove = new ArrayList<>(), DestAfterTwoMove = new ArrayList<>(), PossibleDest = new ArrayList<>();
+
+        //getting possible dests after one move
+        for (int i = 0; i < 6; i++) {
+            if ((neighbors[i].getPiece() == 0)
+                    && ((neighbors[(i + 1) % 6].getPiece() == 0) && (neighbors[(i - 1) % 6].getPiece() != 0))
+                    || (neighbors[(i + 1) % 6].getPiece() != 0) && (neighbors[(i - 1) % 6].getPiece() == 0)) {
+
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) {
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }
+
+        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
+        int i;
+        for (i = 0; i < neighbors.length; i++) {
+            //testing gates : function to be implemented
+            if ((neighbors[i].getPiece() == 0)
+                    && ((neighbors[(i + 1) % neighbors.length].getPiece() == 0) && (neighbors[(i - 1) % neighbors.length].getPiece() != 0)
+                    || (neighbors[(i + 1) % neighbors.length].getPiece() != 0) && (neighbors[(i - 1) % neighbors.length].getPiece() == 0))) {
+                StoringConfig newConf = new StoringConfig(this.stconf.config.length);
+                System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
+                //actualizing the coordinates of the queen
+                newConf.setX((int) node.getPiece(), (byte) neighbors[i].getX());
+                newConf.setY((int) node.getPiece(), (byte) neighbors[i].getY());
+                possibleDest.add(newConf);
+            }
+        }
+        return possibleDest;
+    }
+
+    
+    /********************************** Other Bugs  *****************************/
+    
     public ArrayList<StoringConfig> getPossibleAntDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -169,33 +249,6 @@ public class LoopingConfig {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) throws CloneNotSupportedException {
-        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
-            return new ArrayList<>();
-        }
-
-        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
-        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
-        int i;
-        for (i = 0; i < neighbors.length; i++) {
-            //testing gates : function to be implemented
-            if ((neighbors[i].getPiece() == (byte) 0)
-                    && ((neighbors[(i + 1) % neighbors.length].getPiece() == (byte) 0) && (neighbors[(i - 1) % neighbors.length].getPiece() != (byte) 0)
-                    || (neighbors[(i + 1) % neighbors.length].getPiece() != (byte) 0) && (neighbors[(i - 1) % neighbors.length].getPiece() == (byte) 0))) {
-                StoringConfig newConf = new StoringConfig(this.stconf.config.length);
-                System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
-                //actualizing the coordinates of the queen
-                newConf.setX((int) node.getPiece(), neighbors[i].getX());
-                newConf.setY((int) node.getPiece(), neighbors[i].getY());
-                possibleDest.add(newConf);
-            }
-        }
-        return possibleDest;
-    }
 
     /*
     *****************         One hive rule     ******************************

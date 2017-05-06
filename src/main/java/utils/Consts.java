@@ -27,4 +27,7 @@ public class Consts {
     public static final double SIDE_SIZE = 20;
     public static final double X_ORIGIN = 20;
     public static final double Y_ORIGIN = 0;
+    
+    //MACRO NOMBRE DE VOISINS
+    public static final int SIX 6;
 }

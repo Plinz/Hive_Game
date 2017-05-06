@@ -13,7 +13,7 @@ package main.java.ia;
 
 public class LoopingConfigNode {
     
-    byte x, y, z, piece;
+    int x, y, z, piece;
     boolean stuck, isVisited, isOnBoard ;
     LoopingConfigNode next;
     
@@ -21,31 +21,31 @@ public class LoopingConfigNode {
         this.x = config.getX(index);
         this.y = config.getY(index);
         this.z = config.getZ(index);
-        this.piece = (byte) index;
+        this.piece =  index;
         this.stuck = config.isStuck(index);
         this.isOnBoard = config.isOnBoard(index);
         this.isVisited = false;
         this.next = null;
     }
     
-    public byte getX()
+    public int getX()
     {
         return this.x;
     }
     
-    public byte getY()
+    public int getY()
     {
         return this.y;
     }
     
-    public byte getZ()
+    public int getZ()
     {
         return this.z;
     }
     
-    public byte getPiece()
+    public int getPiece()
     {
-        return this.getPiece();
+        return this.piece;
     }
     
     public boolean isStuck()

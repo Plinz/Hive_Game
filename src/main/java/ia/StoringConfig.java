@@ -156,7 +156,7 @@ public class StoringConfig implements Cloneable{
     public byte getX(int index) {
         return (byte) (config[index] >> 24);
     }
-
+    
     public byte getY(int index) {
         return (byte) ((config[index] & 0x00FF0000) >> 16);
     }
