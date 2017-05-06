@@ -118,7 +118,7 @@ public class InterfaceJavaFX extends Application{
         scrollPane.vvalueProperty().bind(primaryStage.widthProperty().multiply(0.80));
         scrollPane.hvalueProperty().bind(primaryStage.heightProperty());
        
-        gameCanvas.widthProperty().bind(scrollPane.vvalueProperty());
+       gameCanvas.widthProperty().bind(scrollPane.vvalueProperty());
         gameCanvas.heightProperty().bind(scrollPane.hvalueProperty());
         /******************/
         
@@ -136,25 +136,25 @@ public class InterfaceJavaFX extends Application{
                     for(int i = 0;i<poly.size();i++){
                         for(int j = 0;j<poly.get(i).size();j++){
                             if(poly.get(i).get(j).contains(fdp) && core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
-                                
-                                if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
-                                    System.err.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    System.out.println("Déplacements possibles : \n" + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));
-                                    pieceChoose = new Coord(i,j);
-                                }
-                                else if( core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()==null && pieceChoose != null){
-                                    System.err.println("Déplacement de la piece choisie");
-                                    core.getCurrentState().getBoard().movePiece(pieceChoose, new Coord(i, j));
+                                if( pieceChoose != null && core.getDestination().contains(new Coord(i, j))){
+                                    System.out.println("Déplacement de la piece choisie");
+                                    core.movePiece(pieceChoose, new Coord(i, j));
                                     pieceChoose = null;
                                     initPoly(core);
                                 }
+                                 else if(core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece()!=null){
+                                    System.out.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
+                                    pieceChoose = new Coord(i,j);
+                                    core.setDestination((ArrayList<Coord>) core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(new Coord(i, j)), core.getCurrentState().getBoard()));                                 
+                                }
+                                
                                 else{
-                                    System.err.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
+                                    System.out.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
                                 }
                             }
                             else 
                                 if(poly.get(i).get(j).contains(fdp))
-                                    System.err.println("Pas cliquable  " + i + " " + j + " !  ");
+                                    System.out.println("Pas cliquable  " + i + " " + j + " !  ");
                         }
                     } 
                 }

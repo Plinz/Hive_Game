@@ -1,6 +1,7 @@
 package main.java.model;
 
 import main.java.utils.Coord;
+import main.java.view.BoardDrawer;
 
 public class Tile {
 	
@@ -36,6 +37,10 @@ public class Tile {
 		this.y = j;
 		this.z = k;
 	}
+        public boolean accept(BoardDrawer b){
+            b.visit(this);
+            return false;
+        }
 	public Piece getPiece() {
 		return piece;
 	}

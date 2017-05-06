@@ -17,8 +17,8 @@ public class Ant extends Piece {
 
 	@Override
 	public List<Coord> getPossibleMovement(Tile tile, Board board) {
-		if (this.possibleMovement != null)
-			return this.possibleMovement;
+		//if (this.possibleMovement != null)
+		//	return this.possibleMovement;
 
 		List<Coord> list = new ArrayList<Coord>();
 		if (!tile.isBlocked()) {

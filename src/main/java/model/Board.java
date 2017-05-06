@@ -45,6 +45,15 @@ public class Board {
 
     public boolean accept(BoardDrawer b){
         b.visit(this);
+        for(int i = 0;i<this.board.size();i++){
+            for(int j = 0;j<this.board.get(i).size();j++){
+                int taille = this.board.get(i).get(j).size();
+                if(  taille != 0){
+                    this.board.get(i).get(j).get(taille-1).accept(b);
+                    
+                }
+            }
+        }
         return false;
     }
 	
@@ -267,4 +276,4 @@ public class Board {
 		return list;
 	}
 
-}
+                        }

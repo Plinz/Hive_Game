@@ -40,9 +40,8 @@ public class TraducteurBoard {
     }
     
     public CoordGene<Double> axialToPixel(CoordGene<Double> hex){
-       
-        double x = sizeHex * Math.sqrt(3) * (hex.getX() + hex.getY()/2);
-        double y = sizeHex * 3/2 * hex.getY();
+        double x = sizeHex * Math.sqrt(3.0) * (hex.getX() + hex.getY()/2.0);
+        double y = sizeHex * 3.0/2.0 * hex.getY();
         
         return new CoordGene<>(x,y);
         
