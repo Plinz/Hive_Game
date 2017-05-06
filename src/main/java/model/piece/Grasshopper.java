@@ -11,6 +11,8 @@ import main.java.utils.Coord;
 
 public class Grasshopper extends Piece {
 
+	private static final long serialVersionUID = -5556000093860837183L;
+
 	public Grasshopper(int team) {
 		super(Consts.GRASSHOPPER_NAME, team, "Grasshopper description");
 

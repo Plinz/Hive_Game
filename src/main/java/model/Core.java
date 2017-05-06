@@ -1,10 +1,14 @@
 package main.java.model;
 
+import java.io.Serializable;
+
+import main.java.utils.Consts;
 import main.java.utils.Coord;
 import main.java.view.BoardDrawer;
 
-public class Core {
+public class Core implements Serializable{
 
+	private static final long serialVersionUID = 4165722506890173058L;
 	private History history;
 	private State currentState;
 	private int mode;
@@ -27,18 +31,40 @@ public class Core {
 		return false;
 	}
 
-	public void addPiece(Piece piece, Coord coord) {
-		this.history.saveState(this.currentState);
-		this.currentState.getBoard().addPiece(piece, coord);
-		this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece);
-		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+	public boolean addPiece(Piece piece, Coord coord) {
+		if ((this.currentState.getTurn() != 6 && this.currentState.getTurn() != 7) || checkQueenRule() || piece.getName()==Consts.QUEEN_NAME){
+			this.history.saveState(this.currentState);
+			this.currentState.getBoard().addPiece(piece, coord);
+			this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece);
+			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+			this.currentState.nextTurn();
+			this.currentState.getBoard().clearPossibleMovement();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public void movePiece(Coord source, Coord target) {
-		this.history.saveState(this.currentState);
-		this.currentState.getBoard().movePiece(source, target);
-		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		
+	public boolean movePiece(Coord source, Coord target) {
+		if (this.currentState.getTurn() > 4 || checkQueenRule()){
+			this.history.saveState(this.currentState);
+			this.currentState.getBoard().movePiece(source, target);
+			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+			this.currentState.nextTurn();
+			this.currentState.getBoard().clearPossibleMovement();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean checkQueenRule() {
+		for(Piece p : this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getInventory()){
+            System.out.println("Piece dans l'inventaire"+p.getName());
+			if(p.getName() == Consts.QUEEN_NAME)
+				return false;
+		}
+		return true;
 	}
 
 	public History getHistory() {

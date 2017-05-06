@@ -9,6 +9,8 @@ import main.java.utils.Coord;
 
 public class Pillbug extends Piece{
 
+	private static final long serialVersionUID = 927638636316794861L;
+
 	public Pillbug(int team) {
 		super("Pillbug", team, "Pillbug description");
 	}

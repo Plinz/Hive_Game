@@ -165,7 +165,8 @@ public class InterfaceJavaFX extends Application{
                                 System.out.println("Clic droit" + i + " " + j);
                                 if(core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null){
                                     if(piece != null){
-                                        core.addPiece(piece, new Coord(i, j));
+                                        boolean ret = core.addPiece(piece, new Coord(i, j));
+                                        System.out.println("retour :"+ret);
                                         piece = null;
                                         team = (team+1)%2;
                                         choice.setText("Le joueur " + team + " doit choisir sa pièce !");

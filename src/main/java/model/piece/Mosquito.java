@@ -9,6 +9,8 @@ import main.java.utils.Coord;
 
 public class Mosquito extends Piece{
 
+	private static final long serialVersionUID = 5187548050910157040L;
+
 	public Mosquito(int team) {
 		super("Mosquito", team, "Mosquito description");
 		// TODO Auto-generated constructor stub

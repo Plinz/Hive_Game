@@ -11,6 +11,8 @@ import main.java.utils.Coord;
 
 public class Queen extends Piece {
 
+	private static final long serialVersionUID = -3832557804456133927L;
+
 	public Queen(int team) {
 		super(Consts.QUEEN_NAME, team, "Queen description");
 

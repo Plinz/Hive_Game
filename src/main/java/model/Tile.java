@@ -1,9 +1,12 @@
 package main.java.model;
 
+import java.io.Serializable;
+
 import main.java.utils.Coord;
 
-public class Tile {
+public class Tile implements Serializable{
 	
+	private static final long serialVersionUID = -5798327086473001829L;
 	private Piece piece;
 	private boolean blocked;
 	private boolean highlight;

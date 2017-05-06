@@ -1,15 +1,20 @@
 package main.java.model;
 
-public class State {
+import java.io.Serializable;
 
+public class State implements Serializable{
+
+	private static final long serialVersionUID = -7410268289229213472L;
 	private Board board;
 	private Player[] players;
 	private int currentPlayer;
+	private int turn;
 
-	public State(Board board, Player[] players, int currentPlayer) {
+	public State(Board board, Player[] players, int currentPlayer, int turn) {
 		this.board = board;
 		this.players = players;
 		this.currentPlayer = currentPlayer;
+		this.turn = turn;
 	}
 
 	public State(State s) {
@@ -18,6 +23,7 @@ public class State {
 		this.players[0] = new Player(s.getPlayers()[0]);
 		this.players[1] = new Player(s.getPlayers()[1]);
 		this.currentPlayer = s.getCurrentPlayer();
+		this.turn = s.getTurn();
 	}
 
 	public State() {
@@ -26,8 +32,13 @@ public class State {
 		this.players[0] = new Player(0);
 		this.players[1] = new Player(1);
 		this.currentPlayer = 0;
+		this.turn = 0;
 	}
 
+	public void nextTurn(){
+		this.turn++;
+	}
+	
 	public Board getBoard() {
 		return board;
 	}
@@ -50,6 +61,14 @@ public class State {
 
 	public void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+
+	public int getTurn() {
+		return turn;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
 	}
 
 }
