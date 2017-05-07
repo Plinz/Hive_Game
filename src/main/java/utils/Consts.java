@@ -29,5 +29,5 @@ public class Consts {
     public static final double Y_ORIGIN = 0;
     
     //MACRO NOMBRE DE VOISINS
-    public static final int SIX 6;
+    public static final int SIX=6;
 }
