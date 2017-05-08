@@ -21,7 +21,7 @@ public class Consts {
     public static final String SPIDER_NAME = "Spider";
     public static final String QUEEN_NAME = "Queen";
     public static final String BEETLE_NAME = "Beetle";
-    public static final String GRASSHOPPER_NAME = "Grass hopper";
+    public static final String GRASSHOPPER_NAME = "Grasshopper";
     
     //MACROS COORDONNEES DESSIN PIECES
     public static final double SIDE_SIZE = 20;

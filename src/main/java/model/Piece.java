@@ -2,12 +2,45 @@ package main.java.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 import main.java.utils.Coord;
 
 public abstract class Piece implements Cloneable{
 	
 	protected String name;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.name);
+        hash = 83 * hash + this.team;
+        hash = 83 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Piece other = (Piece) obj;
+        if (this.team != other.team) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
 	protected int team;
 	protected String description;
 	protected List<Coord> possibleMovement;
@@ -79,10 +112,4 @@ public abstract class Piece implements Cloneable{
 	    return clone;
 	}
 
-
-//	//TODO
-//	public boolean accepte(Visitor v){
-//		v.visit(this);
-//	}
-//	
 }
