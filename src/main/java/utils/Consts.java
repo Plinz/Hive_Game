@@ -24,7 +24,7 @@ public class Consts {
     public static final String GRASSHOPPER_NAME = "Grasshopper";
     
     //MACROS COORDONNEES DESSIN PIECES
-    public static final double SIDE_SIZE = 20;
-    public static final double X_ORIGIN = 20;
+    public static final double SIDE_SIZE = 30;
+    public static final double X_ORIGIN = 30;
     public static final double Y_ORIGIN = 0;
 }

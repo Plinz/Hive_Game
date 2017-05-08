@@ -13,15 +13,22 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import main.java.model.*;
 import main.java.utils.Consts;
@@ -44,6 +51,8 @@ public class InterfaceJavaFX extends Application{
         /*Initialisation du core et tests basiques*/
         core = new Core(2);
         initPoly(core);
+        
+        /*Initialisation de l'obsbservable */
         core.getCurrentState().getCurrentPlayer().addListener(new ChangeListener<Number>(){
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -52,6 +61,7 @@ public class InterfaceJavaFX extends Application{
                 piecesToAdd.getChildren().remove(0, piecesToAdd.getChildren().size());
                 piecesToAdd.getChildren().add(choice);
                 piecesToAdd.getChildren().addAll(initButtonByInventory());
+                
             }
         
         });
@@ -72,7 +82,7 @@ public class InterfaceJavaFX extends Application{
         choice.setWrapText(true);
         
         piecesToAdd = new VBox();
-        
+        piecesToAdd.setAlignment(Pos.TOP_CENTER);
         piecesToAdd.getChildren().add(choice);
         piecesToAdd.getChildren().addAll(initButtonByInventory());
         
@@ -102,7 +112,9 @@ public class InterfaceJavaFX extends Application{
                                 }
                                  else if(core.getCurrentState().getBoard().getTile(coord).getPiece() != null){
                                     //System.out.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    core.initPieceChoose(coord);                                
+                                    if(core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer().get()) {
+                                        core.initPieceChoose(coord);                                
+                                    }                               
                                 }
                                 
                                 else{
@@ -169,7 +181,9 @@ public class InterfaceJavaFX extends Application{
         for(int i = 0; i < inventory.size();i++){
             String name = inventory.get(i).getName();
             int team = inventory.get(i).getTeam();
-            Button b = new Button(name);
+            Button b = new Button();
+            b.setMinSize(30, 30);
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name+team+".png")), CornerRadii.EMPTY, Insets.EMPTY)));
             
             b.setOnMousePressed(new EventHandler<MouseEvent>() {
 
