@@ -21,10 +21,10 @@ public class Consts {
     public static final String SPIDER_NAME = "Spider";
     public static final String QUEEN_NAME = "Queen";
     public static final String BEETLE_NAME = "Beetle";
-    public static final String GRASSHOPPER_NAME = "Grasshopper";
+    public static final String GRASSHOPPER_NAME = "Grass hopper";
     
     //MACROS COORDONNEES DESSIN PIECES
     public static final double SIDE_SIZE = 20;
-    public static final double X_ORIGIN = 20;
+    public static double X_ORIGIN = 20;
     public static final double Y_ORIGIN = 0;
 }

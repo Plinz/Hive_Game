@@ -42,6 +42,11 @@ public class BoardDrawer {
         return false;
     }
     
+    public boolean visit(Coord c){
+        drawPolygon(Consts.X_ORIGIN, Consts.Y_ORIGIN, c.getX(), c.getY(), Consts.SIDE_SIZE, "Selected");
+        return false;
+    }
+    
     public boolean visit(Tile t){
         if (t.getPiece() != null){
                if(t.getPiece().getTeam() == 0)
@@ -119,6 +124,12 @@ public class BoardDrawer {
             case "Opaque" : 
                 gc.setGlobalAlpha(0.5);
                 gc.setFill(Color.BLUE);
+                gc.fillPolygon(xd, yd, 6);
+                gc.setGlobalAlpha(1);
+                break;
+            case "Selected" :
+                gc.setGlobalAlpha(0.5);
+                gc.setFill(Color.RED);
                 gc.fillPolygon(xd, yd, 6);
                 gc.setGlobalAlpha(1);
                 break;

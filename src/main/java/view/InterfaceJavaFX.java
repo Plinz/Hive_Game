@@ -44,6 +44,8 @@ public class InterfaceJavaFX extends Application{
         /*Initialisation du core et tests basiques*/
         core = new Core(2);
         initPoly(core);
+        
+        /*Initialisation de l'obsbservable */
         core.getCurrentState().getCurrentPlayer().addListener(new ChangeListener<Number>(){
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -102,7 +104,9 @@ public class InterfaceJavaFX extends Application{
                                 }
                                  else if(core.getCurrentState().getBoard().getTile(coord).getPiece() != null){
                                     //System.out.println("Tu as cliqué sur le polygone  " + i + " " + j + " ! " + core.getCurrentState().getBoard().getTile(new Coord(i, j)).getPiece());
-                                    core.initPieceChoose(coord);                                
+                                    if(core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer().get()) {
+                                        core.initPieceChoose(coord);                                
+                                    }                               
                                 }
                                 
                                 else{

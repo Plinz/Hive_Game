@@ -47,6 +47,8 @@ public class Core {
 		this.currentState.getBoard().accept(b);
                 if(destination != null)
                     b.visit(destination);
+                if(pieceChoose != null)
+                    b.visit(pieceChoose);
 		return false;
 	}
 
