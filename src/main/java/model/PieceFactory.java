@@ -31,9 +31,9 @@ public class PieceFactory {
                 return new Ant(0);
             case "Ant1":
                 return new Ant(1);
-            case "Grass hopper0":
+            case "Grasshopper0":
                 return new Grasshopper(0);
-            case "Grass hopper1":
+            case "Grasshopper1":
                 return new Grasshopper(1);    
             default: 
                 break;
