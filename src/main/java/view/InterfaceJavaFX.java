@@ -13,15 +13,22 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import main.java.model.*;
 import main.java.utils.Consts;
@@ -54,6 +61,7 @@ public class InterfaceJavaFX extends Application{
                 piecesToAdd.getChildren().remove(0, piecesToAdd.getChildren().size());
                 piecesToAdd.getChildren().add(choice);
                 piecesToAdd.getChildren().addAll(initButtonByInventory());
+                
             }
         
         });
@@ -74,7 +82,7 @@ public class InterfaceJavaFX extends Application{
         choice.setWrapText(true);
         
         piecesToAdd = new VBox();
-        
+        piecesToAdd.setAlignment(Pos.TOP_CENTER);
         piecesToAdd.getChildren().add(choice);
         piecesToAdd.getChildren().addAll(initButtonByInventory());
         
@@ -173,7 +181,9 @@ public class InterfaceJavaFX extends Application{
         for(int i = 0; i < inventory.size();i++){
             String name = inventory.get(i).getName();
             int team = inventory.get(i).getTeam();
-            Button b = new Button(name);
+            Button b = new Button();
+            b.setMinSize(30, 30);
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name+team+".png")), CornerRadii.EMPTY, Insets.EMPTY)));
             
             b.setOnMousePressed(new EventHandler<MouseEvent>() {
 
