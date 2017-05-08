@@ -27,11 +27,12 @@ public class Beetle extends Piece {
 				Coord curr = neighbors.get(i);
 				Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
 				Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
-				if (board.getPieceNeighbors(curr).size() != 1 && respectMovementRule(tile, prev, next, curr, board))
+				if (respectMovementRule(tile, prev, next, curr, board))
 					list.add(curr);
 			}
 		}
 		this.possibleMovement = list;
+		System.out.println(list);
 		return list;
 	}
 
@@ -39,8 +40,15 @@ public class Beetle extends Piece {
 		Tile target = board.getTile(targetCoord);
 		Tile left = board.getTile(leftCoord);
 		Tile right = board.getTile(rightCoord);
-		int floor = target.getZ() < from.getZ() ? from.getZ() : target.getZ();
-		return ((left.getPiece() != null & right.getPiece() == null)
-				|| (left.getPiece() == null & right.getPiece() != null) || left.getZ() < floor || right.getZ() < floor);
+		int floor = from.getZ();
+		if (target.getPiece() != null || target.getZ()<floor)
+			floor = target.getZ() > from.getZ() ? target.getZ() : from.getZ()+1;
+		if (floor == 0 && target.getPiece() == null && (left.getPiece() != null & right.getPiece() == null)
+		|| (left.getPiece() == null & right.getPiece() != null))
+			return true;
+		else if (/*floor != 0 && */(left.getPiece() == null || right.getPiece() == null || left.getZ() != floor || right.getZ() != floor))
+			return true;
+		System.out.println("floor="+floor+" from="+from.getZ()+" target"+target.getZ()+" left="+left.getZ()+" right="+right.getZ()+" \ntargetP="+target.getPiece()+" leftP="+left.getPiece()+" rightP="+right.getPiece());
+		return false;
 	}
 }
