@@ -63,7 +63,6 @@ public class Board implements Serializable{
                 int taille = this.board.get(i).get(j).size();
                 if(  taille != 0){
                     this.board.get(i).get(j).get(taille-1).accept(b);
-                    
                 }
             }
        }

@@ -17,15 +17,17 @@ public class RefreshJavaFX extends AnimationTimer{
 
     Core core;
     BoardDrawer drawer;
-
-    RefreshJavaFX(Core core, Canvas c) {
+    Highlighter h;
+    RefreshJavaFX(Core core, Canvas c, Highlighter h) {
         this.core = core;
         drawer = new BoardDrawer(c);
+        this.h =h; 
     }
 
     @Override
     public void handle(long now) {
-        if (core.accept(drawer)){
-        }
+       core.accept(drawer);
+       h.accept(drawer);
+
     }
 }

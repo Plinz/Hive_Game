@@ -3,6 +3,7 @@ package main.java.ia;
 import java.util.ArrayList;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
+import main.java.utils.Cube;
 
 /*
 this class is used to run movements & heuristics algorithms on in an optimal way
@@ -50,6 +51,10 @@ public class LoopingConfig {
         return (this.getNode(coord.getX(), coord.getY()).piece == 0);
     }
 
+    public boolean isFreeCoord(Cube<Integer> coord) {
+        return (this.getNode(coord.getX(), coord.getY()).piece == 0);
+    }
+    
     //check if 2 tiles have same color -> takes in account the fact beetle can cover
     //a tile.
     public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
@@ -265,6 +270,22 @@ public class LoopingConfig {
         return result;
     }
 
+    public ArrayList<Cube> getPossibleSlidingDestinations(Cube coord) {
+        Cube neighbors[] = coord.getNeighborsInArray();
+        ArrayList<Cube> result = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            // tricky condition -> if neighbor[i] is free 
+            if (this.isFreeCoord(neighbors[i])) {
+                // and if one & only one of both (i-1,i+1) neighbors are free 
+                if ((this.isFreeCoord(neighbors[(i - 1) % 6])) && (!this.isFreeCoord(neighbors[(i + 1) % 6]))
+                        || (!this.isFreeCoord(neighbors[(i - 1) % 6])) && (this.isFreeCoord(neighbors[(i + 1) % 6]))) {
+                    result.add(neighbors[i]);
+                }
+            }
+        }
+        return result;
+    }
+    
     public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
@@ -323,7 +344,6 @@ public class LoopingConfig {
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i;
         for (i = 0; i < neighbors.length; i++) {
-            //testing gates : function to be implemented
             if ((neighbors[i].getPiece() == 0)
                     && ((neighbors[(i + 1) % neighbors.length].getPiece() == 0) && (neighbors[(i - 1) % neighbors.length].getPiece() != 0)
                     || (neighbors[(i + 1) % neighbors.length].getPiece() != 0) && (neighbors[(i - 1) % neighbors.length].getPiece() == 0))) {
@@ -386,7 +406,14 @@ public class LoopingConfig {
      * ******************************** Other Bugs ****************************
      */
     public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (node.isStuck())
+            return new ArrayList<>();      
+        
+        //int maxHeight;
+        //for 
+        
+        //temporary
+        return null;
     }
 
     public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
