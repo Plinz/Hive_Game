@@ -342,23 +342,23 @@ public class LoopingConfig {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
-        
+
         //now we 'remove' the ant tile from the board, we 'll put it back in place
         //before leaving the method
         int originalX = node.getX(), originalY = node.getY();
         node.x = -1;
         node.y = -1;
-        
+
         ArrayList<Coord> possibleDestinations = new ArrayList<>(), temp;
-        ArrayList<Coord>  newlyAdded = getPossibleSlidingDestinations(new Coord(originalX,originalY));
+        ArrayList<Coord> newlyAdded = getPossibleSlidingDestinations(new Coord(originalX, originalY));
         boolean newCoordWasAdded = true;
-        while (newCoordWasAdded){
+        while (newCoordWasAdded) {
             ArrayList<Coord> newlyAddedtemp = new ArrayList<>();
             newCoordWasAdded = false;
-            for (Coord coord : newlyAdded){
+            for (Coord coord : newlyAdded) {
                 temp = getPossibleSlidingDestinations(coord);
-                for (Coord newCoord : temp){
-                    if (!possibleDestinations.contains(newCoord)){
+                for (Coord newCoord : temp) {
+                    if (!possibleDestinations.contains(newCoord)) {
                         possibleDestinations.add(coord);
                         newCoordWasAdded = true;
                         newlyAddedtemp.add(newCoord);
@@ -379,7 +379,7 @@ public class LoopingConfig {
         node.y = originalY;
 
         return result;
-        
+
     }
 
     /**
@@ -390,7 +390,79 @@ public class LoopingConfig {
     }
 
     public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        StoringConfig newStoringConfig;
+        Coord currentCoord;
+        //East
+        currentCoord = this.getCoord(node).getEast();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getEast();
+            }
+            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+        }
+        //NorthEast
+        currentCoord = this.getCoord(node).getNorthEast();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getNorthEast();
+            }
+            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+        }
+        //SouthEast
+        currentCoord = this.getCoord(node).getSouthEast();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getSouthEast();
+            }
+            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+        }
+        //West
+        currentCoord = this.getCoord(node).getWest();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getWest();
+            }
+            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+        }
+        //NorthWest
+        currentCoord = this.getCoord(node).getNorthWest();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getNorthWest();
+            }
+            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+        }
+        //SouthWest
+        currentCoord = this.getCoord(node).getSouthWest();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getSouthWest();
+            }
+            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+        }
+        return result;
     }
 
 
