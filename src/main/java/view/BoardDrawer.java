@@ -78,7 +78,7 @@ public class BoardDrawer extends Visitor {
     }
 
     @Override
-    public boolean visit(Coord c) {
+    public boolean visit(CoordGene<Integer> c) {
              double sizeHex = traducteur.getSizeHex();
               
               double a = Math.sqrt((sizeHex*sizeHex)- ((sizeHex/2)*(sizeHex/2)));

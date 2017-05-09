@@ -42,7 +42,7 @@ public class InterfaceJavaFX extends Application {
     private Label choice;
     private VBox piecesToAdd;
     private int pieceToChoose;
-    private Coord pieceToMove;
+    private CoordGene<Integer> pieceToMove;
     private Highlighter highlighted;
 
     @Override
@@ -99,8 +99,8 @@ public class InterfaceJavaFX extends Application {
                 int j = coordAx.getY().intValue();
 
                 if (m.getButton() == MouseButton.PRIMARY) {
-                    if (core.getCurrentState().getBoard().getTile(new Coord(i, j)) != null) {
-                        Coord coord = new Coord(i, j);
+                    if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
+                        CoordGene<Integer> coord = new CoordGene<>(i, j);
                         if (pieceToMove != null && core.getCurrentState().getBoard().getTile(pieceToMove).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(pieceToMove), core.getCurrentState().getBoard()).contains(coord)/*&& core.getDestination().contains(coord)*/) {
                             //System.out.println("Déplacement de la piece choisie");
                             core.movePiece(pieceToMove, coord);

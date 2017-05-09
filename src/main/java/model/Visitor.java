@@ -7,6 +7,7 @@ package main.java.model;
 
 import main.java.model.*;
 import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 import main.java.view.Highlighter;
 
 /**
@@ -21,6 +22,6 @@ public abstract class Visitor {
 
     protected abstract boolean visit(Piece p);
     
-    public abstract boolean visit(Coord c);
+    public abstract boolean visit(CoordGene<Integer> c);
 
 }

@@ -10,19 +10,20 @@ import java.util.List;
 import main.java.model.Visitor;
 import main.java.view.BoardDrawer;
 import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 /**
  *
  * @author duvernet
  */
 public class Highlighter {
-     private List<Coord> listTohighlight;
+     private List<CoordGene<Integer>> listTohighlight;
      
      Highlighter(){}
      
      public boolean accept(Visitor v){
          if( listTohighlight != null){
-            for(Coord c : getListTohighlight()){
+            for(CoordGene<Integer> c : getListTohighlight()){
                 v.visit(c);
             }
          }
@@ -32,14 +33,14 @@ public class Highlighter {
     /**
      * @return the listCoord
      */
-    public List<Coord> getListTohighlight() {
+    public List<CoordGene<Integer>> getListTohighlight() {
         return listTohighlight;
     }
 
     /**
      * @param listCoord the listCoord to set
      */
-    public void setListTohighlight(List<Coord> listCoord) {
+    public void setListTohighlight(List<CoordGene<Integer>> listCoord) {
         this.listTohighlight = listCoord;
     }
 }
