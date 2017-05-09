@@ -418,7 +418,7 @@ public class LoopingConfig {
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
         }
-        //East
+        //SouthEast
         currentCoord = this.getCoord(node).getSouthEast();
         if (!this.isFreeCoord(currentCoord)) {
             while (!this.isFreeCoord(currentCoord)) {
@@ -429,7 +429,7 @@ public class LoopingConfig {
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
         }
-        //East
+        //West
         currentCoord = this.getCoord(node).getWest();
         if (!this.isFreeCoord(currentCoord)) {
             while (!this.isFreeCoord(currentCoord)) {
@@ -440,7 +440,7 @@ public class LoopingConfig {
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
         }
-        //East
+        //NorthWest
         currentCoord = this.getCoord(node).getNorthWest();
         if (!this.isFreeCoord(currentCoord)) {
             while (!this.isFreeCoord(currentCoord)) {
@@ -451,7 +451,7 @@ public class LoopingConfig {
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
         }
-        //East
+        //SouthWest
         currentCoord = this.getCoord(node).getSouthWest();
         if (!this.isFreeCoord(currentCoord)) {
             while (!this.isFreeCoord(currentCoord)) {
