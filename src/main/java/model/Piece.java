@@ -3,6 +3,7 @@ package main.java.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import main.java.utils.Coord;
 
@@ -13,6 +14,36 @@ public abstract class Piece implements Cloneable, Serializable{
 	protected int team;
 	protected String description;
 	protected List<Coord> possibleMovement;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + this.team;
+        hash = 29 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Piece other = (Piece) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (this.team != other.team) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {

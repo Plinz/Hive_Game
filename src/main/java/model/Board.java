@@ -57,9 +57,18 @@ public class Board implements Serializable{
 	}
 
 	public boolean accept(BoardDrawer b){
-        b.visit(this);
-        return false;
-    }
+         b.visit(this);
+        for(int i = 0;i<this.board.size();i++){
+            for(int j = 0;j<this.board.get(i).size();j++){
+                int taille = this.board.get(i).get(j).size();
+                if(  taille != 0){
+                    this.board.get(i).get(j).get(taille-1).accept(b);
+                    
+                }
+            }
+       }
+         return false;
+     }
 	
 	public Tile getTile(Coord coord){
 		Tile ret = null;

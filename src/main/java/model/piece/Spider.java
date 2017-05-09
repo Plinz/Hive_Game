@@ -35,13 +35,15 @@ public class Spider extends Piece {
 				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
 						&& ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
 								|| (board.getTile(prev).getPiece() == null & board.getTile(next).getPiece() != null))) {
-					list.add(curr);
+					if(curr != null)
+                                             list.add(curr);
 					while (deep++ < 2 && curr != null && !curr.equals(tile.getCoord())){
 						curr = nextBox(curr, board, list, tile);
 						System.err.println(curr);
 					}
 					deep = 0;
-					list.add(curr);
+                                        if(curr != null)
+                                            list.add(curr);
 				}
 			}
 		}

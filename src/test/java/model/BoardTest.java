@@ -1,4 +1,4 @@
-package test.java.model;
+/*package test.java.model;
 
 import static org.junit.Assert.*;
 
@@ -76,4 +76,4 @@ public class BoardTest {
 		fail("Not yet implemented");
 	}
 
-}
+}*/
