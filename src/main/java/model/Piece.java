@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public abstract class Piece implements Cloneable, Serializable{
 	
@@ -13,7 +13,7 @@ public abstract class Piece implements Cloneable, Serializable{
 	protected String name;
 	protected int team;
 	protected String description;
-	protected List<Coord> possibleMovement;
+	protected List<CoordGene<Integer>> possibleMovement;
 
     @Override
     public int hashCode() {
@@ -50,7 +50,7 @@ public abstract class Piece implements Cloneable, Serializable{
         return "\nPiece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
     }
 	
-	public abstract List<Coord> getPossibleMovement(Tile tile, Board board);
+	public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
 
 	public Piece(String name, int team, String description) {
 		this.name = name;
@@ -95,10 +95,10 @@ public abstract class Piece implements Cloneable, Serializable{
 	    clone.description = new String(this.description);
 	    clone.name = new String(this.name);
 	    clone.team = this.team;
-	    clone.possibleMovement = new ArrayList<Coord>();
+	    clone.possibleMovement = new ArrayList<CoordGene<Integer>>();
 	    if (this.possibleMovement != null){
-		    for (Coord coord : this.possibleMovement)
-		    	clone.possibleMovement.add(new Coord(coord.getX(), coord.getY()));
+		    for (CoordGene<Integer> coord : this.possibleMovement)
+		    	clone.possibleMovement.add(new CoordGene<Integer>(coord.getX(), coord.getY()));
 	    }
 	    
 	    return clone;

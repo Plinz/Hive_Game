@@ -5,7 +5,7 @@ import java.util.List;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public class Mosquito extends Piece{
 
@@ -17,7 +17,7 @@ public class Mosquito extends Piece{
 	}
 
 	@Override
-	public List<Coord> getPossibleMovement(Tile tile, Board board) {
+	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
 		// TODO Auto-generated method stub
 		return null;
 	}

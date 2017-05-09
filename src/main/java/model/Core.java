@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.utils.Consts;
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
 public class Core implements Serializable {
@@ -33,7 +33,7 @@ public class Core implements Serializable {
 		return false;
 	}
 
-	public boolean addPiece(int piece, Coord coord) {
+	public boolean addPiece(int piece, CoordGene<Integer> coord) {
 		if ((this.currentState.getTurn() != 6 && this.currentState.getTurn() != 7) || checkQueenRule()
 				|| piece == Consts.QUEEN) {
 			this.history.saveState(this.currentState);
@@ -47,7 +47,7 @@ public class Core implements Serializable {
 		}
 	}
 
-	public boolean movePiece(Coord source, Coord target) {
+	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
 		if (checkQueenRule()) {
 			this.history.saveState(this.currentState);
 			this.currentState.getBoard().movePiece(source, target);
@@ -67,23 +67,23 @@ public class Core implements Serializable {
 		return true;
 	}
 
-	public List<Coord> getPossibleMovement(Coord coord) {
+	public List<CoordGene<Integer>> getPossibleMovement(CoordGene<Integer> coord) {
 		if (checkQueenRule()) {
 			Board board = this.currentState.getBoard();
 			Tile tile = board.getTile(coord);
 			return tile.getPiece().getPossibleMovement(tile, board);
 		}
-		return new ArrayList<Coord>();
+		return new ArrayList<CoordGene<Integer>>();
 	}
 
-	public List<Coord> getPossibleAdd() {
-		List<Coord> pos = new ArrayList<Coord>();
+	public List<CoordGene<Integer>> getPossibleAdd(int piece) {
+		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
 		switch (this.currentState.getTurn()){
 		case 0 :
-			pos.add(new Coord(0, 0));
+			pos.addAll(new CoordGene<Integer>(0, 0).getNeighbors());
 			break;
 		case 1 :
-			pos.addAll(new Coord(1, 1).getNeighbors());
+			pos.addAll(new CoordGene<Integer>(1, 1).getNeighbors());
 			break;
 		default :
 			Board b = this.currentState.getBoard();
