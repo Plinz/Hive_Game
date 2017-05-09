@@ -11,6 +11,7 @@ public class Board implements Serializable{
 	
 	private static final long serialVersionUID = -9006505176631946800L;
 	private List<List<List<Tile>>> board;
+	private int nbPieceOnTheBoard;
 	
 	public Board(){
 		this.board = new ArrayList<List<List<Tile>>>();
@@ -20,6 +21,7 @@ public class Board implements Serializable{
 		List<List<Tile>> column = new ArrayList<List<Tile>>();
 		column.add(box);
 		this.board.add(column);
+		this.nbPieceOnTheBoard = 0;
 	}
       
 	public Board(Board b) {
@@ -34,6 +36,7 @@ public class Board implements Serializable{
 			}
 			this.board.add(newColumn);
 		}
+		this.nbPieceOnTheBoard = b.getNbPieceOnTheBoard();
 	}
         
 
@@ -45,7 +48,15 @@ public class Board implements Serializable{
 		this.board = board;
 	}
 
-    public boolean accept(BoardDrawer b){
+    public int getNbPieceOnTheBoard() {
+		return nbPieceOnTheBoard;
+	}
+
+	public void setNbPieceOnTheBoard(int nbPieceOnTheBoard) {
+		this.nbPieceOnTheBoard = nbPieceOnTheBoard;
+	}
+
+	public boolean accept(BoardDrawer b){
         b.visit(this);
         return false;
     }
@@ -115,6 +126,8 @@ public class Board implements Serializable{
 			this.board.get(added.getX()).get(added.getY()-1).add(new Tile(added.getX(), added.getY()-1, 0));
 		if(this.board.get(added.getX()+1).get(added.getY()-1).size() == 0)
 			this.board.get(added.getX()+1).get(added.getY()-1).add(new Tile(added.getX()+1, added.getY()-1, 0));
+		
+		this.nbPieceOnTheBoard++;
 	}
 	
 	public Piece removePiece(Coord coord){
@@ -134,8 +147,8 @@ public class Board implements Serializable{
 			}
 			else
 				box.remove(tile);
-                }
-		
+		}
+		this.nbPieceOnTheBoard--;
 		return piece;
 			
 	}
@@ -254,6 +267,14 @@ public class Board implements Serializable{
 	public List<Tile> getPieceNeighbors(Coord coord){
 		List<Tile> list = new ArrayList<Tile>();
 		for (Tile t : getNeighbors(coord))
+			if (t != null && t.getPiece() != null)
+				list.add(t);
+		return list;
+	}
+	
+	public List<Tile> getPieceNeighbors(Tile tile){
+		List<Tile> list = new ArrayList<Tile>();
+		for (Tile t : getNeighbors(tile))
 			if (t != null && t.getPiece() != null)
 				list.add(t);
 		return list;

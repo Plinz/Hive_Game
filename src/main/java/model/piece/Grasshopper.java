@@ -5,6 +5,7 @@ import java.util.List;
 
 import main.java.model.Board;
 import main.java.model.Piece;
+import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
@@ -24,7 +25,7 @@ public class Grasshopper extends Piece {
 			return this.possibleMovement;
 		
 		ArrayList<Coord> list = new ArrayList<Coord>();
-		if (!tile.isBlocked()) {
+		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
 			Coord coord = tile.getCoord();
 			
 			Tile tmp = board.getTile(coord.getEast());

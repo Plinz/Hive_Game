@@ -5,6 +5,7 @@ import java.util.List;
 
 import main.java.model.Board;
 import main.java.model.Piece;
+import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
@@ -22,7 +23,7 @@ public class Beetle extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		List<Coord> list = new ArrayList<Coord>();
-		if (!tile.isBlocked()) {
+		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
 			List<Coord> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
 				Coord curr = neighbors.get(i);
