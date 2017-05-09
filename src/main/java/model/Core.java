@@ -33,12 +33,11 @@ public class Core implements Serializable {
 		return false;
 	}
 
-	public boolean addPiece(Piece piece, Coord coord) {
+	public boolean addPiece(int piece, Coord coord) {
 		if ((this.currentState.getTurn() != 6 && this.currentState.getTurn() != 7) || checkQueenRule()
-				|| piece.getName() == Consts.QUEEN_NAME) {
+				|| piece == Consts.QUEEN) {
 			this.history.saveState(this.currentState);
-			this.currentState.getBoard().addPiece(piece, coord);
-			this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece);
+			this.currentState.getBoard().addPiece(this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece), coord);
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
 			this.currentState.nextTurn();
 			this.currentState.getBoard().clearPossibleMovement();
@@ -77,25 +76,34 @@ public class Core implements Serializable {
 		return new ArrayList<Coord>();
 	}
 
-	public List<Coord> getPossibleAdd() {
+	public List<Coord> getPossibleAdd(int piece) {
 		List<Coord> pos = new ArrayList<Coord>();
-		Board b = this.currentState.getBoard();
-		Tile current;
-		List<Tile> neighbors;
-		Boolean sameTeam;
-		for (List<List<Tile>> column : b.getBoard()) {
-			for (List<Tile> box : column) {
-				sameTeam = true;
-				if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
-						&& !(neighbors = b.getPieceNeighbors(current.getCoord())).isEmpty()) {
-					for (Tile neighbor : neighbors) {
-						if (neighbor.getPiece().team != this.currentState.getCurrentPlayer()) {
-							sameTeam = false;
-							break;
+		switch (this.currentState.getTurn()){
+		case 0 :
+			pos.addAll(new Coord(0, 0).getNeighbors());
+			break;
+		case 1 :
+			pos.addAll(new Coord(1, 1).getNeighbors());
+			break;
+		default :
+			Board b = this.currentState.getBoard();
+			Tile current;
+			List<Tile> neighbors;
+			Boolean sameTeam;
+			for (List<List<Tile>> column : b.getBoard()) {
+				for (List<Tile> box : column) {
+					sameTeam = true;
+					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
+							&& !(neighbors = b.getPieceNeighbors(current.getCoord())).isEmpty()) {
+						for (Tile neighbor : neighbors) {
+							if (neighbor.getPiece().team != this.currentState.getCurrentPlayer()) {
+								sameTeam = false;
+								break;
+							}
 						}
+						if(sameTeam)
+							pos.add(current.getCoord());
 					}
-					if(sameTeam)
-						pos.add(current.getCoord());
 				}
 			}
 		}

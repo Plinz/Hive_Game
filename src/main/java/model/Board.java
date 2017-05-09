@@ -164,10 +164,8 @@ public class Board implements Serializable{
 	
 	public void movePiece(Coord coordSource, Coord coordTarget){
 		Tile source = this.getTile(coordSource);
-		//Tile target = this.getTile(coordTarget);
 		this.addPiece(source.getPiece(), coordTarget);
 		this.removePiece(source.getCoord());
-		//this.addPiece(piece, coordTarget);
 	}
 	
 	private void checkBoardSize(Coord coord){
