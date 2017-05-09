@@ -8,7 +8,7 @@ import main.java.model.Piece;
 import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public class Ant extends Piece {
 
@@ -19,19 +19,19 @@ public class Ant extends Piece {
 	}
 
 	@Override
-	public List<Coord> getPossibleMovement(Tile tile, Board board) {
+	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 
-		List<Coord> list = new ArrayList<Coord>();
+		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
 		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
-			Coord coord = tile.getCoord();
+			CoordGene<Integer> coord = tile.getCoord();
 
-			List<Coord> neighbors = coord.getNeighbors();
+			List<CoordGene<Integer>> neighbors = coord.getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
-				Coord curr = neighbors.get(i);
-				Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-				Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
+				CoordGene<Integer> curr = neighbors.get(i);
+				CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
+				CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
 				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
 						&& ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
 								|| (board.getTile(prev).getPiece() == null & board.getTile(next).getPiece() != null))) {
@@ -47,12 +47,13 @@ public class Ant extends Piece {
 
 	}
 
-	private Coord nextBox(Coord coord, Board board, List<Coord> list, Tile tile) {
-		List<Coord> neighbors = coord.getNeighbors();
+	private CoordGene<Integer> nextBox(CoordGene<Integer> coord, Board board, List<CoordGene<Integer>> list,
+			Tile tile) {
+		List<CoordGene<Integer>> neighbors = coord.getNeighbors();
 		for (int i = 0; i < neighbors.size(); i++) {
-			Coord curr = neighbors.get(i);
-			Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-			Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
+			CoordGene<Integer> curr = neighbors.get(i);
+			CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
+			CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
 			if (!list.contains(curr) && board.getTile(curr) != null && board.getTile(curr).getPiece() == null
 					&& board.getPieceNeighbors(curr).size() != 0
 					&& (board.getTile(prev) == null || board.getTile(next) == null
