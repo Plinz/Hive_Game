@@ -50,7 +50,6 @@ public class LoopingConfig {
         return (this.getNode(coord.getX(), coord.getY()).piece == 0);
     }
 
-    
     //check if 2 tiles have same color -> takes in account the fact beetle can cover
     //a tile.
     public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
@@ -272,37 +271,37 @@ public class LoopingConfig {
         }
         //now we 'remove' the spider tile from the board, we 'll put it back in place
         //before leaving the method
-        int originalX = node.getX(), originalY=node.getY();
+        int originalX = node.getX(), originalY = node.getY();
         node.x = -1;
-        node.y=-1;
+        node.y = -1;
         //getting possible coords after one move
-        ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX,originalY));
-        
+        ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX, originalY));
+
         //getting possible coords after 2 moves
         ArrayList<Coord> temp, CoordsAfterSecondMove = new ArrayList<>();
-        for (Coord coord : CoordsAfterFirstMove){
+        for (Coord coord : CoordsAfterFirstMove) {
             temp = getPossibleSlidingDestinations(coord);
-            for (Coord newCoord : temp){
-                if (!CoordsAfterSecondMove.contains(newCoord)){
+            for (Coord newCoord : temp) {
+                if (!CoordsAfterSecondMove.contains(newCoord)) {
                     CoordsAfterSecondMove.add(newCoord);
                 }
             }
         }
-        
+
         //getting possible coords after the 3rd move
         ArrayList<Coord> CoordsAfterThirdMove = new ArrayList<>();
-        for (Coord coord : CoordsAfterSecondMove){
+        for (Coord coord : CoordsAfterSecondMove) {
             temp = getPossibleSlidingDestinations(coord);
-            for (Coord newCoord : temp){
-                if(!CoordsAfterThirdMove.contains(newCoord)){
+            for (Coord newCoord : temp) {
+                if (!CoordsAfterThirdMove.contains(newCoord)) {
                     CoordsAfterThirdMove.add(newCoord);
                 }
             }
         }
-        
+
         //creating all the storing configs from the coords we obtained
         ArrayList<StoringConfig> result = new ArrayList<>();
-        for (Coord coord : CoordsAfterThirdMove){
+        for (Coord coord : CoordsAfterThirdMove) {
             StoringConfig newStConfig = new StoringConfig(stconf);
             newStConfig.setX(node.piece, (byte) coord.getX());
             newStConfig.setY(node.piece, (byte) coord.getY());
@@ -311,9 +310,9 @@ public class LoopingConfig {
         //reset the coords from the spider back to original ones
         node.x = originalX;
         node.y = originalY;
-        
+
         return result;
-        }
+    }
 
     public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
@@ -398,6 +397,9 @@ public class LoopingConfig {
         return true;
     }
 
+    /*
+     **************************      ToString *********************************
+     */
     public String toString() {
         String result = "Looping Config :\n";
         result += "player : " + player + ",turn =" + turn + ",pieces par joueur=" + nbPiecesPerColor + "\narray :\n";
@@ -408,28 +410,3 @@ public class LoopingConfig {
         return result;
     }
 }
-
-//may not be necessary
-/*public boolean noGateFound(LoopingConfigNode source, LoopingConfigNode destination) throws Exception
-    {
-        //method to be used only on adjacent tiles
-        //does not test the freeness of the destination tile
-        //does not test the constant contact
-        
-        LoopingConfigNode neighbors[] = this.getNeighbors(source);
-        int destIndex = 0;
-        
-        // /!\ CORRECTNESS OF THE SECOND CONDITION TO BE CHECKED
-        while((destIndex < neighbors.length) && (neighbors[destIndex] != destination))
-        {
-            destIndex += 1;
-        }
-        if (destIndex> neighbors.length)
-            throw new Exception("Source and destination nodes do not represent adjacent tiles !");
-        
-        if ((neighbors[(destIndex+1)%neighbors.length].getPiece() == (byte)0) || (neighbors[(destIndex-1)%neighbors.length].getPiece() == (byte)0))
-            return true;
-       
-        return false;
-
-    }*/
