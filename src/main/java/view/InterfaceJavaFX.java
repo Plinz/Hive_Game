@@ -5,13 +5,9 @@
  */
 package main.java.view;
 
-import java.awt.Polygon;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -30,6 +26,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
+import main.java.controller.ControllerButton;
 import main.java.model.*;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
@@ -44,7 +41,7 @@ public class InterfaceJavaFX extends Application {
     private Core core;
     private Label choice;
     private VBox piecesToAdd;
-    private Piece pieceToChoose;
+    private int pieceToChoose;
     private Coord pieceToMove;
     private Highlighter highlighted;
 
@@ -53,6 +50,7 @@ public class InterfaceJavaFX extends Application {
 
         /*Initialisation du core et tests basiques*/
         core = new Core(2);
+        pieceToChoose = new Integer(-1);
 
         BorderPane gameBorderPane = new BorderPane();
 
@@ -72,8 +70,7 @@ public class InterfaceJavaFX extends Application {
 
         piecesToAdd = new VBox();
         piecesToAdd.setAlignment(Pos.TOP_CENTER);
-        piecesToAdd.getChildren().add(choice);
-        piecesToAdd.getChildren().addAll(initButtonByInventory());
+        initPiecesToAdd();
 
         gameBorderPane.setRight(piecesToAdd);
         /**
@@ -96,7 +93,6 @@ public class InterfaceJavaFX extends Application {
             @Override
             public void handle(MouseEvent m) {
                 //Point2D mousePoint = new Point2D.Double(m.getX(), m.getY());
-
                 CoordGene<Double> coordPix = new CoordGene<>(m.getX(), m.getY());
                 CoordGene<Double> coordAx = t.pixelToAxial(coordPix);
                 int i = coordAx.getX().intValue();
@@ -109,13 +105,12 @@ public class InterfaceJavaFX extends Application {
                             //System.out.println("Déplacement de la piece choisie");
                             core.movePiece(pieceToMove, coord);
                             pieceToMove = null;
-                            pieceToChoose = null;
+                            pieceToChoose = -1;
                             initButtonByInventory();
                             choice.setText("Le joueur " + core.getCurrentState().getCurrentPlayer() + " doit choisir sa pièce !");
-                            piecesToAdd.getChildren().remove(0, piecesToAdd.getChildren().size());
-                            piecesToAdd.getChildren().add(choice);
-                            piecesToAdd.getChildren().addAll(initButtonByInventory());
+                            initPiecesToAdd();
                             highlighted.setListTohighlight(null);
+                            
                         } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
                             if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
                                 pieceToMove = coord;
@@ -123,24 +118,26 @@ public class InterfaceJavaFX extends Application {
                             }
                         } else {
                             System.out.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
-                            if (pieceToChoose != null) {
+                            if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord)) {
+                                System.err.println("lol");
                                 core.addPiece(pieceToChoose, coord);
                                 pieceToMove = null;
-                                pieceToChoose = null;
+                                pieceToChoose = -1;
                                 initButtonByInventory();
                                 choice.setText("Le joueur " + core.getCurrentState().getCurrentPlayer() + " doit choisir sa pièce !");
-                                piecesToAdd.getChildren().remove(0, piecesToAdd.getChildren().size());
-                                piecesToAdd.getChildren().add(choice);
-                                piecesToAdd.getChildren().addAll(initButtonByInventory());
+                                initPiecesToAdd();
                                 highlighted.setListTohighlight(null);
                             } else {
                                 pieceToMove = null;
-                                pieceToChoose = null;
+                                pieceToChoose = -1;
                                 highlighted.setListTohighlight(null);
                             }
                         }
                     } else {
                         System.out.println("Pas cliquable  " + i + " " + j + " !  ");
+                        pieceToMove = null;
+                        pieceToChoose = -1;
+                        highlighted.setListTohighlight(null);
                     }
                 }
             }
@@ -154,9 +151,9 @@ public class InterfaceJavaFX extends Application {
         r.start();
 
     }
+
     public List<Button> initButtonByInventory() {
 
-        System.out.println("Lol + " + core.getCurrentState().getCurrentPlayer());
         List<Piece> inventory = core.getCurrentState().getPlayers()[core.getCurrentState().getCurrentPlayer()].getInventory();
         List<Button> list = new ArrayList<>();
 
@@ -167,57 +164,24 @@ public class InterfaceJavaFX extends Application {
             b.setMinSize(30, 30);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            b.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-                    Piece piece = PieceFactory.create(name + team);
-                    pieceToChoose = piece;
-                    choice.setText(piece.getName() + piece.getTeam());
-                    highlighted.setListTohighlight(core.getPossibleAdd());
-                }
-            });
+            b.setOnMousePressed(new ControllerButton(this,highlighted,core, i));
             list.add(b);
         }
         return list;
     }
-
-    public Polygon addPoly(double x, double y, double i, double j, double size) {
-        double[] xd = new double[6];
-        double[] yd = new double[6];
-        double originX, originY;
-
-        if (j % 2 == 0) {
-            originX = x + (2 * size * i) + ((2 * size) * Math.floor(j / 2));
-        } else {
-            originX = x + (2 * size * i) + size + ((2 * size) * Math.floor(j / 2));
-
-        }
-        originY = y + (size * j) + (j * (size / 2));
-
-        int[] rx = new int[6];
-        int[] ry = new int[6];
-        xd[0] = originX;
-        yd[0] = originY;
-        xd[1] = originX + size;
-        yd[1] = originY + size / 2;
-        xd[2] = originX + size;
-        yd[2] = (originY + size) + size / 2;
-        xd[3] = originX;
-        yd[3] = originY + 2 * size;
-        xd[4] = originX - size;
-        yd[4] = (originY + size) + size / 2;
-        xd[5] = originX - size;
-        yd[5] = originY + size / 2;
-        for (int a = 0; a < 6; a++) {
-            rx[a] = (int) xd[a];
-            ry[a] = (int) yd[a];
-        }
-
-        return new Polygon(rx, ry, 6);
+    
+    public void initPiecesToAdd(){
+        piecesToAdd.getChildren().remove(0, piecesToAdd.getChildren().size());
+        piecesToAdd.getChildren().add(choice);
+        piecesToAdd.getChildren().addAll(initButtonByInventory());
     }
 
     public static void creer(String[] args) {
         launch(args);
+    }
+    
+    
+    public void setPieceToChoose(int pieceToChoose) {
+        this.pieceToChoose = pieceToChoose;
     }
 }

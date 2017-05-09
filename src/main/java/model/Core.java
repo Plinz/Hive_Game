@@ -76,11 +76,11 @@ public class Core implements Serializable {
 		return new ArrayList<Coord>();
 	}
 
-	public List<Coord> getPossibleAdd(int piece) {
+	public List<Coord> getPossibleAdd() {
 		List<Coord> pos = new ArrayList<Coord>();
 		switch (this.currentState.getTurn()){
 		case 0 :
-			pos.addAll(new Coord(0, 0).getNeighbors());
+			pos.add(new Coord(0, 0));
 			break;
 		case 1 :
 			pos.addAll(new Coord(1, 1).getNeighbors());
