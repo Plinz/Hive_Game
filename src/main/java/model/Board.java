@@ -95,7 +95,7 @@ public class Board implements Serializable{
 		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
 			added.setPiece(piece);
 		else
-			box.add(added = (new Tile(piece, false, false, coord.getX(), coord.getY(), box.size())));
+			box.add(added = (new Tile(piece, false, coord.getX(), coord.getY(), box.size())));
 
         if (coord.getY() == 0){
 			for (List<List<Tile>> column : this.board)
