@@ -45,15 +45,15 @@ public class LoopingConfig {
     ****************************     Testers   *************************
      */
     public boolean isFreeNode(LoopingConfigNode node) {
-        return (node.piece == 0);
+        return (node.getPiece() == 0);
     }
 
     public boolean isFreeCoord(Coord coord) {
-        return (this.getNode(coord.getX(), coord.getY()).piece == 0);
+        return (this.getNode(coord.getX(), coord.getY()).getPiece() == 0);
     }
 
     public boolean isFreeCoord(Cube<Integer> coord) {
-        return (this.getNode(coord.getX(), coord.getY(), coord.getZ()).piece == 0);
+        return (this.getNode(coord.getX(), coord.getY(), coord.getZ()).getPiece() == 0);
     }
     
     //check if 2 tiles have same color -> takes in account the fact beetle can cover
@@ -61,8 +61,8 @@ public class LoopingConfig {
     public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
         LoopingConfigNode node1Visible = array[node1.getX()];
         if (node1.stuck) {
-            while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.stuck))) {
-                node1Visible = node1Visible.next;
+            while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.isStuck()))) {
+                node1Visible = node1Visible.getNext();
             }
         } else {
             node1Visible = node1;
@@ -70,8 +70,8 @@ public class LoopingConfig {
 
         LoopingConfigNode node2Visible = array[node2.getX()];
         if (node2.stuck) {
-            while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.stuck))) {
-                node2Visible = node2Visible.next;
+            while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.isStuck()))) {
+                node2Visible = node2Visible.getNext();
             }
         } else {
             node2Visible = node1;
@@ -434,10 +434,10 @@ public class LoopingConfig {
                 if (node.getZ() > 0)
                     this.getNode(node.getX(), node.getY(), node.getZ()-1).setStuck(false);
                 
-                //paralizing the piece underneath the beetle
-                if (neighbors[i].getPiece() != 0)
+                //paralizing the piece underneath the beetle and actualizing Z coordinate of the beetle
+                if (!(this.isFreeNode(neighbors[i])))
                 {
-                    neighbors[i].setStuck(true);
+                    newConf.setIsStuck(neighbors[i].getPiece(), true);
                     newConf.setZ((int) node.getPiece(), (byte) (node.getZ()-(node.getZ()-1-(neighbors[i].getZ()))));
                 }
                 else
@@ -451,8 +451,7 @@ public class LoopingConfig {
             }
         }
         
-        //temporary
-        return null;
+        return possibleDest;
     }
 
     public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
