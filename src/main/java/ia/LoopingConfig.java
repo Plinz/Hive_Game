@@ -339,7 +339,47 @@ public class LoopingConfig {
     }
 
     public ArrayList<StoringConfig> getPossibleAntDestinations(LoopingConfigNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }
+        
+        //now we 'remove' the ant tile from the board, we 'll put it back in place
+        //before leaving the method
+        int originalX = node.getX(), originalY = node.getY();
+        node.x = -1;
+        node.y = -1;
+        
+        ArrayList<Coord> possibleDestinations = new ArrayList<>(), temp;
+        ArrayList<Coord>  newlyAdded = getPossibleSlidingDestinations(new Coord(originalX,originalY));
+        boolean newCoordWasAdded = true;
+        while (newCoordWasAdded){
+            ArrayList<Coord> newlyAddedtemp = new ArrayList<>();
+            newCoordWasAdded = false;
+            for (Coord coord : newlyAdded){
+                temp = getPossibleSlidingDestinations(coord);
+                for (Coord newCoord : temp){
+                    if (!possibleDestinations.contains(newCoord)){
+                        possibleDestinations.add(coord);
+                        newCoordWasAdded = true;
+                        newlyAddedtemp.add(newCoord);
+                    }
+                }
+            }
+            newlyAdded = newlyAddedtemp;
+        }
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (Coord coord : possibleDestinations) {
+            StoringConfig newStConfig = new StoringConfig(stconf);
+            newStConfig.setX(node.piece, (byte) coord.getX());
+            newStConfig.setY(node.piece, (byte) coord.getY());
+            result.add(newStConfig);
+        }
+        //reset the coords from the spider back to original ones
+        node.x = originalX;
+        node.y = originalY;
+
+        return result;
+        
     }
 
     /**
