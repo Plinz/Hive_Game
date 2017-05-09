@@ -215,4 +215,20 @@ public class StoringConfig {
         config[index] |= toAdd;
     }
 
+    public String toString() {
+        String result = "Storing Config :\n\tOn board :";
+        for (int i = 0; i < config.length; i++) {
+            if (this.isOnBoard(i)) {
+                result += "piece:" + i + "->x,y,z=" + this.getX(i) + "," + this.getY(i) + "," + this.getZ(i) + ".";
+            }
+            if (this.isStuck(i)){
+                result += "Stuck.\n";
+            } else {
+                result +="\n";
+            }
+
+        }
+        return result;
+    }
+
 }

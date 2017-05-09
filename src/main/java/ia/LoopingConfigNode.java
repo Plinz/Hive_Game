@@ -68,4 +68,17 @@ public class LoopingConfigNode {
         return this.next;
     }
     
+    public String toString(){
+        String result ="Piece : "+piece+";(x,y,z)="+x+","+y+","+z+".";
+        if(isOnBoard){
+            result += "On board.";
+        } else {
+            result += "In hand.";
+        }
+        if (isStuck()){
+            result +="Is stuck.";
+        }
+        result +="\n";
+        return result;
+    }
 }

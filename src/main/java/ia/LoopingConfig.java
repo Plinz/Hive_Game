@@ -253,6 +253,8 @@ public class LoopingConfig {
         }
         //now we 'remove' the spider tile from the board, we 'll put it back in place
         //before 
+        
+        /*
         LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
         ArrayList<StoringConfig> DestAfterOneMove = new ArrayList<>(), DestAfterTwoMove = new ArrayList<>(), PossibleDest = new ArrayList<>();
 
@@ -263,7 +265,7 @@ public class LoopingConfig {
                     || (neighbors[(i + 1) % 6].getPiece() != 0) && (neighbors[(i - 1) % 6].getPiece() == 0)) {
 
             }
-        }
+        }*/
         return null;
     }
 
@@ -350,7 +352,22 @@ public class LoopingConfig {
         return true;
     }
 
-    //may not be necessary
+    public String toString(){
+        String result="Looping Config :\n";
+        result += "player : "+player+",turn ="+turn+",pieces par joueur="+nbPiecesPerColor+"\narray :\n";
+        for (int i=0 ; i<array.length ; i++){
+            result+=array[i].toString();
+        }
+        result +="stconf :\n"+stconf.toString();
+        return result;
+    }
+}
+
+
+
+
+
+//may not be necessary
     /*public boolean noGateFound(LoopingConfigNode source, LoopingConfigNode destination) throws Exception
     {
         //method to be used only on adjacent tiles
@@ -374,4 +391,3 @@ public class LoopingConfig {
         return false;
 
     }*/
-}
