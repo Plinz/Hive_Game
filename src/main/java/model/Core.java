@@ -28,7 +28,7 @@ public class Core implements Serializable {
 	}
 
 	public boolean accept(BoardDrawer b) {
-		b.visit(this);
+		//b.visit(this);
 		this.currentState.getBoard().accept(b);
 		return false;
 	}
