@@ -27,7 +27,7 @@ public class LoopingConfig {
     public LoopingConfig(StoringConfig stconf) {
         this.stconf = stconf;
         this.array = new LoopingConfigNode[stconf.config.length];
-        this.nbPiecesPerColor =  (stconf.config.length / 2);
+        this.nbPiecesPerColor = (stconf.config.length / 2);
         int i;
         LoopingConfigNode node;
         //head insertion
@@ -37,7 +37,7 @@ public class LoopingConfig {
             this.array[stconf.getX(i)] = node;
         }
     }
-    
+
 
     /*
     ****************************     Testers   *************************
@@ -50,9 +50,31 @@ public class LoopingConfig {
         return (this.getNode(coord.getX(), coord.getY()).piece == 0);
     }
 
+    
+    //check if 2 tiles have same color -> takes in account the fact beetle can cover
+    //a tile.
     public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
-        return (((node1.getPiece() < nbPiecesPerColor) && (node2.getPiece() < nbPiecesPerColor))
-                || ((node1.getPiece() >= nbPiecesPerColor) && (node2.getPiece() >= nbPiecesPerColor)));
+        LoopingConfigNode node1Visible = array[node1.getX()];
+        if (node1.stuck) {
+            while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.stuck))) {
+                node1Visible = node1Visible.next;
+            }
+        } else {
+            node1Visible = node1;
+        }
+
+        LoopingConfigNode node2Visible = array[node2.getX()];
+        if (node2.stuck) {
+            while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.stuck))) {
+                node2Visible = node2Visible.next;
+            }
+        } else {
+            node2Visible = node1;
+        }
+
+        return (((node1Visible.getPiece() < nbPiecesPerColor) && (node2Visible.getPiece() < nbPiecesPerColor))
+                || ((node1Visible.getPiece() >= nbPiecesPerColor) && (node2Visible.getPiece() >= nbPiecesPerColor)));
+
     }
 
     /**
@@ -168,10 +190,8 @@ public class LoopingConfig {
     /**
      * ************ Deplacements ****************************
      */
-    
-    
     public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) {
-        byte piece_type =  (byte) (node.piece % nbPiecesPerColor);
+        byte piece_type = (byte) (node.piece % nbPiecesPerColor);
         if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
         } else if (piece_type <= Consts.SPIDER2) {
@@ -188,7 +208,6 @@ public class LoopingConfig {
         }
     }
 
-    
     //Get coords of positions where a new tile can be placed by player
     //called with player as param so no redundant call for each piece in player's hand
     public ArrayList<Coord> getNewPossiblePositions(int player) {
@@ -252,22 +271,49 @@ public class LoopingConfig {
             return new ArrayList<>();
         }
         //now we 'remove' the spider tile from the board, we 'll put it back in place
-        //before 
+        //before leaving the method
+        int originalX = node.getX(), originalY=node.getY();
+        node.x = -1;
+        node.y=-1;
+        //getting possible coords after one move
+        ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX,originalY));
         
-        /*
-        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
-        ArrayList<StoringConfig> DestAfterOneMove = new ArrayList<>(), DestAfterTwoMove = new ArrayList<>(), PossibleDest = new ArrayList<>();
-
-        //getting possible dests after one move
-        for (int i = 0; i < 6; i++) {
-            if ((neighbors[i].getPiece() == 0)
-                    && ((neighbors[(i + 1) % 6].getPiece() == 0) && (neighbors[(i - 1) % 6].getPiece() != 0))
-                    || (neighbors[(i + 1) % 6].getPiece() != 0) && (neighbors[(i - 1) % 6].getPiece() == 0)) {
-
+        //getting possible coords after 2 moves
+        ArrayList<Coord> temp, CoordsAfterSecondMove = new ArrayList<>();
+        for (Coord coord : CoordsAfterFirstMove){
+            temp = getPossibleSlidingDestinations(coord);
+            for (Coord newCoord : temp){
+                if (!CoordsAfterSecondMove.contains(newCoord)){
+                    CoordsAfterSecondMove.add(newCoord);
+                }
             }
-        }*/
-        return null;
-    }
+        }
+        
+        //getting possible coords after the 3rd move
+        ArrayList<Coord> CoordsAfterThirdMove = new ArrayList<>();
+        for (Coord coord : CoordsAfterSecondMove){
+            temp = getPossibleSlidingDestinations(coord);
+            for (Coord newCoord : temp){
+                if(!CoordsAfterThirdMove.contains(newCoord)){
+                    CoordsAfterThirdMove.add(newCoord);
+                }
+            }
+        }
+        
+        //creating all the storing configs from the coords we obtained
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (Coord coord : CoordsAfterThirdMove){
+            StoringConfig newStConfig = new StoringConfig(stconf);
+            newStConfig.setX(node.piece, (byte) coord.getX());
+            newStConfig.setY(node.piece, (byte) coord.getY());
+            result.add(newStConfig);
+        }
+        //reset the coords from the spider back to original ones
+        node.x = originalX;
+        node.y = originalY;
+        
+        return result;
+        }
 
     public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
@@ -352,23 +398,19 @@ public class LoopingConfig {
         return true;
     }
 
-    public String toString(){
-        String result="Looping Config :\n";
-        result += "player : "+player+",turn ="+turn+",pieces par joueur="+nbPiecesPerColor+"\narray :\n";
-        for (int i=0 ; i<array.length ; i++){
-            result+=array[i].toString();
+    public String toString() {
+        String result = "Looping Config :\n";
+        result += "player : " + player + ",turn =" + turn + ",pieces par joueur=" + nbPiecesPerColor + "\narray :\n";
+        for (int i = 0; i < array.length; i++) {
+            result += array[i].toString();
         }
-        result +="stconf :\n"+stconf.toString();
+        result += "stconf :\n" + stconf.toString();
         return result;
     }
 }
 
-
-
-
-
 //may not be necessary
-    /*public boolean noGateFound(LoopingConfigNode source, LoopingConfigNode destination) throws Exception
+/*public boolean noGateFound(LoopingConfigNode source, LoopingConfigNode destination) throws Exception
     {
         //method to be used only on adjacent tiles
         //does not test the freeness of the destination tile
