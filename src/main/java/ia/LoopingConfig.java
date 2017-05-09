@@ -1,5 +1,6 @@
 package main.java.ia;
 
+import static java.lang.Math.max;
 import java.util.ArrayList;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
@@ -52,7 +53,7 @@ public class LoopingConfig {
     }
 
     public boolean isFreeCoord(Cube<Integer> coord) {
-        return (this.getNode(coord.getX(), coord.getY()).piece == 0);
+        return (this.getNode(coord.getX(), coord.getY(), coord.getZ()).piece == 0);
     }
     
     //check if 2 tiles have same color -> takes in account the fact beetle can cover
@@ -93,6 +94,15 @@ public class LoopingConfig {
         return node;
     }
 
+    //search by coordinates for cubes
+    public LoopingConfigNode getNode(int x, int y, int z) {
+        LoopingConfigNode node = array[x];
+        while ((node != null) && ((node.getY() != y)) || (node.getZ() != z)) {
+            node = node.getNext();
+        }
+        return node;
+    }
+    
     public LoopingConfigNode getNode(Coord coord) {
         return this.getNode(coord.getX(), coord.getY());
     }
@@ -270,7 +280,7 @@ public class LoopingConfig {
         return result;
     }
 
-    public ArrayList<Cube> getPossibleSlidingDestinations(Cube coord) {
+    /*public ArrayList<Cube> getPossibleSlidingDestinations(Cube coord) {
         Cube neighbors[] = coord.getNeighborsInArray();
         ArrayList<Cube> result = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -284,7 +294,7 @@ public class LoopingConfig {
             }
         }
         return result;
-    }
+    }*/
     
     public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
@@ -409,8 +419,37 @@ public class LoopingConfig {
         if (node.isStuck())
             return new ArrayList<>();      
         
-        //int maxHeight;
-        //for 
+        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
+        int i, maxHeight;
+        for (i = 0; i < neighbors.length; i++) {
+            maxHeight = max(node.getZ(), neighbors[i].getZ());
+            if (((neighbors[(i + 1)% neighbors.length]).getZ() < maxHeight)
+                || ((neighbors[(i - 1) % neighbors.length]).getZ() < maxHeight))
+            {
+                StoringConfig newConf = new StoringConfig(this.stconf.config.length);
+                System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
+                
+                //freeing the former stuck piece
+                if (node.getZ() > 0)
+                    this.getNode(node.getX(), node.getY(), node.getZ()-1).setStuck(false);
+                
+                //paralizing the piece underneath the beetle
+                if (neighbors[i].getPiece() != 0)
+                {
+                    neighbors[i].setStuck(true);
+                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ()-(node.getZ()-1-(neighbors[i].getZ()))));
+                }
+                else
+                    newConf.setZ((int) node.getPiece(), (byte) 1);
+                    
+                //actualizing X and Y coordinates of the beetle
+                newConf.setX((int) node.getPiece(), (byte) neighbors[i].getX());
+                newConf.setY((int) node.getPiece(), (byte) neighbors[i].getY());
+                
+                possibleDest.add(newConf);
+            }
+        }
         
         //temporary
         return null;
