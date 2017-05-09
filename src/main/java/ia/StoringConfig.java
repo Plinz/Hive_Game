@@ -17,20 +17,19 @@ import main.java.model.State;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 
-public class StoringConfig implements Cloneable{
+public class StoringConfig {
 
     public int config[];
 
-    //useless constructor
     public StoringConfig(int nb_pieces) {
         config = new int[nb_pieces];
     }
 
-    protected StoringConfig(StoringConfig stconf) throws CloneNotSupportedException
-    {
-        this.config = stconf.config;
+    protected StoringConfig(StoringConfig stconf) {
+        this.config = new int[stconf.config.length];
+        System.arraycopy(stconf.config, 0, this.config, 0, stconf.config.length);
     }
-    
+
     /*
     This is the translator -> translates a state given by the 
     core into a Storing config.
@@ -151,12 +150,12 @@ public class StoringConfig implements Cloneable{
             }
         }
     }
-    //////     getters
 
+//////     getters
     public byte getX(int index) {
         return (byte) (config[index] >> 24);
     }
-    
+
     public byte getY(int index) {
         return (byte) ((config[index] & 0x00FF0000) >> 16);
     }
@@ -166,13 +165,12 @@ public class StoringConfig implements Cloneable{
     }
 
     public boolean isStuck(int index) { //tells if there's a bug atop that bug
-        return  ((config[index] & 0x00000080) >> 7)==1;
+        return ((config[index] & 0x00000080) >> 7) == 1;
     }
 
     public boolean isOnBoard(int index) { //tells if the piece is on the board or not
-        return ((config[index] & 0x00000040) >> 6)==1;
+        return ((config[index] & 0x00000040) >> 6) == 1;
     }
-
 
     //////    Setters
     public void setX(int index, byte newX) {
@@ -196,28 +194,25 @@ public class StoringConfig implements Cloneable{
     public void setIsStuck(int index, boolean newIsStuck) {
         config[index] &= 0xFFFFFF7F;
         int toAdd;
-        if (newIsStuck) 
-            toAdd=1;
-        else 
-            toAdd=0;
-        toAdd  <<= 7;
+        if (newIsStuck) {
+            toAdd = 1;
+        } else {
+            toAdd = 0;
+        }
+        toAdd <<= 7;
         config[index] |= toAdd;
     }
 
     public void setIsOnBoard(int index, boolean newIsVisited) {
         config[index] &= 0xFFFD;
         int toAdd;
-        if (newIsVisited)
-            toAdd=1;
-        else
-            toAdd=0;
+        if (newIsVisited) {
+            toAdd = 1;
+        } else {
+            toAdd = 0;
+        }
         toAdd <<= 6;
         config[index] |= toAdd;
     }
-    
-    @Override
-    public StoringConfig clone() throws CloneNotSupportedException
-    {
-        return new StoringConfig(this);
-    }
+
 }

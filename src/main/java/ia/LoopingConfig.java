@@ -14,20 +14,20 @@ It has a double representation :
 
 Advantage over StoringConfig -> more or less constant time search by coords
  */
-
- /*
-********************         Constructor           *************************
- */
 public class LoopingConfig {
 
     final private StoringConfig stconf;
     LoopingConfigNode array[];
-    byte nbPiecesPerColor;
+    int nbPiecesPerColor;
+    int player, turn;
 
+    /*
+     ********************         Constructor           *************************
+     */
     public LoopingConfig(StoringConfig stconf) {
         this.stconf = stconf;
         this.array = new LoopingConfigNode[stconf.config.length];
-        this.nbPiecesPerColor = (byte) (stconf.config.length / 2);
+        this.nbPiecesPerColor =  (stconf.config.length / 2);
         int i;
         LoopingConfigNode node;
         //head insertion
@@ -37,6 +37,7 @@ public class LoopingConfig {
             this.array[stconf.getX(i)] = node;
         }
     }
+    
 
     /*
     ****************************     Testers   *************************
@@ -47,6 +48,11 @@ public class LoopingConfig {
 
     public boolean isFreeCoord(Coord coord) {
         return (this.getNode(coord.getX(), coord.getY()).piece == 0);
+    }
+
+    public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
+        return (((node1.getPiece() < nbPiecesPerColor) && (node2.getPiece() < nbPiecesPerColor))
+                || ((node1.getPiece() >= nbPiecesPerColor) && (node2.getPiece() >= nbPiecesPerColor)));
     }
 
     /**
@@ -61,10 +67,22 @@ public class LoopingConfig {
         return node;
     }
 
+    public LoopingConfigNode getNode(Coord coord) {
+        return this.getNode(coord.getX(), coord.getY());
+    }
+
+    public LoopingConfigNode getNode(int piece) {
+        return this.getNode(this.getCoord(piece));
+    }
+
     //search by type (eg get coords of white spider 2)
     // -> careful, there's no info about height
     public Coord getCoord(int piece) {
         return new Coord((int) stconf.getX(piece), (int) stconf.getY(piece));
+    }
+
+    public Coord getCoord(LoopingConfigNode node) {
+        return this.getCoord(node.piece);
     }
 
     /*
@@ -150,8 +168,10 @@ public class LoopingConfig {
     /**
      * ************ Deplacements ****************************
      */
+    
+    
     public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) {
-        byte piece_type = (byte) (node.piece % nbPiecesPerColor);
+        byte piece_type =  (byte) (node.piece % nbPiecesPerColor);
         if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
         } else if (piece_type <= Consts.SPIDER2) {
@@ -168,12 +188,48 @@ public class LoopingConfig {
         }
     }
 
+    
+    //Get coords of positions where a new tile can be placed by player
+    //called with player as param so no redundant call for each piece in player's hand
+    public ArrayList<Coord> getNewPossiblePositions(int player) {
+        int start = player * nbPiecesPerColor;
+        int finish = start + nbPiecesPerColor;
+        ArrayList<Coord> result = new ArrayList<>();
+        LoopingConfigNode currentNode, currentNeighbor;
+        for (int i = start; i < finish; i++) {
+            //find all pieces from player already on board
+            if (this.stconf.isOnBoard(i)) {
+                currentNode = this.getNode(i);
+                //get the neighbors of piece on board
+                Coord[] neighbors = this.getCoord(i).getNeighborsInArray();
+                for (int j = 0; j < 6; j++) {
+                    //if neighbor is free -> check its neighbor to see if no other player piece
+                    if (this.getNode(neighbors[j]) == null) {
+                        Coord[] neighborsOfNeighbors = neighbors[j].getNeighborsInArray();
+                        boolean canBeAdded = true;
+                        for (int k = 0; k < 6; k++) {
+                            currentNeighbor = this.getNode(neighborsOfNeighbors[k]);
+                            if ((currentNeighbor != null) && (!this.isSameColor(currentNode, currentNeighbor))) {
+                                canBeAdded = false;
+                            }
+                        }
+                        //it can be added -> add the coord to resultif not redundant
+                        if ((canBeAdded) && (!result.contains(neighbors[j]))) {
+                            result.add(neighbors[j]);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * ***************************** Sliding Bugs ******************
      */
     ///Getting the available neighbors when sliding -> method used to calculate
     ///displacements of the ant, spider & queen.
-    /// it's a Cube->Cube method so for spider & ant move, we can use result to call method on it
+    /// it's a Coord->Coord method so for spider & ant move, we can use result to call method on it
     /// this method does check both freedom_to_move & permanent_contact rules, but not one_hive
     public ArrayList<Coord> getPossibleSlidingDestinations(Coord coord) {
         Coord neighbors[] = coord.getNeighborsInArray();
@@ -195,7 +251,8 @@ public class LoopingConfig {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
-
+        //now we 'remove' the spider tile from the board, we 'll put it back in place
+        //before 
         LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
         ArrayList<StoringConfig> DestAfterOneMove = new ArrayList<>(), DestAfterTwoMove = new ArrayList<>(), PossibleDest = new ArrayList<>();
 
@@ -234,13 +291,13 @@ public class LoopingConfig {
         return possibleDest;
     }
 
-    
-    /********************************** Other Bugs  *****************************/
-    
     public ArrayList<StoringConfig> getPossibleAntDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * ******************************** Other Bugs ****************************
+     */
     public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -315,6 +372,6 @@ public class LoopingConfig {
             return true;
        
         return false;
-           
+
     }*/
 }
