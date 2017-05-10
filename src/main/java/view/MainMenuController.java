@@ -34,7 +34,7 @@ public class MainMenuController implements Initializable {
     
     @FXML 
     public void handleLoadGameClick(){
-        System.out.println("Load");
+        main.showLoadGameScreen();
     }
     
     @FXML 
@@ -63,9 +63,7 @@ public class MainMenuController implements Initializable {
     }    
     
     public void setMainApp(Main mainApp) {
-        this.main = mainApp;
-
-        // Add observable list data to the table     
+        this.main = mainApp;  
     }
     
 }
