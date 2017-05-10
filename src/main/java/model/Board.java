@@ -70,19 +70,15 @@ public class Board implements Serializable{
      }
 	
 	public Tile getTile(CoordGene<Integer> coord){
-		Tile ret = null;
+		List<Tile> box = null;
 		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
-			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
-				if (ret == null || ret.getZ() < t.getZ())
-					ret = t;
-		return ret;
+			return (box = this.board.get(coord.getX()).get(coord.getY())).get(box.size()-1);
+		return null;
 	}
 	
 	public Tile getTile(CoordGene<Integer> coord, int floor){
 		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
-			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
-				if (t.getZ() == floor)
-					return t;
+			return this.board.get(coord.getX()).get(coord.getY()).get(floor);
 		return null;
 	}
 	
@@ -141,10 +137,7 @@ public class Board implements Serializable{
 	public Piece removePiece(CoordGene<Integer> coord){
 		Piece piece = null;
 		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
-		Tile tile = null;
-		for (Tile tmp : box)
-			if (tile == null || tmp.getZ() > tile.getZ())
-				tile = tmp;
+		Tile tile = getTile(coord);
 		
 		if (tile != null){
 			piece = tile.getPiece();
