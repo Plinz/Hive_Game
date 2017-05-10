@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.view;
+package ihm_test_version;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,9 @@ import main.java.model.*;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
 import main.java.utils.CoordGene;
+import main.java.view.Highlighter;
+import main.java.view.RefreshJavaFX;
+import main.java.view.TraducteurBoard;
 
 /**
  *

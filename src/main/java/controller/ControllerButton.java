@@ -9,7 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import main.java.model.Core;
 import main.java.view.Highlighter;
-import main.java.view.InterfaceJavaFX;
+import ihm_test_version.InterfaceJavaFX;
 
 /**
  *

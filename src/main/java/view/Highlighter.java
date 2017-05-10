@@ -19,7 +19,7 @@ import main.java.utils.CoordGene;
 public class Highlighter {
      private List<CoordGene<Integer>> listTohighlight;
      
-     Highlighter(){}
+     public Highlighter(){}
      
      public boolean accept(Visitor v){
          if( listTohighlight != null){

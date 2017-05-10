@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.MainMenuController">
    <children>
       <GridPane alignment="CENTER" gridLinesVisible="true" layoutX="255.0" layoutY="75.0" prefHeight="585.0" prefWidth="771.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="254.0" AnchorPane.topAnchor="75.0">
@@ -26,13 +25,13 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button minWidth="140.0" mnemonicParsing="false" text="Nouvelle partie" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button minWidth="140.0" mnemonicParsing="false" text="Charger partie" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Button minWidth="140.0" mnemonicParsing="false" text="Règles du jeu" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <Button minWidth="140.0" mnemonicParsing="false" text="Didacticiel" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Button minWidth="140.0" mnemonicParsing="false" text="Options" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-            <Button minWidth="140.0" mnemonicParsing="false" text="Quitter" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-            <ImageView fitHeight="221.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+            <Button fx:id="nouvellePartie" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleNewGameClick" text="Nouvelle partie" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLoadGameClick" text="Charger partie" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" text="Règles du jeu" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleTutorialClick" text="Didacticiel" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleOptionsClick" text="Options" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLeaveClick" text="Quitter" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+            <ImageView fx:id="imageMenu" fitHeight="221.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
                <image>
                   <Image url="@../../resources/img/tile/Tile_Queen_White.png" />
                </image>

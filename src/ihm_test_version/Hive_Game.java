@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.implement;
+package ihm_test_version;
 
-import main.java.view.InterfaceJavaFX;
+import ihm_test_version.InterfaceJavaFX;
 
 /**
  *
