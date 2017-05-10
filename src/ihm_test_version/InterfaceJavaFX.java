@@ -172,6 +172,46 @@ public class InterfaceJavaFX extends Application {
         }
         return list;
     }
+
+    public Core getCore() {
+        return core;
+    }
+
+    public void setCore(Core core) {
+        this.core = core;
+    }
+
+    public Label getChoice() {
+        return choice;
+    }
+
+    public void setChoice(Label choice) {
+        this.choice = choice;
+    }
+
+    public VBox getPiecesToAdd() {
+        return piecesToAdd;
+    }
+
+    public void setPiecesToAdd(VBox piecesToAdd) {
+        this.piecesToAdd = piecesToAdd;
+    }
+
+    public CoordGene<Integer> getPieceToMove() {
+        return pieceToMove;
+    }
+
+    public void setPieceToMove(CoordGene<Integer> pieceToMove) {
+        this.pieceToMove = pieceToMove;
+    }
+
+    public Highlighter getHighlighted() {
+        return highlighted;
+    }
+
+    public void setHighlighted(Highlighter highlighted) {
+        this.highlighted = highlighted;
+    }
     
     public void initPiecesToAdd(){
         piecesToAdd.getChildren().remove(0, piecesToAdd.getChildren().size());

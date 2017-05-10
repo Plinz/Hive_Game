@@ -31,7 +31,12 @@ public class ControllerButton implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent t) {
+        /* Ajout */
+        inter.setPieceToMove(null);
+        inter.setPieceToChoose(-1);
+        /**/
         inter.setPieceToChoose(i);
         highlighted.setListTohighlight(c.getPossibleAdd());
+        
     }
 }
