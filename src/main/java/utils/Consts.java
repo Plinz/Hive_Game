@@ -30,4 +30,12 @@ public class Consts {
     
     //MACRO NOMBRE DE VOISINS
     public static final int SIX=6;
+    
+    //MACRO MODE DE DIFFICULTE IA ET PLAYER
+    public static final int PVP_INT = 0;
+    public static final int PVIA_INT = 1;
+    
+    //MACRO TEXTE MENU
+    public static final String PVP_STRING = "Joueur contre joueur";
+    public static final String PVIA_STRING = "Joueur contre ordinateur";
 }
