@@ -418,8 +418,9 @@ public class LoopingConfig {
      * ******************************** Other Bugs ****************************
      */
     public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
-        if (node.isStuck())
-            return new ArrayList<>();      
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }      
         
         LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
