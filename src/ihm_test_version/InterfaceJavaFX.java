@@ -114,7 +114,7 @@ public class InterfaceJavaFX extends Application {
                             initPiecesToAdd();
                             highlighted.setListTohighlight(null);
                             
-                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null && core.checkQueenRule()) {
+                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null && core.checkQueenRule()/* A commenter si nécessaire */) {
                             if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
                                 pieceToMove = coord;
                                 highlighted.setListTohighlight(core.getPossibleMovement(coord));
