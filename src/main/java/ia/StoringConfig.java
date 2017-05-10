@@ -229,7 +229,7 @@ public class StoringConfig {
     public ArrayList<StoringConfig> getNextPossibleMoves() {
         ArrayList<StoringConfig> temp, result = new ArrayList<>();
 
-        LoopingConfig loopConf = new LoopingConfig(this, turn);
+        GameConfig loopConf = new GameConfig(this, turn);
         ArrayList<Coord> possibleNewPositions = loopConf.getNewPossiblePositions();
 
         int start = loopConf.player * loopConf.nbPiecesPerColor;

@@ -11,13 +11,13 @@ Convention ->   piece : see Consts
  */
 package main.java.ia;
 
-public class LoopingConfigNode {
+public class PieceNode {
     
     int x, y, z, piece;
     boolean stuck, isVisited, isOnBoard ;
-    LoopingConfigNode next;
+    PieceNode next;
     
-    public LoopingConfigNode(StoringConfig config, int index){
+    public PieceNode(StoringConfig config, int index){
         this.x = config.getX(index);
         this.y = config.getY(index);
         this.z = config.getZ(index);
@@ -63,7 +63,7 @@ public class LoopingConfigNode {
         return this.isVisited;
     }
     
-    public LoopingConfigNode getNext()
+    public PieceNode getNext()
     {
         return this.next;
     }
