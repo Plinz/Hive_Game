@@ -27,15 +27,16 @@ public class Beetle extends Piece {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
 				Tile target = board.getTile(neighbors.get(i));
-				CoordGene<Integer> left = neighbors.get(Math.floorMod(i-1, 6));
-				CoordGene<Integer> right = neighbors.get(Math.floorMod(i+1, 6));
+				CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
+				CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
 				int floor;
 				if (target.getZ() == 0 && tile.getZ() == 0)
 					floor = (target.getPiece() == null) ? 0 : 1;
 				else
 					floor = Math.max(target.getZ(), tile.getZ());
-				if (Rules.freedomToMove(board, floor, left, right) && Rules.permanentContact(board, floor, left, right))
-						list.add(target.getCoord());										
+				if (Rules.freedomToMove(board, floor, left, right, tile.getCoord())
+						&& Rules.permanentContact(board, floor, left, right, tile.getCoord()))
+					list.add(target.getCoord());
 			}
 		}
 		this.possibleMovement = list;
