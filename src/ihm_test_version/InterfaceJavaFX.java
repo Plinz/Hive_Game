@@ -104,7 +104,7 @@ public class InterfaceJavaFX extends Application {
                 if (m.getButton() == MouseButton.PRIMARY) {
                     if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
                         CoordGene<Integer> coord = new CoordGene<>(i, j);
-                        if (pieceToMove != null && core.getCurrentState().getBoard().getTile(pieceToMove).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(pieceToMove), core.getCurrentState().getBoard()).contains(coord)/*&& core.getDestination().contains(coord)*/) {
+                        if (pieceToMove != null &&  core.getCurrentState().getBoard().getTile(pieceToMove).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(pieceToMove), core.getCurrentState().getBoard()).contains(coord)/*&& core.getDestination().contains(coord)*/) {
                             //System.out.println("Déplacement de la piece choisie");
                             core.movePiece(pieceToMove, coord);
                             pieceToMove = null;
@@ -114,7 +114,7 @@ public class InterfaceJavaFX extends Application {
                             initPiecesToAdd();
                             highlighted.setListTohighlight(null);
                             
-                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
+                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null && core.checkQueenRule()/* A commenter si nécessaire */) {
                             if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
                                 pieceToMove = coord;
                                 highlighted.setListTohighlight(core.getPossibleMovement(coord));

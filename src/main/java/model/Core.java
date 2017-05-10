@@ -59,7 +59,7 @@ public class Core implements Serializable {
 			return isGameFinish();
 	}
 
-	private boolean checkQueenRule() {
+	public boolean checkQueenRule() {
 		for (Piece p : this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getInventory()) {
 			if (p.getName() == Consts.QUEEN_NAME) {
 				return false;
