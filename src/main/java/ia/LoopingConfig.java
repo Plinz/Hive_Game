@@ -155,16 +155,6 @@ public class LoopingConfig {
     //one returns array -> all of them (even null) in order
     //one returns arrayList -> no order, only non null neighbors
     //get all neighbors of a tile in an array
-    public LoopingConfigNode[] getNeighborsInArray(LoopingConfigNode node) {
-        LoopingConfigNode result[] = new LoopingConfigNode[6];
-        result[0] = this.getEast(node);
-        result[1] = this.getSouthEast(node);
-        result[2] = this.getSouthWest(node);
-        result[3] = this.getWest(node);
-        result[4] = this.getNorthWest(node);
-        result[5] = this.getNorthEast(node);
-        return result;
-    }
 
     //get all neighbors of a tile in an array list
     public ArrayList<LoopingConfigNode> getNeighborsInArrayList(LoopingConfigNode node) {
@@ -352,7 +342,9 @@ public class LoopingConfig {
             return new ArrayList<>();
         }
 
-        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        //creating array from arraylist
+        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
+        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i;
         for (i = 0; i < neighbors.length; i++) {
@@ -422,7 +414,10 @@ public class LoopingConfig {
             return new ArrayList<>();
         }      
         
-        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        //creating array from arraylist 
+        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
+        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
+        
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i, maxHeight;
         for (i = 0; i < neighbors.length; i++) {
