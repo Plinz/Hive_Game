@@ -29,13 +29,13 @@ public class Queen extends Piece {
 		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
-				CoordGene<Integer> curr = neighbors.get(i);
-				CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-				CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
-				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
-						&& ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
-								|| (board.getTile(prev).getPiece() == null & board.getTile(next).getPiece() != null)))
-					list.add(curr);
+				CoordGene<Integer> target = neighbors.get(i);
+				CoordGene<Integer> left = neighbors.get(Math.floorMod(i-1, 6));
+				CoordGene<Integer> right = neighbors.get(Math.floorMod(i+1, 6));
+				
+				if (board.getTile(target).getPiece() == null && board.getPieceNeighbors(target).size() != 1
+						&& Rules.freedomToMoveAndPermanentContact(board, left, right))
+					list.add(target);
 			}
 		}
 		this.possibleMovement = list;
