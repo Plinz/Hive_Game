@@ -24,7 +24,9 @@ public class LoopingConfig {
     /*
      ********************         Constructor           *************************
      */
-    public LoopingConfig(StoringConfig stconf) {
+    public LoopingConfig(StoringConfig stconf, int turn) {
+        this.turn = turn;
+        this.player = (turn+1)%2;
         this.stconf = stconf;
         this.array = new LoopingConfigNode[stconf.config.length];
         this.nbPiecesPerColor = (stconf.config.length / 2);
@@ -209,7 +211,7 @@ public class LoopingConfig {
 
     //Get coords of positions where a new tile can be placed by player
     //called with player as param so no redundant call for each piece in player's hand
-    public ArrayList<Coord> getNewPossiblePositions(int player) {
+    public ArrayList<Coord> getNewPossiblePositions() {
         int start = player * nbPiecesPerColor;
         int finish = start + nbPiecesPerColor;
         ArrayList<Coord> result = new ArrayList<>();
