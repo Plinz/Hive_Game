@@ -29,10 +29,12 @@ public class Queen extends Piece {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
 				CoordGene<Integer> target = neighbors.get(i);
-				CoordGene<Integer> left = neighbors.get(Math.floorMod(i-1, 6));
-				CoordGene<Integer> right = neighbors.get(Math.floorMod(i+1, 6));
-				
-				if (board.getTile(target).getPiece() == null && Rules.freedomToMove(board, 0, left, right) && Rules.permanentContact(board, 0, left, right))
+				CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
+				CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
+
+				if (board.getTile(target).getPiece() == null
+						&& Rules.freedomToMove(board, 0, left, right, tile.getCoord())
+						&& Rules.permanentContact(board, 0, left, right, tile.getCoord()))
 					list.add(target);
 			}
 		}

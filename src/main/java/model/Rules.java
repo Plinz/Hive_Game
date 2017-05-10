@@ -29,18 +29,22 @@ public class Rules {
 		return board.getNbPieceOnTheBoard() == visited.size();
 	}
 
-	public static boolean freedomToMove(Board board, int floor, CoordGene<Integer> left, CoordGene<Integer> right) {
+	public static boolean freedomToMove(Board board, int floor, CoordGene<Integer> left, CoordGene<Integer> right,
+			CoordGene<Integer> exception) {
 		Tile leftTile = board.getTile(left);
 		Tile rightTile = board.getTile(right);
 		return (leftTile == null || leftTile.getPiece() == null || leftTile.getZ() < floor || rightTile == null
-				|| rightTile.getPiece() == null || rightTile.getZ() < floor);
+				|| rightTile.getPiece() == null || rightTile.getZ() < floor || left.equals(exception)
+				|| right.equals(exception));
 	}
 
-	public static boolean permanentContact(Board board, int floor, CoordGene<Integer> left, CoordGene<Integer> right) {
+	public static boolean permanentContact(Board board, int floor, CoordGene<Integer> left, CoordGene<Integer> right,
+			CoordGene<Integer> exception) {
 		if (floor > 0)
 			return true;
 		Tile leftTile = board.getTile(left);
 		Tile rightTile = board.getTile(right);
-		return (leftTile != null && leftTile.getPiece() != null) || (rightTile != null && rightTile.getPiece() != null);
+		return (leftTile != null && leftTile.getPiece() != null && !left.equals(exception))
+				|| (rightTile != null && rightTile.getPiece() != null && !right.equals(exception));
 	}
 }
