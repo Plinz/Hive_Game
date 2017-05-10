@@ -5,6 +5,7 @@
  */
 package main.java.view;
 
+
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,7 +17,7 @@ import main.java.implement.Main;
  *
  * @author gontardb
  */
-public class MainMenuController implements Initializable {
+public class NewGameScreenController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -24,38 +25,13 @@ public class MainMenuController implements Initializable {
     
     private Main main;
     
-    public MainMenuController() {
+    public NewGameScreenController() {
     }
     
     @FXML 
-    public void handleNewGameClick(){
-        main.showNewGameScreen();
-    }
-    
-    @FXML 
-    public void handleLoadGameClick(){
-        System.out.println("Load");
-    }
-    
-    @FXML 
-    public void handleDisplayRulesClick(){
-        System.out.println("Rules");
-    }
-   
-    
-    @FXML 
-    public void handleTutorialClick(){
-        System.out.println("Didact");
-    }
-    
-     @FXML 
-    public void handleOptionsClick(){
-        System.out.println("Options");
-    }
-    
-    @FXML 
-    public void handleLeaveClick(){
-        System.out.println("Leave");
+    public void handleMenuClick(){
+        System.out.println("Menu");
+        main.showMainMenu();
     }
     
     @FXML
@@ -64,7 +40,6 @@ public class MainMenuController implements Initializable {
     
     public void setMainApp(Main mainApp) {
         this.main = mainApp;
-
         // Add observable list data to the table     
     }
     

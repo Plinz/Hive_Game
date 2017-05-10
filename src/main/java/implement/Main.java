@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import main.java.view.MainMenuController;
+import main.java.view.NewGameScreenController;
 
 public class Main extends Application {
 
@@ -26,7 +28,9 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/MainMenu.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
-            System.out.println(personOverview.getChildren());
+            
+            MainMenuController controller = loader.getController();
+            controller.setMainApp(this);
             
             Scene scene = new Scene(personOverview);
             primaryStage.setScene(scene);
@@ -35,6 +39,26 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void showNewGameScreen(){
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("/main/java/view/NewGameScreen.fxml"));
+            AnchorPane personOverview = (AnchorPane) loader.load();
+            
+            NewGameScreenController controller = loader.getController();
+            controller.setMainApp(this);
+            
+            Scene scene = new Scene(personOverview);
+            primaryStage.setScene(scene);
+
+            // Set person overview into the center of root layout.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     /**

@@ -8,25 +8,25 @@ package main.java.ia;
 import main.java.model.Core;
 import main.java.utils.CoordGene;
 
-public class IaMove {
+public class AIMove {
 
     boolean AddNewTile; //true -> new tile added ; false -> tile in place moved
     CoordGene<Integer> source, destination;
     int piece;
     Core core;
 
-    public IaMove(int piece, CoordGene<Integer> destination) {
+    public AIMove(int piece, CoordGene<Integer> destination) {
         this.piece = piece;
         this.destination = destination;
     }
 
-    public IaMove(CoordGene<Integer> source, CoordGene<Integer> destination) {
+    public AIMove(CoordGene<Integer> source, CoordGene<Integer> destination) {
         this.source = source;
         this.destination = destination;
     }
 
     //Constructor -> determines the move from the diff between the 2 configs
-    public IaMove(StoringConfig origin, StoringConfig arrival) {
+    public AIMove(StoringConfig origin, StoringConfig arrival) {
         int piece;
         CoordGene<Integer> source, destination;
         int piecesOnBoardBefore = 0, piecesOnBoardAfter = 0;

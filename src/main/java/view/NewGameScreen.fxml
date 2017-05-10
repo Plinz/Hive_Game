@@ -11,8 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.NewGameScreenController">
    <children>
       <GridPane alignment="TOP_CENTER" layoutX="6.0" layoutY="-2.0" prefHeight="708.0" prefWidth="1280.0">
         <columnConstraints>
@@ -64,7 +63,7 @@
               </rowConstraints>
                <children>
                   <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="190.0" text="Lancer partie" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-                  <Button mnemonicParsing="false" text="Revenir au menu principal" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleMenuClick" text="Revenir au menu principal" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
                </children>
             </GridPane>
          </children>

@@ -1,10 +1,10 @@
 package main.java.ia;
 
-import static java.lang.Math.max;
 import java.util.ArrayList;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
 import main.java.utils.Cube;
+import static java.lang.Math.max;
 
 /*
 this class is used to run movements & heuristics algorithms on in an optimal way
@@ -16,27 +16,27 @@ It has a double representation :
 
 Advantage over StoringConfig -> more or less constant time search by coords
  */
-public class LoopingConfig {
+public class GameConfig {
 
     final private StoringConfig stconf;
-    LoopingConfigNode array[];
+    PieceNode array[];
     int nbPiecesPerColor;
     int player, turn;
 
     /*
      ********************         Constructor           *************************
      */
-    public LoopingConfig(StoringConfig stconf, int turn) {
+    public GameConfig(StoringConfig stconf, int turn) {
         this.turn = turn;
-        this.player = (turn+1)%2;
+        this.player = (turn + 1) % 2;
         this.stconf = stconf;
-        this.array = new LoopingConfigNode[stconf.config.length];
+        this.array = new PieceNode[stconf.config.length];
         this.nbPiecesPerColor = (stconf.config.length / 2);
         int i;
-        LoopingConfigNode node;
+        PieceNode node;
         //head insertion
         for (i = 0; i < stconf.config.length; i++) {
-            node = new LoopingConfigNode(stconf, i);
+            node = new PieceNode(stconf, i);
             node.next = this.array[stconf.getX(i)];
             this.array[stconf.getX(i)] = node;
         }
@@ -46,7 +46,7 @@ public class LoopingConfig {
     /*
     ****************************     Testers   *************************
      */
-    public boolean isFreeNode(LoopingConfigNode node) {
+    public boolean isFreeNode(PieceNode node) {
         return (node.getPiece() == 0);
     }
 
@@ -57,11 +57,11 @@ public class LoopingConfig {
     public boolean isFreeCoord(Cube<Integer> coord) {
         return (this.getNode(coord.getX(), coord.getY(), coord.getZ()).getPiece() == 0);
     }
-    
+
     //check if 2 tiles have same color -> takes in account the fact beetle can cover
     //a tile.
-    public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
-        LoopingConfigNode node1Visible = array[node1.getX()];
+    public boolean isSameColor(PieceNode node1, PieceNode node2) {
+        PieceNode node1Visible = array[node1.getX()];
         if (node1.stuck) {
             while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.isStuck()))) {
                 node1Visible = node1Visible.getNext();
@@ -70,7 +70,7 @@ public class LoopingConfig {
             node1Visible = node1;
         }
 
-        LoopingConfigNode node2Visible = array[node2.getX()];
+        PieceNode node2Visible = array[node2.getX()];
         if (node2.stuck) {
             while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.isStuck()))) {
                 node2Visible = node2Visible.getNext();
@@ -88,8 +88,8 @@ public class LoopingConfig {
      * **************************** getters ****************************
      */
     //search by coordinates
-    public LoopingConfigNode getNode(int x, int y) {
-        LoopingConfigNode node = array[x];
+    public PieceNode getNode(int x, int y) {
+        PieceNode node = array[x];
         while ((node != null) && (node.getY() != y)) {
             node = node.getNext();
         }
@@ -97,19 +97,19 @@ public class LoopingConfig {
     }
 
     //search by coordinates for cubes
-    public LoopingConfigNode getNode(int x, int y, int z) {
-        LoopingConfigNode node = array[x];
+    public PieceNode getNode(int x, int y, int z) {
+        PieceNode node = array[x];
         while ((node != null) && ((node.getY() != y)) || (node.getZ() != z)) {
             node = node.getNext();
         }
         return node;
     }
-    
-    public LoopingConfigNode getNode(Coord coord) {
+
+    public PieceNode getNode(Coord coord) {
         return this.getNode(coord.getX(), coord.getY());
     }
 
-    public LoopingConfigNode getNode(int piece) {
+    public PieceNode getNode(int piece) {
         return this.getNode(this.getCoord(piece));
     }
 
@@ -119,7 +119,7 @@ public class LoopingConfig {
         return new Coord((int) stconf.getX(piece), (int) stconf.getY(piece));
     }
 
-    public Coord getCoord(LoopingConfigNode node) {
+    public Coord getCoord(PieceNode node) {
         return this.getCoord(node.piece);
     }
 
@@ -127,39 +127,34 @@ public class LoopingConfig {
     ****************           Neighbors getters      **********************
      */
     ///One by one
-    public LoopingConfigNode getNorthEast(LoopingConfigNode node) {
+    public PieceNode getNorthEast(PieceNode node) {
         return this.getNode((node.getX() + 1), (node.getY() - 1));
     }
 
-    public LoopingConfigNode getNorthWest(LoopingConfigNode node) {
+    public PieceNode getNorthWest(PieceNode node) {
         return this.getNode((node.getX()), (node.getY() - 1));
     }
 
-    public LoopingConfigNode getEast(LoopingConfigNode node) {
+    public PieceNode getEast(PieceNode node) {
         return this.getNode((node.getX() + 1), (node.getY()));
     }
 
-    public LoopingConfigNode getWest(LoopingConfigNode node) {
+    public PieceNode getWest(PieceNode node) {
         return this.getNode((node.getX() - 1), (node.getY()));
     }
 
-    public LoopingConfigNode getSouthEast(LoopingConfigNode node) {
+    public PieceNode getSouthEast(PieceNode node) {
         return this.getNode((node.getX()), (node.getY() + 1));
     }
 
-    public LoopingConfigNode getSouthWest(LoopingConfigNode node) {
+    public PieceNode getSouthWest(PieceNode node) {
         return this.getNode((node.getX() - 1), (node.getY() + 1));
     }
 
-    //All of them -> 2 implementations 
-    //one returns array -> all of them (even null) in order
-    //one returns arrayList -> no order, only non null neighbors
-    //get all neighbors of a tile in an array
-
     //get all neighbors of a tile in an array list
-    public ArrayList<LoopingConfigNode> getNeighborsInArrayList(LoopingConfigNode node) {
-        ArrayList<LoopingConfigNode> result = new ArrayList<>();
-        LoopingConfigNode current_neighbor;
+    public ArrayList<PieceNode> getNeighborsInArrayList(PieceNode node) {
+        ArrayList<PieceNode> result = new ArrayList<>();
+        PieceNode current_neighbor;
         //East
         current_neighbor = this.getEast(node);
         if (current_neighbor != null) {
@@ -193,10 +188,29 @@ public class LoopingConfig {
         return result;
     }
 
+    public PieceNode getHighestNode(Coord coords) {
+        PieceNode current = this.array[coords.getX()];
+        if (current == null) {
+            return null;
+        }
+        PieceNode highestNode = null;
+        while (current != null) {
+            if (current.getY() == coords.getY()) {
+                if (highestNode == null) {
+                    highestNode = current;
+                } else if (current.getZ() > highestNode.getZ()) {
+                    highestNode = current;
+                }
+            }
+            current = current.getNext();
+        }
+        return highestNode;
+    }
+
     /**
      * ************ Deplacements ****************************
      */
-    public ArrayList<StoringConfig> getPossibleDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
         byte piece_type = (byte) (node.piece % nbPiecesPerColor);
         if (piece_type <= Consts.QUEEN) {
             return getPossibleQueenDestinations(node);
@@ -220,7 +234,8 @@ public class LoopingConfig {
         int start = player * nbPiecesPerColor;
         int finish = start + nbPiecesPerColor;
         ArrayList<Coord> result = new ArrayList<>();
-        LoopingConfigNode currentNode, currentNeighbor;
+        PieceNode currentNode;
+        PieceNode currentNeighbor;
         for (int i = start; i < finish; i++) {
             //find all pieces from player already on board
             if (this.stconf.isOnBoard(i)) {
@@ -287,8 +302,7 @@ public class LoopingConfig {
         }
         return result;
     }*/
-    
-    public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleSpiderDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
@@ -305,7 +319,7 @@ public class LoopingConfig {
         for (Coord coord : CoordsAfterFirstMove) {
             temp = getPossibleSlidingDestinations(coord);
             for (Coord newCoord : temp) {
-                if (!CoordsAfterSecondMove.contains(newCoord)) {
+                if ((!CoordsAfterSecondMove.contains(newCoord)) && (newCoord.equals(this.getCoord(node)))) {
                     CoordsAfterSecondMove.add(newCoord);
                 }
             }
@@ -337,13 +351,13 @@ public class LoopingConfig {
         return result;
     }
 
-    public ArrayList<StoringConfig> getPossibleQueenDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleQueenDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
 
         //creating array from arraylist
-        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
+        PieceNode neighbors[] = new PieceNode[this.getNeighborsInArrayList(node).size()];
         neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i;
@@ -362,7 +376,7 @@ public class LoopingConfig {
         return possibleDest;
     }
 
-    public ArrayList<StoringConfig> getPossibleAntDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleAntDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
@@ -409,50 +423,50 @@ public class LoopingConfig {
     /**
      * ******************************** Other Bugs ****************************
      */
-    public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleBeetleDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
-        }      
-        
-        //creating array from arraylist 
-        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
-        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
-        
+        }
+
+        Coord nodeCoords = new Coord(node.getX(), node.getY());
+        Coord neighbors[] = new Coord[nodeCoords.getNeighbors().size()];
+        neighbors = nodeCoords.getNeighbors().toArray(neighbors);
+
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i, maxHeight;
+
         for (i = 0; i < neighbors.length; i++) {
-            maxHeight = max(node.getZ(), neighbors[i].getZ());
-            if (((neighbors[(i + 1)% neighbors.length]).getZ() < maxHeight)
-                || ((neighbors[(i - 1) % neighbors.length]).getZ() < maxHeight))
-            {
+            maxHeight = max(node.getZ(), this.getHighestNode(neighbors[i]).getZ());
+            if (((this.getHighestNode(neighbors[i + 1])).getZ() < maxHeight)
+                    || ((this.getHighestNode(neighbors[i - 1])).getZ() < maxHeight)) {
                 StoringConfig newConf = new StoringConfig(this.stconf.config.length);
                 System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
-                
+
                 //freeing the former stuck piece
-                if (node.getZ() > 0)
-                    this.getNode(node.getX(), node.getY(), node.getZ()-1).setStuck(false);
-                
-                //paralizing the piece underneath the beetle and actualizing Z coordinate of the beetle
-                if (!(this.isFreeNode(neighbors[i])))
-                {
-                    newConf.setIsStuck(neighbors[i].getPiece(), true);
-                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ()-(node.getZ()-1-(neighbors[i].getZ()))));
+                if (node.getZ() > 0) {
+                    this.getNode(node.getX(), node.getY(), node.getZ() - 1).setStuck(false);
                 }
-                else
+
+                //paralizing the piece underneath the beetle and actualizing Z coordinate of the beetle
+                if (!(this.isFreeNode(this.getNode(neighbors[i])))) {
+                    newConf.setIsStuck(this.getHighestNode(neighbors[i]).getPiece(), true);
+                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ() - (node.getZ() - 1 - (this.getHighestNode(neighbors[i]).getZ()))));
+                } else {
                     newConf.setZ((int) node.getPiece(), (byte) 1);
-                    
+                }
+
                 //actualizing X and Y coordinates of the beetle
                 newConf.setX((int) node.getPiece(), (byte) neighbors[i].getX());
                 newConf.setY((int) node.getPiece(), (byte) neighbors[i].getY());
-                
+
                 possibleDest.add(newConf);
             }
         }
-        
+
         return possibleDest;
     }
 
-    public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(LoopingConfigNode node) {
+    public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
@@ -534,24 +548,25 @@ public class LoopingConfig {
      */
     ///walking along some kind of graph to check if the one_hive rule
     /// is still respected when the piece node is moving
-    private boolean RespectsOneHive(LoopingConfigNode node) {
+    private boolean RespectsOneHive(PieceNode node) {
         // 1st check -> if there's only one neighbor -> no need to go further
-        ArrayList<LoopingConfigNode> neighbors = this.getNeighborsInArrayList(node);
+        ArrayList<PieceNode> neighbors = this.getNeighborsInArrayList(node);
         if (neighbors.size() == 1) {
             return true;
         }
         //now we chose any neighbor of node
-        LoopingConfigNode neighbor = neighbors.get(0), current_node;
+        PieceNode neighbor = neighbors.get(0);
+        PieceNode current_node;
 
         //marking both the moving node & the first neighbor we put in the set
         node.isVisited = true;
         neighbor.isVisited = true;
-        ArrayList<LoopingConfigNode> nodeSet = new ArrayList<>();
+        ArrayList<PieceNode> nodeSet = new ArrayList<>();
         nodeSet.add(neighbor);
         while (!nodeSet.isEmpty()) {
             current_node = nodeSet.get(0);
             neighbors = this.getNeighborsInArrayList(current_node);
-            for (LoopingConfigNode current_node_neighbor : neighbors) {
+            for (PieceNode current_node_neighbor : neighbors) {
                 if (!current_node_neighbor.isVisited) {
                     current_node_neighbor.isVisited = true;
                     nodeSet.add(current_node_neighbor);
