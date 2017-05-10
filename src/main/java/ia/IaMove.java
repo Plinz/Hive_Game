@@ -46,6 +46,7 @@ public class IaMove {
                     destY = (int)arrival.getY(i);
                     this.destination = new CoordGene<Integer>(destX,destY);
                     this.AddNewTile = true;
+                    break;
                 }
             }
         } else {
@@ -58,6 +59,7 @@ public class IaMove {
                     this.source = new CoordGene<> (sourceX, sourceY);
                     this.destination = new CoordGene<> (destX, destY);
                     this.AddNewTile = false;
+                    break;
                 }
             }
         }
