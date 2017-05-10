@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model:Screen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:model="http://wireframesketcher.com/1.0/model.ecore">
+  <widgets xsi:type="model:Window" id="1" width="1280" height="718" text="Hive" measuredWidth="1280" measuredHeight="718"/>
+  <widgets xsi:type="model:Image" id="12" x="568" y="152" width="585" height="248" measuredWidth="585" measuredHeight="248"/>
+  <widgets xsi:type="model:VScrollbar" id="17" x="455" y="29" height="689" measuredWidth="17" measuredHeight="689"/>
+  <widgets xsi:type="model:Panel" id="18" x="15" y="29" width="433" height="690" measuredWidth="433" measuredHeight="690"/>
+  <widgets xsi:type="model:Label" id="19" x="39" y="158" width="179" text="But du jeu" measuredWidth="179" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="20" x="35" y="229" width="254" text="Placement des pièces" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="21" x="31" y="276" width="402" text="Déplacement des insectes" measuredWidth="402" measuredHeight="28">
+    <font size="15px" bold="true" underline="true"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="24" x="39" y="115" width="270" text="Principe général" measuredWidth="270" measuredHeight="28">
+    <font size="15px" bold="true" underline="true"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="25" x="47" y="315" width="254" text="La reine" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="26" x="47" y="346" width="254" text="La sauterrelle" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="27" x="47" y="382" width="254" text="Le scarabée" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="28" x="47" y="417" width="254" text="L'araignée" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="29" x="47" y="452" width="254" text="La forumi" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="30" x="35" y="193" width="254" text="Déroulement du jeu" measuredWidth="254" measuredHeight="25">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Text" id="31" x="552" y="470" width="648" height="176" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." measuredWidth="648" measuredHeight="176">
+    <font/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="33" x="710" y="54" width="301" text="La reine" measuredWidth="301" measuredHeight="46" textAlignment="Center">
+    <font size="28px"/>
+  </widgets>
+  <widgets xsi:type="model:Label" id="35" x="80" y="50" width="301" text="Les règles" measuredWidth="301" measuredHeight="34" textAlignment="Center">
+    <font size="19px"/>
+  </widgets>
+  <widgets xsi:type="model:Button" id="36" x="936" y="645" width="325" height="39" text="Revenir au menu principal" measuredWidth="325" measuredHeight="39" link="MainMenu.screen">
+    <font/>
+  </widgets>
+  <hRuler/>
+  <vRuler/>
+  <font size="12px"/>
+</model:Screen>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+	</section>
+	<section name="org.eclipse.ui.internal.ide.dialogs.ProjectContentsLocationArea">
+		<item value="/home/d/duvernet/NetBeansProjects" key="OUTSIDE_LOCATION"/>
+	</section>
+	<section name="NewWizardAction">
+	</section>
+	<section name="BasicNewProjectResourceWizard">
+	</section>
+</section>

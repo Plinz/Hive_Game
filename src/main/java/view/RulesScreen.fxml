@@ -1,72 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane layoutX="4.0" layoutY="6.0" prefHeight="713.0" prefWidth="1280.0">
+      <GridPane layoutX="4.0" layoutY="21.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="648.0" minWidth="10.0" prefWidth="511.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="629.0" minWidth="4.0" prefWidth="32.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="899.0" minWidth="10.0" prefWidth="737.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane>
+            <GridPane prefHeight="709.0" prefWidth="537.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="454.0" minWidth="10.0" prefWidth="434.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="231.0" minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="505.0" minHeight="10.0" prefHeight="505.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="231.0" minHeight="10.0" prefHeight="117.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="601.0" minHeight="10.0" prefHeight="596.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Les règles" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Label text="Les règles" underline="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                      <font>
                         <Font size="20.0" />
                      </font>
+                     <GridPane.margin>
+                        <Insets left="60.0" />
+                     </GridPane.margin>
                   </Label>
-                  <Label alignment="CENTER" text="Principe général" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="17.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-            <GridPane GridPane.columnIndex="1">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="380.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="417.0" minHeight="10.0" prefHeight="210.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="474.0" minHeight="10.0" prefHeight="340.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label alignment="CENTER" text="But du jeu" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="190.0" fitWidth="515.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                  <GridPane prefHeight="466.0" prefWidth="640.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="618.0" minWidth="10.0" prefWidth="319.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="361.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="0.0" prefHeight="61.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="0.0" prefHeight="66.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="6.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <Text layoutY="12.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." wrappingWidth="325.7294921875" />
+                        <Label alignment="CENTER" graphicTextGap="0.0" text="Principe général">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <effect>
+                              <Glow />
+                           </effect>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="But du jeu" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Déroulement du jeu" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Placement des pièces" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Déplacements des insectes" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                           <effect>
+                              <Glow />
+                           </effect>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="La reine" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="La sauterelle" GridPane.rowIndex="6">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Le scarabée" wrappingWidth="106.81884765625" GridPane.rowIndex="7">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="L'araignée" GridPane.rowIndex="8">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="La fourni" GridPane.rowIndex="9">
+                           <GridPane.margin>
+                              <Insets left="30.0" />
+                           </GridPane.margin>
+                        </Text>
                      </children>
-                  </Pane>
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                  </GridPane>
                </children>
             </GridPane>
+            <GridPane prefHeight="720.0" prefWidth="600.0" GridPane.columnIndex="2">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="753.0" minWidth="10.0" prefWidth="692.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="380.0" minHeight="0.0" prefHeight="92.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="417.0" minHeight="10.0" prefHeight="303.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="474.0" minHeight="10.0" prefHeight="219.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="474.0" minHeight="10.0" prefHeight="99.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" text="But du jeu" underline="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="224.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@../../../../sketch/assets/screen_rules.png" />
+                     </image>
+                  </ImageView>
+                  <Button mnemonicParsing="false" text="Revenir au menu principal" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                     <GridPane.margin>
+                        <Insets bottom="15.0" right="15.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." textAlignment="JUSTIFY" wrappingWidth="414.7294921875" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+            <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>
