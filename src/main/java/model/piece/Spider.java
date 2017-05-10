@@ -1,7 +1,9 @@
 package main.java.model.piece;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import main.java.model.Board;
 import main.java.model.Piece;
@@ -23,49 +25,34 @@ public class Spider extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
-		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
-			CoordGene<Integer> coord = tile.getCoord();
-			int deep = 0;
-			List<CoordGene<Integer>> neighbors = coord.getNeighbors();
-			for (int i = 0; i < neighbors.size(); i++) {
-				CoordGene<Integer> curr = neighbors.get(i);
-				CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-				CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
-
-				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
-						&& ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
-								|| (board.getTile(prev).getPiece() == null & board.getTile(next).getPiece() != null))) {
-					while (deep++ < 2 && curr != null && !curr.equals(tile.getCoord())) {
-						curr = nextBox(curr, board, list, tile);
-						System.err.println(curr);
-					}
-					deep = 0;
-					if (curr != null)
-						list.add(curr);
-				}
-			}
-		}
+		if (!tile.isBlocked() && Rules.oneHive(board, tile))
+			list.addAll(path(board, tile.getCoord(), 0, new HashSet<CoordGene<Integer>>(), tile.getCoord()));
 		this.possibleMovement = list;
 		return list;
 
 	}
 
-	private CoordGene<Integer> nextBox(CoordGene<Integer> coord, Board board, List<CoordGene<Integer>> list,
-			Tile tile) {
-		List<CoordGene<Integer>> neighbors = coord.getNeighbors();
-		for (int i = 0; i < neighbors.size(); i++) {
-			CoordGene<Integer> curr = neighbors.get(i);
-			CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-			CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
-			if (!list.contains(curr) && board.getTile(curr) != null && board.getTile(curr).getPiece() == null
-					&& board.getPieceNeighbors(curr).size() != 0
-					&& (board.getTile(prev) == null || board.getTile(next) == null
-							|| ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
-									|| (board.getTile(prev).getPiece() == null
-											& board.getTile(next).getPiece() != null)))
-					&& !curr.getNeighbors().contains(tile.getCoord()))
-				return curr;
+	private List<CoordGene<Integer>> path(Board board, CoordGene<Integer> origin, int deep,
+			Set<CoordGene<Integer>> visited, CoordGene<Integer> from) {
+		List<CoordGene<Integer>> nextBox = new ArrayList<CoordGene<Integer>>();
+		if (deep == 3) {
+			if (!visited.contains(from))
+				nextBox.add(from);
+			return nextBox;
 		}
-		return null;
+		visited.add(from);
+		List<CoordGene<Integer>> neighbors = from.getNeighbors();
+		for (int i = 0; i < neighbors.size(); i++) {
+			CoordGene<Integer> target = neighbors.get(i);
+			CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
+			CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
+
+			if (board.getTile(target) != null && board.getTile(target).getPiece() == null
+					&& Rules.freedomToMoveAndPermanentContact(board, left, right, origin))
+				if (board.getPieceNeighbors(target).size() != 1
+						|| !board.getPieceNeighbors(target).get(0).getCoord().equals(origin))
+					nextBox.addAll(path(board, origin, deep + 1, visited, target));
+		}
+		return nextBox;
 	}
 }
