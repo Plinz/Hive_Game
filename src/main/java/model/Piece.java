@@ -3,52 +3,16 @@ package main.java.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import main.java.utils.CoordGene;
 
 public abstract class Piece implements Cloneable, Serializable {
 
-    private static final long serialVersionUID = 673440018064999695L;
-    protected String name;
+	private static final long serialVersionUID = 4655928536510498821L;
+	protected String name;
     protected int team;
     protected String description;
     protected List<CoordGene<Integer>> possibleMovement;
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + this.team;
-        hash = 29 * hash + Objects.hashCode(this.description);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Piece other = (Piece) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (this.team != other.team) {
-            return false;
-        }
-        if (!Objects.equals(this.description, other.description)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "\nPiece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
-    }
 
     public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
 
@@ -83,6 +47,10 @@ public abstract class Piece implements Cloneable, Serializable {
         this.description = description;
     }
 
+    public void clear() {
+        this.possibleMovement = null;
+    }
+    
     @Override
     public Piece clone() {
 
@@ -96,18 +64,54 @@ public abstract class Piece implements Cloneable, Serializable {
         clone.name = new String(this.name);
         clone.team = this.team;
         clone.possibleMovement = new ArrayList<CoordGene<Integer>>();
-        if (this.possibleMovement != null) {
-            for (CoordGene<Integer> coord : this.possibleMovement) {
+        if (this.possibleMovement != null)
+            for (CoordGene<Integer> coord : this.possibleMovement)
                 clone.possibleMovement.add(new CoordGene<Integer>(coord.getX(), coord.getY()));
-            }
-        }
-
         return clone;
     }
 
-    public void clear() {
-        this.possibleMovement = null;
-        //this.highlighted = false;
-    }
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((possibleMovement == null) ? 0 : possibleMovement.hashCode());
+		result = prime * result + team;
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Piece other = (Piece) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (possibleMovement == null) {
+			if (other.possibleMovement != null)
+				return false;
+		} else if (!possibleMovement.equals(other.possibleMovement))
+			return false;
+		if (team != other.team)
+			return false;
+		return true;
+	}
+
+	@Override
+    public String toString() {
+        return "\nPiece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
+    }
 }
