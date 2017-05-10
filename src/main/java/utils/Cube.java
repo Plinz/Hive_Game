@@ -66,17 +66,5 @@ public class Cube<T>{
         list.add(getNorthEast());
         return list;
     }
-       
-    //to be replaced with calls to the function above
-    public Cube[] getNeighborsInArray() {
-        Cube result[] = new Cube[6];
-        result[0] = this.getEast();
-        result[1] = this.getSouthEast();
-        result[2] = this.getSouthWest();
-        result[3] = this.getWest();
-        result[4] = this.getNorthWest();
-        result[5] = this.getNorthEast();
-        return result;
-    }
         
 }
