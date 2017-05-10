@@ -14,8 +14,8 @@ public class Queen extends Piece {
 
 	private static final long serialVersionUID = -3832557804456133927L;
 
-	public Queen(int team) {
-		super(Consts.QUEEN_NAME, team, "Queen description");
+	public Queen(int id, int team) {
+		super(Consts.QUEEN_NAME, id, team, "Queen description");
 		// TODO Auto-generated constructor stub
 	}
 

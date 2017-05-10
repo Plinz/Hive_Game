@@ -3,6 +3,7 @@ package main.java.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -14,51 +15,48 @@ public class Core implements Serializable {
 	private History history;
 	private State currentState;
 	private int mode;
+	private int status;
 
 	public Core(int mode) {
 		this.history = new History();
 		this.currentState = new State();
 		this.mode = mode;
+		this.status = 0;
 	}
 
-	public Core(History history, State currentState, int mode) {
+	public Core(History history, State currentState, int mode, int status) {
 		this.history = history;
 		this.currentState = currentState;
 		this.mode = mode;
+		this.status = status;
 	}
 
 	public boolean accept(BoardDrawer b) {
-		// b.visit(this);
 		this.currentState.getBoard().accept(b);
 		return false;
 	}
 
 	public boolean addPiece(int piece, CoordGene<Integer> coord) {
-		if ((this.currentState.getTurn() != 6 && this.currentState.getTurn() != 7) || checkQueenRule()
-				|| piece == Consts.QUEEN) {
 			this.history.saveState(this.currentState);
 			this.currentState.getBoard().addPiece(
 					this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece), coord);
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
 			this.currentState.nextTurn();
 			this.currentState.getBoard().clearPossibleMovement();
-			return true;
-		} else {
-			return false;
-		}
+			if (isPlayerStuck())
+				this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+			return !getStuckQueen().isEmpty();
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
-		if (checkQueenRule()) {
 			this.history.saveState(this.currentState);
 			this.currentState.getBoard().movePiece(source, target);
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
 			this.currentState.nextTurn();
 			this.currentState.getBoard().clearPossibleMovement();
-			return true;
-		} else {
-			return false;
-		}
+			if (isPlayerStuck())
+				this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+			return !getStuckQueen().isEmpty();
 	}
 
 	private boolean checkQueenRule() {
@@ -68,6 +66,26 @@ public class Core implements Serializable {
 			}
 		}
 		return true;
+	}
+
+	private List<Tile> getStuckQueen() {
+		Board board = this.currentState.getBoard();
+		List<Tile> queenStuck = new ArrayList<Tile>();
+		board.getBoard().stream().forEach(column -> column.stream().forEach(box -> queenStuck.addAll(box.stream()
+				.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getId() == Consts.QUEEN)
+				.filter(tile -> board.getPieceNeighbors(tile.getCoord()).size() == 6).collect(Collectors.toList()))));
+		return queenStuck;
+	}
+
+	private boolean isPlayerStuck() {
+		int team = this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getTeam();
+		Board board = this.currentState.getBoard();
+		List<CoordGene<Integer>> possibleMovement = getPossibleAdd();
+		board.getBoard().stream()
+				.forEach(column -> column.stream().forEach(box -> box.stream()
+						.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getTeam() == team)
+						.forEach(tile -> possibleMovement.addAll(tile.getPiece().getPossibleMovement(tile, board)))));
+		return possibleMovement.isEmpty();
 	}
 
 	public List<CoordGene<Integer>> getPossibleMovement(CoordGene<Integer> coord) {
@@ -125,6 +143,14 @@ public class Core implements Serializable {
 
 	public void setMode(int mode) {
 		this.mode = mode;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

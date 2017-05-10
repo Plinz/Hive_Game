@@ -10,14 +10,16 @@ public abstract class Piece implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 4655928536510498821L;
 	protected String name;
+	protected int id;
     protected int team;
     protected String description;
     protected List<CoordGene<Integer>> possibleMovement;
 
     public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
 
-    public Piece(String name, int team, String description) {
+    public Piece(String name, int id, int team, String description) {
         this.name = name;
+        this.id = id;
         this.team = team;
         this.description = description;
         this.possibleMovement = null;
@@ -31,7 +33,15 @@ public abstract class Piece implements Cloneable, Serializable {
         this.name = name;
     }
 
-    public int getTeam() {
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getTeam() {
         return team;
     }
 
@@ -62,6 +72,7 @@ public abstract class Piece implements Cloneable, Serializable {
         }
         clone.description = new String(this.description);
         clone.name = new String(this.name);
+        clone.id = this.id;
         clone.team = this.team;
         clone.possibleMovement = new ArrayList<CoordGene<Integer>>();
         if (this.possibleMovement != null)
@@ -70,11 +81,14 @@ public abstract class Piece implements Cloneable, Serializable {
         return clone;
     }
 
-    @Override
+
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((possibleMovement == null) ? 0 : possibleMovement.hashCode());
 		result = prime * result + team;
@@ -94,6 +108,8 @@ public abstract class Piece implements Cloneable, Serializable {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
+			return false;
+		if (id != other.id)
 			return false;
 		if (name == null) {
 			if (other.name != null)

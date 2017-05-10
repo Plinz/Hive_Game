@@ -16,8 +16,8 @@ public class Spider extends Piece {
 
 	private static final long serialVersionUID = 1194394371161156625L;
 
-	public Spider(int team) {
-		super(Consts.SPIDER_NAME, team, "Spider description");
+	public Spider(int id, int team) {
+		super(Consts.SPIDER_NAME, id, team, "Spider description");
 	}
 
 	@Override

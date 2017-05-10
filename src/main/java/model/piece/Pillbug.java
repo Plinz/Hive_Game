@@ -11,8 +11,8 @@ public class Pillbug extends Piece{
 
 	private static final long serialVersionUID = 927638636316794861L;
 
-	public Pillbug(int team) {
-		super("Pillbug", team, "Pillbug description");
+	public Pillbug(int id, int team) {
+		super("Pillbug", id, team, "Pillbug description");
 	}
 
 	@Override

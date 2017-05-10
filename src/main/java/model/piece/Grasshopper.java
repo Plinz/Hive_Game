@@ -14,8 +14,8 @@ public class Grasshopper extends Piece {
 
 	private static final long serialVersionUID = -5556000093860837183L;
 
-	public Grasshopper(int team) {
-		super(Consts.GRASSHOPPER_NAME, team, "Grasshopper description");
+	public Grasshopper(int id, int team) {
+		super(Consts.GRASSHOPPER_NAME, id, team, "Grasshopper description");
 
 	}
 

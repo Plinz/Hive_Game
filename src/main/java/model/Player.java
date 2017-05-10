@@ -9,6 +9,7 @@ import main.java.model.piece.Beetle;
 import main.java.model.piece.Grasshopper;
 import main.java.model.piece.Queen;
 import main.java.model.piece.Spider;
+import main.java.utils.Consts;
 
 public class Player implements Serializable{
 	
@@ -61,17 +62,17 @@ public class Player implements Serializable{
 	}
 
 	private void init(){
-		this.inventory.add(new Queen(team));
-		this.inventory.add(new Spider(team));
-		this.inventory.add(new Spider(team));
-		this.inventory.add(new Grasshopper(team));
-		this.inventory.add(new Grasshopper(team));
-		this.inventory.add(new Grasshopper(team));
-		this.inventory.add(new Beetle(team));
-		this.inventory.add(new Beetle(team));
-		this.inventory.add(new Ant(team));
-		this.inventory.add(new Ant(team));
-		this.inventory.add(new Ant(team));
+		this.inventory.add(new Queen(Consts.QUEEN, team));
+		this.inventory.add(new Spider(Consts.SPIDER1, team));
+		this.inventory.add(new Spider(Consts.SPIDER2, team));
+		this.inventory.add(new Grasshopper(Consts.GRASSHOPPER1, team));
+		this.inventory.add(new Grasshopper(Consts.GRASSHOPPER2, team));
+		this.inventory.add(new Grasshopper(Consts.GRASSHOPPER3, team));
+		this.inventory.add(new Beetle(Consts.BEETLE1, team));
+		this.inventory.add(new Beetle(Consts.BEETLE2, team));
+		this.inventory.add(new Ant(Consts.ANT1, team));
+		this.inventory.add(new Ant(Consts.ANT2, team));
+		this.inventory.add(new Ant(Consts.ANT3, team));
 	}
 	
 	public Piece removePiece(int piece) {
