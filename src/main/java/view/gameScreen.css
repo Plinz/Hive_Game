@@ -2,6 +2,34 @@
  * Empty Stylesheet file.
  */
 
+
 .mainFxmlClass {
 
+}
+
+.buttonUndo{
+    -fx-background-image: url("/undo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRedo{
+    -fx-background-image: url("/redo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLamp{
+    -fx-background-image: url("/lamp.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }

@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import main.java.view.GameScreenController;
 import main.java.view.LoadGameScreenController;
 import main.java.view.MainMenuController;
 import main.java.view.NewGameScreenController;
@@ -91,6 +92,25 @@ public class Main extends Application {
             AnchorPane personOverview = (AnchorPane) loader.load();
             
             RulesScreenController controller = loader.getController();
+            controller.setMainApp(this);
+            
+            Scene scene = new Scene(personOverview);
+            primaryStage.setScene(scene);
+
+            // Set person overview into the center of root layout.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+        public void showGameScreen(){
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("/main/java/view/GameScreen.fxml"));
+            AnchorPane personOverview = (AnchorPane) loader.load();
+            
+            GameScreenController controller = loader.getController();
             controller.setMainApp(this);
             
             Scene scene = new Scene(personOverview);
