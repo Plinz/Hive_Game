@@ -89,4 +89,10 @@ public class CoordGene<T> {
         list.add(getNorthEast());
         return list;
     }
+    
+    @Override
+    public String toString() {
+        return "Coord{" + "x=" + x + ", y=" + y + '}' + '\n';
+    }
+
 }
