@@ -38,4 +38,11 @@ public class Consts {
     //MACRO TEXTE MENU
     public static final String PVP_STRING = "Joueur contre joueur";
     public static final String PVIA_STRING = "Joueur contre ordinateur";
+    
+    //MACRO STATUS GAME
+    public static final int INGAME = 0;
+    public static final int WIN_TEAM1 = 1;
+    public static final int WIN_TEAM2 = 2;
+    public static final int NUL = 3;
+
 }

@@ -21,7 +21,7 @@ public class Core implements Serializable {
 		this.history = new History();
 		this.currentState = new State();
 		this.mode = mode;
-		this.status = 0;
+		this.status = Consts.INGAME;
 	}
 
 	public Core(History history, State currentState, int mode, int status) {
@@ -45,7 +45,7 @@ public class Core implements Serializable {
 			this.currentState.getBoard().clearPossibleMovement();
 			if (isPlayerStuck())
 				this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-			return !getStuckQueen().isEmpty();
+			return isGameFinish();
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
@@ -56,7 +56,7 @@ public class Core implements Serializable {
 			this.currentState.getBoard().clearPossibleMovement();
 			if (isPlayerStuck())
 				this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-			return !getStuckQueen().isEmpty();
+			return isGameFinish();
 	}
 
 	private boolean checkQueenRule() {
@@ -68,13 +68,17 @@ public class Core implements Serializable {
 		return true;
 	}
 
-	private List<Tile> getStuckQueen() {
+	private boolean isGameFinish() {
 		Board board = this.currentState.getBoard();
 		List<Tile> queenStuck = new ArrayList<Tile>();
 		board.getBoard().stream().forEach(column -> column.stream().forEach(box -> queenStuck.addAll(box.stream()
 				.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getId() == Consts.QUEEN)
 				.filter(tile -> board.getPieceNeighbors(tile.getCoord()).size() == 6).collect(Collectors.toList()))));
-		return queenStuck;
+		if (queenStuck.size() == 1)
+			this.status = queenStuck.get(0).getPiece().getTeam();
+		else if (queenStuck.size() == 2)
+			this.status = Consts.NUL;
+		return !queenStuck.isEmpty();
 	}
 
 	private boolean isPlayerStuck() {
