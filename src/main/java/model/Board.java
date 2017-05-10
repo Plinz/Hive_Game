@@ -71,8 +71,8 @@ public class Board implements Serializable{
 	
 	public Tile getTile(CoordGene<Integer> coord){
 		List<Tile> box = null;
-		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
-			return (box = this.board.get(coord.getX()).get(coord.getY())).get(box.size()-1);
+		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size() && !(box = this.board.get(coord.getX()).get(coord.getY())).isEmpty())
+			return box.get(box.size()-1);
 		return null;
 	}
 	
@@ -98,8 +98,10 @@ public class Board implements Serializable{
 		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
 		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
 			added.setPiece(piece);
-		else
+		else{
 			box.add(added = (new Tile(piece, false, coord.getX(), coord.getY(), box.size())));
+			box.get(box.size()-2).setBlocked(true);
+		}
 
         if (coord.getY() == 0){
 			for (List<List<Tile>> column : this.board)
@@ -146,8 +148,10 @@ public class Board implements Serializable{
 				this.updateNeighbors(tile);
 				checkBoardSize(tile.getCoord());
 			}
-			else
+			else {
 				box.remove(tile);
+				box.get(box.size()-1).setBlocked(false);
+			}
 		}
 		this.nbPieceOnTheBoard--;
 		return piece;

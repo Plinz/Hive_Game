@@ -47,8 +47,7 @@ public class Spider extends Piece {
 			CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
 			CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
 
-			if (board.getTile(target) != null && board.getTile(target).getPiece() == null
-					&& Rules.freedomToMoveAndPermanentContact(board, left, right, origin))
+			if (board.getTile(target) != null && board.getTile(target).getPiece() == null && Rules.freedomToMove(board, 0, left, right) && Rules.permanentContact(board, 0, left, right))
 				if (board.getPieceNeighbors(target).size() != 1
 						|| !board.getPieceNeighbors(target).get(0).getCoord().equals(origin))
 					nextBox.addAll(path(board, origin, deep + 1, visited, target));

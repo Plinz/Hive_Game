@@ -26,29 +26,19 @@ public class Beetle extends Piece {
 		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
-				CoordGene<Integer> curr = neighbors.get(i);
-				CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-				CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
-				if (respectMovementRule(tile, prev, next, curr, board))
-					list.add(curr);
+				Tile target = board.getTile(neighbors.get(i));
+				CoordGene<Integer> left = neighbors.get(Math.floorMod(i-1, 6));
+				CoordGene<Integer> right = neighbors.get(Math.floorMod(i+1, 6));
+				int floor;
+				if (target.getZ() == 0 && tile.getZ() == 0)
+					floor = (target.getPiece() == null) ? 0 : 1;
+				else
+					floor = Math.max(target.getZ(), tile.getZ());
+				if (Rules.freedomToMove(board, floor, left, right) && Rules.permanentContact(board, floor, left, right))
+						list.add(target.getCoord());										
 			}
 		}
 		this.possibleMovement = list;
 		return list;
-	}
-
-	private boolean respectMovementRule(Tile from, CoordGene<Integer> leftCoord, CoordGene<Integer> rightCoord, CoordGene<Integer> targetCoord, Board board) {
-		Tile target = board.getTile(targetCoord);
-		Tile left = board.getTile(leftCoord);
-		Tile right = board.getTile(rightCoord);
-		int floor = from.getZ();
-		if (target.getPiece() != null || target.getZ()<floor)
-			floor = target.getZ() > from.getZ() ? target.getZ() : from.getZ()+1;
-		if (floor == 0 && target.getPiece() == null && (left.getPiece() != null & right.getPiece() == null)
-		|| (left.getPiece() == null & right.getPiece() != null))
-			return true;
-		else if (left.getPiece() == null || right.getPiece() == null || left.getZ() != floor || right.getZ() != floor)
-			return true;
-		return false;
 	}
 }

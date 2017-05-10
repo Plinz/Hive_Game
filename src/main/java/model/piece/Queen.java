@@ -16,7 +16,6 @@ public class Queen extends Piece {
 
 	public Queen(int team) {
 		super(Consts.QUEEN_NAME, team, "Queen description");
-
 		// TODO Auto-generated constructor stub
 	}
 
@@ -33,8 +32,7 @@ public class Queen extends Piece {
 				CoordGene<Integer> left = neighbors.get(Math.floorMod(i-1, 6));
 				CoordGene<Integer> right = neighbors.get(Math.floorMod(i+1, 6));
 				
-				if (board.getTile(target).getPiece() == null && board.getPieceNeighbors(target).size() != 1
-						&& Rules.freedomToMoveAndPermanentContact(board, left, right))
+				if (board.getTile(target).getPiece() == null && Rules.freedomToMove(board, 0, left, right) && Rules.permanentContact(board, 0, left, right))
 					list.add(target);
 			}
 		}
