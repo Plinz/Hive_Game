@@ -118,6 +118,7 @@ public class InterfaceJavaFX extends Application {
                             if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
                                 pieceToMove = coord;
                                 highlighted.setListTohighlight(core.getPossibleMovement(coord));
+                                pieceToChoose = -1;
                             }
                         } else {
                             System.out.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
