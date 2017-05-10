@@ -37,26 +37,30 @@ public class Core implements Serializable {
 	}
 
 	public boolean addPiece(int piece, CoordGene<Integer> coord) {
-			this.history.saveState(this.currentState);
-			this.currentState.getBoard().addPiece(
-					this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece), coord);
-			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-			this.currentState.nextTurn();
-			this.currentState.getBoard().clearPossibleMovement();
-			if (isPlayerStuck())
-				this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+		if ((this.currentState.getTurn() == 6 || this.currentState.getTurn() == 7) && checkQueenRule()
+				&& this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getInventory().get(piece)
+						.getId() != Consts.QUEEN)
 			return isGameFinish();
+		this.history.saveState(this.currentState);
+		this.currentState.getBoard().addPiece(
+				this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece), coord);
+		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+		this.currentState.nextTurn();
+		this.currentState.getBoard().clearPossibleMovement();
+		if (isPlayerStuck())
+			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+		return isGameFinish();
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
-			this.history.saveState(this.currentState);
-			this.currentState.getBoard().movePiece(source, target);
+		this.history.saveState(this.currentState);
+		this.currentState.getBoard().movePiece(source, target);
+		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+		this.currentState.nextTurn();
+		this.currentState.getBoard().clearPossibleMovement();
+		if (isPlayerStuck())
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-			this.currentState.nextTurn();
-			this.currentState.getBoard().clearPossibleMovement();
-			if (isPlayerStuck())
-				this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-			return isGameFinish();
+		return isGameFinish();
 	}
 
 	public boolean checkQueenRule() {
@@ -84,7 +88,8 @@ public class Core implements Serializable {
 	private boolean isPlayerStuck() {
 		int team = this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getTeam();
 		Board board = this.currentState.getBoard();
-		List<CoordGene<Integer>> possibleMovement = getPossibleAdd();
+		List<CoordGene<Integer>> possibleMovement = this.currentState.getPlayers()[this.currentState.getCurrentPlayer()]
+				.getInventory().isEmpty() ? new ArrayList<CoordGene<Integer>>() : getPossibleAdd();
 		board.getBoard().stream()
 				.forEach(column -> column.stream().forEach(box -> box.stream()
 						.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getTeam() == team)

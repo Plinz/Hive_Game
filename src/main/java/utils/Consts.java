@@ -32,8 +32,8 @@ public class Consts {
     public static final int SIX=6;
     
     //MACRO MODE DE DIFFICULTE IA ET PLAYER
-    public static final int PVP_INT = 0;
-    public static final int PVIA_INT = 1;
+    public static final int PVP = 0;
+    public static final int PVIA = 1;
     
     //MACRO TEXTE MENU
     public static final String PVP_STRING = "Joueur contre joueur";
