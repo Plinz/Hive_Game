@@ -2,14 +2,12 @@ package main.java.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Board implements Serializable, Iterable<List<Tile>> {
+public class Board implements Serializable {
 
 	private static final long serialVersionUID = -9006505176631946800L;
 	private List<List<List<Tile>>> board;
@@ -87,11 +85,12 @@ public class Board implements Serializable, Iterable<List<Tile>> {
 	}
 
 	public void resize(int xOffset, int yOffset) {
-		for (List<Tile> box : this)
-			for (Tile tile : box) {
-				tile.setX(tile.getX() + xOffset);
-				tile.setY(tile.getY() + yOffset);
-			}
+		for (List<List<Tile>> column : this.board)
+			for (List<Tile> box : column)
+				for (Tile tile : box) {
+					tile.setX(tile.getX() + xOffset);
+					tile.setY(tile.getY() + yOffset);
+				}
 	}
 
 	public void addPiece(Piece piece, CoordGene<Integer> coord) {
@@ -294,46 +293,10 @@ public class Board implements Serializable, Iterable<List<Tile>> {
 	}
 
 	public void clearPossibleMovement() {
-		for (List<Tile> box : this)
-			for (Tile tile : box)
-				if (tile != null && tile.getPiece() != null)
-					tile.getPiece().clear();
-	}
-
-	@Override
-	public Iterator<List<Tile>> iterator() {
-		return new BoardIterator();
-	}
-
-	private class BoardIterator implements Iterator<List<Tile>> {
-		private int x;
-		private int y;
-
-		public BoardIterator() {
-			this.x = 0;
-			this.y = 0;
+		for (List<List<Tile>> column : this.board)
+			for (List<Tile> box : column)
+				for (Tile tile : box)
+					if (tile != null && tile.getPiece() != null)
+						tile.getPiece().clear();
 		}
-
-		public boolean hasNext() {
-			return x + 1 < board.size() - 1 || (x == board.size() - 1 && y + 1 < board.get(x).size() - 1);
-		}
-
-		public List<Tile> next() {
-			if (this.hasNext()) {
-				List<Tile> current = board.get(x).get(y);
-				if (y == board.get(x).size() + 1) {
-					this.x++;
-					this.y = 0;
-				} else
-					this.y++;
-				return current;
-			}
-			throw new NoSuchElementException();
-		}
-
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-	}
-
 }

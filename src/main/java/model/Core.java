@@ -92,22 +92,13 @@ public class Core implements Serializable {
 			Board board = this.currentState.getBoard();
 			Tile current;
 			List<Tile> neighbors;
-			Boolean sameTeam;
-			for (List<Tile> box : board) {
-				sameTeam = true;
-				if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
-						&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()) {
-					for (Tile neighbor : neighbors) {
-						if (neighbor.getPiece().team != this.currentState.getCurrentPlayer()) {
-							sameTeam = false;
-							break;
-						}
-					}
-					if (sameTeam) {
+			for (List<List<Tile>> column : board.getBoard())
+				for (List<Tile> box : column)
+					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
+							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
+							&& !neighbors.stream()
+									.anyMatch(it -> it.getPiece().team != this.currentState.getCurrentPlayer()))
 						pos.add(current.getCoord());
-					}
-				}
-			}
 		}
 		return pos;
 	}
