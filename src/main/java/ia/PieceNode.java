@@ -12,79 +12,70 @@ Convention ->   piece : see Consts
 package main.java.ia;
 
 public class PieceNode {
-    
+
     int x, y, z, piece;
-    boolean stuck, isVisited, isOnBoard ;
+    boolean stuck, isVisited, isOnBoard;
     PieceNode next;
-    
-    public PieceNode(StoringConfig config, int index){
+
+    public PieceNode(StoringConfig config, int index) {
         this.x = config.getX(index);
         this.y = config.getY(index);
         this.z = config.getZ(index);
-        this.piece =  index;
+        this.piece = index;
         this.stuck = config.isStuck(index);
         this.isOnBoard = config.isOnBoard(index);
         this.isVisited = false;
         this.next = null;
     }
-    
-    public int getX()
-    {
+
+    public int getX() {
         return this.x;
     }
-    
-    public int getY()
-    {
+
+    public int getY() {
         return this.y;
     }
-    
-    public int getZ()
-    {
+
+    public int getZ() {
         return this.z;
     }
-    
-    public int getPiece()
-    {
+
+    public int getPiece() {
         return this.piece;
     }
-    
-    public boolean isStuck()
-    {
+
+    public boolean isStuck() {
         return this.stuck;
     }
- 
-    public boolean isOnBoard()
-    {
+
+    public boolean isOnBoard() {
         return this.isOnBoard;
     }
-    
-    public boolean isVisited()
-    {
+
+    public boolean isVisited() {
         return this.isVisited;
     }
-    
-    public PieceNode getNext()
-    {
+
+    public PieceNode getNext() {
         return this.next;
     }
-    
-    public String toString(){
-        String result ="Piece : "+piece+";(x,y,z)="+x+","+y+","+z+".";
-        if(isOnBoard){
+
+    public String toString() {
+        String result = "Piece : " + piece + ";(x,y,z)=" + x + "," + y + "," + z + ".";
+        if (isOnBoard) {
             result += "On board.";
         } else {
             result += "In hand.";
         }
-        if (isStuck()){
-            result +="Is stuck.";
+        if (isStuck()) {
+            result += "Is stuck.";
         }
-        result +="\n";
+        result += "\n";
         return result;
     }
-    
-    public void setStuck(boolean stuck)
-    {
+
+    public void setStuck(boolean stuck) {
         this.stuck = stuck;
     }
-            
+
 }

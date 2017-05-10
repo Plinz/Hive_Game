@@ -319,7 +319,7 @@ public class GameConfig {
         for (Coord coord : CoordsAfterFirstMove) {
             temp = getPossibleSlidingDestinations(coord);
             for (Coord newCoord : temp) {
-                if ((!CoordsAfterSecondMove.contains(newCoord))&&(newCoord.equals(this.getCoord(node)))) {
+                if ((!CoordsAfterSecondMove.contains(newCoord)) && (newCoord.equals(this.getCoord(node)))) {
                     CoordsAfterSecondMove.add(newCoord);
                 }
             }

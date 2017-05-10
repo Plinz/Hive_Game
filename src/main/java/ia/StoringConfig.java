@@ -23,7 +23,7 @@ public class StoringConfig {
 
     public int config[];
     public int turn;
-    
+
     public StoringConfig(int nb_pieces) {
         config = new int[nb_pieces];
     }
@@ -41,7 +41,7 @@ public class StoringConfig {
      */
     public StoringConfig(State state) {
         this.turn = state.getTurn();
-        
+
         List<List<List<Tile>>> board = state.getBoard().getBoard();
         Tile current;
 
@@ -251,7 +251,7 @@ public class StoringConfig {
                         || ((j == 10) && (!loopConf.getNode(9).isOnBoard))) {
                     //do nothing -> the same kind of piece was just added
                 } else {
-                    for (Coord coord : possibleNewPositions){
+                    for (Coord coord : possibleNewPositions) {
                         StoringConfig newStoringConfig = new StoringConfig(this);
                         newStoringConfig.setX(i, (byte) coord.getX());
                         newStoringConfig.setY(i, (byte) coord.getY());
