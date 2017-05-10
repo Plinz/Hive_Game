@@ -8,30 +8,43 @@ import main.java.utils.CoordGene;
 
 public class Rules {
 
-	public static boolean oneHive(Board board, Tile toMove){
+	public static boolean oneHive(Board board, Tile toMove) {
 		List<Tile> list = board.getPieceNeighbors(toMove);
 
-		if(toMove.getZ() != 0 || list.isEmpty())
+		if (toMove.getZ() != 0 || list.isEmpty())
 			return true;
-		
+
 		HashSet<Tile> visited = new HashSet<Tile>();
 		Stack<Tile> nextTiles = new Stack<Tile>();
-		
+
 		visited.add(toMove);
 		nextTiles.add(list.get(0));
 		Tile current;
-		while(!nextTiles.isEmpty()){
-			if (!visited.contains(current = nextTiles.pop())){
+		while (!nextTiles.isEmpty()) {
+			if (!visited.contains(current = nextTiles.pop())) {
 				nextTiles.addAll(board.getPieceNeighbors(current));
 				visited.add(current);
 			}
 		}
 		return board.getNbPieceOnTheBoard() == visited.size();
 	}
-	
-	public static boolean freedomToMove(Board board, CoordGene<Integer> from, CoordGene<Integer> target, CoordGene<Integer> left, CoordGene<Integer> right){
-		
-		
-		return false;
+
+	public static boolean freedomToMoveAndPermanentContact(Board board, CoordGene<Integer> left,
+			CoordGene<Integer> right) {
+		Tile leftTile = board.getTile(left);
+		Tile rightTile = board.getTile(right);
+		return (((leftTile == null || leftTile.getPiece() == null) && rightTile != null && rightTile.getPiece() != null)
+				|| ((rightTile == null || rightTile.getPiece() == null) && leftTile != null
+						&& leftTile.getPiece() != null));
+	}
+
+	public static boolean freedomToMoveAndPermanentContact(Board board, CoordGene<Integer> left,
+			CoordGene<Integer> right, CoordGene<Integer> exception) {
+		Tile leftTile = board.getTile(left);
+		Tile rightTile = board.getTile(right);
+		return (((leftTile == null || leftTile.getPiece() == null || leftTile.getCoord().equals(exception))
+				&& rightTile != null && rightTile.getPiece() != null)
+				|| ((rightTile == null || rightTile.getPiece() == null || rightTile.getCoord().equals(exception))
+						&& leftTile != null && leftTile.getPiece() != null));
 	}
 }
