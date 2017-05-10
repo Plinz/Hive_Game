@@ -14,11 +14,11 @@ public class RandomAI extends AI {
         this.OriginalConfig = new StoringConfig(state);
     }
 
-    public IaMove getNextMove() {
+    public AIMove getNextMove() {
         ArrayList<StoringConfig> PossibleGameConfigs = OriginalConfig.getNextPossibleMoves();
         Random random = new Random();
         int randomMove = random.nextInt() % PossibleGameConfigs.size();
-        IaMove nextMove = new IaMove(OriginalConfig, PossibleGameConfigs.get(randomMove));
+        AIMove nextMove = new AIMove(OriginalConfig, PossibleGameConfigs.get(randomMove));
         return nextMove;
     }
 }
