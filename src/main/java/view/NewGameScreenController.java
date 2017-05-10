@@ -58,10 +58,8 @@ public class NewGameScreenController implements Initializable {
             
         }*/
         //core.getCurrentState().getPlayers()[0].setName();
-        Dialog d = new Alert(Alert.AlertType.INFORMATION);
-        d.setTitle("Information");
-        d.setContentText("Pas encore implémenté");
-        d.show();
+        main.showGameScreen();
+  
     }
     
     
