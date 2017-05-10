@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
 public class Board implements Serializable{
@@ -57,11 +57,19 @@ public class Board implements Serializable{
 	}
 
 	public boolean accept(BoardDrawer b){
-        b.visit(this);
-        return false;
-    }
+         b.visit(this);
+        for(int i = 0;i<this.board.size();i++){
+            for(int j = 0;j<this.board.get(i).size();j++){
+                int taille = this.board.get(i).get(j).size();
+                if(  taille != 0){
+                    this.board.get(i).get(j).get(taille-1).accept(b);
+                }
+            }
+       }
+         return false;
+     }
 	
-	public Tile getTile(Coord coord){
+	public Tile getTile(CoordGene<Integer> coord){
 		Tile ret = null;
 		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
 			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
@@ -70,7 +78,7 @@ public class Board implements Serializable{
 		return ret;
 	}
 	
-	public Tile getTile(Coord coord, int floor){
+	public Tile getTile(CoordGene<Integer> coord, int floor){
 		if(coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size() && coord.getY() < this.board.get(coord.getX()).size())
 			for(Tile t : this.board.get(coord.getX()).get(coord.getY()))
 				if (t.getZ() == floor)
@@ -89,7 +97,7 @@ public class Board implements Serializable{
 		}
 	}
 	
-	public void addPiece(Piece piece, Coord coord){
+	public void addPiece(Piece piece, CoordGene<Integer> coord){
 		Tile added = null;
 		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
 		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
@@ -130,7 +138,7 @@ public class Board implements Serializable{
 		this.nbPieceOnTheBoard++;
 	}
 	
-	public Piece removePiece(Coord coord){
+	public Piece removePiece(CoordGene<Integer> coord){
 		Piece piece = null;
 		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
 		Tile tile = null;
@@ -153,15 +161,13 @@ public class Board implements Serializable{
 			
 	}
 	
-	public void movePiece(Coord coordSource, Coord coordTarget){
+	public void movePiece(CoordGene<Integer> coordSource, CoordGene<Integer> coordTarget){
 		Tile source = this.getTile(coordSource);
-		//Tile target = this.getTile(coordTarget);
 		this.addPiece(source.getPiece(), coordTarget);
 		this.removePiece(source.getCoord());
-		//this.addPiece(piece, coordTarget);
 	}
 	
-	private void checkBoardSize(Coord coord){
+	private void checkBoardSize(CoordGene<Integer> coord){
 		boolean isEmpty = true;
 		boolean resize = false;
 		int x = 0;
@@ -245,7 +251,7 @@ public class Board implements Serializable{
 		}
 	}
 	
-	public List<Tile> getNeighbors(Coord coord){
+	public List<Tile> getNeighbors(CoordGene<Integer> coord){
 		List<Tile> list = new ArrayList<Tile>();
 		list.add(this.getTile(coord.getEast()));
 		list.add(this.getTile(coord.getSouthEast()));
@@ -258,13 +264,13 @@ public class Board implements Serializable{
 	
 	public List<Tile> getNeighbors(Tile tile){
 		List<Tile> list = new ArrayList<Tile>();
-		Coord coord = tile.getCoord();
+		CoordGene<Integer> coord = tile.getCoord();
 		list.addAll(getNeighbors(coord));
 		list.addAll(this.getAboveAndBelow(tile));
 		return list;
 	}
 	
-	public List<Tile> getPieceNeighbors(Coord coord){
+	public List<Tile> getPieceNeighbors(CoordGene<Integer> coord){
 		List<Tile> list = new ArrayList<Tile>();
 		for (Tile t : getNeighbors(coord))
 			if (t != null && t.getPiece() != null)

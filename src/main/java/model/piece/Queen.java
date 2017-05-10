@@ -8,7 +8,7 @@ import main.java.model.Piece;
 import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public class Queen extends Piece {
 
@@ -21,17 +21,17 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	public List<Coord> getPossibleMovement(Tile tile, Board board) {
+	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 
-		List<Coord> list = new ArrayList<Coord>();
+		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
 		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
-			List<Coord> neighbors = tile.getCoord().getNeighbors();
+			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
-				Coord curr = neighbors.get(i);
-				Coord prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
-				Coord next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
+				CoordGene<Integer> curr = neighbors.get(i);
+				CoordGene<Integer> prev = i == 0 ? neighbors.get(neighbors.size() - 1) : neighbors.get(i - 1);
+				CoordGene<Integer> next = i == neighbors.size() - 1 ? neighbors.get(0) : neighbors.get(i + 1);
 				if (board.getTile(curr).getPiece() == null && board.getPieceNeighbors(curr).size() != 1
 						&& ((board.getTile(prev).getPiece() != null & board.getTile(next).getPiece() == null)
 								|| (board.getTile(prev).getPiece() == null & board.getTile(next).getPiece() != null)))

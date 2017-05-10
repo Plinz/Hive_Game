@@ -1,8 +1,10 @@
 package main.java.ia;
 
+import static java.lang.Math.max;
 import java.util.ArrayList;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
+import main.java.utils.Cube;
 
 /*
 this class is used to run movements & heuristics algorithms on in an optimal way
@@ -45,20 +47,24 @@ public class LoopingConfig {
     ****************************     Testers   *************************
      */
     public boolean isFreeNode(LoopingConfigNode node) {
-        return (node.piece == 0);
+        return (node.getPiece() == 0);
     }
 
     public boolean isFreeCoord(Coord coord) {
-        return (this.getNode(coord.getX(), coord.getY()).piece == 0);
+        return (this.getNode(coord.getX(), coord.getY()).getPiece() == 0);
     }
 
+    public boolean isFreeCoord(Cube<Integer> coord) {
+        return (this.getNode(coord.getX(), coord.getY(), coord.getZ()).getPiece() == 0);
+    }
+    
     //check if 2 tiles have same color -> takes in account the fact beetle can cover
     //a tile.
     public boolean isSameColor(LoopingConfigNode node1, LoopingConfigNode node2) {
         LoopingConfigNode node1Visible = array[node1.getX()];
         if (node1.stuck) {
-            while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.stuck))) {
-                node1Visible = node1Visible.next;
+            while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.isStuck()))) {
+                node1Visible = node1Visible.getNext();
             }
         } else {
             node1Visible = node1;
@@ -66,8 +72,8 @@ public class LoopingConfig {
 
         LoopingConfigNode node2Visible = array[node2.getX()];
         if (node2.stuck) {
-            while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.stuck))) {
-                node2Visible = node2Visible.next;
+            while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.isStuck()))) {
+                node2Visible = node2Visible.getNext();
             }
         } else {
             node2Visible = node1;
@@ -90,6 +96,15 @@ public class LoopingConfig {
         return node;
     }
 
+    //search by coordinates for cubes
+    public LoopingConfigNode getNode(int x, int y, int z) {
+        LoopingConfigNode node = array[x];
+        while ((node != null) && ((node.getY() != y)) || (node.getZ() != z)) {
+            node = node.getNext();
+        }
+        return node;
+    }
+    
     public LoopingConfigNode getNode(Coord coord) {
         return this.getNode(coord.getX(), coord.getY());
     }
@@ -267,6 +282,22 @@ public class LoopingConfig {
         return result;
     }
 
+    /*public ArrayList<Cube> getPossibleSlidingDestinations(Cube coord) {
+        Cube neighbors[] = coord.getNeighborsInArray();
+        ArrayList<Cube> result = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            // tricky condition -> if neighbor[i] is free 
+            if (this.isFreeCoord(neighbors[i])) {
+                // and if one & only one of both (i-1,i+1) neighbors are free 
+                if ((this.isFreeCoord(neighbors[(i - 1) % 6])) && (!this.isFreeCoord(neighbors[(i + 1) % 6]))
+                        || (!this.isFreeCoord(neighbors[(i - 1) % 6])) && (this.isFreeCoord(neighbors[(i + 1) % 6]))) {
+                    result.add(neighbors[i]);
+                }
+            }
+        }
+        return result;
+    }*/
+    
     public ArrayList<StoringConfig> getPossibleSpiderDestinations(LoopingConfigNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
@@ -325,7 +356,6 @@ public class LoopingConfig {
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i;
         for (i = 0; i < neighbors.length; i++) {
-            //testing gates : function to be implemented
             if ((neighbors[i].getPiece() == 0)
                     && ((neighbors[(i + 1) % neighbors.length].getPiece() == 0) && (neighbors[(i - 1) % neighbors.length].getPiece() != 0)
                     || (neighbors[(i + 1) % neighbors.length].getPiece() != 0) && (neighbors[(i - 1) % neighbors.length].getPiece() == 0))) {
@@ -388,7 +418,42 @@ public class LoopingConfig {
      * ******************************** Other Bugs ****************************
      */
     public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (node.isStuck())
+            return new ArrayList<>();      
+        
+        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
+        int i, maxHeight;
+        for (i = 0; i < neighbors.length; i++) {
+            maxHeight = max(node.getZ(), neighbors[i].getZ());
+            if (((neighbors[(i + 1)% neighbors.length]).getZ() < maxHeight)
+                || ((neighbors[(i - 1) % neighbors.length]).getZ() < maxHeight))
+            {
+                StoringConfig newConf = new StoringConfig(this.stconf.config.length);
+                System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
+                
+                //freeing the former stuck piece
+                if (node.getZ() > 0)
+                    this.getNode(node.getX(), node.getY(), node.getZ()-1).setStuck(false);
+                
+                //paralizing the piece underneath the beetle and actualizing Z coordinate of the beetle
+                if (!(this.isFreeNode(neighbors[i])))
+                {
+                    newConf.setIsStuck(neighbors[i].getPiece(), true);
+                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ()-(node.getZ()-1-(neighbors[i].getZ()))));
+                }
+                else
+                    newConf.setZ((int) node.getPiece(), (byte) 1);
+                    
+                //actualizing X and Y coordinates of the beetle
+                newConf.setX((int) node.getPiece(), (byte) neighbors[i].getX());
+                newConf.setY((int) node.getPiece(), (byte) neighbors[i].getY());
+                
+                possibleDest.add(newConf);
+            }
+        }
+        
+        return possibleDest;
     }
 
     public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(LoopingConfigNode node) {

@@ -3,8 +3,9 @@ package main.java.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public abstract class Piece implements Cloneable, Serializable{
 	
@@ -12,14 +13,44 @@ public abstract class Piece implements Cloneable, Serializable{
 	protected String name;
 	protected int team;
 	protected String description;
-	protected List<Coord> possibleMovement;
+	protected List<CoordGene<Integer>> possibleMovement;
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + this.team;
+        hash = 29 * hash + Objects.hashCode(this.description);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Piece other = (Piece) obj;
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (this.team != other.team) {
+            return false;
+        }
+        if (!Objects.equals(this.description, other.description)) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
         return "\nPiece{" + "name=" + name + ", team=" + team + ", description=" + description + '}';
     }
 	
-	public abstract List<Coord> getPossibleMovement(Tile tile, Board board);
+	public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
 
 	public Piece(String name, int team, String description) {
 		this.name = name;
@@ -64,10 +95,10 @@ public abstract class Piece implements Cloneable, Serializable{
 	    clone.description = new String(this.description);
 	    clone.name = new String(this.name);
 	    clone.team = this.team;
-	    clone.possibleMovement = new ArrayList<Coord>();
+	    clone.possibleMovement = new ArrayList<CoordGene<Integer>>();
 	    if (this.possibleMovement != null){
-		    for (Coord coord : this.possibleMovement)
-		    	clone.possibleMovement.add(new Coord(coord.getX(), coord.getY()));
+		    for (CoordGene<Integer> coord : this.possibleMovement)
+		    	clone.possibleMovement.add(new CoordGene<Integer>(coord.getX(), coord.getY()));
 	    }
 	    
 	    return clone;

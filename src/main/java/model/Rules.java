@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public class Rules {
 
@@ -29,7 +29,7 @@ public class Rules {
 		return board.getNbPieceOnTheBoard() == visited.size();
 	}
 	
-	public static boolean freedomToMove(Board board, Coord from, Coord target, Coord left, Coord right){
+	public static boolean freedomToMove(Board board, CoordGene<Integer> from, CoordGene<Integer> target, CoordGene<Integer> left, CoordGene<Integer> right){
 		
 		
 		return false;

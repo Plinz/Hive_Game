@@ -81,4 +81,10 @@ public class LoopingConfigNode {
         result +="\n";
         return result;
     }
+    
+    public void setStuck(boolean stuck)
+    {
+        this.stuck = stuck;
+    }
+            
 }

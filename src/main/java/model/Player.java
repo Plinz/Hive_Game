@@ -64,18 +64,18 @@ public class Player implements Serializable{
 		this.inventory.add(new Queen(team));
 		this.inventory.add(new Spider(team));
 		this.inventory.add(new Spider(team));
+		this.inventory.add(new Grasshopper(team));
+		this.inventory.add(new Grasshopper(team));
+		this.inventory.add(new Grasshopper(team));
 		this.inventory.add(new Beetle(team));
 		this.inventory.add(new Beetle(team));
-		this.inventory.add(new Grasshopper(team));
-		this.inventory.add(new Grasshopper(team));
-		this.inventory.add(new Grasshopper(team));
 		this.inventory.add(new Ant(team));
 		this.inventory.add(new Ant(team));
 		this.inventory.add(new Ant(team));
 	}
 	
-	public void removePiece(Piece piece) {
-		this.inventory.remove(piece);		
+	public Piece removePiece(int piece) {
+		return this.inventory.remove(piece);		
 	}
 
 }

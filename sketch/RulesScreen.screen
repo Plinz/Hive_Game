@@ -43,7 +43,7 @@
   <widgets xsi:type="model:Label" id="35" x="80" y="50" width="301" text="Les règles" measuredWidth="301" measuredHeight="34" textAlignment="Center">
     <font size="19px"/>
   </widgets>
-  <widgets xsi:type="model:Button" id="36" x="934" y="665" width="325" height="39" text="Revenir au menu principal" measuredWidth="325" measuredHeight="39" link="MainMenu.screen">
+  <widgets xsi:type="model:Button" id="36" x="936" y="645" width="325" height="39" text="Revenir au menu principal" measuredWidth="325" measuredHeight="39" link="MainMenu.screen">
     <font/>
   </widgets>
   <hRuler/>

@@ -8,7 +8,7 @@ import main.java.model.Piece;
 import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 
 public class Grasshopper extends Piece {
 
@@ -20,13 +20,13 @@ public class Grasshopper extends Piece {
 	}
 
 	@Override
-	public List<Coord> getPossibleMovement(Tile tile, Board board) {
+	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		
-		ArrayList<Coord> list = new ArrayList<Coord>();
+		ArrayList<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
 		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
-			Coord coord = tile.getCoord();
+			CoordGene<Integer> coord = tile.getCoord();
 			
 			Tile tmp = board.getTile(coord.getEast());
 			if (tmp.getPiece() != null){

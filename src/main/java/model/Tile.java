@@ -2,7 +2,7 @@ package main.java.model;
 
 import java.io.Serializable;
 
-import main.java.utils.Coord;
+import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
 public class Tile implements Serializable {
@@ -78,8 +78,8 @@ public class Tile implements Serializable {
 		this.z = z;
 	}
 
-	public Coord getCoord() {
-		return new Coord(this.x, this.y);
+	public CoordGene<Integer> getCoord() {
+		return new CoordGene<Integer>(this.x, this.y);
 	}
 
 	public boolean accept(BoardDrawer b) {
