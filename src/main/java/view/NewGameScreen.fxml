@@ -47,8 +47,8 @@
                 <RowConstraints maxHeight="116.0" minHeight="10.0" prefHeight="116.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="namePlayer1" prefHeight="26.0" prefWidth="211.0" text="Anonymous" GridPane.columnIndex="1" />
-                  <TextField fx:id="namePlayer2" text="Anonymous" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                  <TextField fx:id="namePlayer1" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
+                  <TextField fx:id="namePlayer2" text="Anonyme" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                   <Label prefHeight="16.0" prefWidth="125.0" text="Nom du joueur 1 :" />
                   <Label fx:id="labelPlayer2" prefHeight="16.0" prefWidth="125.0" text="Nom du joueur 2 :" GridPane.rowIndex="1" />
                </children>

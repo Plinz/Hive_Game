@@ -2,11 +2,44 @@
  * Empty Stylesheet file.
  */
 
-.button{
-        -fx-background-image: url("/buttonSkin.png");
-        -fx-background-position: center;
-        -fx-background-repeat: no-repeat;
-        -fx-background-size: auto;
+
+.buttonNewGame{
+
+    -fx-graphic: url("/newGameButton.png");
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-border-width : 0;
+    
+    
+}
+
+.buttonLoadGame{
+        -fx-graphic: url("/buttonSkin.png");
+        -fx-focus-color: transparent;
+        -fx-border-width : 0;
+}
+
+.buttonRules{
+        -fx-graphic: url("/buttonSkin.png");
+        -fx-focus-color: transparent;
+        -fx-border-width : 0;
+}
+
+.buttonTutorial{
+        -fx-graphic: url("/buttonSkin.png");
+        -fx-focus-color: transparent;
+        -fx-border-width : 0;
+}
+
+.buttonOptions{
+        -fx-graphic: url("/buttonSkin.png");
+        -fx-focus-color: transparent;
+        -fx-border-width : 0;
+}
+
+.buttonLeave{
+        -fx-graphic: url("/buttonSkin.png");
+        -fx-focus-color: transparent;
 }
     
 

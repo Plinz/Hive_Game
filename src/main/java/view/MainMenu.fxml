@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.view.MainMenuController">
    <children>
-      <GridPane alignment="CENTER" gridLinesVisible="true" layoutX="255.0" layoutY="75.0" prefHeight="585.0" prefWidth="771.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="254.0" AnchorPane.topAnchor="75.0">
+      <GridPane alignment="CENTER" layoutX="255.0" layoutY="75.0" prefHeight="585.0" prefWidth="771.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="254.0" AnchorPane.topAnchor="75.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -25,18 +26,21 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="nouvellePartie" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleNewGameClick" text="Nouvelle partie" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLoadGameClick" text="Charger partie" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" text="Règles du jeu" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleTutorialClick" text="Didacticiel" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleOptionsClick" text="Options" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLeaveClick" text="Quitter" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+            <Button fx:id="nouvellePartie" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleNewGameClick" prefHeight="42.0" prefWidth="140.0" styleClass="buttonNewGame" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLoadGameClick" prefHeight="43.0" prefWidth="140.0" styleClass="buttonLoadGame" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" prefHeight="42.0" prefWidth="140.0" styleClass="buttonRules" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleTutorialClick" prefHeight="42.0" prefWidth="140.0" styleClass="buttonTutorial" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleOptionsClick" prefHeight="42.0" prefWidth="140.0" styleClass="buttonOptions" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLeaveClick" prefHeight="42.0" prefWidth="140.0" styleClass="buttonLeave" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
             <ImageView fx:id="imageMenu" fitHeight="221.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
                <image>
                   <Image url="@../../resources/img/tile/Tile_Queen_White.png" />
                </image>
             </ImageView>
          </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </GridPane>
    </children>
 </AnchorPane>
