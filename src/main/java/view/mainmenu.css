@@ -2,44 +2,120 @@
  * Empty Stylesheet file.
  */
 
+.imageMenu{
+    -fx-image: url("/logo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;    
+}
 
 .buttonNewGame{
+    
+    -fx-background-image: url("/newGame.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
 
-    -fx-graphic: url("/newGameButton.png");
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-    -fx-border-width : 0;
+.buttonNewGame:hover{
     
-    
+    -fx-background-image: url("/newGame_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 .buttonLoadGame{
-        -fx-graphic: url("/buttonSkin.png");
-        -fx-focus-color: transparent;
-        -fx-border-width : 0;
+    -fx-background-image: url("/LoadGame.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLoadGame:hover{
+    -fx-background-image: url("/loadGame_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 .buttonRules{
-        -fx-graphic: url("/buttonSkin.png");
-        -fx-focus-color: transparent;
-        -fx-border-width : 0;
+    -fx-background-image: url("/GameRules.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRules:hover{
+    -fx-background-image: url("/rules_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 .buttonTutorial{
-        -fx-graphic: url("/buttonSkin.png");
-        -fx-focus-color: transparent;
-        -fx-border-width : 0;
+    -fx-background-image: url("/didacticiel.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonTutorial:hover{
+    -fx-background-image: url("/didacticiel_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 .buttonOptions{
-        -fx-graphic: url("/buttonSkin.png");
-        -fx-focus-color: transparent;
-        -fx-border-width : 0;
+    -fx-background-image: url("/options.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonOptions:hover{
+    -fx-background-image: url("/options_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 .buttonLeave{
-        -fx-graphic: url("/buttonSkin.png");
-        -fx-focus-color: transparent;
+    -fx-background-image: url("/quit.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLeave:hover{
+    -fx-background-image: url("/quit_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
     
 
