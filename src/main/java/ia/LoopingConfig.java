@@ -151,11 +151,6 @@ public class LoopingConfig {
         return this.getNode((node.getX() - 1), (node.getY() + 1));
     }
 
-    //All of them -> 2 implementations 
-    //one returns array -> all of them (even null) in order
-    //one returns arrayList -> no order, only non null neighbors
-    //get all neighbors of a tile in an array
-
     //get all neighbors of a tile in an array list
     public ArrayList<LoopingConfigNode> getNeighborsInArrayList(LoopingConfigNode node) {
         ArrayList<LoopingConfigNode> result = new ArrayList<>();
@@ -193,6 +188,28 @@ public class LoopingConfig {
         return result;
     }
 
+    public LoopingConfigNode getHighestNode(Coord coords)
+    {
+        LoopingConfigNode current = this.array[coords.getX()];
+        if (current == null)
+            return null;
+        LoopingConfigNode highestNode = null;
+        while (current != null)
+        {
+            if (current.getY() == coords.getY())
+            {
+                if (highestNode == null)
+                    highestNode = current;
+                else if (current.getZ() > highestNode.getZ())
+                {
+                    highestNode = current;
+                }
+            }
+            current = current.getNext();
+        }
+        return highestNode;
+    }
+    
     /**
      * ************ Deplacements ****************************
      */
@@ -414,16 +431,18 @@ public class LoopingConfig {
             return new ArrayList<>();
         }      
         
-        //creating array from arraylist 
-        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
-        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
+        Coord nodeCoords = new Coord(node.getX(), node.getY());
+        Coord neighbors[] = new Coord[nodeCoords.getNeighbors().size()];
+        neighbors = nodeCoords.getNeighbors().toArray(neighbors);
         
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i, maxHeight;
+        
+        
         for (i = 0; i < neighbors.length; i++) {
-            maxHeight = max(node.getZ(), neighbors[i].getZ());
-            if (((neighbors[(i + 1)% neighbors.length]).getZ() < maxHeight)
-                || ((neighbors[(i - 1) % neighbors.length]).getZ() < maxHeight))
+            maxHeight = max(node.getZ(), this.getHighestNode(neighbors[i]).getZ());
+            if (((this.getHighestNode(neighbors[i + 1])).getZ() < maxHeight)
+                || ((this.getHighestNode(neighbors[i - 1])).getZ() < maxHeight))
             {
                 StoringConfig newConf = new StoringConfig(this.stconf.config.length);
                 System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
@@ -433,10 +452,10 @@ public class LoopingConfig {
                     this.getNode(node.getX(), node.getY(), node.getZ()-1).setStuck(false);
                 
                 //paralizing the piece underneath the beetle and actualizing Z coordinate of the beetle
-                if (!(this.isFreeNode(neighbors[i])))
+                if (!(this.isFreeNode(this.getNode(neighbors[i]))))
                 {
-                    newConf.setIsStuck(neighbors[i].getPiece(), true);
-                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ()-(node.getZ()-1-(neighbors[i].getZ()))));
+                    newConf.setIsStuck(this.getHighestNode(neighbors[i]).getPiece(), true);
+                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ()-(node.getZ()-1-(this.getHighestNode(neighbors[i]).getZ()))));
                 }
                 else
                     newConf.setZ((int) node.getPiece(), (byte) 1);
