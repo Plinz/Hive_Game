@@ -9,7 +9,6 @@ package main.java.view;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
@@ -37,6 +36,7 @@ public class NewGameScreenController implements Initializable {
     private Main main;
     @FXML private MenuButton gameChoice;
     @FXML private Label labelPlayer2;
+    @FXML private TextField namePlayer1;
     @FXML private TextField namePlayer2;
     
     public NewGameScreenController() {
@@ -44,7 +44,8 @@ public class NewGameScreenController implements Initializable {
     
     @FXML
     public void handleLaunchGameClick(){
-        Core core;
+        Core core = new Core(2);
+        /*
         switch(gameChoice.getText()){
             case Consts.PVP_STRING :
                 core = new Core(Consts.PVP_INT);
@@ -55,7 +56,7 @@ public class NewGameScreenController implements Initializable {
             default :
                 break;
             
-        }
+        }*/
         //core.getCurrentState().getPlayers()[0].setName();
         Dialog d = new Alert(Alert.AlertType.INFORMATION);
         d.setTitle("Information");
@@ -63,10 +64,6 @@ public class NewGameScreenController implements Initializable {
         d.show();
     }
     
-    @FXML
-    public void handleChangeChoiceGame(){
-        gameChoice.setText("Test");
-    }
     
     @FXML
     public void handleChoicePVP(){

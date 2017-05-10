@@ -8,6 +8,7 @@ package main.java.view;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import main.java.implement.Main;
 
@@ -39,7 +40,7 @@ public class MainMenuController implements Initializable {
     
     @FXML 
     public void handleDisplayRulesClick(){
-        System.out.println("Rules");
+        main.showRulesScreen();
     }
    
     
@@ -55,7 +56,7 @@ public class MainMenuController implements Initializable {
     
     @FXML 
     public void handleLeaveClick(){
-        System.out.println("Leave");
+        Platform.exit();
     }
     
     @FXML

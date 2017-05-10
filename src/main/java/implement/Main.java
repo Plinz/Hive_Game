@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import main.java.view.LoadGameScreenController;
 import main.java.view.MainMenuController;
 import main.java.view.NewGameScreenController;
+import main.java.view.RulesScreenController;
 
 public class Main extends Application {
 
@@ -80,6 +81,25 @@ public class Main extends Application {
             e.printStackTrace();
         }
         
+    }
+    
+    public void showRulesScreen(){
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("/main/java/view/RulesScreen.fxml"));
+            AnchorPane personOverview = (AnchorPane) loader.load();
+            
+            RulesScreenController controller = loader.getController();
+            controller.setMainApp(this);
+            
+            Scene scene = new Scene(personOverview);
+            primaryStage.setScene(scene);
+
+            // Set person overview into the center of root layout.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
