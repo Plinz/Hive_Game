@@ -6,21 +6,24 @@ each short(16b) contains :
     
     (real booleans, 1 bit each, not java (16 bytes).
 
-Booleans (from left to right) :1- isStuck ;2- isOnBoard
+Booleans (from left to right) :1- isStuck ;2- isOnBoard 
 
 The pieces are associated to int between 0 and 10 in Consts.
  */
 package main.java.ia;
 
+import java.util.ArrayList;
 import java.util.List;
 import main.java.model.State;
 import main.java.model.Tile;
 import main.java.utils.Consts;
+import main.java.utils.Coord;
 
 public class StoringConfig {
 
     public int config[];
-
+    public int turn;
+    
     public StoringConfig(int nb_pieces) {
         config = new int[nb_pieces];
     }
@@ -37,23 +40,14 @@ public class StoringConfig {
     game configuration.
      */
     public StoringConfig(State state) {
-
+        this.turn = state.getTurn();
+        
         List<List<List<Tile>>> board = state.getBoard().getBoard();
         Tile current;
 
         /// first we find out the total amount of pieces in the game
         //->pieces on the board
-        int total_pieces_nb = 0;
-        for (int i = 0; i < board.size(); i++) {
-            for (int j = 0; j < board.get(i).size(); j++) {
-                for (int k = 0; k < board.get(i).get(j).size(); k++) {
-                    current = board.get(i).get(j).get(k);
-                    if ((current != null) && (current.getPiece() != null)) {
-                        total_pieces_nb++;
-                    }
-                }
-            }
-        }
+        int total_pieces_nb = state.getBoard().getNbPieceOnTheBoard();
         // + pieces in hands of p1 & p2
         total_pieces_nb += state.getPlayers()[0].getInventory().size();
         total_pieces_nb += state.getPlayers()[1].getInventory().size();
@@ -221,12 +215,50 @@ public class StoringConfig {
             if (this.isOnBoard(i)) {
                 result += "piece:" + i + "->x,y,z=" + this.getX(i) + "," + this.getY(i) + "," + this.getZ(i) + ".";
             }
-            if (this.isStuck(i)){
+            if (this.isStuck(i)) {
                 result += "Stuck.\n";
             } else {
-                result +="\n";
+                result += "\n";
             }
 
+        }
+        return result;
+    }
+
+    ///////   Next move getter
+    public ArrayList<StoringConfig> getNextPossibleMoves() {
+        ArrayList<StoringConfig> temp, result = new ArrayList<>();
+
+        LoopingConfig loopConf = new LoopingConfig(this, turn);
+        ArrayList<Coord> possibleNewPositions = loopConf.getNewPossiblePositions();
+
+        int start = loopConf.player * loopConf.nbPiecesPerColor;
+        int finish = start + loopConf.nbPiecesPerColor;
+
+        for (int i = start; i < finish; i++) {
+            if (loopConf.getNode(i).isOnBoard) {
+                temp = loopConf.getPossibleDestinations(loopConf.getNode(i));
+                for (StoringConfig stconfig : temp) {
+                    result.add(stconfig);
+                }
+            } else {
+                int j = i % loopConf.nbPiecesPerColor;
+                if (((j == 2) && (!loopConf.getNode(1).isOnBoard))
+                        || ((j == 4) && (!loopConf.getNode(3).isOnBoard))
+                        || ((j == 5) && (!loopConf.getNode(4).isOnBoard))
+                        || ((j == 7) && (!loopConf.getNode(6).isOnBoard))
+                        || ((j == 9) && (!loopConf.getNode(8).isOnBoard))
+                        || ((j == 10) && (!loopConf.getNode(9).isOnBoard))) {
+                    //do nothing -> the same kind of piece was just added
+                } else {
+                    for (Coord coord : possibleNewPositions){
+                        StoringConfig newStoringConfig = new StoringConfig(this);
+                        newStoringConfig.setX(i, (byte) coord.getX());
+                        newStoringConfig.setY(i, (byte) coord.getY());
+                        result.add(newStoringConfig);
+                    }
+                }
+            }
         }
         return result;
     }

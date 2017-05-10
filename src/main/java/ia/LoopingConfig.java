@@ -26,7 +26,9 @@ public class LoopingConfig {
     /*
      ********************         Constructor           *************************
      */
-    public LoopingConfig(StoringConfig stconf) {
+    public LoopingConfig(StoringConfig stconf, int turn) {
+        this.turn = turn;
+        this.player = (turn+1)%2;
         this.stconf = stconf;
         this.array = new LoopingConfigNode[stconf.config.length];
         this.nbPiecesPerColor = (stconf.config.length / 2);
@@ -153,16 +155,6 @@ public class LoopingConfig {
     //one returns array -> all of them (even null) in order
     //one returns arrayList -> no order, only non null neighbors
     //get all neighbors of a tile in an array
-    public LoopingConfigNode[] getNeighborsInArray(LoopingConfigNode node) {
-        LoopingConfigNode result[] = new LoopingConfigNode[6];
-        result[0] = this.getEast(node);
-        result[1] = this.getSouthEast(node);
-        result[2] = this.getSouthWest(node);
-        result[3] = this.getWest(node);
-        result[4] = this.getNorthWest(node);
-        result[5] = this.getNorthEast(node);
-        return result;
-    }
 
     //get all neighbors of a tile in an array list
     public ArrayList<LoopingConfigNode> getNeighborsInArrayList(LoopingConfigNode node) {
@@ -224,7 +216,7 @@ public class LoopingConfig {
 
     //Get coords of positions where a new tile can be placed by player
     //called with player as param so no redundant call for each piece in player's hand
-    public ArrayList<Coord> getNewPossiblePositions(int player) {
+    public ArrayList<Coord> getNewPossiblePositions() {
         int start = player * nbPiecesPerColor;
         int finish = start + nbPiecesPerColor;
         ArrayList<Coord> result = new ArrayList<>();
@@ -350,7 +342,9 @@ public class LoopingConfig {
             return new ArrayList<>();
         }
 
-        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        //creating array from arraylist
+        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
+        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i;
         for (i = 0; i < neighbors.length; i++) {
@@ -416,10 +410,14 @@ public class LoopingConfig {
      * ******************************** Other Bugs ****************************
      */
     public ArrayList<StoringConfig> getPossibleBeetleDestinations(LoopingConfigNode node) {
-        if (node.isStuck())
-            return new ArrayList<>();      
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }      
         
-        LoopingConfigNode neighbors[] = this.getNeighborsInArray(node);
+        //creating array from arraylist 
+        LoopingConfigNode neighbors[] = new LoopingConfigNode[this.getNeighborsInArrayList(node).size()];
+        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
+        
         ArrayList<StoringConfig> possibleDest = new ArrayList<>();
         int i, maxHeight;
         for (i = 0; i < neighbors.length; i++) {
