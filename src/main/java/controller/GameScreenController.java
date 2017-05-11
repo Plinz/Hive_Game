@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.view;
+package main.java.controller;
 
 import java.net.URL;
 import java.util.List;
@@ -32,6 +32,9 @@ import main.java.model.Core;
 import main.java.model.Piece;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.view.Highlighter;
+import main.java.view.RefreshJavaFX;
+import main.java.view.TraducteurBoard;
 
 /**
  *
