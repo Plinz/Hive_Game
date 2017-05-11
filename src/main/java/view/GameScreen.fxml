@@ -194,15 +194,15 @@
               </rowConstraints>
                <children>
                   <Canvas fx:id="gameCanvas" height="723.0" width="682.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onMouseClicked="#handleLeftButton" prefHeight="26.0" prefWidth="74.0" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" onMouseClicked="#handleUpButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button mnemonicParsing="false" onMouseClicked="#handleDownButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="26.0" prefWidth="74.0" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="5.0" top="10.0" />
                </padding>
             </GridPane>
-            <Button mnemonicParsing="false" onMouseClicked="#handleRightButton" prefHeight="26.0" prefWidth="70.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button mnemonicParsing="false" onMouseClicked="#handleRightButton" onMousePressed="#handleRightButton" prefHeight="26.0" prefWidth="70.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>

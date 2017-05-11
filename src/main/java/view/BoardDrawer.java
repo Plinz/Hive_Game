@@ -35,8 +35,7 @@ public class BoardDrawer extends Visitor {
     }
      
     public boolean visit(Board b){
-        gc.clearRect(0, 0, can.getWidth(), can.getHeight());
-        
+        gc.clearRect(0, 0, can.getWidth(), can.getHeight());   
         return false;
     }
     
@@ -49,8 +48,10 @@ public class BoardDrawer extends Visitor {
               CoordGene<Double> coord = new CoordGene((double)t.getX(),(double)t.getY()); 
               CoordGene<Double> coordPix =traducteur.axialToPixel(coord);
               
-              double X = coordPix.getX()+sizeHex;
-              double Y = coordPix.getY()+sizeHex;
+              System.err.println(traducteur.getMoveOrigin().getY());
+              
+              double X = coordPix.getX()+traducteur.getMoveOrigin().getX();
+              double Y = coordPix.getY()+traducteur.getMoveOrigin().getY();
               
               double[] x = new double[6];
               double[] y = new double[6];
@@ -87,8 +88,8 @@ public class BoardDrawer extends Visitor {
               CoordGene<Double> coord = new CoordGene((double)c.getX(),(double)c.getY()); 
               CoordGene<Double> coordPix =traducteur.axialToPixel(coord);
               
-              double X = coordPix.getX()+sizeHex;
-              double Y = coordPix.getY()+sizeHex;
+              double X = coordPix.getX()+traducteur.getMoveOrigin().getX();
+              double Y = coordPix.getY()+traducteur.getMoveOrigin().getY();
               
               double[] x = new double[6];
               double[] y = new double[6];

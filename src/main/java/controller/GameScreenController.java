@@ -163,24 +163,19 @@ public class GameScreenController implements Initializable {
     }
     
     public void handleUpButton(){
-        System.err.println("TOP");
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()-10));
-        
     }
     
     public void handleRightButton(){
-        System.err.println("R");
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()));
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX()+10,t.getMoveOrigin().getY()));
     }
     
     public void handleDownButton(){
-        System.err.println("D");
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()));
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()+10));
     }
     
     public void handleLeftButton(){
-        System.err.println("L");
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()));
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX()-10,t.getMoveOrigin().getY()));
     }
     
     

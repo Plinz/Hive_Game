@@ -26,7 +26,7 @@ public class RefreshJavaFX extends AnimationTimer{
     
     public RefreshJavaFX(Core core, Canvas c, Highlighter h,TraducteurBoard t) {
         this.core = core;
-        drawer = new BoardDrawer(c);
+        drawer = new BoardDrawer(c,t);
         this.h =h; 
     }
 
