@@ -74,7 +74,6 @@ public class InterfaceJavaFX extends Application {
         piecesToAdd = new VBox();
         piecesToAdd.setAlignment(Pos.TOP_CENTER);
         initPiecesToAdd();
-
         gameBorderPane.setRight(piecesToAdd);
         /**
          * ****************************
@@ -123,7 +122,6 @@ public class InterfaceJavaFX extends Application {
                         } else {
                             System.out.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
                             if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord)) {
-                                System.err.println("lol");
                                 core.addPiece(pieceToChoose, coord);
                                 pieceToMove = null;
                                 pieceToChoose = -1;

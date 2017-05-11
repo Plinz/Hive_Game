@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import main.java.model.Core;
 import main.java.view.GameScreenController;
 import main.java.view.LoadGameScreenController;
 import main.java.view.MainMenuController;
@@ -103,7 +104,7 @@ public class Main extends Application {
         }
     }
     
-        public void showGameScreen(){
+        public void showGameScreen(Core c){
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
@@ -111,7 +112,7 @@ public class Main extends Application {
             AnchorPane personOverview = (AnchorPane) loader.load();
             
             GameScreenController controller = loader.getController();
-            controller.setMainApp(this);
+            controller.initGame(this, c);
             
             Scene scene = new Scene(personOverview);
             primaryStage.setScene(scene);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import main.java.ia.AIMove;
+import main.java.ia.RandomAI;
 
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -37,7 +39,7 @@ public class Core implements Serializable {
 	}
 
 	public boolean addPiece(int piece, CoordGene<Integer> coord) {
-		if ((this.currentState.getTurn() == 6 || this.currentState.getTurn() == 7) && checkQueenRule()
+		if ((this.currentState.getTurn() == 6 || this.currentState.getTurn() == 7) && !checkQueenRule()
 				&& this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getInventory().get(piece)
 						.getId() != Consts.QUEEN)
 			return isGameFinish();

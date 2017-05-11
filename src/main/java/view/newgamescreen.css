@@ -1,9 +1,14 @@
 /*
- * Empty Stylesheet file.
- */
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 11 mai 2017, 09:25:29
+    Author     : gontardb
+*/
 
-
-.buttonLoadGame{
+.buttonLaunchGame{
     
     -fx-background-image: url("/launchGame.png");
     -fx-background-size:stretch;
@@ -13,7 +18,7 @@
     -fx-background-color: transparent;
 }
 
-.buttonLoadGame:hover{
+.buttonLaunchGame:hover{
     
     -fx-background-image: url("/launchGame_Hover.png");
     -fx-background-size:stretch;

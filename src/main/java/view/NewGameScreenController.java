@@ -58,7 +58,8 @@ public class NewGameScreenController implements Initializable {
             
         }*/
         //core.getCurrentState().getPlayers()[0].setName();
-        main.showGameScreen();
+        main.showGameScreen(core);
+        
   
     }
     
