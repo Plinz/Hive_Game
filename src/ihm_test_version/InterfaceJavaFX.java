@@ -53,7 +53,7 @@ public class InterfaceJavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         /*Initialisation du core et tests basiques*/
-        core = new Core(Consts.PVP, Consts.EASY);
+        core = new Core(Consts.PVAI, Consts.EASY);
         pieceToChoose = new Integer(-1);
 
         BorderPane gameBorderPane = new BorderPane();
@@ -165,7 +165,7 @@ public class InterfaceJavaFX extends Application {
             int team = inventory.get(i).getTeam();
             Button b = new Button();
             b.setMinSize(30, 30);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             b.setOnMousePressed(new ControllerButton(this,highlighted,core, i));
             list.add(b);
