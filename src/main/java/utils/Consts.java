@@ -15,6 +15,19 @@ public class Consts {
     public static final int ANT1 = 8;
     public static final int ANT2 = 9;
     public static final int ANT3 = 10;
+    public static final int MOSQUITO = 11;
+    public static final int LADYBUG = 12;
+    public static final int PILLBUG = 13;
+    
+    //MACROS TYPES DE PIECES
+    public static final int QUEEN_TYPE = 0;
+    public static final int SPIDER_TYPE = 1;
+    public static final int GRASSHOPPER_TYPE = 2;
+    public static final int BEETLE_TYPE = 3;
+    public static final int ANT_TYPE = 4;
+    public static final int MOSQUITO_TYPE = 5;
+    public static final int LADYBUG_TYPE = 6;
+    public static final int PILLBUG_TYPE = 7;
     
     //MACROS NOMS PIECES
     public static final String ANT_NAME = "Ant";
