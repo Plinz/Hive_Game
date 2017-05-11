@@ -64,6 +64,10 @@ public class AIMove {
         }
     }
 
+    public void getCore(Core newCore){
+        this.core =newCore;
+    }
+    
     public boolean play() {
         if (AddNewTile)
             return core.addPiece(piece, destination);
@@ -82,4 +86,12 @@ public class AIMove {
         System.err.println("Erreur : impossible de trouver la piece " + pieceId + " dans l'inventaire du joueur " + state.getCurrentPlayer());
         return 0;
     }
+    
+    /*tostring a moitié foireux, il faut test les null avant de les  apppeler
+    public String toString(){
+        String result = "AIMove :\n"+"\tbool AddNewTile : "+AddNewTile+"\tpiece : "+piece+"\n\tSource :"+source.toString()+"\tDest :"+destination.toString()
+                ;
+        return result;
+        
+    }*/
 }

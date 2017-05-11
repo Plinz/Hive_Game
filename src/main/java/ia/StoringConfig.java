@@ -218,15 +218,26 @@ public class StoringConfig {
      */
     public ArrayList<StoringConfig> getNextPossibleMoves() {
         ArrayList<StoringConfig> temp, result = new ArrayList<>();
-
-        GameConfig loopConf = new GameConfig(this, turn);
-        ArrayList<Coord> possibleNewPositions = loopConf.getNewPossiblePositions();
-        int start = loopConf.currentPlayer * loopConf.nbPiecesPerColor;
-        int finish = start + loopConf.nbPiecesPerColor;
+        
+        
+        GameConfig gameConfig = new GameConfig(this, turn);
+        
+        //if 1st turn
+        if (turn == 1){
+            result = gameConfig.getFirstTurnMove();
+            return result;
+        } else if (turn == 2){
+            result = gameConfig.getSecondTurnMove();
+            return result;
+        }
+        
+        ArrayList<Coord> possibleNewPositions = gameConfig.getNewPossiblePositions();
+        int start = gameConfig.currentPlayer * gameConfig.nbPiecesPerColor;
+        int finish = start + gameConfig.nbPiecesPerColor;
 
         //7th & 8th turns -> if player did not play the queen he has to
-        if ((loopConf.turn == 7) || (loopConf.turn == 8)) {
-            if (!loopConf.getNode(start).isOnBoard) {
+        if ((gameConfig.turn == 7) || (gameConfig.turn == 8)) {
+            if (!gameConfig.getNode(start).isOnBoard) {
                 for (Coord coord : possibleNewPositions) {
                     StoringConfig newStoringConfig = new StoringConfig(this);
                     newStoringConfig.setX(start, (byte) coord.getX());
@@ -242,23 +253,23 @@ public class StoringConfig {
         for (int i = start; i < finish; i++) {
 
             //piece on board -> check that queen is on board too
-            if (loopConf.getNode(i).isOnBoard) {
-                if (loopConf.getNode(start).isOnBoard) {
-                    temp = loopConf.getPossibleDestinations(loopConf.getNode(i));
+            if (gameConfig.getNode(i).isOnBoard) {
+                if (gameConfig.getNode(start).isOnBoard) {
+                    temp = gameConfig.getPossibleDestinations(gameConfig.getNode(i));
                     for (StoringConfig stconfig : temp) {
                         result.add(stconfig);
                     }
                 }
             } else {
                 //piece not on board -> add possible positions for it
-                int j = i % loopConf.nbPiecesPerColor;
+                int j = i % gameConfig.nbPiecesPerColor;
                 //stupid condition -> can be refactored
-                if (((j == Consts.SPIDER2) && (!loopConf.getNode(Consts.SPIDER1).isOnBoard))
-                        || ((j == Consts.GRASSHOPPER2) && (!loopConf.getNode(Consts.GRASSHOPPER1).isOnBoard))
-                        || ((j == Consts.GRASSHOPPER3) && (!loopConf.getNode(Consts.GRASSHOPPER2).isOnBoard))
-                        || ((j == Consts.BEETLE2) && (!loopConf.getNode(Consts.BEETLE1).isOnBoard))
-                        || ((j == Consts.ANT2) && (!loopConf.getNode(Consts.ANT1).isOnBoard))
-                        || ((j == Consts.ANT3) && (!loopConf.getNode(Consts.ANT2).isOnBoard))) {
+                if (((j == Consts.SPIDER2) && (!gameConfig.getNode(Consts.SPIDER1).isOnBoard))
+                        || ((j == Consts.GRASSHOPPER2) && (!gameConfig.getNode(Consts.GRASSHOPPER1).isOnBoard))
+                        || ((j == Consts.GRASSHOPPER3) && (!gameConfig.getNode(Consts.GRASSHOPPER2).isOnBoard))
+                        || ((j == Consts.BEETLE2) && (!gameConfig.getNode(Consts.BEETLE1).isOnBoard))
+                        || ((j == Consts.ANT2) && (!gameConfig.getNode(Consts.ANT1).isOnBoard))
+                        || ((j == Consts.ANT3) && (!gameConfig.getNode(Consts.ANT2).isOnBoard))) {
                     //do nothing -> the same kind of piece was just added
                 } else {
                     for (Coord coord : possibleNewPositions) {

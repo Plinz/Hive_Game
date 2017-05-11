@@ -94,19 +94,18 @@ public class GameConfig {
     /*
      *              GETTERS
      */
-    
-    public PieceNode[] getPieces(){
+    public PieceNode[] getPieces() {
         return pieces;
     }
-    
-    public PieceNode[][] getBoard(){
+
+    public PieceNode[][] getBoard() {
         return board;
     }
-    
-    public int getNbPiecesPerColor(){
+
+    public int getNbPiecesPerColor() {
         return nbPiecesPerColor;
     }
-    
+
     public PieceNode getNode(Cube<Integer> cube) {
         int z = cube.getZ();
         PieceNode node = this.board[cube.getX()][cube.getY()];
@@ -130,8 +129,8 @@ public class GameConfig {
     public Coord getCoord(PieceNode node) {
         return new Coord(node.getX(), node.getY());
     }
-    
-    public Coord getCoord(int pieceId){
+
+    public Coord getCoord(int pieceId) {
         return getCoord(pieces[pieceId]);
     }
 
@@ -172,7 +171,6 @@ public class GameConfig {
     /*
      *              DEPLACEMENTS
      */
-
     public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
         int piece_type = IdToType(node.piece % nbPiecesPerColor);
         switch (piece_type) {
@@ -218,10 +216,10 @@ public class GameConfig {
         }
         ArrayList<StoringConfig> result = new ArrayList<>();
         ArrayList<Coord> possibleCoords = getPossibleSlidingDestinations(getCoord(node));
-        
+
         //save the possible dests in the PieceNode for later heuristics calculations
-        node.PossibleDestinations =  possibleCoords;
-        
+        node.PossibleDestinations = possibleCoords;
+
         for (Coord possibleCoord : possibleCoords) {
             StoringConfig newStConfig = new StoringConfig(storingConfig);
             newStConfig.setX(node.getPiece(), (byte) possibleCoord.getX());
@@ -275,8 +273,8 @@ public class GameConfig {
         node.setY(originalY);
 
         //save the possible dests in the PieceNode for later heuristics calculations
-        node.PossibleDestinations =  resultCoords;
-        
+        node.PossibleDestinations = resultCoords;
+
         return result;
     }
 
@@ -327,8 +325,8 @@ public class GameConfig {
         node.setY(originalY);
 
         //save the possible dests in the PieceNode for later heuristics calculations
-        node.PossibleDestinations =  resultCoords;
-        
+        node.PossibleDestinations = resultCoords;
+
         return result;
     }
 
@@ -342,7 +340,7 @@ public class GameConfig {
         ArrayList<StoringConfig> result = new ArrayList<>();
         StoringConfig newStoringConfig;
         Coord currentCoord;
-        
+
         //East
         currentCoord = this.getCoord(node).getEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -355,7 +353,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.PossibleDestinations.add(currentCoord);
         }
-        
+
         //NorthEast
         currentCoord = this.getCoord(node).getNorthEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -368,7 +366,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.PossibleDestinations.add(currentCoord);
         }
-        
+
         //SouthEast
         currentCoord = this.getCoord(node).getSouthEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -381,7 +379,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.PossibleDestinations.add(currentCoord);
         }
-        
+
         //West
         currentCoord = this.getCoord(node).getWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -394,7 +392,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.PossibleDestinations.add(currentCoord);
         }
-        
+
         //NorthWest
         currentCoord = this.getCoord(node).getNorthWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -407,7 +405,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.PossibleDestinations.add(currentCoord);
         }
-        
+
         //SouthWest
         currentCoord = this.getCoord(node).getSouthWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -420,7 +418,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.PossibleDestinations.add(currentCoord);
         }
-        
+
         return result;
     }
 
@@ -462,7 +460,7 @@ public class GameConfig {
                     newStoringConfig.setIsStuck(nodeToStuck.piece, true);
                 }
                 //add the coord to the beetle PossibleDest
-                node.PossibleCubeDestinations.add(new Cube<>(neighborsCoords[i].getX(),neighborsCoords[i].getY(),destinationHeight));
+                node.PossibleCubeDestinations.add(new Cube<>(neighborsCoords[i].getX(), neighborsCoords[i].getY(), destinationHeight));
                 //and now add the storingConfig to result
                 result.add(newStoringConfig);
             }
@@ -543,10 +541,52 @@ public class GameConfig {
                                 canBeAdded = false;
                             }
                         }
-                        if (canBeAdded)
+                        if (canBeAdded) {
                             result.add(currentNodeCoord);
+                        }
                     }
                 }
+            }
+        }
+        return result;
+    }
+
+    /*
+     *              FIRST & SECOND TURN
+     */
+    ArrayList<StoringConfig> getFirstTurnMove() {
+        //put whatever type of piece on board in position (0,0)
+        int lastType = -1;
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (int i = 0; i < nbPiecesPerColor; i++) {
+            //check to try only one typeof piece
+            if (IdToType(i) != lastType) {
+                lastType = IdToType(i);
+                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+                newStoringConfig.setX(i, (byte) 0);
+                newStoringConfig.setY(i, (byte) 0);
+                newStoringConfig.setZ(i, (byte) 0);
+                newStoringConfig.setIsOnBoard(i, true);
+                result.add(newStoringConfig);
+            }
+        }
+        return result;
+    }
+
+    //same method as getFirstTurnMove,, but we put the new tile east of opponents tile
+    ArrayList<StoringConfig> getSecondTurnMove() {
+        int lastType = -1;
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (int i = 0; i < nbPiecesPerColor; i++) {
+            //check to try only one typeof piece
+            if (IdToType(i) != lastType) {
+                lastType = IdToType(i);
+                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+                newStoringConfig.setX(i, (byte) 0);
+                newStoringConfig.setY(i, (byte) 1);
+                newStoringConfig.setZ(i, (byte) 0);
+                newStoringConfig.setIsOnBoard(i, true);
+                result.add(newStoringConfig);
             }
         }
         return result;

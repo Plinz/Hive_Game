@@ -22,10 +22,12 @@ public class RandomAI extends AI {
     public AIMove getNextMove(State state) {
         this.state = state;
         this.OriginalConfig = new StoringConfig(state);
-        ArrayList<StoringConfig> PossibleGameConfigs = OriginalConfig.getNextPossibleMoves();
+        ArrayList<StoringConfig> possibleGameConfigs = OriginalConfig.getNextPossibleMoves();
         Random random = new Random();
-        int randomMove = random.nextInt() % PossibleGameConfigs.size();
-        AIMove nextMove = new AIMove(OriginalConfig, PossibleGameConfigs.get(randomMove), state);
+        System.err.println("possible game config size :"+possibleGameConfigs.size());
+        int randomMove = random.nextInt() % possibleGameConfigs.size();
+        AIMove nextMove = new AIMove(OriginalConfig, possibleGameConfigs.get(randomMove), state);
+        //System.err.println(nextMove.toString());
         return nextMove;
     }
 }
