@@ -18,6 +18,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -47,6 +48,7 @@ public class GameScreenController implements Initializable {
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
     @FXML private Text namePlayer2;
+    @FXML private MenuItem launchNewGame;
     private Main main;
     private Core core;
     private int pieceToChoose;
@@ -92,7 +94,7 @@ public class GameScreenController implements Initializable {
         r.start();
         
     }
-    
+    /* Inititialisation des handlers */
     public void initGameCanvas(){
         
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -146,8 +148,23 @@ public class GameScreenController implements Initializable {
 
         });
     }
+    public void handleNewGame(){
+        Core c = new Core(this.core.getMode(),Consts.MEDIUM);
+        c.getCurrentState().getPlayers()[0].setName(core.getCurrentState().getPlayers()[0].getName());
+        c.getCurrentState().getPlayers()[1].setName(core.getCurrentState().getPlayers()[1].getName());
+        main.showGameScreen(c);
+    }
+    
+    public void handleLeaveGame(){
+        main.showMainMenu();
+    }
     
     
+    /*Fin des handlers */
+    
+    
+    
+    /*Méthodes d'initialisation */
     public void initButtonByInventory() {
         if(core.getCurrentState().getCurrentPlayer() == 0){
             
@@ -249,4 +266,6 @@ public class GameScreenController implements Initializable {
         }
         dialog.show();
     }
+    
+    /*******************/
 }
