@@ -12,8 +12,6 @@ import main.java.utils.CoordGene;
 
 public class Beetle extends Piece {
 
-	private static final long serialVersionUID = -8993644035879598044L;
-
 	public Beetle(int id, int team) {
 		super(Consts.BEETLE_NAME, id, team, "Beetle description");
 	}

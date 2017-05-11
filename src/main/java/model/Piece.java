@@ -1,18 +1,30 @@
 package main.java.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import main.java.utils.CoordGene;
 
-public abstract class Piece implements Cloneable, Serializable {
+@XmlRootElement(name="piece")
+@XmlAccessorType(XmlAccessType.FIELD)
+public abstract class Piece implements Cloneable{
 
-	private static final long serialVersionUID = 4655928536510498821L;
+    @XmlElement(name="name")
 	protected String name;
-	protected int id;
+    @XmlAttribute
+    protected int id;
+    @XmlElement(name="team")
     protected int team;
+    @XmlElement(name="description")
     protected String description;
+    @XmlTransient
     protected List<CoordGene<Integer>> possibleMovement;
 
     public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
@@ -80,8 +92,6 @@ public abstract class Piece implements Cloneable, Serializable {
                 clone.possibleMovement.add(new CoordGene<Integer>(coord.getX(), coord.getY()));
         return clone;
     }
-
-
 
 	@Override
 	public int hashCode() {

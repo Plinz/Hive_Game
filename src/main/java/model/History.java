@@ -1,11 +1,9 @@
 package main.java.model;
 
-import java.io.Serializable;
 import java.util.Stack;
 
-public class History implements Serializable{
+public class History {
 
-	private static final long serialVersionUID = -45267853243056059L;
 	Stack<State> previousState;
 	Stack<State> nextState;
 	

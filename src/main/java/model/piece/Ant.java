@@ -14,8 +14,6 @@ import main.java.utils.CoordGene;
 
 public class Ant extends Piece {
 
-	private static final long serialVersionUID = -8220106922861765305L;
-
 	public Ant(int id, int team) {
 		super(Consts.ANT_NAME, id, team, "Fourmi description");
 	}

@@ -9,11 +9,8 @@ import main.java.utils.CoordGene;
 
 public class Mosquito extends Piece{
 
-	private static final long serialVersionUID = 5187548050910157040L;
-
 	public Mosquito(int id, int team) {
 		super("Mosquito", id, team, "Mosquito description");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

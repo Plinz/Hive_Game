@@ -1,13 +1,23 @@
 package main.java.model;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class State implements Serializable {
+@XmlRootElement(name="state")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class State {
 
-    private static final long serialVersionUID = -7410268289229213472L;
+	
+    @XmlElement(name="board")
     private Board board;
+    @XmlElement(name="players")
     private Player[] players;
+    @XmlElement(name="blocked")
     private int currentPlayer;
+    @XmlAttribute(name="turn")
     private int turn;
 
     public State(Board board, Player[] players, int currentPlayer, int turn) {

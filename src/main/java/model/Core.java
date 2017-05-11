@@ -1,17 +1,16 @@
 package main.java.model;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Core implements Serializable {
+public class Core {
 
-	private static final long serialVersionUID = 4165722506890173058L;
 	private History history;
 	private State currentState;
 	private AI ai;

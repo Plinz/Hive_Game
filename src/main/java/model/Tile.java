@@ -1,17 +1,27 @@
 package main.java.model;
 
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Tile implements Serializable {
+@XmlRootElement(name="tile")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Tile {
 
-	private static final long serialVersionUID = -5798327086473001829L;
+    @XmlElement
 	private Piece piece;
+    @XmlElement(name="blocked")
 	private boolean blocked;
+    @XmlAttribute(name="x")
 	private int x;
+    @XmlAttribute(name="y")
 	private int y;
+    @XmlAttribute(name="z")
 	private int z;
 
 	public Tile(Piece piece, boolean blocked, int x, int y, int z) {

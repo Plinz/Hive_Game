@@ -1,16 +1,25 @@
 package main.java.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Board implements Serializable {
+@XmlRootElement(name="board")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Board{
 
-	private static final long serialVersionUID = -9006505176631946800L;
+	//TODO
+    @XmlElementWrapper(name="board")
 	private List<List<List<Tile>>> board;
+    @XmlElement(name="nbPiece")
 	private int nbPieceOnTheBoard;
 
 	public Board() {

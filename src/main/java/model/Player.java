@@ -1,8 +1,15 @@
 package main.java.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import main.java.model.piece.Ant;
 import main.java.model.piece.Beetle;
@@ -11,13 +18,26 @@ import main.java.model.piece.Queen;
 import main.java.model.piece.Spider;
 import main.java.utils.Consts;
 
-public class Player implements Serializable{
+@XmlRootElement(name="player")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Player{
 	
-	private static final long serialVersionUID = 4185691264228822669L;
+    @XmlElement(name="name")
 	private String name;
+    @XmlAttribute(name="team")
 	private int team;
+    @XmlElementWrapper(name="inventory")
+    @XmlElements({
+        @XmlElement(name="ant", type=Ant.class),
+        @XmlElement(name="beetle", type=Beetle.class),
+        @XmlElement(name="grasshopper", type=Grasshopper.class),
+//        @XmlElement(name="ladybug", type=Ladybug.class),
+//        @XmlElement(name="mosquito", type=Mosquito.class),
+//        @XmlElement(name="pillbug", type=Pillbug.class),
+        @XmlElement(name="queen", type=Queen.class),
+        @XmlElement(name="spider", type=Spider.class)
+    })
 	private List<Piece> inventory;
-	
 	
 	public Player(String name, int team) {
 		this.name = name;
