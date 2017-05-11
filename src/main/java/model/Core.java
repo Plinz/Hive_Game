@@ -1,10 +1,8 @@
 package main.java.model;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.utils.Consts;
