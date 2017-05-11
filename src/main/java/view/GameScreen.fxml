@@ -106,18 +106,18 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" />
-                              <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                              <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                              <Button layoutX="35.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="259.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="147.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                              <Button layoutX="234.0" layoutY="101.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="345.0" layoutY="101.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="35.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button layoutX="345.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button layoutX="259.0" layoutY="169.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button layoutX="122.0" layoutY="169.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button layoutX="35.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="259.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="147.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button layoutX="234.0" layoutY="101.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="345.0" layoutY="101.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="35.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                              <Button layoutX="345.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                              <Button layoutX="259.0" layoutY="169.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                              <Button layoutX="122.0" layoutY="169.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                            </children>
                         </GridPane>
                         <Text fx:id="namePlayer1" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 1" wrappingWidth="410.01220703125">
@@ -151,18 +151,18 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" />
-                              <Button layoutX="32.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                              <Button layoutX="115.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button layoutX="325.0" layoutY="174.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button layoutX="325.0" layoutY="174.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button layoutX="32.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button layoutX="115.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                              <Button layoutX="325.0" layoutY="174.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                              <Button layoutX="10.0" layoutY="56.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                              <Button layoutX="325.0" layoutY="174.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                            </children>
                         </GridPane>
                         <Text fx:id="namePlayer2" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 2 " wrappingWidth="408.5078125" GridPane.rowIndex="1">
@@ -194,15 +194,15 @@
               </rowConstraints>
                <children>
                   <Canvas fx:id="gameCanvas" height="723.0" width="682.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="74.0" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleLeftButton" prefHeight="26.0" prefWidth="74.0" text="Button" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleUpButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button mnemonicParsing="false" onMouseClicked="#handleDownButton" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="5.0" top="10.0" />
                </padding>
             </GridPane>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button mnemonicParsing="false" onMouseClicked="#handleRightButton" prefHeight="26.0" prefWidth="70.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>

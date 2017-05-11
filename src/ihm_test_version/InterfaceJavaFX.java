@@ -91,7 +91,7 @@ public class InterfaceJavaFX extends Application {
 
         /* Clic sur le canvas principal */
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-            TraducteurBoard t = new TraducteurBoard();
+        TraducteurBoard t = new TraducteurBoard();
 
             @Override
             public void handle(MouseEvent m) {

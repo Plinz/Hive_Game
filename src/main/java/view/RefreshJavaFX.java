@@ -23,6 +23,12 @@ public class RefreshJavaFX extends AnimationTimer{
         drawer = new BoardDrawer(c);
         this.h =h; 
     }
+    
+    public RefreshJavaFX(Core core, Canvas c, Highlighter h,TraducteurBoard t) {
+        this.core = core;
+        drawer = new BoardDrawer(c);
+        this.h =h; 
+    }
 
     @Override
     public void handle(long now) {

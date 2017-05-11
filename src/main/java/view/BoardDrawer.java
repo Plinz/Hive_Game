@@ -27,6 +27,12 @@ public class BoardDrawer extends Visitor {
         this.gc = can.getGraphicsContext2D(); 
         traducteur = new TraducteurBoard();
     }
+    
+    public BoardDrawer(Canvas c, TraducteurBoard t){
+        this.can = c;
+        this.gc = can.getGraphicsContext2D(); 
+        traducteur = t;
+    }
      
     public boolean visit(Board b){
         gc.clearRect(0, 0, can.getWidth(), can.getHeight());

@@ -102,11 +102,11 @@ public class TraducteurBoard {
     /**
      * @param moveOrigin the moveOrigin to set
      */
-    public void setMoveOrigin(CoordGene<Double> moveOrigin) throws InstantiationException {
-        if(moveOrigin.getX()>=sizeHex && moveOrigin.getY()>=sizeHex)
+    public void setMoveOrigin(CoordGene<Double> moveOrigin)  {
+        //if(moveOrigin.getX()>=sizeHex && moveOrigin.getY()>=sizeHex)
             this.moveOrigin = moveOrigin;
-        else
-            throw new IndexOutOfBoundsException("Attention la carte risque d'être mal affichée");
+        //else
+          //  throw new IndexOutOfBoundsException("Attention la carte risque d'être mal affichée");
     }
     
 }

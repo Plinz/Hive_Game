@@ -57,8 +57,9 @@ public class NewGameScreenController implements Initializable {
             else{
                 core = new Core(Consts.PVAI, Consts.HARD);
             }
+        }else{
+            core = new Core(Consts.PVP, Consts.EASY);
         }
-        core = new Core(Consts.PVP, Consts.EASY);
         core.getCurrentState().getPlayers()[0].setName(namePlayer1.getText());
         core.getCurrentState().getPlayers()[1].setName(namePlayer2.getText());
         main.showGameScreen(core);

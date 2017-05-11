@@ -55,6 +55,7 @@ public class GameScreenController implements Initializable {
     private int pieceToChoose;
     private CoordGene<Integer> pieceToMove;
     private Highlighter highlighted;
+    TraducteurBoard t;
 
     
     public void setMainApp(Main mainApp) {
@@ -87,11 +88,12 @@ public class GameScreenController implements Initializable {
         setCore(c);
         this.pieceToChoose = -1;
         highlighted = new Highlighter();
+        t = new TraducteurBoard();
         
         initButtonByInventory();
         initGameCanvas();
         
-        RefreshJavaFX r = new RefreshJavaFX(core, gameCanvas, highlighted);
+        RefreshJavaFX r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
         r.start();
         
     }
@@ -99,7 +101,7 @@ public class GameScreenController implements Initializable {
     public void initGameCanvas(){
         
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-            TraducteurBoard t = new TraducteurBoard();
+            
 
             @Override
             public void handle(MouseEvent m) {
@@ -160,10 +162,29 @@ public class GameScreenController implements Initializable {
         main.showMainMenu();
     }
     
+    public void handleUpButton(){
+        System.err.println("TOP");
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()-10));
+        
+    }
+    
+    public void handleRightButton(){
+        System.err.println("R");
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()));
+    }
+    
+    public void handleDownButton(){
+        System.err.println("D");
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()));
+    }
+    
+    public void handleLeftButton(){
+        System.err.println("L");
+        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()));
+    }
+    
     
     /*Fin des handlers */
-    
-    
     
     /*Méthodes d'initialisation */
     public void initButtonByInventory() {
@@ -194,7 +215,7 @@ public class GameScreenController implements Initializable {
             String name = inventory.get(i).getName();
             int team = inventory.get(i).getTeam();
             Button b = new Button();
-            b.setMinSize(40, 40);
+            b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if(core.getCurrentState().getCurrentPlayer() == 0){
@@ -209,7 +230,7 @@ public class GameScreenController implements Initializable {
             }
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
-            GridPane.setValignment(b, VPos.CENTER);
+            GridPane.setValignment(b, VPos.TOP);
             inventoryPlayer1.getChildren().add(b);
         }
     }
@@ -223,7 +244,7 @@ public class GameScreenController implements Initializable {
             String name = inventory.get(i).getName();
             int team = inventory.get(i).getTeam();
             Button b = new Button();
-            b.setMinSize(40, 40);
+            b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
             
             if(core.getCurrentState().getCurrentPlayer() == 1){
@@ -238,7 +259,7 @@ public class GameScreenController implements Initializable {
             }
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
-            GridPane.setValignment(b, VPos.CENTER);
+            GridPane.setValignment(b, VPos.TOP);
             inventoryPlayer2.getChildren().add(b);
         }
     }
