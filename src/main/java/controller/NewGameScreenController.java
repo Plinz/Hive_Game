@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.view;
+package main.java.controller;
 
 
 import java.net.URL;
@@ -14,8 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.utils.Consts;
@@ -30,39 +28,36 @@ public class NewGameScreenController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    
+    
     private Main main;
     @FXML private MenuButton gameChoice;
     @FXML private Label labelPlayer2;
     @FXML private TextField namePlayer1;
     @FXML private TextField namePlayer2;
-    @FXML private ToggleButton easyButton;
-    @FXML private ToggleButton normalButton;
-    @FXML private ToggleButton hardButton;
     
     public NewGameScreenController() {
     }
     
     @FXML
     public void handleLaunchGameClick(){
-        
-        Core core;
-        if(easyButton.isVisible()){
-            if(easyButton.isSelected()){
-                core = new Core(Consts.PVAI, Consts.EASY);
-            }
-            else if(normalButton.isSelected()){
-                core = new Core(Consts.PVAI, Consts.MEDIUM);      
-            }
-            else{
-                core = new Core(Consts.PVAI, Consts.HARD);   
-            }    
-        }
-        else{
-            core = new Core(Consts.PVP, Consts.EASY);
-        }
-        core.getCurrentState().getPlayers()[0].setName(namePlayer1.getText());
-        core.getCurrentState().getPlayers()[1].setName(namePlayer2.getText());
+        Core core = new Core(Consts.PVP, Consts.EASY);
+        /*
+        switch(gameChoice.getText()){
+            case Consts.PVP_STRING :
+                core = new Core(Consts.PVP_INT);
+                break;
+            case Consts.PVIA_STRING : 
+                core = new Core(Consts.PVIA_INT);
+                break;
+            default :
+                break;
+            
+        }*/
+        //core.getCurrentState().getPlayers()[0].setName();
         main.showGameScreen(core);
+        
+  
     }
     
     
@@ -70,10 +65,7 @@ public class NewGameScreenController implements Initializable {
     public void handleChoicePVP(){
         gameChoice.setText("Joueur contre joueur");
         labelPlayer2.setVisible(true);
-        namePlayer2.setVisible(true);    
-        easyButton.setVisible(false);
-        normalButton.setVisible(false);
-        hardButton.setVisible(false);
+        namePlayer2.setVisible(true);
     }
     
     @FXML
@@ -81,14 +73,11 @@ public class NewGameScreenController implements Initializable {
         gameChoice.setText("Joueur contre ordinateur");
         labelPlayer2.setVisible(false);
         namePlayer2.setVisible(false);
-        easyButton.setVisible(true);
-        normalButton.setVisible(true);
-        hardButton.setVisible(true);
-        
     }
     
     @FXML 
     public void handleMenuClick(){
+        System.out.println("Menu");
         main.showMainMenu();
     }
     

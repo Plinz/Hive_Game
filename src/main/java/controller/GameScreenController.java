@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.view;
+package main.java.controller;
 
 import java.net.URL;
 import java.util.List;
@@ -11,7 +11,9 @@ import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -26,12 +28,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.text.Text;
-import main.java.controller.ControllerButtonPiece;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.model.Piece;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.view.Highlighter;
+import main.java.view.RefreshJavaFX;
+import main.java.view.TraducteurBoard;
 
 /**
  *
@@ -139,12 +143,15 @@ public class GameScreenController implements Initializable {
                     }
                 }
             }
+
         });
     }
     
     
     public void initButtonByInventory() {
         if(core.getCurrentState().getCurrentPlayer() == 0){
+            
+            //inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.EMPTY)));
             inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
             namePlayer1.setText(core.getCurrentState().getPlayers()[core.getCurrentState().getCurrentPlayer()].getName() + " à vous de jouer !");
@@ -183,6 +190,8 @@ public class GameScreenController implements Initializable {
                 col++;
             }
             GridPane.setConstraints(b, col, line);
+            GridPane.setHalignment(b, HPos.CENTER);
+            GridPane.setValignment(b, VPos.CENTER);
             inventoryPlayer1.getChildren().add(b);
         }
     }
@@ -210,6 +219,8 @@ public class GameScreenController implements Initializable {
                 col++;
             }
             GridPane.setConstraints(b, col, line);
+            GridPane.setHalignment(b, HPos.CENTER);
+            GridPane.setValignment(b, VPos.CENTER);
             inventoryPlayer2.getChildren().add(b);
         }
     }

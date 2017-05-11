@@ -8,11 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import main.java.model.Core;
-import main.java.view.GameScreenController;
-import main.java.view.LoadGameScreenController;
-import main.java.view.MainMenuController;
-import main.java.view.NewGameScreenController;
-import main.java.view.RulesScreenController;
+import main.java.controller.GameScreenController;
+import main.java.controller.LoadGameScreenController;
+import main.java.controller.MainMenuController;
+import main.java.controller.NewGameScreenController;
+import main.java.controller.RulesScreenController;
 
 public class Main extends Application {
 

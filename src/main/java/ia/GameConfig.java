@@ -538,6 +538,7 @@ public class GameConfig {
                         boolean canBeAdded = true;
                         for (int j = 0; j < 6; j++) {
                             currentNeighborCoord = neighborsOfNeighbor[j];
+                            System.out.println("LOLLOLL " + currentNeighborCoord);
                             if (!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord))) {
                                 canBeAdded = false;
                             }
