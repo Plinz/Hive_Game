@@ -1,271 +1,181 @@
+/*
+
+ */
 package main.java.ia;
 
 import java.util.ArrayList;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
 import main.java.utils.Cube;
-import static java.lang.Math.max;
 
-/*
-this class is used to run movements & heuristics algorithms on in an optimal way
-It has a double representation : 
-    _-_-_Array -> Used for a O(1) access to a tile given the coords
-                    each node contents : piece (type & team), coords (x,y,z) + some bools (stuck, visited ...)
-    _-_-_stconf-> Used for a O(1) access to the coords of a given piece
-                    same representation as in Storing config (one tricky int)
-
-Advantage over StoringConfig -> more or less constant time search by coords
- */
 public class GameConfig {
 
-    final private StoringConfig stconf;
-    PieceNode array[];
+    private final PieceNode[] pieces;
+    private final PieceNode[][] board;
+    private final StoringConfig storingConfig;
+
     int nbPiecesPerColor;
-    int player, turn;
+    int currentPlayer;
+    int turn;
 
     /*
-     ********************         Constructor           *************************
+     *              CONSTRUCTOR
      */
-    public GameConfig(StoringConfig stconf, int turn) {
+    public GameConfig(StoringConfig storingConfig, int turn) {
+        int totalPiecesNb = storingConfig.config.length;
         this.turn = turn;
-        this.player = (turn + 1) % 2;
-        this.stconf = stconf;
-        this.array = new PieceNode[stconf.config.length];
-        this.nbPiecesPerColor = (stconf.config.length / 2);
-        int i;
-        PieceNode node;
-        //head insertion
-        for (i = 0; i < stconf.config.length; i++) {
-            node = new PieceNode(stconf, i);
-            node.next = this.array[stconf.getX(i)];
-            this.array[stconf.getX(i)] = node;
-        }
-    }
-
-
-    /*
-    ****************************     Testers   *************************
-     */
-    public boolean isFreeNode(PieceNode node) {
-        return (node.getPiece() == 0);
-    }
-
-    public boolean isFreeCoord(Coord coord) {
-        return (this.getNode(coord.getX(), coord.getY()).getPiece() == 0);
-    }
-
-    public boolean isFreeCoord(Cube<Integer> coord) {
-        return (this.getNode(coord.getX(), coord.getY(), coord.getZ()).getPiece() == 0);
-    }
-
-    //check if 2 tiles have same color -> takes in account the fact beetle can cover
-    //a tile.
-    public boolean isSameColor(PieceNode node1, PieceNode node2) {
-        PieceNode node1Visible = array[node1.getX()];
-        if (node1.stuck) {
-            while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.isStuck()))) {
-                node1Visible = node1Visible.getNext();
+        this.currentPlayer = storingConfig.currentPlayer;
+        this.nbPiecesPerColor = totalPiecesNb / 2;
+        this.storingConfig = storingConfig;
+        this.pieces = new PieceNode[totalPiecesNb];
+        this.board = new PieceNode[totalPiecesNb][totalPiecesNb];
+        PieceNode pieceNode;
+        int pieceID;
+        //fillling up the pieces and grid arrays
+        for (pieceID = 0; pieceID < totalPiecesNb; pieceID++) {
+            pieceNode = new PieceNode(storingConfig, pieceID);
+            pieces[pieceID] = pieceNode;
+            if (pieceNode.getZ() == 0) {
+                board[pieceNode.getX()][pieceNode.getY()] = pieceNode;
             }
-        } else {
-            node1Visible = node1;
         }
-
-        PieceNode node2Visible = array[node2.getX()];
-        if (node2.stuck) {
-            while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.isStuck()))) {
-                node2Visible = node2Visible.getNext();
-            }
-        } else {
-            node2Visible = node1;
-        }
-
-        return (((node1Visible.getPiece() < nbPiecesPerColor) && (node2Visible.getPiece() < nbPiecesPerColor))
-                || ((node1Visible.getPiece() >= nbPiecesPerColor) && (node2Visible.getPiece() >= nbPiecesPerColor)));
-
-    }
-
-    /**
-     * **************************** getters ****************************
-     */
-    //search by coordinates
-    public PieceNode getNode(int x, int y) {
-        PieceNode node = array[x];
-        while ((node != null) && (node.getY() != y)) {
-            node = node.getNext();
-        }
-        return node;
-    }
-
-    //search by coordinates for cubes
-    public PieceNode getNode(int x, int y, int z) {
-        PieceNode node = array[x];
-        while ((node != null) && ((node.getY() != y)) || (node.getZ() != z)) {
-            node = node.getNext();
-        }
-        return node;
-    }
-
-    public PieceNode getNode(Coord coord) {
-        return this.getNode(coord.getX(), coord.getY());
-    }
-
-    public PieceNode getNode(int piece) {
-        return this.getNode(this.getCoord(piece));
-    }
-
-    //search by type (eg get coords of white spider 2)
-    // -> careful, there's no info about height
-    public Coord getCoord(int piece) {
-        return new Coord((int) stconf.getX(piece), (int) stconf.getY(piece));
-    }
-
-    public Coord getCoord(PieceNode node) {
-        return this.getCoord(node.piece);
-    }
-
-    /*
-    ****************           Neighbors getters      **********************
-     */
-    ///One by one
-    public PieceNode getNorthEast(PieceNode node) {
-        return this.getNode((node.getX() + 1), (node.getY() - 1));
-    }
-
-    public PieceNode getNorthWest(PieceNode node) {
-        return this.getNode((node.getX()), (node.getY() - 1));
-    }
-
-    public PieceNode getEast(PieceNode node) {
-        return this.getNode((node.getX() + 1), (node.getY()));
-    }
-
-    public PieceNode getWest(PieceNode node) {
-        return this.getNode((node.getX() - 1), (node.getY()));
-    }
-
-    public PieceNode getSouthEast(PieceNode node) {
-        return this.getNode((node.getX()), (node.getY() + 1));
-    }
-
-    public PieceNode getSouthWest(PieceNode node) {
-        return this.getNode((node.getX() - 1), (node.getY() + 1));
-    }
-
-    //get all neighbors of a tile in an array list
-    public ArrayList<PieceNode> getNeighborsInArrayList(PieceNode node) {
-        ArrayList<PieceNode> result = new ArrayList<>();
-        PieceNode current_neighbor;
-        //East
-        current_neighbor = this.getEast(node);
-        if (current_neighbor != null) {
-            result.add(current_neighbor);
-        }
-        //SouthEast
-        current_neighbor = this.getSouthEast(node);
-        if (current_neighbor != null) {
-            result.add(current_neighbor);
-        }
-        //SouthWest
-        current_neighbor = this.getSouthWest(node);
-        if (current_neighbor != null) {
-            result.add(current_neighbor);
-        }
-        //West
-        current_neighbor = this.getWest(node);
-        if (current_neighbor != null) {
-            result.add(current_neighbor);
-        }
-        //NorthWest
-        current_neighbor = this.getNorthWest(node);
-        if (current_neighbor != null) {
-            result.add(current_neighbor);
-        }
-        //NorthEast
-        current_neighbor = this.getNorthEast(node);
-        if (current_neighbor != null) {
-            result.add(current_neighbor);
-        }
-        return result;
-    }
-
-    public PieceNode getHighestNode(Coord coords) {
-        PieceNode current = this.array[coords.getX()];
-        if (current == null) {
-            return null;
-        }
-        PieceNode highestNode = null;
-        while (current != null) {
-            if (current.getY() == coords.getY()) {
-                if (highestNode == null) {
-                    highestNode = current;
-                } else if (current.getZ() > highestNode.getZ()) {
-                    highestNode = current;
-                }
-            }
-            current = current.getNext();
-        }
-        return highestNode;
-    }
-
-    /**
-     * ************ Deplacements ****************************
-     */
-    public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
-        byte piece_type = (byte) (node.piece % nbPiecesPerColor);
-        if (piece_type <= Consts.QUEEN) {
-            return getPossibleQueenDestinations(node);
-        } else if (piece_type <= Consts.SPIDER2) {
-            return getPossibleSpiderDestinations(node);
-        } else if (piece_type <= Consts.GRASSHOPPER3) {
-            return getPossibleGrassHopperDestinations(node);
-        } else if (piece_type <= Consts.BEETLE2) {
-            return getPossibleBeetleDestinations(node);
-        } else if (piece_type <= Consts.ANT3) {
-            return getPossibleAntDestinations(node);
-        } else {
-            System.err.println("Erreur : Impossible de reconnaitre le type de pièce");
-            return new ArrayList<>();
-        }
-    }
-
-    //Get coords of positions where a new tile can be placed by player
-    //called with player as param so no redundant call for each piece in player's hand
-    public ArrayList<Coord> getNewPossiblePositions() {
-        int start = player * nbPiecesPerColor;
-        int finish = start + nbPiecesPerColor;
-        ArrayList<Coord> result = new ArrayList<>();
-        PieceNode currentNode;
-        PieceNode currentNeighbor;
-        for (int i = start; i < finish; i++) {
-            //find all pieces from player already on board
-            if (this.stconf.isOnBoard(i)) {
-                currentNode = this.getNode(i);
-                //get the neighbors of piece on board
-                Coord[] neighbors = this.getCoord(i).getNeighborsInArray();
-                for (int j = 0; j < 6; j++) {
-                    //if neighbor is free -> check its neighbor to see if no other player piece
-                    if (this.getNode(neighbors[j]) == null) {
-                        Coord[] neighborsOfNeighbors = neighbors[j].getNeighborsInArray();
-                        boolean canBeAdded = true;
-                        for (int k = 0; k < 6; k++) {
-                            currentNeighbor = this.getNode(neighborsOfNeighbors[k]);
-                            if ((currentNeighbor != null) && (!this.isSameColor(currentNode, currentNeighbor))) {
-                                canBeAdded = false;
-                            }
-                        }
-                        //it can be added -> add the coord to resultif not redundant
-                        if ((canBeAdded) && (!result.contains(neighbors[j]))) {
-                            result.add(neighbors[j]);
-                        }
+        //for pieces not on the floor -> we put them in the grid now
+        //the piece below can link to the next directly
+        for (pieceID = 0; pieceID < totalPiecesNb; pieceID++) {
+            if (pieces[pieceID].getZ() > 0) {
+                for (int pieceBelow = 0; pieceBelow < totalPiecesNb; pieceBelow++) {
+                    if ((pieces[pieceBelow].getX() == pieces[pieceID].getX())
+                            && (pieces[pieceBelow].getY() == pieces[pieceID].getY())
+                            && (pieces[pieceBelow].getZ() == pieces[pieceID].getZ() - 1)) {
+                        pieces[pieceBelow].pieceAbove = pieces[pieceID];
                     }
                 }
             }
         }
+    }
+
+    /*
+     *              TESTS
+     */
+    public boolean isFreeCoord(Coord coord) {
+        return this.board[coord.getX()][coord.getY()] == null;
+    }
+
+    public boolean isFreeCoord(Cube<Integer> cube) {
+        PieceNode node = this.board[cube.getX()][cube.getY()];
+        int z = cube.getZ();
+        while ((z > 0) && (node != null)) {
+            node = node.pieceAbove;
+            --z;
+        }
+        return node == null;
+    }
+
+    public boolean isSameColor(PieceNode node1, PieceNode node2) {
+        //one of both is null -> ret true
+        if ((node1 == null) || (node2 == null)) {
+            return true;
+        }
+
+        PieceNode visibleNode1 = node1;
+        PieceNode visibleNode2 = node2;
+
+        while (visibleNode1.pieceAbove != null) {
+            visibleNode1 = visibleNode1.pieceAbove;
+        }
+        while (visibleNode2.pieceAbove != null) {
+            visibleNode2 = visibleNode2.pieceAbove;
+        }
+        boolean isNode1White = visibleNode1.piece < nbPiecesPerColor;
+        boolean isNode2White = visibleNode2.piece < nbPiecesPerColor;
+        return ((isNode1White && isNode2White) || (!isNode1White && !isNode2White));
+    }
+
+    /*
+     *              GETTERS
+     */
+    public PieceNode getNode(Cube<Integer> cube) {
+        int z = cube.getZ();
+        PieceNode node = this.board[cube.getX()][cube.getY()];
+        while ((node != null) && (z > 0)) {
+            --z;
+            node = node.pieceAbove;
+        }
+        return node;
+    }
+
+    public PieceNode getNode(int pieceID) {
+        return pieces[pieceID];
+    }
+
+    //returns the lowest piece present on (x,y) if there are several
+    // and null if there is nothing
+    public PieceNode getNode(Coord coord) {
+        return board[coord.getX()][coord.getY()];
+    }
+
+    public Coord getCoord(PieceNode node) {
+        return new Coord(node.getX(), node.getY());
+    }
+
+    public Cube<Integer> getCube(PieceNode node) {
+        return new Cube<>(node.getX(), node.getY(), node.getZ());
+    }
+
+    public PieceNode getHighestNode(Coord coord) {
+        PieceNode node = board[coord.getX()][coord.getY()];
+        while (node.pieceAbove != null) {
+            node = node.pieceAbove;
+        }
+        return node;
+    }
+
+    public int getHeight(Coord coord) {
+        int result = 0;
+        PieceNode currentNode = getNode(coord);
+        while (currentNode != null) {
+            result++;
+            currentNode = currentNode.pieceAbove;
+        }
         return result;
     }
 
+    public ArrayList<PieceNode> getNeighborsInArrayList(PieceNode node) {
+        ArrayList<PieceNode> result = new ArrayList<>();
+        Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
+        for (int i = 0; i < 6; i++) {
+            PieceNode neighbor = getNode(neighborsCoords[i]);
+            if (neighbor != null) {
+                result.add(neighbor);
+            }
+        }
+        return result;
+    }
+
+    /*
+     *              DEPLACEMENTS
+     */
+    //method used to detect the type of 
+    public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
+        int piece_type = IdToType(node.piece % nbPiecesPerColor);
+        switch (piece_type) {
+            case Consts.QUEEN_TYPE:
+                return getPossibleQueenDestinations(node);
+            case Consts.SPIDER_TYPE:
+                return getPossibleSpiderDestinations(node);
+            case Consts.ANT_TYPE:
+                return getPossibleAntDestinations(node);
+            case Consts.GRASSHOPPER_TYPE:
+                return getPossibleGrassHopperDestinations(node);
+            case Consts.BEETLE_TYPE:
+                return getPossibleBeetleDestinations(node);
+            default:
+                return new ArrayList<>();
+        }
+    }
+
     /**
-     * ***************************** Sliding Bugs ******************
+     * ******************* Slidind bugs (Ant, spider & queen) **************
      */
     ///Getting the available neighbors when sliding -> method used to calculate
     ///displacements of the ant, spider & queen.
@@ -275,79 +185,13 @@ public class GameConfig {
         Coord neighbors[] = coord.getNeighborsInArray();
         ArrayList<Coord> result = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            // tricky condition -> if neighbor[i] is free 
-            if (this.isFreeCoord(neighbors[i])) {
-                // and if one & only one of both (i-1,i+1) neighbors are free 
-                if ((this.isFreeCoord(neighbors[(i - 1) % 6])) && (!this.isFreeCoord(neighbors[(i + 1) % 6]))
-                        || (!this.isFreeCoord(neighbors[(i - 1) % 6])) && (this.isFreeCoord(neighbors[(i + 1) % 6]))) {
+            if (isFreeCoord(neighbors[i])) {
+                if ((isFreeCoord(neighbors[(i + 5) % 6]) && !isFreeCoord(neighbors[(i + 1) % 6]))
+                        || (!isFreeCoord(neighbors[(i + 5) % 6]) && isFreeCoord(neighbors[(i + 1) % 6]))) {
                     result.add(neighbors[i]);
                 }
             }
         }
-        return result;
-    }
-
-    /*public ArrayList<Cube> getPossibleSlidingDestinations(Cube coord) {
-        Cube neighbors[] = coord.getNeighborsInArray();
-        ArrayList<Cube> result = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            // tricky condition -> if neighbor[i] is free 
-            if (this.isFreeCoord(neighbors[i])) {
-                // and if one & only one of both (i-1,i+1) neighbors are free 
-                if ((this.isFreeCoord(neighbors[(i - 1) % 6])) && (!this.isFreeCoord(neighbors[(i + 1) % 6]))
-                        || (!this.isFreeCoord(neighbors[(i - 1) % 6])) && (this.isFreeCoord(neighbors[(i + 1) % 6]))) {
-                    result.add(neighbors[i]);
-                }
-            }
-        }
-        return result;
-    }*/
-    public ArrayList<StoringConfig> getPossibleSpiderDestinations(PieceNode node) {
-        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
-            return new ArrayList<>();
-        }
-        //now we 'remove' the spider tile from the board, we 'll put it back in place
-        //before leaving the method
-        int originalX = node.getX(), originalY = node.getY();
-        node.x = -1;
-        node.y = -1;
-        //getting possible coords after one move
-        ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX, originalY));
-
-        //getting possible coords after 2 moves
-        ArrayList<Coord> temp, CoordsAfterSecondMove = new ArrayList<>();
-        for (Coord coord : CoordsAfterFirstMove) {
-            temp = getPossibleSlidingDestinations(coord);
-            for (Coord newCoord : temp) {
-                if ((!CoordsAfterSecondMove.contains(newCoord)) && (newCoord.equals(this.getCoord(node)))) {
-                    CoordsAfterSecondMove.add(newCoord);
-                }
-            }
-        }
-
-        //getting possible coords after the 3rd move
-        ArrayList<Coord> CoordsAfterThirdMove = new ArrayList<>();
-        for (Coord coord : CoordsAfterSecondMove) {
-            temp = getPossibleSlidingDestinations(coord);
-            for (Coord newCoord : temp) {
-                if (!CoordsAfterThirdMove.contains(newCoord)) {
-                    CoordsAfterThirdMove.add(newCoord);
-                }
-            }
-        }
-
-        //creating all the storing configs from the coords we obtained
-        ArrayList<StoringConfig> result = new ArrayList<>();
-        for (Coord coord : CoordsAfterThirdMove) {
-            StoringConfig newStConfig = new StoringConfig(stconf);
-            newStConfig.setX(node.piece, (byte) coord.getX());
-            newStConfig.setY(node.piece, (byte) coord.getY());
-            result.add(newStConfig);
-        }
-        //reset the coords from the spider back to original ones
-        node.x = originalX;
-        node.y = originalY;
-
         return result;
     }
 
@@ -355,49 +199,87 @@ public class GameConfig {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        ArrayList<Coord> possibleCoords = getPossibleSlidingDestinations(getCoord(node));
+        for (Coord possibleCoord : possibleCoords) {
+            StoringConfig newStConfig = new StoringConfig(storingConfig);
+            newStConfig.setX(node.getPiece(), (byte) possibleCoord.getX());
+            newStConfig.setY(node.getPiece(), (byte) possibleCoord.getY());
+            result.add(newStConfig);
+        }
+        return result;
+    }
 
-        //creating array from arraylist
-        PieceNode neighbors[] = new PieceNode[this.getNeighborsInArrayList(node).size()];
-        neighbors = this.getNeighborsInArrayList(node).toArray(neighbors);
-        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
-        int i;
-        for (i = 0; i < neighbors.length; i++) {
-            if ((neighbors[i].getPiece() == 0)
-                    && ((neighbors[(i + 1) % neighbors.length].getPiece() == 0) && (neighbors[(i - 1) % neighbors.length].getPiece() != 0)
-                    || (neighbors[(i + 1) % neighbors.length].getPiece() != 0) && (neighbors[(i - 1) % neighbors.length].getPiece() == 0))) {
-                StoringConfig newConf = new StoringConfig(this.stconf.config.length);
-                System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
-                //actualizing the coordinates of the queen
-                newConf.setX((int) node.getPiece(), (byte) neighbors[i].getX());
-                newConf.setY((int) node.getPiece(), (byte) neighbors[i].getY());
-                possibleDest.add(newConf);
+    public ArrayList<StoringConfig> getPossibleSpiderDestinations(PieceNode node) {
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }
+        ArrayList<Coord> resultCoords = new ArrayList<>();
+        //now we 'remove' the spider tile from the board, we 'll put it back in place
+        //before leaving the method
+        int originalX = node.getX(), originalY = node.getY();
+        node.setX(-1);
+        node.setY(-1);
+        board[originalX][originalY] = null;
+
+        //get coords after one slide move
+        ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX, originalY));
+        for (Coord coordAfter1Move : CoordsAfterFirstMove) {
+            ArrayList<Coord> CoordsAfterSecondMove = getPossibleSlidingDestinations(coordAfter1Move);
+            for (Coord coordAfter2Move : CoordsAfterSecondMove) {
+                //check the spider does not try to come back
+                if (!coordAfter2Move.equals(getCoord(node))) {
+                    ArrayList<Coord> CoordsAfterThirdMove = getPossibleSlidingDestinations(coordAfter2Move);
+                    for (Coord coordAfter3Move : CoordsAfterThirdMove) {
+                        //check the spider does not try to come back && add only if not present in result
+                        if ((!coordAfter3Move.equals(coordAfter1Move)) && (!resultCoords.contains(coordAfter3Move))) {
+                            resultCoords.add(coordAfter3Move);
+                        }
+                    }
+                }
             }
         }
-        return possibleDest;
+        //now from an arraylist of coords we get arraylist of stconf
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (Coord coord : resultCoords) {
+            StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+            newStoringConfig.setX(node.piece, (byte) coord.getX());
+            newStoringConfig.setY(node.piece, (byte) coord.getY());
+            result.add(newStoringConfig);
+        }
+
+        //put back the spider where it was
+        board[originalX][originalY] = node;
+        node.setX(originalX);
+        node.setY(originalY);
+
+        return result;
     }
 
     public ArrayList<StoringConfig> getPossibleAntDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
         }
-
+        ArrayList<Coord> resultCoords = new ArrayList<>();
         //now we 'remove' the ant tile from the board, we 'll put it back in place
         //before leaving the method
         int originalX = node.getX(), originalY = node.getY();
-        node.x = -1;
-        node.y = -1;
+        node.setX(-1);
+        node.setY(-1);
+        board[originalX][originalY] = null;
 
         ArrayList<Coord> possibleDestinations = new ArrayList<>(), temp;
         ArrayList<Coord> newlyAdded = getPossibleSlidingDestinations(new Coord(originalX, originalY));
+
         boolean newCoordWasAdded = true;
         while (newCoordWasAdded) {
             ArrayList<Coord> newlyAddedtemp = new ArrayList<>();
             newCoordWasAdded = false;
-            for (Coord coord : newlyAdded) {
-                temp = getPossibleSlidingDestinations(coord);
+            for (Coord newlyAddedCoord : newlyAdded) {
+                temp = getPossibleSlidingDestinations(newlyAddedCoord);
                 for (Coord newCoord : temp) {
                     if (!possibleDestinations.contains(newCoord)) {
-                        possibleDestinations.add(coord);
+                        possibleDestinations.add(newlyAddedCoord);
                         newCoordWasAdded = true;
                         newlyAddedtemp.add(newCoord);
                     }
@@ -405,67 +287,27 @@ public class GameConfig {
             }
             newlyAdded = newlyAddedtemp;
         }
+
+        //now from an arraylist of coords we get arraylist of stconf
         ArrayList<StoringConfig> result = new ArrayList<>();
-        for (Coord coord : possibleDestinations) {
-            StoringConfig newStConfig = new StoringConfig(stconf);
-            newStConfig.setX(node.piece, (byte) coord.getX());
-            newStConfig.setY(node.piece, (byte) coord.getY());
-            result.add(newStConfig);
+        for (Coord coord : resultCoords) {
+            StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+            newStoringConfig.setX(node.piece, (byte) coord.getX());
+            newStoringConfig.setY(node.piece, (byte) coord.getY());
+            result.add(newStoringConfig);
         }
-        //reset the coords from the spider back to original ones
-        node.x = originalX;
-        node.y = originalY;
+
+        //put back the ant where it was
+        board[originalX][originalY] = node;
+        node.setX(originalX);
+        node.setY(originalY);
 
         return result;
-
     }
 
     /**
-     * ******************************** Other Bugs ****************************
+     * ******************* Other bugs (Beetle & grasshopper) **************
      */
-    public ArrayList<StoringConfig> getPossibleBeetleDestinations(PieceNode node) {
-        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
-            return new ArrayList<>();
-        }
-
-        Coord nodeCoords = new Coord(node.getX(), node.getY());
-        Coord neighbors[] = new Coord[nodeCoords.getNeighbors().size()];
-        neighbors = nodeCoords.getNeighbors().toArray(neighbors);
-
-        ArrayList<StoringConfig> possibleDest = new ArrayList<>();
-        int i, maxHeight;
-
-        for (i = 0; i < neighbors.length; i++) {
-            maxHeight = max(node.getZ(), this.getHighestNode(neighbors[i]).getZ());
-            if (((this.getHighestNode(neighbors[i + 1])).getZ() < maxHeight)
-                    || ((this.getHighestNode(neighbors[i - 1])).getZ() < maxHeight)) {
-                StoringConfig newConf = new StoringConfig(this.stconf.config.length);
-                System.arraycopy(this.stconf.config, 0, newConf.config, 0, this.stconf.config.length);
-
-                //freeing the former stuck piece
-                if (node.getZ() > 0) {
-                    this.getNode(node.getX(), node.getY(), node.getZ() - 1).setStuck(false);
-                }
-
-                //paralizing the piece underneath the beetle and actualizing Z coordinate of the beetle
-                if (!(this.isFreeNode(this.getNode(neighbors[i])))) {
-                    newConf.setIsStuck(this.getHighestNode(neighbors[i]).getPiece(), true);
-                    newConf.setZ((int) node.getPiece(), (byte) (node.getZ() - (node.getZ() - 1 - (this.getHighestNode(neighbors[i]).getZ()))));
-                } else {
-                    newConf.setZ((int) node.getPiece(), (byte) 1);
-                }
-
-                //actualizing X and Y coordinates of the beetle
-                newConf.setX((int) node.getPiece(), (byte) neighbors[i].getX());
-                newConf.setY((int) node.getPiece(), (byte) neighbors[i].getY());
-
-                possibleDest.add(newConf);
-            }
-        }
-
-        return possibleDest;
-    }
-
     public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
             return new ArrayList<>();
@@ -479,7 +321,7 @@ public class GameConfig {
             while (!this.isFreeCoord(currentCoord)) {
                 currentCoord = currentCoord.getEast();
             }
-            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
@@ -490,7 +332,7 @@ public class GameConfig {
             while (!this.isFreeCoord(currentCoord)) {
                 currentCoord = currentCoord.getNorthEast();
             }
-            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
@@ -501,7 +343,7 @@ public class GameConfig {
             while (!this.isFreeCoord(currentCoord)) {
                 currentCoord = currentCoord.getSouthEast();
             }
-            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
@@ -512,7 +354,7 @@ public class GameConfig {
             while (!this.isFreeCoord(currentCoord)) {
                 currentCoord = currentCoord.getWest();
             }
-            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
@@ -523,7 +365,7 @@ public class GameConfig {
             while (!this.isFreeCoord(currentCoord)) {
                 currentCoord = currentCoord.getNorthWest();
             }
-            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
@@ -534,7 +376,7 @@ public class GameConfig {
             while (!this.isFreeCoord(currentCoord)) {
                 currentCoord = currentCoord.getSouthWest();
             }
-            newStoringConfig = new StoringConfig(stconf);
+            newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
@@ -542,30 +384,77 @@ public class GameConfig {
         return result;
     }
 
+    public ArrayList<StoringConfig> getPossibleBeetleDestinations(PieceNode node) {
+        if ((!this.RespectsOneHive(node)) || node.isStuck()) {
+            return new ArrayList<>();
+        }
 
-    /*
-    *****************         One hive rule     ******************************
-     */
-    ///walking along some kind of graph to check if the one_hive rule
-    /// is still respected when the piece node is moving
-    private boolean RespectsOneHive(PieceNode node) {
+        ArrayList<StoringConfig> result = new ArrayList<>();
+
+        Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
+        int maxHeight; // represents max between source height & destination height
+        for (int i = 0; i < 6; i++) {
+            //setting maxHeight
+            int destinationHeight = getHeight(neighborsCoords[i]);
+            maxHeight = (node.getZ() > destinationHeight ? node.getZ() : destinationHeight);
+
+            //check that the move respects freedom to move rule
+            if ((getHeight(neighborsCoords[(i + 1) % 6]) < maxHeight)
+                    || (getHeight(neighborsCoords[(i + 5) % 6]) < maxHeight)) {
+                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+
+                //Unstuck the piece which was below the beetle
+                for (int j = 0; j < newStoringConfig.config.length; j++) {
+                    if (newStoringConfig.getX(j) == node.getX()
+                            && (newStoringConfig.getY(j) == node.getY())
+                            && (newStoringConfig.getZ(j) == node.getZ() - 1)) {
+                        newStoringConfig.setIsStuck(j, false);
+                        break;
+                    }
+                }
+                //move the beetle to new position in newStoringConfig
+                newStoringConfig.setX(node.piece, (byte) neighborsCoords[i].getX());
+                newStoringConfig.setY(node.piece, (byte) neighborsCoords[i].getY());
+                newStoringConfig.setZ(node.piece, (byte) destinationHeight);
+                //if there's a piece underneath, set stuck to true
+                PieceNode nodeToStuck = getHighestNode(neighborsCoords[i]);
+                if (nodeToStuck != null) {
+                    newStoringConfig.setIsStuck(nodeToStuck.piece, true);
+                }
+                //and now add the storingConfig to result
+                result.add(newStoringConfig);
+            }
+        }
+        return result;
+    }
+
+    public boolean RespectsOneHive(PieceNode node) {
         // 1st check -> if there's only one neighbor -> no need to go further
-        ArrayList<PieceNode> neighbors = this.getNeighborsInArrayList(node);
+        ArrayList<PieceNode> neighbors = getNeighborsInArrayList(node);
         if (neighbors.size() == 1) {
             return true;
         }
+
+        //Setting all booleans 'isVisited' to false
+        for (PieceNode[] boardX : board) {
+            for (PieceNode boardXY : boardX) {
+                boardXY.isVisited = false;
+            }
+        }
+
         //now we chose any neighbor of node
         PieceNode neighbor = neighbors.get(0);
-        PieceNode current_node;
 
         //marking both the moving node & the first neighbor we put in the set
         node.isVisited = true;
         neighbor.isVisited = true;
+
+        PieceNode current_node;
         ArrayList<PieceNode> nodeSet = new ArrayList<>();
         nodeSet.add(neighbor);
         while (!nodeSet.isEmpty()) {
             current_node = nodeSet.get(0);
-            neighbors = this.getNeighborsInArrayList(current_node);
+            neighbors = getNeighborsInArrayList(current_node);
             for (PieceNode current_node_neighbor : neighbors) {
                 if (!current_node_neighbor.isVisited) {
                     current_node_neighbor.isVisited = true;
@@ -575,28 +464,76 @@ public class GameConfig {
             nodeSet.remove(current_node);
         }
 
-        for (int x = 0; x < array.length; x++) {
-            current_node = array[x];
-            while (current_node != null) {
-                if (!current_node.isVisited) {
+        for (PieceNode[] boardX : board) {
+            for (PieceNode boardXY : boardX) {
+                if (!boardXY.isVisited) {
                     return false;
                 }
-                current_node = current_node.next;
             }
         }
         return true;
     }
 
     /*
-     **************************      ToString *********************************
+     *              NEW POSITIONS
      */
-    public String toString() {
-        String result = "Looping Config :\n";
-        result += "player : " + player + ",turn =" + turn + ",pieces par joueur=" + nbPiecesPerColor + "\narray :\n";
-        for (int i = 0; i < array.length; i++) {
-            result += array[i].toString();
+    public ArrayList<Coord> getNewPossiblePositions() {
+        int start = currentPlayer * nbPiecesPerColor;
+        int finish = start + nbPiecesPerColor;
+        ArrayList<Coord> result = new ArrayList<>();
+        Coord currentNodeCoord, currentNeighborCoord;
+
+        //costy triple loop, but looks like no choice about it 
+        //-> maximum 11*6*6 = around 400
+        for (int pieceId = start; pieceId < finish; pieceId++) {
+            //find pieces from currentPlayer already on board
+            if (pieces[pieceId].isOnBoard) {
+                currentNodeCoord = getCoord(pieces[pieceId]);
+                Coord[] neighborsCoords = currentNodeCoord.getNeighborsInArray();
+                for (int i = 0; i < 6; i++) {
+                    if (isFreeCoord(neighborsCoords[i])) {
+                        Coord[] neighborsOfNeighbor = neighborsCoords[i].getNeighborsInArray();
+                        boolean canBeAdded = true;
+                        for (int j = 0; j < 6; j++) {
+                            currentNeighborCoord = neighborsOfNeighbor[j];
+                            if (!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord))) {
+                                canBeAdded = false;
+                            }
+                        }
+                        if (canBeAdded)
+                            result.add(currentNodeCoord);
+                    }
+                }
+            }
         }
-        result += "stconf :\n" + stconf.toString();
         return result;
     }
+
+    /*
+     *              UTILS
+     */
+    //PIECE_ID into PIECE_TYPE
+    public int IdToType(int id) {
+        if (id <= Consts.QUEEN) {
+            return Consts.QUEEN_TYPE;
+        } else if (id <= Consts.SPIDER2) {
+            return Consts.SPIDER_TYPE;
+        } else if (id <= Consts.GRASSHOPPER3) {
+            return Consts.GRASSHOPPER_TYPE;
+        } else if (id <= Consts.BEETLE2) {
+            return Consts.BEETLE_TYPE;
+        } else if (id <= Consts.ANT3) {
+            return Consts.ANT_TYPE;
+        } else if (id <= Consts.MOSQUITO) {
+            return Consts.MOSQUITO_TYPE;
+        } else if (id <= Consts.LADYBUG) {
+            return Consts.LADYBUG_TYPE;
+        } else if (id <= Consts.PILLBUG) {
+            return Consts.PILLBUG_TYPE;
+        } else {
+            System.err.println("Erreur : Impossible de reconnaitre le type de pièce");
+            return 0;
+        }
+    }
+
 }

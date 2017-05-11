@@ -15,7 +15,7 @@ public class PieceNode {
 
     int x, y, z, piece;
     boolean stuck, isVisited, isOnBoard;
-    PieceNode next;
+    PieceNode pieceAbove;
 
     public PieceNode(StoringConfig config, int index) {
         this.x = config.getX(index);
@@ -25,7 +25,7 @@ public class PieceNode {
         this.stuck = config.isStuck(index);
         this.isOnBoard = config.isOnBoard(index);
         this.isVisited = false;
-        this.next = null;
+        this.pieceAbove = null;
     }
 
     public int getX() {
@@ -56,8 +56,8 @@ public class PieceNode {
         return this.isVisited;
     }
 
-    public PieceNode getNext() {
-        return this.next;
+    public PieceNode getPieceAbove() {
+        return this.pieceAbove;
     }
 
     public String toString() {
@@ -78,4 +78,15 @@ public class PieceNode {
         this.stuck = stuck;
     }
 
+    public void setX(int newX){
+        this.x = newX;
+    }
+    
+    public void setY(int newY){
+        this.y = newY;
+    }
+    
+    public void setZ(int newZ){
+        this.z = newZ;
+    }
 }

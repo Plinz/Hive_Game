@@ -1,6 +1,6 @@
 /*
 this class is used to store a game configuration in an optimal way
-each short(16b) contains :
+each int(32 b) contains :
     _________________________
    |__x_|__y_|_z_|_b_|_b_|_b_| , x,y,z :1 byte each and up to 8 booleans
     
@@ -22,7 +22,7 @@ import main.java.utils.Coord;
 public class StoringConfig {
 
     public int config[];
-    public int turn;
+    public int turn, currentPlayer;
 
     public StoringConfig(int nb_pieces) {
         config = new int[nb_pieces];
@@ -229,9 +229,9 @@ public class StoringConfig {
     public ArrayList<StoringConfig> getNextPossibleMoves() {
         ArrayList<StoringConfig> temp, result = new ArrayList<>();
 
-        GameConfig loopConf = new GameConfig(this, turn);
+        GameConfig loopConf = new GameConfig3(this, turn);
         ArrayList<Coord> possibleNewPositions = loopConf.getNewPossiblePositions();
-        int start = loopConf.player * loopConf.nbPiecesPerColor;
+        int start = loopConf.currentPlayer * loopConf.nbPiecesPerColor;
         int finish = start + loopConf.nbPiecesPerColor;
         
         //7th & 8th turns -> if player did not play the queen he has to
