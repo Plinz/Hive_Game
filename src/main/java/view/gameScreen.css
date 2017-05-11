@@ -33,3 +33,12 @@
     -fx-background-radius: 0px, 0px, 0px, 0px;
     -fx-background-color: transparent;
 }
+
+.buttonGear{
+    -fx-background-image: url("/gear.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
