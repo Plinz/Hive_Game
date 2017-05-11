@@ -243,4 +243,3 @@ public class GameScreenController implements Initializable {
         dialog.show();
     }
 }
-
