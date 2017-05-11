@@ -37,21 +37,25 @@ public class Core implements Serializable {
 	}
 
 	public boolean accept(BoardDrawer b) {
-		this.currentState.getBoard().accept(b);
+		currentState.getBoard().accept(b);
 		return false;
 	}
 
 	public boolean addPiece(int piece, CoordGene<Integer> coord) {
-		if ((this.currentState.getTurn() == 6 || this.currentState.getTurn() == 7) && !checkQueenRule()
-				&& this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getInventory().get(piece)
-						.getId() != Consts.QUEEN)
+		if (!canAddPiece(piece))
 			return isGameFinish();
-		this.history.saveState(this.currentState);
-		this.currentState.getBoard().addPiece(
-				this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].removePiece(piece), coord);
-		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		this.currentState.nextTurn();
-		this.currentState.getBoard().clearPossibleMovement();
+		if (mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
+			history.saveState(currentState);
+		currentState.getBoard().addPiece(currentState.getCurrentPlayerObject().removePiece(piece), coord);
+		currentState.nextTurn();
+		return playNextTurn();
+	}
+
+	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
+		if (this.mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
+			history.saveState(currentState);
+		currentState.getBoard().movePiece(source, target);
+		currentState.nextTurn();
 		return playNextTurn();
 	}
 
@@ -59,50 +63,40 @@ public class Core implements Serializable {
 		if (isGameFinish())
 			return true;
 		if (isPlayerStuck())
-			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		if (this.mode == Consts.PVAI && this.currentState.getCurrentPlayer() == Consts.AI_PLAYER)
-			return this.ai.getNextMove(currentState).play();
+			currentState.setCurrentPlayer(1 - currentState.getCurrentPlayer());
+		if (mode == Consts.PVAI && currentState.getCurrentPlayer() == Consts.AI_PLAYER)
+			return ai.getNextMove(currentState).play();
 		return false;
 	}
 
-	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
-		this.history.saveState(this.currentState);
-		this.currentState.getBoard().movePiece(source, target);
-		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		this.currentState.nextTurn();
-		this.currentState.getBoard().clearPossibleMovement();
-		return playNextTurn();
+	private boolean canAddPiece(int piece) {
+		return (currentState.getTurn() != 6 && currentState.getTurn() != 7) || isQueenOnBoard()
+				|| currentState.getCurrentPlayerObject().getInventory().get(piece).getId() == Consts.QUEEN;
 	}
 
-	public boolean checkQueenRule() {
-		for (Piece p : this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getInventory()) {
-			if (p.getName() == Consts.QUEEN_NAME) {
-				return false;
-			}
-		}
-		return true;
+	private boolean isQueenOnBoard() {
+		return currentState.getCurrentPlayerObject().getInventory().stream()
+				.noneMatch(piece -> piece.getId() == Consts.QUEEN);
 	}
 
 	private boolean isGameFinish() {
-		Board board = this.currentState.getBoard();
+		Board board = currentState.getBoard();
 		List<Tile> queenStuck = new ArrayList<Tile>();
 		board.getBoard().stream().forEach(column -> column.stream().forEach(box -> queenStuck.addAll(box.stream()
 				.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getId() == Consts.QUEEN)
 				.filter(tile -> board.getPieceNeighbors(tile.getCoord()).size() == 6).collect(Collectors.toList()))));
-		if (queenStuck.size() == 1){
-			this.status = queenStuck.get(0).getPiece().getTeam();
-                }
-		else if (queenStuck.size() == 2){
-			this.status = Consts.NUL;
-                }
+		if (queenStuck.size() == 1)
+			status = queenStuck.get(0).getPiece().getTeam();
+		else if (queenStuck.size() == 2)
+			status = Consts.NUL;
 		return !queenStuck.isEmpty();
 	}
 
 	private boolean isPlayerStuck() {
-		int team = this.currentState.getPlayers()[this.currentState.getCurrentPlayer()].getTeam();
-		Board board = this.currentState.getBoard();
-		List<CoordGene<Integer>> possibleMovement = this.currentState.getPlayers()[this.currentState.getCurrentPlayer()]
-				.getInventory().isEmpty() ? new ArrayList<CoordGene<Integer>>() : getPossibleAdd();
+		int team = currentState.getCurrentPlayerObject().getTeam();
+		Board board = currentState.getBoard();
+		List<CoordGene<Integer>> possibleMovement = currentState.getCurrentPlayerObject().getInventory().isEmpty()
+				? new ArrayList<CoordGene<Integer>>() : getPossibleAdd();
 		board.getBoard().stream()
 				.forEach(column -> column.stream().forEach(box -> box.stream()
 						.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getTeam() == team)
@@ -111,8 +105,8 @@ public class Core implements Serializable {
 	}
 
 	public List<CoordGene<Integer>> getPossibleMovement(CoordGene<Integer> coord) {
-		if (checkQueenRule()) {
-			Board board = this.currentState.getBoard();
+		if (isQueenOnBoard()) {
+			Board board = currentState.getBoard();
 			Tile tile = board.getTile(coord);
 			return tile.getPiece().getPossibleMovement(tile, board);
 		}
@@ -121,7 +115,7 @@ public class Core implements Serializable {
 
 	public List<CoordGene<Integer>> getPossibleAdd() {
 		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
-		switch (this.currentState.getTurn()) {
+		switch (currentState.getTurn()) {
 		case 0:
 			pos.add(new CoordGene<Integer>(0, 0));
 			break;
@@ -129,7 +123,7 @@ public class Core implements Serializable {
 			pos.addAll(new CoordGene<Integer>(1, 1).getNeighbors());
 			break;
 		default:
-			Board board = this.currentState.getBoard();
+			Board board = currentState.getBoard();
 			Tile current;
 			List<Tile> neighbors;
 			for (List<List<Tile>> column : board.getBoard())
@@ -137,12 +131,28 @@ public class Core implements Serializable {
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
 							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
 							&& !neighbors.stream()
-									.anyMatch(it -> it.getPiece().team != this.currentState.getCurrentPlayer()))
+									.anyMatch(it -> it.getPiece().team != currentState.getCurrentPlayer()))
 						pos.add(current.getCoord());
 		}
 		return pos;
 	}
-	
+
+	public boolean previousState() {
+		if (history.hasPreviousState()) {
+			currentState = history.getPreviousState();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean nextState() {
+		if (history.hasNextState()) {
+			currentState = history.getNextState();
+			return true;
+		}
+		return false;
+	}
+
 	public History getHistory() {
 		return history;
 	}
