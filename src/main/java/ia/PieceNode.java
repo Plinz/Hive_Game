@@ -14,18 +14,18 @@ package main.java.ia;
 public class PieceNode {
 
     int x, y, z, piece;
-    boolean stuck, isVisited, isOnBoard;
-    PieceNode next;
+    boolean isStuck, isVisited, isOnBoard;
+    PieceNode pieceAbove;
 
     public PieceNode(StoringConfig config, int index) {
         this.x = config.getX(index);
         this.y = config.getY(index);
         this.z = config.getZ(index);
         this.piece = index;
-        this.stuck = config.isStuck(index);
+        this.isStuck = config.isStuck(index);
         this.isOnBoard = config.isOnBoard(index);
         this.isVisited = false;
-        this.next = null;
+        this.pieceAbove = null;
     }
 
     public int getX() {
@@ -45,7 +45,7 @@ public class PieceNode {
     }
 
     public boolean isStuck() {
-        return this.stuck;
+        return this.isStuck;
     }
 
     public boolean isOnBoard() {
@@ -57,7 +57,7 @@ public class PieceNode {
     }
 
     public PieceNode getNext() {
-        return this.next;
+        return this.pieceAbove;
     }
 
     public String toString() {
@@ -75,7 +75,18 @@ public class PieceNode {
     }
 
     public void setStuck(boolean stuck) {
-        this.stuck = stuck;
+        this.isStuck = stuck;
     }
 
+    public void setX(int newX){
+        this.x = newX;
+    }
+    
+    public void setY(int newY){
+        this.y = newY;
+    }
+    
+    public void setZ(int newZ){
+        this.z = newZ;
+    }
 }
