@@ -213,22 +213,6 @@ public class StoringConfig {
         config[index] |= toAdd;
     }
 
-    public String toString() {
-        String result = "Storing Config :\n\tOn board :";
-        for (int i = 0; i < config.length; i++) {
-            if (this.isOnBoard(i)) {
-                result += "piece:" + i + "->x,y,z=" + this.getX(i) + "," + this.getY(i) + "," + this.getZ(i) + ".";
-            }
-            if (this.isStuck(i)) {
-                result += "Stuck.\n";
-            } else {
-                result += "\n";
-            }
-
-        }
-        return result;
-    }
-
     /*
      *                   NEXT MOVE
      */
@@ -239,20 +223,20 @@ public class StoringConfig {
         ArrayList<Coord> possibleNewPositions = loopConf.getNewPossiblePositions();
         int start = loopConf.currentPlayer * loopConf.nbPiecesPerColor;
         int finish = start + loopConf.nbPiecesPerColor;
-        
+
         //7th & 8th turns -> if player did not play the queen he has to
         if ((loopConf.turn == 7) || (loopConf.turn == 8)) {
             if (!loopConf.getNode(start).isOnBoard) {
                 for (Coord coord : possibleNewPositions) {
-                        StoringConfig newStoringConfig = new StoringConfig(this);
-                        newStoringConfig.setX(start, (byte) coord.getX());
-                        newStoringConfig.setY(start, (byte) coord.getY());
-                        result.add(newStoringConfig);
-                    }
+                    StoringConfig newStoringConfig = new StoringConfig(this);
+                    newStoringConfig.setX(start, (byte) coord.getX());
+                    newStoringConfig.setY(start, (byte) coord.getY());
+                    result.add(newStoringConfig);
+                }
                 return result;
             }
         }
-        
+
         //normal situation
         // check all pieces from player
         for (int i = start; i < finish; i++) {
@@ -289,4 +273,23 @@ public class StoringConfig {
         return result;
     }
 
+    /*
+     *                  UTILS
+     */
+
+    public String toString() {
+        String result = "Storing Config :\n\tOn board :";
+        for (int i = 0; i < config.length; i++) {
+            if (this.isOnBoard(i)) {
+                result += "piece:" + i + "->x,y,z=" + this.getX(i) + "," + this.getY(i) + "," + this.getZ(i) + ".";
+            }
+            if (this.isStuck(i)) {
+                result += "Stuck.\n";
+            } else {
+                result += "\n";
+            }
+
+        }
+        return result;
+    }
 }
