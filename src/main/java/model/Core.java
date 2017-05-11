@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import main.java.ia.AI;
+import main.java.ia.AIFactory;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
@@ -22,7 +23,7 @@ public class Core implements Serializable {
 	public Core(int mode, int difficulty) {
 		this.history = new History();
 		this.currentState = new State();
-		this.ai = AIFactory(difficulty);
+		this.ai = AIFactory.buildAI(difficulty);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 	}
@@ -30,7 +31,7 @@ public class Core implements Serializable {
 	public Core(History history, State currentState, int mode, int difficulty, int status) {
 		this.history = history;
 		this.currentState = currentState;
-		this.ai = AIFactory(difficulty);
+		this.ai = AIFactory.buildAI(difficulty);
 		this.mode = mode;
 		this.status = status;
 	}
