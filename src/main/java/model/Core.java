@@ -80,10 +80,12 @@ public class Core implements Serializable {
 		board.getBoard().stream().forEach(column -> column.stream().forEach(box -> queenStuck.addAll(box.stream()
 				.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getId() == Consts.QUEEN)
 				.filter(tile -> board.getPieceNeighbors(tile.getCoord()).size() == 6).collect(Collectors.toList()))));
-		if (queenStuck.size() == 1)
+		if (queenStuck.size() == 1){
 			this.status = queenStuck.get(0).getPiece().getTeam();
-		else if (queenStuck.size() == 2)
+                }
+		else if (queenStuck.size() == 2){
 			this.status = Consts.NUL;
+                }
 		return !queenStuck.isEmpty();
 	}
 

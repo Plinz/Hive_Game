@@ -120,7 +120,7 @@
                               <Button layoutX="122.0" layoutY="169.0" mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 1" wrappingWidth="92.01220703125">
+                        <Text fx:id="namePlayer1" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 1" wrappingWidth="410.01220703125">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -165,7 +165,7 @@
                               <Button layoutX="325.0" layoutY="174.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 2 " GridPane.rowIndex="1">
+                        <Text fx:id="namePlayer2" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 2 " wrappingWidth="408.5078125" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>

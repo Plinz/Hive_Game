@@ -6,7 +6,6 @@
 package main.java.view;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
@@ -14,7 +13,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -24,10 +25,12 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import main.java.controller.ControllerButton;
+import javafx.scene.text.Text;
+import main.java.controller.ControllerButtonPiece;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.model.Piece;
+import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
 /**
@@ -38,6 +41,8 @@ public class GameScreenController implements Initializable {
     @FXML private Canvas gameCanvas;
     @FXML private GridPane inventoryPlayer1;
     @FXML private GridPane inventoryPlayer2;
+    @FXML private Text namePlayer1;
+    @FXML private Text namePlayer2;
     private Main main;
     private Core core;
     private int pieceToChoose;
@@ -50,6 +55,18 @@ public class GameScreenController implements Initializable {
     }
     public void setCore(Core c) {
         this.core = c;    
+    }
+
+    public void setPieceToChoose(int pieceToChoose) {
+        this.pieceToChoose = pieceToChoose;
+    }
+
+    public void setPieceToMove(CoordGene<Integer> pieceToMove) {
+        this.pieceToMove = pieceToMove;
+    }
+
+    public void setHighlighted(Highlighter highlighted) {
+        this.highlighted = highlighted;
     }
     
     
@@ -67,19 +84,18 @@ public class GameScreenController implements Initializable {
         initButtonByInventory();
         initGameCanvas();
         
-        
         RefreshJavaFX r = new RefreshJavaFX(core, gameCanvas, highlighted);
         r.start();
         
     }
     
     public void initGameCanvas(){
+        
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             TraducteurBoard t = new TraducteurBoard();
 
             @Override
             public void handle(MouseEvent m) {
-                //Point2D mousePoint = new Point2D.Double(m.getX(), m.getY());
                 CoordGene<Double> coordPix = new CoordGene<>(m.getX(), m.getY());
                 CoordGene<Double> coordAx = t.pixelToAxial(coordPix);
                 int i = coordAx.getX().intValue();
@@ -89,12 +105,10 @@ public class GameScreenController implements Initializable {
                     if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
                         CoordGene<Integer> coord = new CoordGene<>(i, j);
                         if (pieceToMove != null &&  core.getCurrentState().getBoard().getTile(pieceToMove).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(pieceToMove), core.getCurrentState().getBoard()).contains(coord)/*&& core.getDestination().contains(coord)*/) {
-                            //System.out.println("Déplacement de la piece choisie");
-                            core.movePiece(pieceToMove, coord);
-                            pieceToMove = null;
-                            pieceToChoose = -1;
-                            initButtonByInventory();
-                            //choice.setText("Le joueur " + core.getCurrentState().getCurrentPlayer() + " doit choisir sa pièce !");
+                            if(core.movePiece(pieceToMove, coord)){
+                                handleEndGame();
+                            }
+                            resetPiece();
                             initButtonByInventory();
                             highlighted.setListTohighlight(null);
                             
@@ -107,23 +121,20 @@ public class GameScreenController implements Initializable {
                         } else {
                             System.out.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
                             if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord)) {
-                                core.addPiece(pieceToChoose, coord);
-                                pieceToMove = null;
-                                pieceToChoose = -1;
-                                initButtonByInventory();
-                                //choice.setText("Le joueur " + core.getCurrentState().getCurrentPlayer() + " doit choisir sa pièce !");
+                                if(core.addPiece(pieceToChoose, coord)){
+                                    handleEndGame();
+                                }
+                                resetPiece();
                                 initButtonByInventory();
                                 highlighted.setListTohighlight(null);
                             } else {
-                                pieceToMove = null;
-                                pieceToChoose = -1;
+                                resetPiece();
                                 highlighted.setListTohighlight(null);
                             }
                         }
                     } else {
                         System.out.println("Pas cliquable  " + i + " " + j + " !  ");
-                        pieceToMove = null;
-                        pieceToChoose = -1;
+                        resetPiece();
                         highlighted.setListTohighlight(null);
                     }
                 }
@@ -137,12 +148,15 @@ public class GameScreenController implements Initializable {
         if(core.getCurrentState().getCurrentPlayer() == 0){
             inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            namePlayer1.setText(core.getCurrentState().getPlayers()[core.getCurrentState().getCurrentPlayer()].getName() + " à vous de jouer !");
+            namePlayer2.setText(core.getCurrentState().getPlayers()[1-core.getCurrentState().getCurrentPlayer()].getName() + " attends !");
         }
         else{
             inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
             inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-        }
-        
+            namePlayer1.setText(core.getCurrentState().getPlayers()[core.getCurrentState().getCurrentPlayer()].getName() + " attends !");
+            namePlayer2.setText(core.getCurrentState().getPlayers()[1-core.getCurrentState().getCurrentPlayer()].getName() + " à vous de jouer !");
+        } 
         initPlayer1Button();
         initPlayer2Button();
     }
@@ -159,8 +173,9 @@ public class GameScreenController implements Initializable {
             b.setMinSize(40, 40);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            //b.setOnMousePressed(new ControllerButton(this,highlighted,core, i));
-            //list.add(b);
+            if(core.getCurrentState().getCurrentPlayer() == 0){
+                b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
+            }
             if(i%4 == 0){
                 col = 0;
                 line++;
@@ -185,8 +200,9 @@ public class GameScreenController implements Initializable {
             b.setMinSize(40, 40);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
             
-            //b.setOnMousePressed(new ControllerButton(this,highlighted,core, i));
-            //list.add(b);
+            if(core.getCurrentState().getCurrentPlayer() == 1){
+                b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
+            }
             if(i%4 == 0){
                 col = 0;
                 line++;
@@ -197,5 +213,30 @@ public class GameScreenController implements Initializable {
             GridPane.setConstraints(b, col, line);
             inventoryPlayer2.getChildren().add(b);
         }
+    }
+    
+    public void resetPiece(){
+        pieceToMove = null;
+        pieceToChoose = -1;
+    }
+    
+    public void handleEndGame(){
+        Dialog dialog = new Alert(Alert.AlertType.INFORMATION);
+        dialog.setTitle("Fin de partie !");
+        switch(core.getStatus()){
+            case 0 :
+                dialog.setContentText("Le joueur Blanc perd la partie");
+                break;
+            case 1 :
+                dialog.setContentText("Le joueur Noir perd la partie");
+                break;
+            case Consts.NUL:
+                dialog.setContentText("Match nul");
+                break;
+            default :
+                dialog.setContentText("Ne devrait pas arriver !");
+                break;
+        }
+        dialog.show();
     }
 }
