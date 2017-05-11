@@ -94,6 +94,19 @@ public class GameConfig {
     /*
      *              GETTERS
      */
+    
+    public PieceNode[] getPieces(){
+        return pieces;
+    }
+    
+    public PieceNode[][] getBoard(){
+        return board;
+    }
+    
+    public int getNbPiecesPerColor(){
+        return nbPiecesPerColor;
+    }
+    
     public PieceNode getNode(Cube<Integer> cube) {
         int z = cube.getZ();
         PieceNode node = this.board[cube.getX()][cube.getY()];
@@ -116,6 +129,10 @@ public class GameConfig {
 
     public Coord getCoord(PieceNode node) {
         return new Coord(node.getX(), node.getY());
+    }
+    
+    public Coord getCoord(int pieceId){
+        return getCoord(pieces[pieceId]);
     }
 
     public Cube<Integer> getCube(PieceNode node) {
@@ -155,7 +172,7 @@ public class GameConfig {
     /*
      *              DEPLACEMENTS
      */
-    //method used to detect the type of 
+
     public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
         int piece_type = IdToType(node.piece % nbPiecesPerColor);
         switch (piece_type) {
@@ -201,6 +218,10 @@ public class GameConfig {
         }
         ArrayList<StoringConfig> result = new ArrayList<>();
         ArrayList<Coord> possibleCoords = getPossibleSlidingDestinations(getCoord(node));
+        
+        //save the possible dests in the PieceNode for later heuristics calculations
+        node.PossibleDestinations =  possibleCoords;
+        
         for (Coord possibleCoord : possibleCoords) {
             StoringConfig newStConfig = new StoringConfig(storingConfig);
             newStConfig.setX(node.getPiece(), (byte) possibleCoord.getX());
@@ -253,6 +274,9 @@ public class GameConfig {
         node.setX(originalX);
         node.setY(originalY);
 
+        //save the possible dests in the PieceNode for later heuristics calculations
+        node.PossibleDestinations =  resultCoords;
+        
         return result;
     }
 
@@ -302,6 +326,9 @@ public class GameConfig {
         node.setX(originalX);
         node.setY(originalY);
 
+        //save the possible dests in the PieceNode for later heuristics calculations
+        node.PossibleDestinations =  resultCoords;
+        
         return result;
     }
 
@@ -315,6 +342,7 @@ public class GameConfig {
         ArrayList<StoringConfig> result = new ArrayList<>();
         StoringConfig newStoringConfig;
         Coord currentCoord;
+        
         //East
         currentCoord = this.getCoord(node).getEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -325,7 +353,9 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
+            node.PossibleDestinations.add(currentCoord);
         }
+        
         //NorthEast
         currentCoord = this.getCoord(node).getNorthEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -336,7 +366,9 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
+            node.PossibleDestinations.add(currentCoord);
         }
+        
         //SouthEast
         currentCoord = this.getCoord(node).getSouthEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -347,7 +379,9 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
+            node.PossibleDestinations.add(currentCoord);
         }
+        
         //West
         currentCoord = this.getCoord(node).getWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -358,7 +392,9 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
+            node.PossibleDestinations.add(currentCoord);
         }
+        
         //NorthWest
         currentCoord = this.getCoord(node).getNorthWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -369,7 +405,9 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
+            node.PossibleDestinations.add(currentCoord);
         }
+        
         //SouthWest
         currentCoord = this.getCoord(node).getSouthWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -380,7 +418,9 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
+            node.PossibleDestinations.add(currentCoord);
         }
+        
         return result;
     }
 
@@ -421,6 +461,8 @@ public class GameConfig {
                 if (nodeToStuck != null) {
                     newStoringConfig.setIsStuck(nodeToStuck.piece, true);
                 }
+                //add the coord to the beetle PossibleDest
+                node.PossibleCubeDestinations.add(new Cube<>(neighborsCoords[i].getX(),neighborsCoords[i].getY(),destinationHeight));
                 //and now add the storingConfig to result
                 result.add(newStoringConfig);
             }

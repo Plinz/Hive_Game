@@ -11,11 +11,17 @@ Convention ->   piece : see Consts
  */
 package main.java.ia;
 
+import java.util.ArrayList;
+import main.java.utils.Coord;
+import main.java.utils.Cube;
+
 public class PieceNode {
 
     int x, y, z, piece;
     boolean stuck, isVisited, isOnBoard;
     PieceNode pieceAbove;
+    ArrayList<Coord> PossibleDestinations;
+    ArrayList<Cube<Integer>> PossibleCubeDestinations; //for beetle & mosquito -> we need cube coords
 
     public PieceNode(StoringConfig config, int index) {
         this.x = config.getX(index);
@@ -26,6 +32,7 @@ public class PieceNode {
         this.isOnBoard = config.isOnBoard(index);
         this.isVisited = false;
         this.pieceAbove = null;
+        this.PossibleDestinations = new ArrayList<>();
     }
 
     public int getX() {
