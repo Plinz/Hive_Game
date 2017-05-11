@@ -25,6 +25,7 @@ public class Heuristics {
         return gameConfig.getNeighborsInArrayList(QueenNode).size();
     }
     
+    //public int getMobility
     /*
      *                  TESTERS
      */
