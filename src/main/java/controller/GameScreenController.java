@@ -194,7 +194,7 @@ public class GameScreenController implements Initializable {
             int team = inventory.get(i).getTeam();
             Button b = new Button();
             b.setMinSize(40, 40);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if(core.getCurrentState().getCurrentPlayer() == 0){
                 b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
@@ -223,7 +223,7 @@ public class GameScreenController implements Initializable {
             int team = inventory.get(i).getTeam();
             Button b = new Button();
             b.setMinSize(40, 40);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
             
             if(core.getCurrentState().getCurrentPlayer() == 1){
                 b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
