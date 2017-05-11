@@ -18,7 +18,7 @@ import main.java.utils.Cube;
 public class PieceNode {
 
     int x, y, z, piece;
-    boolean stuck, isVisited, isOnBoard;
+    boolean stuck, isVisited, isOnBoard, PossibleDestinationsCalculated;
     PieceNode pieceAbove;
     ArrayList<Coord> PossibleDestinations;
     ArrayList<Cube<Integer>> PossibleCubeDestinations; //for beetle & mosquito -> we need cube coords
