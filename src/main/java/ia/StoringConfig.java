@@ -145,7 +145,9 @@ public class StoringConfig {
         }
     }
 
-//////     getters
+    /*
+     *                  GETTERS
+     */
     public byte getX(int index) {
         return (byte) (config[index] >> 24);
     }
@@ -166,7 +168,9 @@ public class StoringConfig {
         return ((config[index] & 0x00000040) >> 6) == 1;
     }
 
-    //////    Setters
+    /*
+     *                  SETTERS
+     */
     public void setX(int index, byte newX) {
         config[index] &= 0x00FFFFFF;
         int toAdd = (int) (newX << 24);
@@ -225,11 +229,13 @@ public class StoringConfig {
         return result;
     }
 
-    ///////   Next move getter
+    /*
+     *                   NEXT MOVE
+     */
     public ArrayList<StoringConfig> getNextPossibleMoves() {
         ArrayList<StoringConfig> temp, result = new ArrayList<>();
 
-        GameConfig loopConf = new GameConfig3(this, turn);
+        GameConfig loopConf = new GameConfig(this, turn);
         ArrayList<Coord> possibleNewPositions = loopConf.getNewPossiblePositions();
         int start = loopConf.currentPlayer * loopConf.nbPiecesPerColor;
         int finish = start + loopConf.nbPiecesPerColor;
@@ -262,6 +268,7 @@ public class StoringConfig {
             } else {
                 //piece not on board -> add possible positions for it
                 int j = i % loopConf.nbPiecesPerColor;
+                //stupid condition -> can be refactored
                 if (((j == Consts.SPIDER2) && (!loopConf.getNode(Consts.SPIDER1).isOnBoard))
                         || ((j == Consts.GRASSHOPPER2) && (!loopConf.getNode(Consts.GRASSHOPPER1).isOnBoard))
                         || ((j == Consts.GRASSHOPPER3) && (!loopConf.getNode(Consts.GRASSHOPPER2).isOnBoard))
