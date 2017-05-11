@@ -53,6 +53,7 @@ public class GameScreenController implements Initializable {
     private Main main;
     private Core core;
     private int pieceToChoose;
+    private CoordGene<Double> lastCoord;
     private CoordGene<Integer> pieceToMove;
     private Highlighter highlighted;
     TraducteurBoard t;
@@ -86,7 +87,8 @@ public class GameScreenController implements Initializable {
     public void initGame(Main mainApp, Core c){
         setMainApp(mainApp);
         setCore(c);
-        this.pieceToChoose = -1;
+        pieceToChoose = -1;
+        lastCoord = new CoordGene<Double>(0.0, 0.0);
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         
@@ -105,10 +107,9 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(MouseEvent m) {
-                CoordGene<Double> coordPix = new CoordGene<>(m.getX(), m.getY());
-                CoordGene<Double> coordAx = t.pixelToAxial(coordPix);
-                int i = coordAx.getX().intValue();
-                int j = coordAx.getY().intValue();
+                lastCoord = t.pixelToAxial(new CoordGene<>(m.getX(), m.getY()));
+                int i = lastCoord.getX().intValue();
+                int j = lastCoord.getY().intValue();
 
                 if (m.getButton() == MouseButton.PRIMARY) {
                     if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
@@ -153,11 +154,10 @@ public class GameScreenController implements Initializable {
         
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent m) {
-                                    CoordGene<Double> coordPix = new CoordGene<>(m.getX(), m.getY());
-                CoordGene<Double> coordAx = t.pixelToAxial(coordPix);
+                CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<>(m.getX(), m.getY()));
                 int i = coordAx.getX().intValue();
                 int j = coordAx.getY().intValue();
-                    t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() + i,t.getMoveOrigin().getY() + j));
+                    t.setMoveOrigin(new CoordGene<Double>(t.getMoveOrigin().getX() + (coordAx.getX() - lastCoord.getX()),t.getMoveOrigin().getY() + (coordAx.getY() - lastCoord.getY())));
                 }
      
         });
