@@ -8,6 +8,16 @@ and open the template in the editor.
     Author     : gontardb
 */
 
+.backgroundImage{
+    
+    -fx-background-image: url("/background.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
 .buttonLaunchGame{
     
     -fx-background-image: url("/launchGame.png");

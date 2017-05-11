@@ -46,7 +46,7 @@ public class RulesScreenController implements Initializable {
     }
     
    public void handleGoalGame(){
-       imageTitleRule.setImage(new Image("goalGame.png"));
+       imageTitleRule.setImage(new Image("/goalGame.png"));
        imageRule.setImage(new Image("game.png"));
        textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }

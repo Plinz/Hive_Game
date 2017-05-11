@@ -1,10 +1,8 @@
 package main.java.model;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.utils.Consts;
@@ -60,8 +58,8 @@ public class Core implements Serializable {
 			return true;
 		if (isPlayerStuck())
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		if (this.mode == Consts.PVAI && this.currentState.getCurrentPlayer() == 1)
-			return this.ai.getNextMove(currentState).play();
+		//if (this.mode == Consts.PVAI && this.currentState.getCurrentPlayer() == 1)
+		//	return this.ai.getNextMove(currentState).play();
 		return false;
 	}
 
