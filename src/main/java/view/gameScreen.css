@@ -8,7 +8,7 @@
 }
 
 .buttonUndo{
-    -fx-background-image: url("/undo.png");
+    -fx-background-image: url("/main/resources/img/misc/undo.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -17,7 +17,7 @@
 }
 
 .buttonRedo{
-    -fx-background-image: url("/redo.png");
+    -fx-background-image: url("/main/resources/img/misc/redo.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -26,7 +26,7 @@
 }
 
 .buttonLamp{
-    -fx-background-image: url("/lamp.png");
+    -fx-background-image: url("/main/resources/img/misc/lamp.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -35,7 +35,7 @@
 }
 
 .buttonGear{
-    -fx-background-image: url("/gear.png");
+    -fx-background-image: url("/main/resources/img/misc/gear.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;

@@ -111,7 +111,7 @@ public class GameScreenController implements Initializable {
                 if (m.getButton() == MouseButton.PRIMARY) {
                     if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
                         CoordGene<Integer> coord = new CoordGene<>(i, j);
-                        if (pieceToMove != null &&  core.getCurrentState().getBoard().getTile(pieceToMove).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(pieceToMove), core.getCurrentState().getBoard()).contains(coord)/*&& core.getDestination().contains(coord)*/) {
+                        if (pieceToMove != null &&  core.getPossibleMovement(pieceToMove).contains(coord)) {
                             if(core.movePiece(pieceToMove, coord)){
                                 handleEndGame();
                             }
@@ -119,7 +119,7 @@ public class GameScreenController implements Initializable {
                             initButtonByInventory();
                             highlighted.setListTohighlight(null);
                             
-                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null && core.checkQueenRule()/* A commenter si nécessaire */) {
+                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
                             if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
                                 pieceToMove = coord;
                                 highlighted.setListTohighlight(core.getPossibleMovement(coord));
