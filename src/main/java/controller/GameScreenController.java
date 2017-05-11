@@ -150,6 +150,20 @@ public class GameScreenController implements Initializable {
             }
 
         });
+        
+        gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
+                public void handle(MouseEvent m) {
+                                    CoordGene<Double> coordPix = new CoordGene<>(m.getX(), m.getY());
+                CoordGene<Double> coordAx = t.pixelToAxial(coordPix);
+                int i = coordAx.getX().intValue();
+                int j = coordAx.getY().intValue();
+                    t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() + i,t.getMoveOrigin().getY() + j));
+                }
+     
+        });
+        
+        
+        
     }
     public void handleNewGame(){
         Core c = new Core(this.core.getMode(),Consts.MEDIUM);
