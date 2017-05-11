@@ -202,7 +202,7 @@ public class StoringConfig {
     }
 
     public void setIsOnBoard(int index, boolean newIsVisited) {
-        config[index] &= 0xFFFD;
+        config[index] &= 0xFFFFFFD;
         int toAdd;
         if (newIsVisited) {
             toAdd = 1;
