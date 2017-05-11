@@ -42,3 +42,19 @@
     -fx-background-radius: 0px, 0px, 0px, 0px;
     -fx-background-color: transparent;
 }
+
+#westArrow{
+    -fx-background-image: url("/westarrow.png");
+}
+
+#eastArrow{
+    -fx-background-image: url("/eastarrow.png");
+}
+
+#northArrow{
+    -fx-background-image: url("/northarrow.png");
+}
+
+#southArrow{
+    -fx-background-image: url("/southarrow.png");
+}
