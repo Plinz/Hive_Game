@@ -8,9 +8,19 @@ and open the template in the editor.
     Author     : gontardb
 */
 
+.backgroundImage{
+    
+    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
 .buttonLaunchGame{
     
-    -fx-background-image: url("/launchGame.png");
+    -fx-background-image: url("/main/resources/img/misc/launchGame.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -20,7 +30,7 @@ and open the template in the editor.
 
 .buttonLaunchGame:hover{
     
-    -fx-background-image: url("/launchGame_Hover.png");
+    -fx-background-image: url("/main/resources/img/misc/launchGame_Hover.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -30,7 +40,7 @@ and open the template in the editor.
 
 .buttonMenu{
     
-    -fx-background-image: url("/mainMenu.png");
+    -fx-background-image: url("/main/resources/img/misc/mainMenu.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -40,7 +50,7 @@ and open the template in the editor.
 
 .buttonMenu:hover{
     
-    -fx-background-image: url("/mainMenu_Hover.png");
+    -fx-background-image: url("/main/resources/img/misc/mainMenu_Hover.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;

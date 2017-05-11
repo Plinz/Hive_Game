@@ -36,6 +36,8 @@ public class State implements Serializable {
     }
 
     public void nextTurn() {
+		currentPlayer = 1 - currentPlayer;
+		board.clearPossibleMovement();
         this.turn++;
     }
 
@@ -58,6 +60,11 @@ public class State implements Serializable {
     public int getCurrentPlayer() {
         return currentPlayer;
     }
+    
+    public Player getCurrentPlayerObject() {
+        return players[currentPlayer];
+    }
+
 
     public void setCurrentPlayer(int currentPlayer) {
         this.currentPlayer = currentPlayer;

@@ -53,7 +53,7 @@ public class InterfaceJavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         /*Initialisation du core et tests basiques*/
-        core = new Core(Consts.PVP, Consts.EASY);
+        core = new Core(Consts.PVAI, Consts.EASY);
         pieceToChoose = new Integer(-1);
 
         BorderPane gameBorderPane = new BorderPane();
@@ -104,7 +104,7 @@ public class InterfaceJavaFX extends Application {
                 if (m.getButton() == MouseButton.PRIMARY) {
                     if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
                         CoordGene<Integer> coord = new CoordGene<>(i, j);
-                        if (pieceToMove != null &&  core.getCurrentState().getBoard().getTile(pieceToMove).getPiece().getPossibleMovement(core.getCurrentState().getBoard().getTile(pieceToMove), core.getCurrentState().getBoard()).contains(coord)/*&& core.getDestination().contains(coord)*/) {
+                        if (pieceToMove != null && core.getPossibleMovement(pieceToMove).contains(coord)) {
                             //System.out.println("Déplacement de la piece choisie");
                             core.movePiece(pieceToMove, coord);
                             pieceToMove = null;
@@ -114,7 +114,7 @@ public class InterfaceJavaFX extends Application {
                             initPiecesToAdd();
                             highlighted.setListTohighlight(null);
                             
-                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null && core.checkQueenRule()/* A commenter si nécessaire */) {
+                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
                             if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
                                 pieceToMove = coord;
                                 highlighted.setListTohighlight(core.getPossibleMovement(coord));
@@ -165,7 +165,7 @@ public class InterfaceJavaFX extends Application {
             int team = inventory.get(i).getTeam();
             Button b = new Button();
             b.setMinSize(30, 30);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(name + team + ".png")), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             b.setOnMousePressed(new ControllerButton(this,highlighted,core, i));
             list.add(b);

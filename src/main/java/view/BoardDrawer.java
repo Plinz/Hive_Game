@@ -5,21 +5,15 @@
  */
 package main.java.view;
 
-import java.awt.Polygon;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import main.java.model.Board;
-import main.java.model.Core;
 import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.model.Visitor;
-import main.java.utils.Consts;
-import main.java.utils.Coord;
 import main.java.utils.CoordGene;
 
 
@@ -64,7 +58,7 @@ public class BoardDrawer extends Visitor {
               
                 Piece piece = t.getPiece(); 
                 if(piece !=null){
-                String name = piece.getName()+piece.getTeam()+".png";
+                String name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();
                 gc.setFill(new ImagePattern(new Image(name)));
                 gc.setStroke(Color.RED);
                 gc.strokePolygon(x, y, 6);

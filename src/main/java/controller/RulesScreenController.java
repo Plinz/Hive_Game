@@ -46,50 +46,50 @@ public class RulesScreenController implements Initializable {
     }
     
    public void handleGoalGame(){
-       imageTitleRule.setImage(new Image("goalGame.png"));
-       imageRule.setImage(new Image("game.png"));
+       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/goalGame.png"));
+       imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
        textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handleGamePlay(){
-      imageTitleRule.setImage(new Image("gamePlay.png"));
-      imageRule.setImage(new Image("game.png"));
+      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/gamePlay.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
       textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handlePiecePositionings(){
-      imageTitleRule.setImage(new Image("PiecePositionings.png"));
-      imageRule.setImage(new Image("game.png"));
+      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/PiecePositionings.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
       textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handleMoveQueen(){
-      imageTitleRule.setImage(new Image("queen.png"));
-      imageRule.setImage(new Image("game.png"));
+      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/queen.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
       textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handleMoveGrassHopper(){
-      imageTitleRule.setImage(new Image("grassHopper.png"));
-      imageRule.setImage(new Image("game.png"));
+      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/grassHopper.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
       textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handleMoveBeetle(){
-     imageTitleRule.setImage(new Image("beetle.png"));
-     imageRule.setImage(new Image("game.png"));
+     imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/beetle.png"));
+     imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
      textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handleMoveSpider(){
-      imageTitleRule.setImage(new Image("spider.png"));
-      imageRule.setImage(new Image("game.png"));
+      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/spider.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
       textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
    public void handleMoveAnt(){
-      imageTitleRule.setImage(new Image("ant.png"));
-      imageRule.setImage(new Image("game.png"));
+      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/ant.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
       textRule.setText("pohfvljhqb vhzb vlq cljhqbvoHBV Q:,N JEHRBVO HLJ CJHREFBV  FLJH BVPAEHB LQND QOHRB");
    }
    
