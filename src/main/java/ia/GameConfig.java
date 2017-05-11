@@ -5,6 +5,9 @@ import main.java.utils.Consts;
 import main.java.utils.Coord;
 import main.java.utils.Cube;
 import static java.lang.Math.max;
+import static java.lang.Math.max;
+import static java.lang.Math.max;
+import static java.lang.Math.max;
 
 /*
 this class is used to run movements & heuristics algorithms on in an optimal way
@@ -37,7 +40,7 @@ public class GameConfig {
         //head insertion
         for (i = 0; i < stconf.config.length; i++) {
             node = new PieceNode(stconf, i);
-            node.next = this.array[stconf.getX(i)];
+            node.pieceAbove = this.array[stconf.getX(i)];
             this.array[stconf.getX(i)] = node;
         }
     }
@@ -62,7 +65,7 @@ public class GameConfig {
     //a tile.
     public boolean isSameColor(PieceNode node1, PieceNode node2) {
         PieceNode node1Visible = array[node1.getX()];
-        if (node1.stuck) {
+        if (node1.isStuck) {
             while ((node1Visible != null) && ((node1Visible.getY() != node1.getY()) || (node1Visible.isStuck()))) {
                 node1Visible = node1Visible.getNext();
             }
@@ -71,7 +74,7 @@ public class GameConfig {
         }
 
         PieceNode node2Visible = array[node2.getX()];
-        if (node2.stuck) {
+        if (node2.isStuck) {
             while ((node2Visible != null) && ((node2Visible.getY() != node2.getY()) || (node2Visible.isStuck()))) {
                 node2Visible = node2Visible.getNext();
             }
@@ -581,7 +584,7 @@ public class GameConfig {
                 if (!current_node.isVisited) {
                     return false;
                 }
-                current_node = current_node.next;
+                current_node = current_node.pieceAbove;
             }
         }
         return true;
