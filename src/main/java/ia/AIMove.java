@@ -5,7 +5,10 @@ If AddNewTile = true -> uses only piece & destination
  */
 package main.java.ia;
 
+import java.util.List;
 import main.java.model.Core;
+import main.java.model.Piece;
+import main.java.model.State;
 import main.java.utils.CoordGene;
 
 public class AIMove {
@@ -14,36 +17,28 @@ public class AIMove {
     CoordGene<Integer> source, destination;
     int piece;
     Core core;
-
-    public AIMove(int piece, CoordGene<Integer> destination) {
-        this.piece = piece;
-        this.destination = destination;
-    }
-
-    public AIMove(CoordGene<Integer> source, CoordGene<Integer> destination) {
-        this.source = source;
-        this.destination = destination;
-    }
+    State state;
 
     //Constructor -> determines the move from the diff between the 2 configs
-    public AIMove(StoringConfig origin, StoringConfig arrival) {
+    public AIMove(StoringConfig origin, StoringConfig arrival, State state) {
+        this.state = state;
         int piece;
         CoordGene<Integer> source, destination;
-        int piecesOnBoardBefore = 0, piecesOnBoardAfter = 0;
+        int nbPiecesOnBoardBefore = 0, nbPiecesOnBoardAfter = 0;
         //couting pieces on board before and after
         for (int i = 0; i < origin.config.length; i++) {
             if (origin.isOnBoard(i)) {
-                piecesOnBoardBefore++;
+                nbPiecesOnBoardBefore++;
             }
             if (arrival.isOnBoard(i)) {
-                piecesOnBoardAfter++;
+                nbPiecesOnBoardAfter++;
             }
-        }
-
-        if (piecesOnBoardAfter == piecesOnBoardBefore) {
+        }            
+        //different number of tiles before & after -> means  a new tile was added
+        if (nbPiecesOnBoardAfter != nbPiecesOnBoardBefore) {
             for (int i = 0; i < origin.config.length; i++) {
                 if (!origin.isOnBoard(i) && arrival.isOnBoard(i)) {
-                    this.piece = i;
+                    this.piece = getPositionInInventory(i);
                     Integer destX, destY;
                     destX = (int) arrival.getX(i);
                     destY = (int) arrival.getY(i);
@@ -53,6 +48,7 @@ public class AIMove {
                 }
             }
         } else {
+            //same number of tiles on board before & after -> means one tile moved
             for (int i = 0; i < origin.config.length; i++) {
                 if ((origin.getX(i) != arrival.getX(i)) || (origin.getY(i) != arrival.getY(i))) {
                     Integer sourceX = (int) origin.getX(i);
@@ -74,5 +70,17 @@ public class AIMove {
         } else {
             core.movePiece(source, destination);
         }
+    }
+
+    //translates the pieceID into the index of the piece in the player's inventory
+    public int getPositionInInventory(int pieceId) {
+        List<Piece> inventory = state.getPlayers()[state.getCurrentPlayer()].getInventory();
+        for (int i = 0; i < inventory.size(); i++) {
+            if (inventory.get(i).getId() == pieceId) {
+                return i;
+            }
+        }
+        System.err.println("Erreur : impossible de trouver la piece " + pieceId + " dans l'inventaire du joueur " + state.getCurrentPlayer());
+        return 0;
     }
 }
