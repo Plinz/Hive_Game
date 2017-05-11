@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import main.java.ia.AIMove;
-import main.java.ia.RandomAI;
 
+import main.java.ia.AI;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
@@ -16,19 +15,22 @@ public class Core implements Serializable {
 	private static final long serialVersionUID = 4165722506890173058L;
 	private History history;
 	private State currentState;
+	private AI ai;
 	private int mode;
 	private int status;
 
-	public Core(int mode) {
+	public Core(int mode, int difficulty) {
 		this.history = new History();
 		this.currentState = new State();
+		this.ai = AIFactory(difficulty);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 	}
 
-	public Core(History history, State currentState, int mode, int status) {
+	public Core(History history, State currentState, int mode, int difficulty, int status) {
 		this.history = history;
 		this.currentState = currentState;
+		this.ai = AIFactory(difficulty);
 		this.mode = mode;
 		this.status = status;
 	}
@@ -51,6 +53,8 @@ public class Core implements Serializable {
 		this.currentState.getBoard().clearPossibleMovement();
 		if (isPlayerStuck())
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
+		else if (this.mode == Consts.PVIA)
+			playIA();
 		return isGameFinish();
 	}
 
@@ -134,6 +138,10 @@ public class Core implements Serializable {
 		return pos;
 	}
 
+
+	private void playIA() {
+	}
+	
 	public History getHistory() {
 		return history;
 	}
@@ -148,6 +156,14 @@ public class Core implements Serializable {
 
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
+	}
+
+	public AI getAi() {
+		return ai;
+	}
+
+	public void setAi(AI ai) {
+		this.ai = ai;
 	}
 
 	public int getMode() {

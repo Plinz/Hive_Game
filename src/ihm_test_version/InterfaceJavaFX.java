@@ -7,6 +7,7 @@ package ihm_test_version;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,9 +28,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import main.java.controller.ControllerButton;
-import main.java.model.*;
+import main.java.model.Core;
+import main.java.model.Piece;
 import main.java.utils.Consts;
-import main.java.utils.Coord;
 import main.java.utils.CoordGene;
 import main.java.view.Highlighter;
 import main.java.view.RefreshJavaFX;
@@ -52,7 +53,7 @@ public class InterfaceJavaFX extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         /*Initialisation du core et tests basiques*/
-        core = new Core(2);
+        core = new Core(Consts.PVP, Consts.EASY);
         pieceToChoose = new Integer(-1);
 
         BorderPane gameBorderPane = new BorderPane();

@@ -6,17 +6,14 @@
 package main.java.view;
 
 
-import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.utils.Consts;
@@ -44,7 +41,7 @@ public class NewGameScreenController implements Initializable {
     
     @FXML
     public void handleLaunchGameClick(){
-        Core core = new Core(2);
+        Core core = new Core(Consts.PVP, Consts.EASY);
         /*
         switch(gameChoice.getText()){
             case Consts.PVP_STRING :

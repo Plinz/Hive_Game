@@ -48,6 +48,11 @@ public class Consts {
     public static final int PVP = 0;
     public static final int PVIA = 1;
     
+    //MACRO AI DIFFICULTY
+    public static final int EASY = 0;
+    public static final int MEDIUM = 1;    
+    public static final int HARD = 2;
+
     //MACRO TEXTE MENU
     public static final String PVP_STRING = "Joueur contre joueur";
     public static final String PVIA_STRING = "Joueur contre ordinateur";
