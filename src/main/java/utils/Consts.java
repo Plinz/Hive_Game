@@ -48,6 +48,11 @@ public class Consts {
     public static final int PVP = 0;
     public static final int PVAI = 1;
     
+    //MACRO PLAYER
+    public static final int PLAYER1 = 0;
+    public static final int PLAYER2 = 1;
+    public static final int AI_PLAYER = 1;
+    
     //MACRO AI DIFFICULTY
     public static final int EASY = 0;
     public static final int MEDIUM = 1;    

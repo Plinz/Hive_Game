@@ -58,7 +58,7 @@ public class BoardDrawer extends Visitor {
               
                 Piece piece = t.getPiece(); 
                 if(piece !=null){
-                String name = piece.getName()+piece.getTeam()+".png";
+                String name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();
                 gc.setFill(new ImagePattern(new Image(name)));
                 gc.setStroke(Color.RED);
                 gc.strokePolygon(x, y, 6);

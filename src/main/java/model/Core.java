@@ -58,7 +58,7 @@ public class Core implements Serializable {
 			return true;
 		if (isPlayerStuck())
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		if (this.mode == Consts.PVAI && this.currentState.getCurrentPlayer() == 1)
+		if (this.mode == Consts.PVAI && this.currentState.getCurrentPlayer() == Consts.AI_PLAYER)
 			return this.ai.getNextMove(currentState).play();
 		return false;
 	}
