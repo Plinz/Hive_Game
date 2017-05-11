@@ -165,7 +165,6 @@ public class InterfaceJavaFX extends Application {
             int team = inventory.get(i).getTeam();
             Button b = new Button();
             b.setMinSize(30, 30);
-            System.out.println(getClass().getClassLoader().getResource("."));
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             b.setOnMousePressed(new ControllerButton(this,highlighted,core, i));

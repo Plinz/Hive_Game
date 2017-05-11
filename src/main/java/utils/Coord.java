@@ -3,6 +3,7 @@ package main.java.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class Coord {
 
     private int x;
