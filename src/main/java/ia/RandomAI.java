@@ -18,6 +18,7 @@ public class RandomAI extends AI {
         this.OriginalConfig = new StoringConfig(state);
     }
 
+    @Override
     public AIMove getNextMove(State state) {
         this.state = state;
         this.OriginalConfig = new StoringConfig(state);
