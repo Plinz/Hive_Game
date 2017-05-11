@@ -46,7 +46,7 @@ public class Consts {
     
     //MACRO MODE DE DIFFICULTE IA ET PLAYER
     public static final int PVP = 0;
-    public static final int PVIA = 1;
+    public static final int PVAI = 1;
     
     //MACRO AI DIFFICULTY
     public static final int EASY = 0;

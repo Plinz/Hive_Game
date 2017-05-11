@@ -64,12 +64,11 @@ public class AIMove {
         }
     }
 
-    public void play() {
-        if (AddNewTile) {
-            core.addPiece(piece, destination);
-        } else {
-            core.movePiece(source, destination);
-        }
+    public boolean play() {
+        if (AddNewTile)
+            return core.addPiece(piece, destination);
+        else
+            return core.movePiece(source, destination);
     }
 
     //translates the pieceID into the index of the piece in the player's inventory

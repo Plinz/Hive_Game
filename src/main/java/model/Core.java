@@ -52,11 +52,17 @@ public class Core implements Serializable {
 		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
 		this.currentState.nextTurn();
 		this.currentState.getBoard().clearPossibleMovement();
+		return playNextTurn();
+	}
+
+	private boolean playNextTurn() {
+		if (isGameFinish())
+			return true;
 		if (isPlayerStuck())
 			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		else if (this.mode == Consts.PVIA)
-			playIA();
-		return isGameFinish();
+		if (this.mode == Consts.PVAI && this.currentState.getCurrentPlayer() == 1)
+			return this.ai.getNextMove(currentState).play();
+		return false;
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
@@ -65,9 +71,7 @@ public class Core implements Serializable {
 		this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
 		this.currentState.nextTurn();
 		this.currentState.getBoard().clearPossibleMovement();
-		if (isPlayerStuck())
-			this.currentState.setCurrentPlayer(1 - this.currentState.getCurrentPlayer());
-		return isGameFinish();
+		return playNextTurn();
 	}
 
 	public boolean checkQueenRule() {
@@ -137,10 +141,6 @@ public class Core implements Serializable {
 						pos.add(current.getCoord());
 		}
 		return pos;
-	}
-
-
-	private void playIA() {
 	}
 	
 	public History getHistory() {
