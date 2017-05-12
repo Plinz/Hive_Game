@@ -7,6 +7,7 @@ import main.java.ia.GameConfig;
 import main.java.ia.PieceNode;
 import main.java.ia.StoringConfig;
 import static main.java.utils.Consts.*;
+import main.java.utils.Coord;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -100,16 +101,26 @@ public class BugsDisplacementsTests
         }*/
         
         //assertTrue(gameconf.getPossibleQueenDestinations(queenNode).isEmpty());
-        assertFalse(gameconf.RespectsOneHive(queenNode));
-        //List<String> actual = Arrays.asList("fee", "fi", "foe");
         
+        assertFalse(gameconf.RespectsOneHive(queenNode));
+        
+        /*StoringConfig newSTC = new StoringConfig(22);
+        newSTC.setX(QUEEN, (byte) 10);
+        newSTC.setY(QUEEN, (byte) 12);
+        newSTC.setIsOnBoard(QUEEN, true);
+        PieceNode newN = new PieceNode(newSTC, 0);
+        GameConfig newGC = new GameConfig(newSTC, 0);
+        Coord coorddd = new Coord(10, 12);
+        PieceNode testN = newGC.getNode(coorddd);
+        
+        assertEquals(newN, testN);*/
     }
     
-    /*@Test
+    @Test
     public void testQueenCannotPassGates()
-    {*/
+    {
         /*************** initializing test game ***************/
-        /*------------REAL GAME TO TEST WITH--------------
+
         //white beetle 1 in (6,4)
         stconf.setX(BEETLE1, (byte) 6);
         stconf.setY(BEETLE1, (byte) 4);
@@ -139,10 +150,10 @@ public class BugsDisplacementsTests
         stconf.setX(SPIDER2 + 14, (byte) 4);
         stconf.setY(SPIDER2 + 14, (byte) 4);
         stconf.setIsOnBoard(SPIDER2 + 14, true);
-        -------------------------------------------------*/
+
         
         //white queen in (5,3)
-        /*stconf.setX(QUEEN, (byte) 5);
+        stconf.setX(QUEEN, (byte) 5);
         stconf.setY(QUEEN, (byte) 3);
         stconf.setIsOnBoard(QUEEN, true);
         
@@ -154,13 +165,13 @@ public class BugsDisplacementsTests
         //white spider in (6,3)
         stconf.setX(SPIDER1, (byte) 6);
         stconf.setY(SPIDER1, (byte) 3);
-        stconf.setIsOnBoard(SPIDER1, true);*/
+        stconf.setIsOnBoard(SPIDER1, true);
         /*************** game initialized ***************/
         
         /*************** creating output StoringConfigs ***************/
         
-        /* output config n°1 : white queen moves to (6,2) */
-        /*this.outputconf1 = new StoringConfig(this.stconf);
+        // output config n°1 : white queen moves to (6,2)
+        this.outputconf1 = new StoringConfig(this.stconf);
         outputconf1.setX(QUEEN, (byte) 6);
         outputconf1.setY(QUEEN, (byte) 2);
         
@@ -168,22 +179,23 @@ public class BugsDisplacementsTests
         //output config n°2 : white queen moves to (4,3)
         this.outputconf2 = new StoringConfig(this.stconf);
         outputconf2.setX(QUEEN, (byte) 4);
-        outputconf2.setY(QUEEN, (byte) 3);*/
+        outputconf2.setY(QUEEN, (byte) 3);
         
         /*************** output StoringConfigs created ***************/
             
-        //PieceNode queenNode = new PieceNode(stconf, 0);
-        //System.out.print(queenNode.toString());
-        //GameConfig gameconf = new GameConfig(stconf, 7);
-//        System.out.println(stconf.toString());
-        //List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
+        PieceNode queenNode = new PieceNode(stconf, 0);
+        System.out.print(queenNode.toString());
+        GameConfig gameconf = new GameConfig(stconf, 7);
+        System.out.println(stconf.toString());
+        List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
         /*for (int i = 0; i < gameconf.getPossibleQueenDestinations(queenNode).size(); i++ )
         {
             System.out.println("CONF"+ (i+1));
             System.out.println(">>"+gameconf.getPossibleQueenDestinations(queenNode).get(i).toString());
         }*/
         
-        //assertTrue(gameconf.RespectsOneHive(queenNode));
+        //temporary
+        assertTrue(gameconf.RespectsOneHive(queenNode));
         //assertEquals(gameconf.getPossibleQueenDestinations(queenNode), outputList);
         
         
@@ -221,7 +233,7 @@ public class BugsDisplacementsTests
         
         
         
-    //}
+    }
 
     /*@Test
     public void testKeepsPermanentContact()
