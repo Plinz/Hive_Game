@@ -76,6 +76,10 @@ public class Coord {
         return result;
     }
 
+    public boolean isValidCoord(){
+        return ((x>=0)&&(y>=0));
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Coord) {
