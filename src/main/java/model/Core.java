@@ -1,4 +1,5 @@
 package main.java.model;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,19 +16,19 @@ import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-@XmlRootElement(name="core")
+@XmlRootElement(name = "core")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Core {
 
-    @XmlElement(name="history")
+	@XmlElement(name = "history")
 	private History history;
-    @XmlElement(name="currentState")
+	@XmlElement(name = "currentState")
 	private State currentState;
-    @XmlTransient
+	@XmlTransient
 	private AI ai;
-    @XmlElement(name="mode")
+	@XmlElement(name = "mode")
 	private int mode;
-    @XmlTransient
+	@XmlTransient
 	private int status;
 
 	public Core(int mode, int difficulty) {
@@ -49,6 +50,19 @@ public class Core {
 	public boolean accept(BoardDrawer b) {
 		currentState.getBoard().accept(b);
 		return false;
+	}
+
+	public boolean isTile(CoordGene<Integer> coord) {
+		return currentState.getBoard().getTile(coord) != null;
+	}
+
+	public boolean isPiece(CoordGene<Integer> coord) {
+		return isTile(coord) && currentState.getBoard().getTile(coord).getPiece() != null;
+	}
+
+	public boolean isPieceOfCurrentPlayer(CoordGene<Integer> coord) {
+		return isTile(coord) && isPiece(coord) && currentState.getCurrentPlayerObject().getTeam() == currentState
+				.getBoard().getTile(coord).getPiece().getTeam();
 	}
 
 	public boolean addPiece(int piece, CoordGene<Integer> coord) {
@@ -139,9 +153,8 @@ public class Core {
 			for (List<List<Tile>> column : board.getBoard())
 				for (List<Tile> box : column)
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
-							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
-							&& !neighbors.stream()
-									.anyMatch(it -> it.getPiece().team != currentState.getCurrentPlayer()))
+							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty() && !neighbors
+									.stream().anyMatch(it -> it.getPiece().team != currentState.getCurrentPlayer()))
 						pos.add(current.getCoord());
 		}
 		return pos;
@@ -162,9 +175,10 @@ public class Core {
 		}
 		return false;
 	}
-	
-	public void save(String name){
-		if(name == null) name = generateSaveName();
+
+	public void save(String name) {
+		if (name == null)
+			name = generateSaveName();
 		Save.makeSave(name, this);
 	}
 

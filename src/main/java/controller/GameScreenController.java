@@ -36,6 +36,7 @@ import javafx.scene.text.Text;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.model.Piece;
+import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.Highlighter;
@@ -58,6 +59,7 @@ public class GameScreenController implements Initializable {
     private int pieceToChoose;
     private CoordGene<Double> lastCoord;
     private CoordGene<Integer> pieceToMove;
+    private List<CoordGene<Integer>> possibleMovement;
     private Highlighter highlighted;
     private TraducteurBoard t;
     private boolean freeze;
@@ -92,7 +94,6 @@ public class GameScreenController implements Initializable {
         setMainApp(mainApp);
         setCore(c);
         pieceToChoose = -1;
-        lastCoord = new CoordGene<Double>(0.0, 0.0);
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         freeze = false;
@@ -112,48 +113,33 @@ public class GameScreenController implements Initializable {
             public void handle(MouseEvent m) {
                 if(!freeze){
                 	CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
-                    int i = coordAx.getX().intValue();
-                    int j = coordAx.getY().intValue();
+                	CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                 	CoordGene<Double> origin = t.getMoveOrigin();
-                	lastCoord = (new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY()));
+                	lastCoord = new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY());
                     
                     if (m.getButton() == MouseButton.PRIMARY) {
-                        if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
-                            CoordGene<Integer> coord = new CoordGene<>(i, j);
-                            if (pieceToMove != null &&  core.getPossibleMovement(pieceToMove).contains(coord)) {
-                                if(core.movePiece(pieceToMove, coord)){
+                        if (core.isTile(coord)) {
+                            if (pieceToMove != null &&  possibleMovement.contains(coord)) {
+                                if(core.movePiece(pieceToMove, coord))
                                     handleEndGame();
-                                }
                                 else{
                                     resetPiece();
                                     initButtonByInventory();
                                     highlighted.setListTohighlight(null);
                                 }
-
-                            } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
-                                if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
+                            } else if (core.isPieceOfCurrentPlayer(coord)) {
                                     pieceToMove = coord;
-                                    highlighted.setListTohighlight(core.getPossibleMovement(coord));
+                                    possibleMovement = core.getPossibleMovement(coord);
+                                    highlighted.setListTohighlight(possibleMovement);
                                     pieceToChoose = -1;
-                                }
                             } else {
-
-                                if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord)) {
-                                    if(core.addPiece(pieceToChoose, coord)){
-                                        handleEndGame();
-                                    }
-                                    else {
-                                        resetPiece();
-                                        initButtonByInventory();
-                                        highlighted.setListTohighlight(null);
-                                    }
-                                } else {
-                                    resetPiece();
-                                    highlighted.setListTohighlight(null);
-                                }
+                                if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord) && core.addPiece(pieceToChoose, coord))
+                                	handleEndGame();
+                                resetPiece();
+                                initButtonByInventory();
+                                highlighted.setListTohighlight(possibleMovement = null);
                             }
                         } else {
-                            System.out.println("Pas cliquable  " + i + " " + j + " !  ");
                             resetPiece();
                             highlighted.setListTohighlight(null);
                         }
