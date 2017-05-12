@@ -291,6 +291,7 @@ public class StoringConfig {
                         StoringConfig newStoringConfig = new StoringConfig(this);
                         newStoringConfig.setX(i, (byte) coord.getX());
                         newStoringConfig.setY(i, (byte) coord.getY());
+                        newStoringConfig.setIsOnBoard(i, true);
                         result.add(newStoringConfig);
                     }
                 }

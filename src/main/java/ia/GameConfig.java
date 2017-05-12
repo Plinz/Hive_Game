@@ -547,13 +547,13 @@ public class GameConfig {
                         boolean canBeAdded = true;
                         for (int j = 0; j < 6; j++) {
                             currentNeighborCoord = neighborsOfNeighbor[j];
-                            System.out.println("LOLLOLL " + currentNeighborCoord);
+                            //System.out.println("LOLLOLL " + currentNeighborCoord);
                             if ((currentNeighborCoord.isValidCoord())&&(!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord)))) {
                                 canBeAdded = false;
                             }
                         }
                         if (canBeAdded) {
-                            result.add(currentNodeCoord);
+                            result.add(neighborsCoords[i]);
                         }
                     }
                 }
