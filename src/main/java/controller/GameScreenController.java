@@ -198,7 +198,19 @@ public class GameScreenController implements Initializable {
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX()-10,t.getMoveOrigin().getY()));
     }
     
+    public void handleUndoButton(){
+        core.previousState();
+        resetPiece();
+        highlighted.setListTohighlight(null);
+        initButtonByInventory();
+    }
     
+    public void handleRedoButton(){
+        core.nextState();
+        resetPiece();
+        highlighted.setListTohighlight(null);
+        initButtonByInventory();
+    }
     /*Fin des handlers */
     
     /*Méthodes d'initialisation */
