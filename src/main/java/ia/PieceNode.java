@@ -67,7 +67,8 @@ public class PieceNode {
         return this.pieceAbove;
     }
 
-    /*public String toString() {
+    @Override
+    public String toString() {
         String result = "Piece : " + piece + ";(x,y,z)=" + x + "," + y + "," + z + ".";
         if (isOnBoard) {
             result += "On board.";
@@ -77,10 +78,13 @@ public class PieceNode {
         if (isStuck()) {
             result += "Is stuck.";
         }
-        result += String.valueOf(this.isVisited());
+        if (isVisited())
+        {
+            result += "Is visited.";
+        }
         result += "\n";
         return result;
-    }*/
+    }
 
     public void setStuck(boolean stuck) {
         this.stuck = stuck;
