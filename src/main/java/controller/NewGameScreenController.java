@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
@@ -63,6 +62,26 @@ public class NewGameScreenController implements Initializable {
         core.getCurrentState().getPlayers()[0].setName(namePlayer1.getText());
         core.getCurrentState().getPlayers()[1].setName(namePlayer2.getText());
         main.showGameScreen(core);
+        
+    }
+    
+    @FXML
+    public void handleChoiceButtonPVP(){
+        labelPlayer2.setVisible(true);
+        namePlayer2.setVisible(true);
+        easyButton.setVisible(false);
+        normalButton.setVisible(false);
+        hardButton.setVisible(false);
+        
+    }
+    
+    @FXML
+    public void handleChoiceButtonPVAI(){
+        labelPlayer2.setVisible(false);
+        namePlayer2.setVisible(false);
+        easyButton.setVisible(true);
+        normalButton.setVisible(true);
+        hardButton.setVisible(true);
         
     }
     

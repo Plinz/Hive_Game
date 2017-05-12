@@ -20,9 +20,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -56,7 +61,8 @@ public class GameScreenController implements Initializable {
     private CoordGene<Double> lastCoord;
     private CoordGene<Integer> pieceToMove;
     private Highlighter highlighted;
-    TraducteurBoard t;
+    private TraducteurBoard t;
+    private boolean freeze;
 
     
     public void setMainApp(Main mainApp) {
@@ -91,6 +97,7 @@ public class GameScreenController implements Initializable {
         lastCoord = new CoordGene<Double>(0.0, 0.0);
         highlighted = new Highlighter();
         t = new TraducteurBoard();
+        freeze = false;
         
         initButtonByInventory();
         initGameCanvas();
@@ -104,52 +111,56 @@ public class GameScreenController implements Initializable {
         
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             
-
             @Override
             public void handle(MouseEvent m) {
-                lastCoord = t.pixelToAxial(new CoordGene<>(m.getX(), m.getY()));
-                int i = lastCoord.getX().intValue();
-                int j = lastCoord.getY().intValue();
+                if(!freeze){
+                    lastCoord = t.pixelToAxial(new CoordGene<>(m.getX(), m.getY()));
+                    int i = lastCoord.getX().intValue();
+                    int j = lastCoord.getY().intValue();
 
-                if (m.getButton() == MouseButton.PRIMARY) {
-                    if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
-                        CoordGene<Integer> coord = new CoordGene<>(i, j);
-                        if (pieceToMove != null &&  core.getPossibleMovement(pieceToMove).contains(coord)) {
-                            if(core.movePiece(pieceToMove, coord)){
-                                handleEndGame();
-                            }
-                            resetPiece();
-                            initButtonByInventory();
-                            highlighted.setListTohighlight(null);
-                            
-                        } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
-                            if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
-                                pieceToMove = coord;
-                                highlighted.setListTohighlight(core.getPossibleMovement(coord));
-                                pieceToChoose = -1;
-                            }
-                        } else {
-                            System.out.println("Cliquable mais pas de pieces  " + i + " " + j + " !  ");
-                            if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord)) {
-                                if(core.addPiece(pieceToChoose, coord)){
+                    if (m.getButton() == MouseButton.PRIMARY) {
+                        if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
+                            CoordGene<Integer> coord = new CoordGene<>(i, j);
+                            if (pieceToMove != null &&  core.getPossibleMovement(pieceToMove).contains(coord)) {
+                                if(core.movePiece(pieceToMove, coord)){
                                     handleEndGame();
                                 }
-                                resetPiece();
-                                initButtonByInventory();
-                                highlighted.setListTohighlight(null);
+                                else{
+                                    resetPiece();
+                                    initButtonByInventory();
+                                    highlighted.setListTohighlight(null);
+                                }
+
+                            } else if (core.getCurrentState().getBoard().getTile(coord).getPiece() != null) {
+                                if (core.getCurrentState().getBoard().getTile(coord).getPiece().getTeam() == core.getCurrentState().getCurrentPlayer()) {
+                                    pieceToMove = coord;
+                                    highlighted.setListTohighlight(core.getPossibleMovement(coord));
+                                    pieceToChoose = -1;
+                                }
                             } else {
-                                resetPiece();
-                                highlighted.setListTohighlight(null);
+
+                                if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord)) {
+                                    if(core.addPiece(pieceToChoose, coord)){
+                                        handleEndGame();
+                                    }
+                                    else {
+                                        resetPiece();
+                                        initButtonByInventory();
+                                        highlighted.setListTohighlight(null);
+                                    }
+                                } else {
+                                    resetPiece();
+                                    highlighted.setListTohighlight(null);
+                                }
                             }
+                        } else {
+                            System.out.println("Pas cliquable  " + i + " " + j + " !  ");
+                            resetPiece();
+                            highlighted.setListTohighlight(null);
                         }
-                    } else {
-                        System.out.println("Pas cliquable  " + i + " " + j + " !  ");
-                        resetPiece();
-                        highlighted.setListTohighlight(null);
                     }
                 }
             }
-
         });
         
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
@@ -162,7 +173,18 @@ public class GameScreenController implements Initializable {
      
         });
         
-        
+        gameCanvas.setOnScroll(new EventHandler<ScrollEvent>(){
+
+            @Override
+            public void handle(ScrollEvent event) {
+                if(event.getDeltaY() > 0){
+                     t.setSizeHex(t.getSizeHex()*1.1);
+                }
+                else{
+                    t.setSizeHex(t.getSizeHex()*0.9);
+                }
+            }
+        });
         
     }
     public void handleNewGame(){
@@ -202,14 +224,14 @@ public class GameScreenController implements Initializable {
             //inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.EMPTY)));
             inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
             inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-            namePlayer1.setText(core.getCurrentState().getPlayers()[core.getCurrentState().getCurrentPlayer()].getName() + " à vous de jouer !");
-            namePlayer2.setText(core.getCurrentState().getPlayers()[1-core.getCurrentState().getCurrentPlayer()].getName() + " attends !");
+            namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à vous de jouer !");
+            namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " attend !");
         }
         else{
             inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
             inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-            namePlayer1.setText(core.getCurrentState().getPlayers()[core.getCurrentState().getCurrentPlayer()].getName() + " attends !");
-            namePlayer2.setText(core.getCurrentState().getPlayers()[1-core.getCurrentState().getCurrentPlayer()].getName() + " à vous de jouer !");
+            namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " attend !");
+            namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à vous de jouer !");
         } 
         initPlayer1Button();
         initPlayer2Button();
@@ -227,7 +249,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if(core.getCurrentState().getCurrentPlayer() == 0){
+            if(core.getCurrentState().getCurrentPlayer() == 0 && !freeze){
                 b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
             }
             if(i%4 == 0){
@@ -256,8 +278,15 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
             
-            if(core.getCurrentState().getCurrentPlayer() == 1){
+            if(core.getCurrentState().getCurrentPlayer() == 1 && !freeze){
                 b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
+                b.setOnMouseEntered(new EventHandler<MouseEvent>(){
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        b.setEffect(new InnerShadow(10, Color.WHITE));
+                    }                  
+                });
             }
             if(i%4 == 0){
                 col = 0;
@@ -279,16 +308,25 @@ public class GameScreenController implements Initializable {
     }
     
     public void handleEndGame(){
+        freeze = true;
+        highlighted.setListTohighlight(null);
+        initButtonByInventory();
         Dialog dialog = new Alert(Alert.AlertType.INFORMATION);
         dialog.setTitle("Fin de partie !");
         switch(core.getStatus()){
             case 0 :
-                dialog.setContentText("Le joueur Blanc perd la partie");
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à perdu !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à gagné !");
+                dialog.setContentText("Le joueur noir remporte la victoire !");
                 break;
             case 1 :
-                dialog.setContentText("Le joueur Noir perd la partie");
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à gagné !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à perdu !");
+                dialog.setContentText("Le joueur blanc remporte la victoire");
                 break;
             case Consts.NUL:
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " : match nul !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " : match nul !");
                 dialog.setContentText("Match nul");
                 break;
             default :

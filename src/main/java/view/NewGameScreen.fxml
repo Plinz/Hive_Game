@@ -28,7 +28,7 @@
             <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="321.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <MenuButton fx:id="gameChoice" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="297.0" text="Joueur contre joueur" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <MenuButton fx:id="gameChoice" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="297.0" text="Joueur contre joueur" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
               <items>
                 <MenuItem fx:id="pvp" mnemonicParsing="false" onAction="#handleChoicePVP" text="Joueur contre joueur " />
                 <MenuItem fx:id="pvia" mnemonicParsing="false" onAction="#handleChangeChoicePVIA" text="Joueur contre ordinateur" />
@@ -88,6 +88,12 @@
                   <ToggleButton fx:id="easyButton" mnemonicParsing="false" text="Facile" toggleGroup="$aIDifficulty" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
+            <ToggleButton fx:id="choicePVP" mnemonicParsing="false" onMouseClicked="#handleChoiceButtonPVP" prefWidth="160.0" text="Joueur contre joueur" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <toggleGroup>
+                  <ToggleGroup fx:id="gameType" />
+               </toggleGroup>
+            </ToggleButton>
+            <ToggleButton fx:id="choicePVAI" mnemonicParsing="false" onMouseClicked="#handleChoiceButtonPVAI" prefWidth="160.0" text="Joueur contre IA" toggleGroup="$gameType" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

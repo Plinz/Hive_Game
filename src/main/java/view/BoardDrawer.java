@@ -48,7 +48,6 @@ public class BoardDrawer extends Visitor {
               CoordGene<Double> coord = new CoordGene((double)t.getX(),(double)t.getY()); 
               CoordGene<Double> coordPix =traducteur.axialToPixel(coord);
               
-              System.err.println(traducteur.getMoveOrigin().getY());
               
               double X = coordPix.getX()+traducteur.getMoveOrigin().getX();
               double Y = coordPix.getY()+traducteur.getMoveOrigin().getY();
