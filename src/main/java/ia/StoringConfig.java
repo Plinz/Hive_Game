@@ -14,6 +14,8 @@ package main.java.ia;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import main.java.model.Column;
 import main.java.model.State;
 import main.java.model.Tile;
 import main.java.utils.Consts;
@@ -42,7 +44,7 @@ public class StoringConfig {
     public StoringConfig(State state) {
         this.turn = state.getTurn();
 
-        List<List<List<Tile>>> board = state.getBoard().getBoard();
+        List<Column> board = state.getBoard().getBoard();
         Tile current;
 
         /// first we find out the total amount of pieces in the game

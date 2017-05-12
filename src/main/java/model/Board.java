@@ -16,29 +16,28 @@ import main.java.view.BoardDrawer;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Board{
 
-	//TODO
     @XmlElementWrapper(name="board")
-	private List<List<List<Tile>>> board;
+	private List<Column> board;
     @XmlElement(name="nbPiece")
 	private int nbPieceOnTheBoard;
 
 	public Board() {
-		this.board = new ArrayList<List<List<Tile>>>();
+		this.board = new ArrayList<Column>();
 		Tile first = new Tile(0, 0, 0);
-		List<Tile> box = new ArrayList<Tile>();
+		Box box = new Box();
 		box.add(first);
-		List<List<Tile>> column = new ArrayList<List<Tile>>();
+		Column column = new Column();
 		column.add(box);
 		this.board.add(column);
 		this.nbPieceOnTheBoard = 0;
 	}
 
 	public Board(Board b) {
-		this.board = new ArrayList<List<List<Tile>>>();
-		for (List<List<Tile>> column : b.getBoard()) {
-			List<List<Tile>> newColumn = new ArrayList<List<Tile>>();
-			for (List<Tile> box : column) {
-				List<Tile> newBox = new ArrayList<Tile>();
+		this.board = new ArrayList<Column>();
+		for (Column column : b.getBoard()) {
+			Column newColumn = new Column();
+			for (Box box : column) {
+				Box newBox = new Box();
 				for (Tile tile : box)
 					newBox.add(new Tile(tile));
 				newColumn.add(newBox);
@@ -48,11 +47,11 @@ public class Board{
 		this.nbPieceOnTheBoard = b.getNbPieceOnTheBoard();
 	}
 
-	public List<List<List<Tile>>> getBoard() {
+	public List<Column> getBoard() {
 		return board;
 	}
 
-	public void setBoard(List<List<List<Tile>>> board) {
+	public void setBoard(List<Column> board) {
 		this.board = board;
 	}
 
@@ -78,7 +77,7 @@ public class Board{
 	}
 
 	public Tile getTile(CoordGene<Integer> coord) {
-		List<Tile> box = null;
+		Box box = null;
 		if (coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size()
 				&& coord.getY() < this.board.get(coord.getX()).size()
 				&& !(box = this.board.get(coord.getX()).get(coord.getY())).isEmpty())
@@ -94,8 +93,8 @@ public class Board{
 	}
 
 	public void resize(int xOffset, int yOffset) {
-		for (List<List<Tile>> column : this.board)
-			for (List<Tile> box : column)
+		for (Column column : this.board)
+			for (Box box : column)
 				for (Tile tile : box) {
 					tile.setX(tile.getX() + xOffset);
 					tile.setY(tile.getY() + yOffset);
@@ -104,7 +103,7 @@ public class Board{
 
 	public void addPiece(Piece piece, CoordGene<Integer> coord) {
 		Tile added = null;
-		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
+		Box box = this.board.get(coord.getX()).get(coord.getY());
 		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
 			added.setPiece(piece);
 		else {
@@ -113,23 +112,23 @@ public class Board{
 		}
 
 		if (coord.getY() == 0) {
-			for (List<List<Tile>> column : this.board)
-				column.add(0, new ArrayList<Tile>());
+			for (Column column : this.board)
+				column.add(0, new Box());
 			resize(0, 1);
 		}
 		if (coord.getX() == 0) {
-			List<List<Tile>> column = new ArrayList<List<Tile>>();
+			Column column = new Column();
 			this.board.add(0, column);
 			resize(1, 0);
 		}
 		if (added.getY() + 1 == this.board.get(added.getX()).size())
-			this.board.get(added.getX()).add(new ArrayList<Tile>());
+			this.board.get(added.getX()).add(new Box());
 		if (added.getX() + 1 == this.board.size())
-			this.board.add(new ArrayList<List<Tile>>());
+			this.board.add(new Column());
 		while (this.board.get(added.getX() + 1).size() < added.getY() + 1)
-			this.board.get(added.getX() + 1).add(new ArrayList<Tile>());
+			this.board.get(added.getX() + 1).add(new Box());
 		while (this.board.get(added.getX() - 1).size() < added.getY() + 2)
-			this.board.get(added.getX() - 1).add(new ArrayList<Tile>());
+			this.board.get(added.getX() - 1).add(new Box());
 		if (this.board.get(added.getX() + 1).get(added.getY()).size() == 0)
 			this.board.get(added.getX() + 1).get(added.getY()).add(new Tile(added.getX() + 1, added.getY(), 0));
 		if (this.board.get(added.getX()).get(added.getY() + 1).size() == 0)
@@ -148,7 +147,7 @@ public class Board{
 
 	public Piece removePiece(CoordGene<Integer> coord) {
 		Piece piece = null;
-		List<Tile> box = this.board.get(coord.getX()).get(coord.getY());
+		Box box = this.board.get(coord.getX()).get(coord.getY());
 		Tile tile = getTile(coord);
 
 		if (tile != null) {
@@ -182,7 +181,7 @@ public class Board{
 
 		if (coord.getX() == 1) {
 			while (isEmpty && i < this.board.size()) {
-				for (List<Tile> box : this.board.get(i)) {
+				for (Box box : this.board.get(i)) {
 					if (box.size() != 0) {
 						isEmpty = false;
 						break;
@@ -201,7 +200,7 @@ public class Board{
 		if (coord.getX() == this.board.size() - 2) {
 			i = this.board.size() - 1;
 			while (isEmpty && i >= 0) {
-				for (List<Tile> box : this.board.get(i)) {
+				for (Box box : this.board.get(i)) {
 					if (box.size() != 0) {
 						isEmpty = false;
 						break;
@@ -214,7 +213,7 @@ public class Board{
 		}
 
 		if (coord.getY() == 1) {
-			for (List<List<Tile>> column : this.board) {
+			for (Column column : this.board) {
 				if (!column.isEmpty() && column.get(0).size() != 0) {
 					isEmpty = false;
 					break;
@@ -223,12 +222,12 @@ public class Board{
 			if (isEmpty) {
 				resize = true;
 				y = -1;
-				for (List<List<Tile>> column : this.board)
+				for (Column column : this.board)
 					column.remove(0);
 			}
 		}
 		if (coord.getY() + 2 == this.board.get(coord.getX()).size()) {
-			for (List<List<Tile>> column : this.board)
+			for (Column column : this.board)
 				if (column.get(column.size() - 1).size() == 0)
 					column.remove(column.size() - 1);
 
@@ -293,7 +292,7 @@ public class Board{
 	}
 
 	public List<Tile> getAboveAndBelow(Tile tile) {
-		List<Tile> box = this.board.get(tile.getX()).get(tile.getY());
+		Box box = this.board.get(tile.getX()).get(tile.getY());
 		List<Tile> list = new ArrayList<Tile>();
 		for (Tile t : box)
 			if (tile.getZ() != t.getZ())
@@ -302,8 +301,8 @@ public class Board{
 	}
 
 	public void clearPossibleMovement() {
-		for (List<List<Tile>> column : this.board)
-			for (List<Tile> box : column)
+		for (Column column : this.board)
+			for (Box box : column)
 				for (Tile tile : box)
 					if (tile != null && tile.getPiece() != null)
 						tile.getPiece().clear();

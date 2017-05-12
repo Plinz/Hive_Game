@@ -39,6 +39,10 @@ public class Player{
     })
 	private List<Piece> inventory;
 	
+    public Player(){
+    	this.team = -1;
+    }
+    
 	public Player(String name, int team) {
 		this.name = name;
 		this.team = team;

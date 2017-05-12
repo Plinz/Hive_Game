@@ -144,6 +144,8 @@ public class GameScreenController implements Initializable {
                             highlighted.setListTohighlight(null);
                         }
                     }
+                    else if (m.getButton() == MouseButton.SECONDARY)
+                    	core.save("COCO");
                 }
             }
         });

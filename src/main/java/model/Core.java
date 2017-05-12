@@ -30,6 +30,11 @@ public class Core {
 	private int mode;
 	@XmlTransient
 	private int status;
+	
+	public Core() {
+		this.mode = -1;
+		this.status = -1;
+	}
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -150,8 +155,8 @@ public class Core {
 			Board board = currentState.getBoard();
 			Tile current;
 			List<Tile> neighbors;
-			for (List<List<Tile>> column : board.getBoard())
-				for (List<Tile> box : column)
+			for (Column column : board.getBoard())
+				for (Box box : column)
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
 							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty() && !neighbors
 									.stream().anyMatch(it -> it.getPiece().team != currentState.getCurrentPlayer()))
@@ -177,6 +182,7 @@ public class Core {
 	}
 
 	public void save(String name) {
+		System.out.println("CICICI");
 		if (name == null)
 			name = generateSaveName();
 		Save.makeSave(name, this);
@@ -195,6 +201,7 @@ public class Core {
 		this.history = history;
 	}
 
+	
 	public State getCurrentState() {
 		return currentState;
 	}

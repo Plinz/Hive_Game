@@ -29,6 +29,11 @@ public abstract class Piece implements Cloneable{
 
     public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
 
+    public Piece(){
+    	this.id = -1;
+    	this.team = -1;
+    }
+    
     public Piece(String name, int id, int team, String description) {
         this.name = name;
         this.id = id;
