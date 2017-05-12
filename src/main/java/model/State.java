@@ -15,7 +15,7 @@ public class State {
     private Board board;
     @XmlElement(name="players")
     private Player[] players;
-    @XmlElement(name="blocked")
+    @XmlElement(name="currentPlayer")
     private int currentPlayer;
     @XmlAttribute(name="turn")
     private int turn;
