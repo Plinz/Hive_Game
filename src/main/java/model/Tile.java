@@ -4,8 +4,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import main.java.model.piece.Ant;
+import main.java.model.piece.Beetle;
+import main.java.model.piece.Grasshopper;
+import main.java.model.piece.Queen;
+import main.java.model.piece.Spider;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
@@ -13,7 +20,17 @@ import main.java.view.BoardDrawer;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Tile {
 
-    @XmlElement
+    @XmlElementWrapper(name="piece")
+    @XmlElements({
+        @XmlElement(name="ant", type=Ant.class),
+        @XmlElement(name="beetle", type=Beetle.class),
+        @XmlElement(name="grasshopper", type=Grasshopper.class),
+//        @XmlElement(name="ladybug", type=Ladybug.class),
+//        @XmlElement(name="mosquito", type=Mosquito.class),
+//        @XmlElement(name="pillbug", type=Pillbug.class),
+        @XmlElement(name="queen", type=Queen.class),
+        @XmlElement(name="spider", type=Spider.class)
+    })
 	private Piece piece;
     @XmlElement(name="blocked")
 	private boolean blocked;
@@ -24,6 +41,13 @@ public class Tile {
     @XmlAttribute(name="z")
 	private int z;
 
+    public Tile(){
+    	this.blocked = false;
+    	this.x = -1;
+    	this.y = -1;
+    	this.z = -1;
+    }
+    
 	public Tile(Piece piece, boolean blocked, int x, int y, int z) {
 		this.piece = piece;
 		this.blocked = blocked;
