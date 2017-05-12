@@ -9,6 +9,7 @@ package main.java.controller;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,9 +21,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.Glow;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
@@ -110,14 +108,15 @@ public class GameScreenController implements Initializable {
     public void initGameCanvas(){
         
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-            
             @Override
             public void handle(MouseEvent m) {
                 if(!freeze){
-                    lastCoord = t.pixelToAxial(new CoordGene<>(m.getX(), m.getY()));
-                    int i = lastCoord.getX().intValue();
-                    int j = lastCoord.getY().intValue();
-
+                	CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
+                    int i = coordAx.getX().intValue();
+                    int j = coordAx.getY().intValue();
+                	CoordGene<Double> origin = t.getMoveOrigin();
+                	lastCoord = (new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY()));
+                    
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.getCurrentState().getBoard().getTile(new CoordGene<Integer>(i, j)) != null) {
                             CoordGene<Integer> coord = new CoordGene<>(i, j);
@@ -165,10 +164,7 @@ public class GameScreenController implements Initializable {
         
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
                 public void handle(MouseEvent m) {
-                CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<>(m.getX(), m.getY()));
-                int i = coordAx.getX().intValue();
-                int j = coordAx.getY().intValue();
-                    t.setMoveOrigin(new CoordGene<Double>(t.getMoveOrigin().getX() + (coordAx.getX() - lastCoord.getX()),t.getMoveOrigin().getY() + (coordAx.getY() - lastCoord.getY())));
+                    t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
      
         });
