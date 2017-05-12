@@ -13,7 +13,7 @@ import main.java.utils.Cube;
  * @author duvernet
  */
 public class TraducteurBoard {
-    private double sizeHex =30;
+    private double sizeHex =50;
     private CoordGene<Double> centerPix;
     private CoordGene<Double> centerAxial;
     private CoordGene<Double> moveOrigin; 

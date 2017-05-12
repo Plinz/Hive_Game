@@ -36,6 +36,10 @@ public class BoardDrawer extends Visitor {
      
     public boolean visit(Board b){
         gc.clearRect(0, 0, can.getWidth(), can.getHeight());   
+       // Image i = new Image(getClass().getClassLoader().getResource("main/resources/img/misc/fondold.png").toString());
+        //gc.setFill(new ImagePattern(i));    
+        //gc.strokeRect(0, 0, can.getWidth() , can.getHeight());
+       // gc.fillRect(0, 0, can.getWidth(), can.getHeight());
         return false;
     }
     
