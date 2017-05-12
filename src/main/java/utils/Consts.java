@@ -87,5 +87,45 @@ public class Consts {
     	}
     	return null;
     }
+    
+    public static final int getId(String notation){
+    	switch (notation){
+	    	case "Q" : return 0;
+	    	case "S1" : return 1;
+	    	case "S2" : return 2;
+	    	case "G1" : return 3;
+	    	case "G2" : return 4;
+	    	case "G3" : return 5;
+	    	case "B1" : return 6;
+	    	case "B2" : return 7;
+	    	case "A1" : return 8;
+	    	case "A2" : return 9;
+	    	case "A3" : return 10;
+	    	case "M" : return 11;
+	    	case "L" : return 12;
+	    	case "P" : return 13;
+    	}
+    	return -1;
+    }
+    
+    public static final String getName(int id){
+    	switch (id){
+	    	case 0 : return "QUEEN";
+	    	case 1 : return "SPIDER1";
+	    	case 2 : return "SPIDER2";
+	    	case 3 : return "GRASSHOPPER1";
+	    	case 4 : return "GRASSHOPPER2";
+	    	case 5 : return "GRASSHOPPER3";
+	    	case 6 : return "BEETLE1";
+	    	case 7 : return "BEETLE2";
+	    	case 8 : return "ANT1";
+	    	case 9 : return "ANT2";
+	    	case 10 : return "ANT3";
+	    	case 11 : return "MOSQUITO";
+	    	case 12 : return "LADYBUG";
+	    	case 13 : return "PILLBUG";
+    	}
+    	return null;
+    }
 
 }
