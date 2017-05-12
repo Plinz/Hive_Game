@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
+import main.java.ia.AIMove;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
@@ -93,8 +94,12 @@ public class Core {
 			return true;
 		if (isPlayerStuck())
 			currentState.setCurrentPlayer(1 - currentState.getCurrentPlayer());
-		if (mode == Consts.PVAI && currentState.getCurrentPlayer() == Consts.AI_PLAYER)
-			return ai.getNextMove(currentState).play();
+		if (mode == Consts.PVAI && currentState.getCurrentPlayer() == Consts.AI_PLAYER){
+                    AIMove aiMove = ai.getNextMove(currentState);
+                    aiMove.getCore(this);
+                    return aiMove.play();
+                }
+			
 		return false;
 	}
 

@@ -64,7 +64,7 @@ public class AIMove {
         }
     }
 
-    public void getCore(Core newCore){
+    public void setCore(Core newCore){
         this.core =newCore;
     }
     
