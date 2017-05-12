@@ -67,5 +67,25 @@ public class Consts {
     public static final int WIN_TEAM1 = 1;
     public static final int WIN_TEAM2 = 2;
     public static final int NUL = 3;
+    
+    public static final String getNotation(int id){
+    	switch (id){
+	    	case 0 : return "Q";
+	    	case 1 : return "S1";
+	    	case 2 : return "S2";
+	    	case 3 : return "G1";
+	    	case 4 : return "G2";
+	    	case 5 : return "G3";
+	    	case 6 : return "B1";
+	    	case 7 : return "B2";
+	    	case 8 : return "A1";
+	    	case 9 : return "A2";
+	    	case 10 : return "A3";
+	    	case 11 : return "M";
+	    	case 12 : return "L";
+	    	case 13 : return "P";
+    	}
+    	return null;
+    }
 
 }
