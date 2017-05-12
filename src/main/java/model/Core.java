@@ -3,18 +3,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
+@XmlRootElement(name="core")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Core {
 
+    @XmlElement(name="history")
 	private History history;
+    @XmlElement(name="currentState")
 	private State currentState;
+    @XmlTransient
 	private AI ai;
+    @XmlElement(name="mode")
 	private int mode;
+    @XmlTransient
 	private int status;
 
 	public Core(int mode, int difficulty) {
@@ -148,6 +161,16 @@ public class Core {
 			return true;
 		}
 		return false;
+	}
+	
+	public void save(String name){
+		if(name == null) name = generateSaveName();
+		Save.makeSave(name, this);
+	}
+
+	private String generateSaveName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public History getHistory() {

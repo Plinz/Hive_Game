@@ -2,9 +2,18 @@ package main.java.model;
 
 import java.util.Stack;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="history")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class History {
 
+    @XmlElement(name="previousState")
 	Stack<State> previousState;
+    @XmlElement(name="previousState")
 	Stack<State> nextState;
 	
 	public History(){
