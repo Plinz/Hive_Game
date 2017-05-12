@@ -24,8 +24,9 @@ public class RandomAI extends AI {
         this.OriginalConfig = new StoringConfig(state);
         ArrayList<StoringConfig> possibleGameConfigs = OriginalConfig.getNextPossibleMoves();
         Random random = new Random();
-        System.err.println("possible game config size :"+possibleGameConfigs.size());
-        int randomMove = random.nextInt() % possibleGameConfigs.size();
+        
+        int randomMove = random.nextInt(possibleGameConfigs.size());
+        System.err.println("possible game config size :"+possibleGameConfigs.size()+"random : get"+randomMove);
         AIMove nextMove = new AIMove(OriginalConfig, possibleGameConfigs.get(randomMove), state);
         //System.err.println(nextMove.toString());
         return nextMove;
