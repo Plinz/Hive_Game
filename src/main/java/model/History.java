@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import main.java.utils.CoordGene;
+
 @XmlRootElement(name="history")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class History {
@@ -40,6 +42,10 @@ public class History {
 	
 	public State getNextState(){
 		return this.nextState.pop();
+	}
+
+	public void saveMove(Board board, Piece piece, CoordGene<Integer> coord) {
+		
 	}
 		
 }

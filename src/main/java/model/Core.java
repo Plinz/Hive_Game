@@ -31,7 +31,7 @@ public class Core {
 	private int mode;
 	@XmlTransient
 	private int status;
-	
+
 	public Core() {
 		this.mode = -1;
 		this.status = -1;
@@ -76,6 +76,8 @@ public class Core {
 			return isGameFinish();
 		if (mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
 			history.saveState(currentState);
+		System.out.println(Notation.getHumanDescription(Notation.getMoveNotation(currentState.getBoard(), currentState.getCurrentPlayerObject().getInventory().get(piece), coord), true));
+		history.saveMove(currentState.getBoard(), currentState.getCurrentPlayerObject().getInventory().get(piece), coord);
 		currentState.getBoard().addPiece(currentState.getCurrentPlayerObject().removePiece(piece), coord);
 		currentState.nextTurn();
 		return playNextTurn();
@@ -84,6 +86,8 @@ public class Core {
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
 		if (this.mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
 			history.saveState(currentState);
+		System.out.println(Notation.getHumanDescription(Notation.getMoveNotation(currentState.getBoard(), currentState.getBoard().getTile(source).getPiece(), target), false));
+		history.saveMove(currentState.getBoard(), currentState.getBoard().getTile(source).getPiece(), target);
 		currentState.getBoard().movePiece(source, target);
 		currentState.nextTurn();
 		return playNextTurn();
@@ -94,12 +98,12 @@ public class Core {
 			return true;
 		if (isPlayerStuck())
 			currentState.setCurrentPlayer(1 - currentState.getCurrentPlayer());
-		if (mode == Consts.PVAI && currentState.getCurrentPlayer() == Consts.AI_PLAYER){
-                    AIMove aiMove = ai.getNextMove(currentState);
-                    aiMove.setCore(this);
-                    return aiMove.play();
-                }
-			
+		if (mode == Consts.PVAI && currentState.getCurrentPlayer() == Consts.AI_PLAYER) {
+			AIMove aiMove = ai.getNextMove(currentState);
+			aiMove.setCore(this);
+			return aiMove.play();
+		}
+
 		return false;
 	}
 
@@ -206,7 +210,6 @@ public class Core {
 		this.history = history;
 	}
 
-	
 	public State getCurrentState() {
 		return currentState;
 	}
