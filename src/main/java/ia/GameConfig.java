@@ -478,7 +478,8 @@ public class GameConfig {
         //Setting all booleans 'isVisited' to false
         for (PieceNode[] boardX : board) {
             for (PieceNode boardXY : boardX) {
-                boardXY.isVisited = false;
+                if (boardXY != null)
+                    boardXY.isVisited = false;
             }
         }
 
