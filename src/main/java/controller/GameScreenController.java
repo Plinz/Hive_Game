@@ -323,13 +323,13 @@ public class GameScreenController implements Initializable {
         dialog.setTitle("Fin de partie !");
         switch(core.getStatus()){
             case 0 :
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à perdu !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à gagné !");
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " a perdu !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " a gagné !");
                 dialog.setContentText("Le joueur noir remporte la victoire !");
                 break;
             case 1 :
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à gagné !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à perdu !");
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " a gagné !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " a perdu !");
                 dialog.setContentText("Le joueur blanc remporte la victoire");
                 break;
             case Consts.NUL:

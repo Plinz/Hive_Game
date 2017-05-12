@@ -16,8 +16,26 @@
     -fx-background-color: transparent;
 }
 
+.buttonUndo:hover{
+    -fx-background-image: url("/main/resources/img/misc/undohover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
 .buttonRedo{
     -fx-background-image: url("/main/resources/img/misc/redo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRedo:hover{
+    -fx-background-image: url("/main/resources/img/misc/redohover.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -36,6 +54,26 @@
 
 .buttonGear{
     -fx-background-image: url("/main/resources/img/misc/gear.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonGear:hover{
+    -fx-background-image: url("/main/resources/img/misc/gearhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonGear:selected{
+    -fx-background-image: url("/main/resources/img/misc/gearhover.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 
