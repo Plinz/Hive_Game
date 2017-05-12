@@ -33,7 +33,7 @@ public class AIMove {
             if (arrival.isOnBoard(i)) {
                 nbPiecesOnBoardAfter++;
             }
-        }            
+        }
         //different number of tiles before & after -> means  a new tile was added
         if (nbPiecesOnBoardAfter != nbPiecesOnBoardBefore) {
             for (int i = 0; i < origin.config.length; i++) {
@@ -64,15 +64,18 @@ public class AIMove {
         }
     }
 
-    public void setCore(Core newCore){
-        this.core =newCore;
+    public void setCore(Core newCore) {
+        this.core = newCore;
     }
-    
+
     public boolean play() {
-        if (AddNewTile)
+        if (AddNewTile) {
+            System.err.println("AIMove : nextmove : add piece with piece(position in inventory) = " + piece+"and dest="+ destination.toString());
             return core.addPiece(piece, destination);
-        else
+        } else {
+            System.err.println("AIMove : nextmove : move piece with source = " + source.toString()+"and dest="+ destination.toString());
             return core.movePiece(source, destination);
+        }
     }
 
     //translates the pieceID into the index of the piece in the player's inventory
@@ -86,7 +89,7 @@ public class AIMove {
         System.err.println("Erreur : impossible de trouver la piece " + pieceId + " dans l'inventaire du joueur " + state.getCurrentPlayer());
         return 0;
     }
-    
+
     /*tostring a moitié foireux, il faut test les null avant de les  apppeler
     public String toString(){
         String result = "AIMove :\n"+"\tbool AddNewTile : "+AddNewTile+"\tpiece : "+piece+"\n\tSource :"+source.toString()+"\tDest :"+destination.toString()

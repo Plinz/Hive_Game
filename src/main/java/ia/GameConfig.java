@@ -600,10 +600,7 @@ public class GameConfig {
                 result.add(newStoringConfig);
             }
         }
-        System.err.println("PossibleSecondTurn :");
-        for (StoringConfig storingConfig : result){
-            System.err.println(storingConfig.toString());
-        }
+        
         return result;
     }
 

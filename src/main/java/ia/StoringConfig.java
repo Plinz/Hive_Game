@@ -43,7 +43,7 @@ public class StoringConfig {
      */
     public StoringConfig(State state) {
         this.turn = state.getTurn();
-
+        this.currentPlayer = state.getCurrentPlayer();
         List<Column> board = state.getBoard().getBoard();
         Tile current;
 
@@ -227,10 +227,18 @@ public class StoringConfig {
         //if 1st turn
         if (turn == 0) {
             result = gameConfig.getFirstTurnMove();
+            System.err.println("PossibleFirstTurn :");
+            for (StoringConfig storingConfig : result) {
+                System.err.println(storingConfig.toString());
+            }
             return result;
             //if 2nd turn
         } else if (turn == 1) {
             result = gameConfig.getSecondTurnMove();
+            System.err.println("PossibleSecondTurn :");
+            for (StoringConfig storingConfig : result) {
+                System.err.println(storingConfig.toString());
+            }
             return result;
         }
 
@@ -246,6 +254,10 @@ public class StoringConfig {
                     newStoringConfig.setX(start, (byte) coord.getX());
                     newStoringConfig.setY(start, (byte) coord.getY());
                     result.add(newStoringConfig);
+                }
+                System.err.println("Possible 7 & 8 Turn :");
+                for (StoringConfig storingConfig : result) {
+                    System.err.println(storingConfig.toString());
                 }
                 return result;
             }
@@ -283,6 +295,10 @@ public class StoringConfig {
                     }
                 }
             }
+        }
+        System.err.println("PossibleNextTurn :");
+        for (StoringConfig storingConfig : result){
+            System.err.println(storingConfig.toString());
         }
         return result;
     }
