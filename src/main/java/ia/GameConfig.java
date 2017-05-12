@@ -161,7 +161,6 @@ public class GameConfig {
         Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
         for (int i = 0; i < 6; i++) {
             PieceNode neighbor = getNode(neighborsCoords[i]);
-            System.out.println("getNode : " + neighbor);
             if (neighbor != null) {
                 result.add(neighbor);
             }
