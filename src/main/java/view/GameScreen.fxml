@@ -93,7 +93,7 @@
                       <RowConstraints maxHeight="228.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <GridPane fx:id="inventoryPlayer1" prefHeight="267.0" prefWidth="420.0" GridPane.rowIndex="1">
+                        <GridPane fx:id="inventoryPlayer1" gridLinesVisible="true" prefHeight="267.0" prefWidth="420.0" GridPane.rowIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -106,7 +106,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" text="Button" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="Button" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                               <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                               <Button mnemonicParsing="false" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                               <Button layoutX="35.0" layoutY="32.0" mnemonicParsing="false" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />

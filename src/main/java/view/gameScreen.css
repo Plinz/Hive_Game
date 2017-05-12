@@ -44,6 +44,10 @@
     -fx-background-color: transparent;
 }
 
+.buttonInventory:selected{
+    -fx-effect: innershadow(one-pass-box, lightblue, 100, 0.1, 1, 1);
+}
+
 #westArrow{
     -fx-background-image: url("/westarrow.png");
 }

@@ -35,6 +35,7 @@ public class ControllerButtonPiece implements EventHandler<MouseEvent> {
     public void handle(MouseEvent t) {
         /* Ajout */
         gameController.resetPiece();
+        gameController.getInventoryGroup().getToggles().get(i).setSelected(true);
         /**/
         gameController.setPieceToChoose(i);
         highlighted.setListTohighlight(c.getPossibleAdd());
