@@ -220,19 +220,20 @@ public class StoringConfig {
      */
     public ArrayList<StoringConfig> getNextPossibleMoves() {
         ArrayList<StoringConfig> temp, result = new ArrayList<>();
-        
-        
+        System.err.println("getNextPossibleMove :\nturn =" + turn);
+
         GameConfig gameConfig = new GameConfig(this, turn);
-        
+
         //if 1st turn
-        if (turn == 1){
+        if (turn == 0) {
             result = gameConfig.getFirstTurnMove();
             return result;
-        } else if (turn == 2){
+            //if 2nd turn
+        } else if (turn == 1) {
             result = gameConfig.getSecondTurnMove();
             return result;
         }
-        
+
         ArrayList<Coord> possibleNewPositions = gameConfig.getNewPossiblePositions();
         int start = gameConfig.currentPlayer * gameConfig.nbPiecesPerColor;
         int finish = start + gameConfig.nbPiecesPerColor;
@@ -289,17 +290,16 @@ public class StoringConfig {
     /*
      *                  UTILS
      */
-
     public String toString() {
-        String result = "Storing Config :\n\tOn board :";
+        String result = "Storing Config :\n\tOn board :\n";
         for (int i = 0; i < config.length; i++) {
             if (this.isOnBoard(i)) {
-                result += "piece:" + i + "->x,y,z=" + this.getX(i) + "," + this.getY(i) + "," + this.getZ(i) + ".";
-            }
-            if (this.isStuck(i)) {
-                result += "Stuck.\n";
-            } else {
-                result += "\n";
+                result += "\tpiece:" + i + "->x,y,z=" + this.getX(i) + "," + this.getY(i) + "," + this.getZ(i) + ".";
+                if (this.isStuck(i)) {
+                    result += "Stuck.\n";
+                } else {
+                    result += "\n";
+                }
             }
 
         }
