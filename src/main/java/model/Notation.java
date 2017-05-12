@@ -18,7 +18,6 @@ public class Notation {
 			t = neighbors.get(0);
 			char team = t.getPiece().getTeam() == 0 ? 'w' : 'b';
 			CoordGene<Integer> offset = new CoordGene<Integer>(coord.getX() - t.getX(), coord.getY() - t.getY());
-			System.out.println(offset);
 			if (offset.getX() == 1 && offset.getY() == 0)
 				notation += " " + team + Consts.getNotation(t.getPiece().getId()) + "-";
 			if (offset.getX() == 0 && offset.getY() == 1)
@@ -61,7 +60,6 @@ public class Notation {
 				case '\\':
 					description += " en bas à droite de la pièce " + Consts.getName(Consts.getId(tokens[1].substring(1, tokens[1].length()-1))) + (tokens[1].charAt(0) == 'w' ? " blanche" : " noire");
 				default :
-					System.out.println(tokens[1].substring(1));
 					description += " sur la pièce " + Consts.getName(Consts.getId(tokens[1].substring(1))) + (tokens[1].charAt(0) == 'w' ? " blanche" : " noire");
 				}
 			}
