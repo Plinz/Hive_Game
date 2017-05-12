@@ -16,24 +16,24 @@ import main.java.view.BoardDrawer;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Board{
 
-    @XmlElementWrapper(name="board")
-	private List<Column> board;
-    @XmlElement(name="nbPiece")
+    @XmlElementWrapper
+	private List<Column> columns;
+    @XmlElement(name="nbP")
 	private int nbPieceOnTheBoard;
 
 	public Board() {
-		this.board = new ArrayList<Column>();
+		this.columns = new ArrayList<Column>();
 		Tile first = new Tile(0, 0, 0);
 		Box box = new Box();
 		box.add(first);
 		Column column = new Column();
 		column.add(box);
-		this.board.add(column);
+		this.columns.add(column);
 		this.nbPieceOnTheBoard = 0;
 	}
 
 	public Board(Board b) {
-		this.board = new ArrayList<Column>();
+		this.columns = new ArrayList<Column>();
 		for (Column column : b.getBoard()) {
 			Column newColumn = new Column();
 			for (Box box : column) {
@@ -42,17 +42,17 @@ public class Board{
 					newBox.add(new Tile(tile));
 				newColumn.add(newBox);
 			}
-			this.board.add(newColumn);
+			this.columns.add(newColumn);
 		}
 		this.nbPieceOnTheBoard = b.getNbPieceOnTheBoard();
 	}
 
 	public List<Column> getBoard() {
-		return board;
+		return columns;
 	}
 
 	public void setBoard(List<Column> board) {
-		this.board = board;
+		this.columns = board;
 	}
 
 	public int getNbPieceOnTheBoard() {
@@ -65,11 +65,11 @@ public class Board{
 
 	public boolean accept(BoardDrawer b) {
 		b.visit(this);
-		for (int i = 0; i < this.board.size(); i++) {
-			for (int j = 0; j < this.board.get(i).size(); j++) {
-				int taille = this.board.get(i).get(j).size();
+		for (int i = 0; i < columns.size(); i++) {
+			for (int j = 0; j < columns.get(i).size(); j++) {
+				int taille = columns.get(i).get(j).size();
 				if (taille != 0) {
-					this.board.get(i).get(j).get(taille - 1).accept(b);
+					columns.get(i).get(j).get(taille - 1).accept(b);
 				}
 			}
 		}
@@ -78,22 +78,22 @@ public class Board{
 
 	public Tile getTile(CoordGene<Integer> coord) {
 		Box box = null;
-		if (coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size()
-				&& coord.getY() < this.board.get(coord.getX()).size()
-				&& !(box = this.board.get(coord.getX()).get(coord.getY())).isEmpty())
+		if (coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < columns.size()
+				&& coord.getY() < columns.get(coord.getX()).size()
+				&& !(box = columns.get(coord.getX()).get(coord.getY())).isEmpty())
 			return box.get(box.size() - 1);
 		return null;
 	}
 
 	public Tile getTile(CoordGene<Integer> coord, int floor) {
-		if (coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < this.board.size()
-				&& coord.getY() < this.board.get(coord.getX()).size())
-			return this.board.get(coord.getX()).get(coord.getY()).get(floor);
+		if (coord.getX() >= 0 && coord.getY() >= 0 && coord.getX() < columns.size()
+				&& coord.getY() < columns.get(coord.getX()).size())
+			return columns.get(coord.getX()).get(coord.getY()).get(floor);
 		return null;
 	}
 
 	public void resize(int xOffset, int yOffset) {
-		for (Column column : this.board)
+		for (Column column : columns)
 			for (Box box : column)
 				for (Tile tile : box) {
 					tile.setX(tile.getX() + xOffset);
@@ -103,7 +103,7 @@ public class Board{
 
 	public void addPiece(Piece piece, CoordGene<Integer> coord) {
 		Tile added = null;
-		Box box = this.board.get(coord.getX()).get(coord.getY());
+		Box box = columns.get(coord.getX()).get(coord.getY());
 		if (box.size() == 1 && (added = box.get(0)).getPiece() == null)
 			added.setPiece(piece);
 		else {
@@ -112,42 +112,42 @@ public class Board{
 		}
 
 		if (coord.getY() == 0) {
-			for (Column column : this.board)
+			for (Column column : columns)
 				column.add(0, new Box());
 			resize(0, 1);
 		}
 		if (coord.getX() == 0) {
 			Column column = new Column();
-			this.board.add(0, column);
+			columns.add(0, column);
 			resize(1, 0);
 		}
-		if (added.getY() + 1 == this.board.get(added.getX()).size())
-			this.board.get(added.getX()).add(new Box());
-		if (added.getX() + 1 == this.board.size())
-			this.board.add(new Column());
-		while (this.board.get(added.getX() + 1).size() < added.getY() + 1)
-			this.board.get(added.getX() + 1).add(new Box());
-		while (this.board.get(added.getX() - 1).size() < added.getY() + 2)
-			this.board.get(added.getX() - 1).add(new Box());
-		if (this.board.get(added.getX() + 1).get(added.getY()).size() == 0)
-			this.board.get(added.getX() + 1).get(added.getY()).add(new Tile(added.getX() + 1, added.getY(), 0));
-		if (this.board.get(added.getX()).get(added.getY() + 1).size() == 0)
-			this.board.get(added.getX()).get(added.getY() + 1).add(new Tile(added.getX(), added.getY() + 1, 0));
-		if (this.board.get(added.getX() - 1).get(added.getY() + 1).size() == 0)
-			this.board.get(added.getX() - 1).get(added.getY() + 1).add(new Tile(added.getX() - 1, added.getY() + 1, 0));
-		if (this.board.get(added.getX() - 1).get(added.getY()).size() == 0)
-			this.board.get(added.getX() - 1).get(added.getY()).add(new Tile(added.getX() - 1, added.getY(), 0));
-		if (this.board.get(added.getX()).get(added.getY() - 1).size() == 0)
-			this.board.get(added.getX()).get(added.getY() - 1).add(new Tile(added.getX(), added.getY() - 1, 0));
-		if (this.board.get(added.getX() + 1).get(added.getY() - 1).size() == 0)
-			this.board.get(added.getX() + 1).get(added.getY() - 1).add(new Tile(added.getX() + 1, added.getY() - 1, 0));
+		if (added.getY() + 1 == columns.get(added.getX()).size())
+			columns.get(added.getX()).add(new Box());
+		if (added.getX() + 1 == columns.size())
+			columns.add(new Column());
+		while (columns.get(added.getX() + 1).size() < added.getY() + 1)
+			columns.get(added.getX() + 1).add(new Box());
+		while (columns.get(added.getX() - 1).size() < added.getY() + 2)
+			columns.get(added.getX() - 1).add(new Box());
+		if (columns.get(added.getX() + 1).get(added.getY()).size() == 0)
+			columns.get(added.getX() + 1).get(added.getY()).add(new Tile(added.getX() + 1, added.getY(), 0));
+		if (columns.get(added.getX()).get(added.getY() + 1).size() == 0)
+			columns.get(added.getX()).get(added.getY() + 1).add(new Tile(added.getX(), added.getY() + 1, 0));
+		if (columns.get(added.getX() - 1).get(added.getY() + 1).size() == 0)
+			columns.get(added.getX() - 1).get(added.getY() + 1).add(new Tile(added.getX() - 1, added.getY() + 1, 0));
+		if (columns.get(added.getX() - 1).get(added.getY()).size() == 0)
+			columns.get(added.getX() - 1).get(added.getY()).add(new Tile(added.getX() - 1, added.getY(), 0));
+		if (columns.get(added.getX()).get(added.getY() - 1).size() == 0)
+			columns.get(added.getX()).get(added.getY() - 1).add(new Tile(added.getX(), added.getY() - 1, 0));
+		if (columns.get(added.getX() + 1).get(added.getY() - 1).size() == 0)
+			columns.get(added.getX() + 1).get(added.getY() - 1).add(new Tile(added.getX() + 1, added.getY() - 1, 0));
 
 		this.nbPieceOnTheBoard++;
 	}
 
 	public Piece removePiece(CoordGene<Integer> coord) {
 		Piece piece = null;
-		Box box = this.board.get(coord.getX()).get(coord.getY());
+		Box box = columns.get(coord.getX()).get(coord.getY());
 		Tile tile = getTile(coord);
 
 		if (tile != null) {
@@ -180,40 +180,40 @@ public class Board{
 		int i = 0;
 
 		if (coord.getX() == 1) {
-			while (isEmpty && i < this.board.size()) {
-				for (Box box : this.board.get(i)) {
+			while (isEmpty && i < columns.size()) {
+				for (Box box : columns.get(i)) {
 					if (box.size() != 0) {
 						isEmpty = false;
 						break;
 					}
 				}
-				if (this.board.get(i).size() == 0 || isEmpty) {
+				if (columns.get(i).size() == 0 || isEmpty) {
 					resize = true;
 					x -= 1;
-					this.board.remove(i);
+					columns.remove(i);
 				}
 				i++;
 			}
 		}
 		isEmpty = true;
 
-		if (coord.getX() == this.board.size() - 2) {
-			i = this.board.size() - 1;
+		if (coord.getX() == columns.size() - 2) {
+			i = columns.size() - 1;
 			while (isEmpty && i >= 0) {
-				for (Box box : this.board.get(i)) {
+				for (Box box : columns.get(i)) {
 					if (box.size() != 0) {
 						isEmpty = false;
 						break;
 					}
 				}
-				if (this.board.get(i).size() == 0 || isEmpty)
-					this.board.remove(i);
+				if (columns.get(i).size() == 0 || isEmpty)
+					columns.remove(i);
 				i--;
 			}
 		}
 
 		if (coord.getY() == 1) {
-			for (Column column : this.board) {
+			for (Column column : columns) {
 				if (!column.isEmpty() && column.get(0).size() != 0) {
 					isEmpty = false;
 					break;
@@ -222,12 +222,12 @@ public class Board{
 			if (isEmpty) {
 				resize = true;
 				y = -1;
-				for (Column column : this.board)
+				for (Column column : columns)
 					column.remove(0);
 			}
 		}
-		if (coord.getY() + 2 == this.board.get(coord.getX()).size()) {
-			for (Column column : this.board)
+		if (coord.getY() + 2 == columns.get(coord.getX()).size()) {
+			for (Column column : columns)
 				if (column.get(column.size() - 1).size() == 0)
 					column.remove(column.size() - 1);
 
@@ -249,7 +249,7 @@ public class Board{
 					}
 				}
 				if (!hasPieceAround) {
-					this.board.get(neighbor.getX()).get(neighbor.getY()).clear();
+					columns.get(neighbor.getX()).get(neighbor.getY()).clear();
 				}
 			}
 
@@ -292,7 +292,7 @@ public class Board{
 	}
 
 	public List<Tile> getAboveAndBelow(Tile tile) {
-		Box box = this.board.get(tile.getX()).get(tile.getY());
+		Box box = columns.get(tile.getX()).get(tile.getY());
 		List<Tile> list = new ArrayList<Tile>();
 		for (Tile t : box)
 			if (tile.getZ() != t.getZ())
@@ -301,7 +301,7 @@ public class Board{
 	}
 
 	public void clearPossibleMovement() {
-		for (Column column : this.board)
+		for (Column column : columns)
 			for (Box box : column)
 				for (Tile tile : box)
 					if (tile != null && tile.getPiece() != null)

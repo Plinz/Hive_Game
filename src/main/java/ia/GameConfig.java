@@ -35,14 +35,14 @@ public class GameConfig {
         for (pieceID = 0; pieceID < totalPiecesNb; pieceID++) {
             pieceNode = new PieceNode(storingConfig, pieceID);
             pieces[pieceID] = pieceNode;
-            if (pieceNode.getZ() == 0) {
+            if (pieceNode.isOnBoard() && pieceNode.getZ() == 0) {
                 board[pieceNode.getX()][pieceNode.getY()] = pieceNode;
             }
         }
         //for pieces not on the floor -> we put them in the grid now
         //the piece below can link to the next directly
         for (pieceID = 0; pieceID < totalPiecesNb; pieceID++) {
-            if (pieces[pieceID].getZ() > 0) {
+            if (pieces[pieceID].isOnBoard() && pieces[pieceID].getZ() > 0) {
                 for (int pieceBelow = 0; pieceBelow < totalPiecesNb; pieceBelow++) {
                     if ((pieces[pieceBelow].getX() == pieces[pieceID].getX())
                             && (pieces[pieceBelow].getY() == pieces[pieceID].getY())
@@ -161,6 +161,7 @@ public class GameConfig {
         Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
         for (int i = 0; i < 6; i++) {
             PieceNode neighbor = getNode(neighborsCoords[i]);
+            System.out.println("getNode : " + neighbor);
             if (neighbor != null) {
                 result.add(neighbor);
             }
@@ -479,7 +480,7 @@ public class GameConfig {
         for (PieceNode[] boardX : board) {
             for (PieceNode boardXY : boardX) {
                 if (boardXY != null)
-                    boardXY.isVisited = false;
+                    boardXY.setIsVisited(false);
             }
         }
 
@@ -487,9 +488,13 @@ public class GameConfig {
         PieceNode neighbor = neighbors.get(0);
 
         //marking both the moving node & the first neighbor we put in the set
-        node.isVisited = true;
-        neighbor.isVisited = true;
-
+        node.setIsVisited(true);
+        
+        neighbor.setIsVisited(true);
+        
+        System.out.println("NODE : "+node);
+        System.out.println("FIRST : " + neighbor.toString());
+        
         PieceNode current_node;
         ArrayList<PieceNode> nodeSet = new ArrayList<>();
         nodeSet.add(neighbor);
@@ -497,17 +502,22 @@ public class GameConfig {
             current_node = nodeSet.get(0);
             neighbors = getNeighborsInArrayList(current_node);
             for (PieceNode current_node_neighbor : neighbors) {
+                System.out.println("NEIGHBOR" + current_node_neighbor.toString());
                 if (!current_node_neighbor.isVisited) {
-                    current_node_neighbor.isVisited = true;
+                    System.out.println("NEIGHBOR ADDED");
+                    current_node_neighbor.setIsVisited(true);
                     nodeSet.add(current_node_neighbor);
                 }
             }
             nodeSet.remove(current_node);
+            System.out.println("END LOOP");
         }
 
+        //CAN BE OPTIMIZED : TEST ONLY OTHER NEIGHBORS OF THE ORIGINAL NODE
         for (PieceNode[] boardX : board) {
             for (PieceNode boardXY : boardX) {
-                if (!boardXY.isVisited) {
+                if (boardXY != null && !boardXY.isVisited) {
+                    System.out.println(">>>>>>>"+boardXY.toString());
                     return false;
                 }
             }

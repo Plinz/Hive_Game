@@ -26,7 +26,7 @@ public class Player{
 	private String name;
     @XmlAttribute(name="team")
 	private int team;
-    @XmlElementWrapper(name="inventory")
+    @XmlElementWrapper(name="inv")
     @XmlElements({
         @XmlElement(name="ant", type=Ant.class),
         @XmlElement(name="beetle", type=Beetle.class),

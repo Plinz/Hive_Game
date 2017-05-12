@@ -11,10 +11,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="column")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Column implements List<Box>{
-    @XmlElementWrapper(name="column")
+    @XmlElementWrapper
 	private List<Box> boxs;
     
     public Column(){

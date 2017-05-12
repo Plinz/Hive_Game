@@ -11,10 +11,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="box")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Box implements List<Tile>{
-    @XmlElementWrapper(name="box")
+    @XmlElementWrapper
 	private List<Tile> tiles;
     
     public Box(){
