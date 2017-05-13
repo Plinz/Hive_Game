@@ -115,17 +115,40 @@
 }
 
 #westArrow{
-    -fx-background-image: url("/westarrow.png");
+    -fx-background-image: url("/main/resources/img/misc/westarrow.png");    
+-fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0,0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 #eastArrow{
-    -fx-background-image: url("/eastarrow.png");
+    -fx-background-image: url("/main/resources/img/misc/eastarrow.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 #northArrow{
-    -fx-background-image: url("/northarrow.png");
+    -fx-background-image: url("/main/resources/img/misc/northarrow.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }
 
 #southArrow{
-    -fx-background-image: url("/southarrow.png");
+    -fx-background-image: url("/main/resources/img/misc/southarrow.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
 }

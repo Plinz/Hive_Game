@@ -71,6 +71,7 @@ public class GameScreenController implements Initializable {
     private TraducteurBoard t;
     private boolean freeze;
     private ToggleGroup inventoryGroup;
+    private RefreshJavaFX r;
     
     public void setMainApp(Main mainApp) {
         this.main = mainApp;    
@@ -109,7 +110,7 @@ public class GameScreenController implements Initializable {
         initButtonByInventory();
         initGameCanvas();
         
-        RefreshJavaFX r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
+        r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
         r.start();
         
     }
@@ -191,6 +192,7 @@ public class GameScreenController implements Initializable {
                 Core c = new Core(core.getMode(),Consts.EASY);
                 c.getCurrentState().getPlayers()[0].setName(core.getCurrentState().getPlayers()[0].getName());
                 c.getCurrentState().getPlayers()[1].setName(core.getCurrentState().getPlayers()[1].getName());
+                r.stop();
                 main.showGameScreen(c);
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
@@ -207,6 +209,7 @@ public class GameScreenController implements Initializable {
         
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            r.stop();
             main.showMainMenu();
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
