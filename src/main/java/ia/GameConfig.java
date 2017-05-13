@@ -58,10 +58,12 @@ public class GameConfig {
      *              TESTS
      */
     public boolean isFreeCoord(Coord coord) {
+        if (!coord.isValidCoord()) return true;
         return this.board[coord.getX()][coord.getY()] == null;
     }
 
     public boolean isFreeCoord(Cube<Integer> cube) {
+        if ((cube.getX().intValue() < 0 ) ||  (cube.getY().intValue()< 0)) return true;
         PieceNode node = this.board[cube.getX()][cube.getY()];
         int z = cube.getZ();
         while ((z > 0) && (node != null)) {
