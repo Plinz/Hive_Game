@@ -349,4 +349,14 @@ public class StoringConfig {
         return true;
     }
     
+    @Override
+    public int hashCode()
+    {
+        final int prime = 107;
+        int result = 7;
+        for (int i = 0; i < this.config.length; i++)
+            result += (prime-i) * this.config[i];
+        return result;
+    }
+    
 }
