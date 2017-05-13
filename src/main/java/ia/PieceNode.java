@@ -18,10 +18,10 @@ import main.java.utils.Cube;
 public class PieceNode {
 
     int x, y, z, piece;
-    boolean stuck, isVisited, isOnBoard, PossibleDestinationsCalculated;
+    boolean stuck, isVisited, isOnBoard, possibleDestinationsCalculated;
     PieceNode pieceAbove;
-    ArrayList<Coord> PossibleDestinations;
-    ArrayList<Cube<Integer>> PossibleCubeDestinations; //for beetle & mosquito -> we need cube coords
+    ArrayList<Coord> possibleDestinations;
+    ArrayList<Cube<Integer>> possibleCubeDestinations; //for beetle & mosquito -> we need cube coords
 
     public PieceNode(StoringConfig config, int index) {
         this.x = config.getX(index);
@@ -32,7 +32,8 @@ public class PieceNode {
         this.isOnBoard = config.isOnBoard(index);
         this.isVisited = false;
         this.pieceAbove = null;
-        this.PossibleDestinations = new ArrayList<>();
+        this.possibleDestinations = new ArrayList<>();
+        this.possibleCubeDestinations = new ArrayList<>();
     }
 
     public int getX() {
@@ -123,7 +124,7 @@ public class PieceNode {
         return ((this.x == obj.x) && (this.y == obj.y) && (this.z == obj.z)
                 && (this.piece == obj.piece) && (this.stuck == obj.stuck)
                 && (this.isOnBoard == obj.isOnBoard) && (this.pieceAbove.equals(obj.pieceAbove))
-                && (this.PossibleDestinations.equals(obj.PossibleDestinations)));
+                && (this.possibleDestinations.equals(obj.possibleDestinations)));
     }
     
     @Override
@@ -138,7 +139,7 @@ public class PieceNode {
         result += result * (this.stuck ? 3 : 5);
         result += result * (this.isOnBoard ? 7 : 9);
         result += prime + ((this.pieceAbove == null) ? 0 : this.pieceAbove.hashCode());
-        result += prime + ((this.PossibleDestinations == null) ? 0 : this.PossibleDestinations.hashCode());
+        result += prime + ((this.possibleDestinations == null) ? 0 : this.possibleDestinations.hashCode());
         return result;
     }
     
