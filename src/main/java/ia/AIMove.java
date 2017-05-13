@@ -18,10 +18,14 @@ public class AIMove {
     int piece;
     Core core;
     State state;
-
+    StoringConfig originalConfig;
     //Constructor -> determines the move from the diff between the 2 configs
     public AIMove(StoringConfig origin, StoringConfig arrival, State state) {
         this.state = state;
+        this.originalConfig = origin;
+        for (int i=0 ; i<state.getPlayers()[1].getInventory().size() ; i++){
+            System.err.println("Piece num"+getPositionInInventory(state.getPlayers()[1].getInventory().get(i).getId())+"dans l'inv a la place "+i);
+        }
         int piece;
         CoordGene<Integer> source, destination;
         int nbPiecesOnBoardBefore = 0, nbPiecesOnBoardAfter = 0;
@@ -80,6 +84,8 @@ public class AIMove {
 
     //translates the pieceID into the index of the piece in the player's inventory
     public int getPositionInInventory(int pieceId) {
+        if (pieceId >= (originalConfig.config.length/2))
+            pieceId -= originalConfig.config.length/2;
         List<Piece> inventory = state.getPlayers()[state.getCurrentPlayer()].getInventory();
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getId() == pieceId) {
