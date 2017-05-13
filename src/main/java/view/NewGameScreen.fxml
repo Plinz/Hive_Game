@@ -88,7 +88,7 @@
                   <ToggleButton id="easyAI" fx:id="easyButton" mnemonicParsing="false" prefHeight="110.0" prefWidth="110.0" toggleGroup="$aIDifficulty" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <ToggleButton id="pvpChoice" fx:id="choicePVP" mnemonicParsing="false" onMouseClicked="#handleChoiceButtonPVP" prefHeight="111.0" prefWidth="110.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ToggleButton id="pvpChoice" fx:id="choicePVP" mnemonicParsing="false" onMouseClicked="#handleChoiceButtonPVP" prefHeight="111.0" prefWidth="110.0" selected="true" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="gameType" />
                </toggleGroup>

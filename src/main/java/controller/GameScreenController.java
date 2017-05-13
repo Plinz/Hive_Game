@@ -8,6 +8,7 @@ package main.java.controller;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.event.EventHandler;
@@ -19,6 +20,8 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
@@ -177,14 +180,38 @@ public class GameScreenController implements Initializable {
         
     }
     public void handleNewGame(){
-        Core c = new Core(this.core.getMode(),Consts.MEDIUM);
-        c.getCurrentState().getPlayers()[0].setName(core.getCurrentState().getPlayers()[0].getName());
-        c.getCurrentState().getPlayers()[1].setName(core.getCurrentState().getPlayers()[1].getName());
-        main.showGameScreen(c);
+         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
+        ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+                Core c = new Core(core.getMode(),Consts.EASY);
+                c.getCurrentState().getPlayers()[0].setName(core.getCurrentState().getPlayers()[0].getName());
+                c.getCurrentState().getPlayers()[1].setName(core.getCurrentState().getPlayers()[1].getName());
+                main.showGameScreen(c);
+        }
+        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
+            System.out.println("A faire");
+        }
     }
     
     public void handleLeaveGame(){
-        main.showMainMenu();
+        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
+        ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            main.showMainMenu();
+        }
+        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
+            System.out.println("A faire");
+        }
     }
     
     public void handleUpButton(){

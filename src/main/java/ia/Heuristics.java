@@ -29,6 +29,8 @@ public class Heuristics {
     /*
      *                  TESTERS
      */
+    
+    /*
     public boolean isPinned(int PieceId){
         if (gameConfig.getPieces()[PieceId].stuck) return true;
         //bug on the ground (ie not beetle or mosquito)
@@ -39,5 +41,5 @@ public class Heuristics {
         else
             return (gameConfig.getPieces()[PieceId].PossibleDestinationsCalculated &&
                     gameConfig.getPieces()[PieceId].PossibleCubeDestinations.size() == 0);
-    }
+    }*/
 }

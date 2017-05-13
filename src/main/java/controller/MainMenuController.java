@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import main.java.implement.Main;
 
 /**
@@ -46,12 +47,16 @@ public class MainMenuController implements Initializable {
     
     @FXML 
     public void handleTutorialClick(){
-        System.out.println("Didact");
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setContentText("Pas encore implémenté");
+        a.show();
     }
     
      @FXML 
     public void handleOptionsClick(){
-        System.out.println("Options");
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setContentText("Pas encore implémenté");
+        a.show();
     }
     
     @FXML 

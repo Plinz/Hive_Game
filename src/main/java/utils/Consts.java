@@ -127,5 +127,13 @@ public class Consts {
     	}
     	return null;
     }
-
+    //MACRO REGLES DU JEU
+    public static String GOAL = "Le but du jeu est d'encercler totalement la reine des abeilles adverse, à l'aide de vos pièces et de celles de votre adversaire.";
+    public static String DURING_THE_GAME = "Le joueur blanc commence la partie. Ensuite les joueurs jouent tour à tour leurs pièces avec les restrictions suivantes : \n- Chaque joueur doit poser sa reine des abeilles dans les 4 premiers tours.\n- Dès lors, il est possible au joueur de déplacer les pièces présentes sur le plateau. \nLa partie se termine par une victoire d'un des deux joueurs lorsque l'une des reines est totalement encerclée. \n Si les deux reines sont encerclées, alors il s'agit d'un match nul.";
+    public static String PIECE_POSITIONNING = "Au premier tour, le joueur blanc pose sa première pièce sur le seul emplacement disponible. Le joueur noir répond en placant sa première pièce autour de la pièce du joueur blanc.\n A partir des tours suivants, les joueurs sont obligés de poser leur pièce uniquement à côté des pièces de leur couleur, elles ne doivent pas toucher une pièce de leur adversaire. \n\n Le déplacement d'une pièce est impossible si la nouvelle ruche formée n'est pas connexe.";
+    public static String QUEEN_MOVEMENT = "La reine des abeilles peut se déplacer d'une case.\nVous perdez la partie si votre reine est totalement encerclée.";
+    public static String ANT_MOVEMENT = "La fourmi peut se déplacer autour du plateau de jeu.";
+    public static String SPIDER_MOVEMENT = "L'araignée peut se déplacer de trois cases exactement.";
+    public static String GRASSHOPPER_MOVEMENT = "La sauterelle peut sauter par dessus une rangée de cases, le nombre de cases qu'elle saute n'est pas restreint.";
+    public static String BEETLE_MOVEMENT = "Le scarabée peut se déplacer d'une case.\nCependant il peut aussi monter sur les pièces adjacentes, les empêchant ainsi de bouger." ;
 }

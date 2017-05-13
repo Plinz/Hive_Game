@@ -7,6 +7,16 @@
 
 }
 
+.backgroundImage{
+    
+    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
 .buttonUndo{
     -fx-background-image: url("/main/resources/img/misc/undo.png");
     -fx-background-size:stretch;
@@ -45,6 +55,24 @@
 
 .buttonLamp{
     -fx-background-image: url("/main/resources/img/misc/lamp.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRefresh{
+    -fx-background-image: url("/main/resources/img/misc/refresh.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRefresh:hover{
+    -fx-background-image: url("/main/resources/img/misc/refresh.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;

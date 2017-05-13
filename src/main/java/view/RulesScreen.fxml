@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="imageBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@rulesScreen.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.RulesScreenController">
+<AnchorPane id="imageBackground" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@rulesScreen.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.RulesScreenController">
    <children>
       <GridPane layoutX="4.0" layoutY="21.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -51,7 +51,7 @@
                         <RowConstraints maxHeight="386.0" prefHeight="65.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label contentDisplay="CENTER" prefHeight="72.0" prefWidth="329.0" styleClass="panelItemTitle" text="La fourmi" wrapText="true" GridPane.rowIndex="9">
+                        <Label contentDisplay="CENTER" onMouseClicked="#handleMoveAnt" prefHeight="72.0" prefWidth="329.0" styleClass="panelItemTitle" text="La fourmi" wrapText="true" GridPane.rowIndex="9">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
@@ -62,7 +62,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label prefHeight="61.0" prefWidth="329.0" styleClass="panelItemTitle" text="L'araignée" wrapText="true" GridPane.rowIndex="8">
+                        <Label onMouseClicked="#handleMoveSpider" prefHeight="61.0" prefWidth="329.0" styleClass="panelItemTitle" text="L'araignée" wrapText="true" GridPane.rowIndex="8">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
@@ -87,7 +87,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label prefHeight="60.0" prefWidth="329.0" text="Le scarabée" GridPane.rowIndex="7">
+                        <Label onMouseClicked="#handleMoveBeetle" prefHeight="60.0" prefWidth="329.0" text="Le scarabée" GridPane.rowIndex="7">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
