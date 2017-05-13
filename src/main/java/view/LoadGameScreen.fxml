@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -41,8 +42,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLaunchGameClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonLoadGame" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-                  <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleMenuClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonMenu" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+                  <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLaunchGameClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonLoadGame" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleMenuClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonMenu" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </children>
             </GridPane>
             <ListView prefHeight="183.0" prefWidth="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />

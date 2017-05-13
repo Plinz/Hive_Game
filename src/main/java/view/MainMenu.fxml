@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainMenuController">
    <children>
       <GridPane alignment="CENTER" layoutX="255.0" layoutY="75.0" prefHeight="585.0" prefWidth="771.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="254.0" AnchorPane.topAnchor="75.0">
         <columnConstraints>
@@ -25,12 +26,30 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="nouvellePartie" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleNewGameClick" prefHeight="66.0" prefWidth="249.0" styleClass="buttonNewGame" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLoadGameClick" prefHeight="65.0" prefWidth="249.0" styleClass="buttonLoadGame" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" prefHeight="64.0" prefWidth="249.0" styleClass="buttonRules" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleTutorialClick" prefHeight="65.0" prefWidth="251.0" styleClass="buttonTutorial" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleOptionsClick" prefHeight="65.0" prefWidth="251.0" styleClass="buttonOptions" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLeaveClick" prefHeight="62.0" prefWidth="255.0" styleClass="buttonLeave" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
+            <Button fx:id="nouvellePartie" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleNewGameClick" prefHeight="66.0" prefWidth="249.0" styleClass="buttonNewGame" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLoadGameClick" prefHeight="65.0" prefWidth="249.0" styleClass="buttonLoadGame" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" prefHeight="64.0" prefWidth="249.0" styleClass="buttonRules" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleTutorialClick" prefHeight="65.0" prefWidth="251.0" styleClass="buttonTutorial" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleOptionsClick" prefHeight="65.0" prefWidth="251.0" styleClass="buttonOptions" GridPane.halignment="CENTER" GridPane.rowIndex="6">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleLeaveClick" prefHeight="62.0" prefWidth="255.0" styleClass="buttonLeave" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <ImageView fx:id="imageMenu" fitHeight="221.0" fitWidth="366.0" pickOnBounds="true" preserveRatio="true" styleClass="imageMenu" GridPane.halignment="CENTER" />
          </children>
          <opaqueInsets>

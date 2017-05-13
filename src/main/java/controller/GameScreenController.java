@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -287,6 +288,7 @@ public class GameScreenController implements Initializable {
             if(core.getCurrentState().getCurrentPlayer() == 0 && !freeze){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
                 b.getStyleClass().add("buttonInventory");
+                b.setCursor(Cursor.HAND);
                 inventoryGroup.getToggles().add(b);
             }
             if(i != 0 && i%4 == 0){
@@ -318,6 +320,7 @@ public class GameScreenController implements Initializable {
             if(core.getCurrentState().getCurrentPlayer() == 1 && !freeze){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
                 b.getStyleClass().add("buttonInventory");
+                b.setCursor(Cursor.HAND);
                 inventoryGroup.getToggles().add(b);
             }
             
