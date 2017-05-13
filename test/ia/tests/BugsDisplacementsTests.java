@@ -22,48 +22,11 @@ public class BugsDisplacementsTests
     StoringConfig outputconf1, outputconf2, outputconf3, 
                   outputconf4, outputconf5, outputconf6;
     
-    
     @Before
     public void init()
     {
         this.stconf = new StoringConfig(TOTALNBPIECES);
     }
-    
-    /*@Before
-    public void init()
-    {
-        StoringConfig stconf = new StoringConfig(TOTALNBPIECES);
-
-        //white queen in (5,5)
-        stconf.setX(0, (byte) 5);
-        stconf.setY(0, (byte) 5);
-        stconf.setIsOnBoard(0, true);
-
-        //black queen in (4,5)
-        stconf.setX(11, (byte) 4);
-        stconf.setY(11, (byte) 5);
-        stconf.setIsOnBoard(11, true);
-
-        //white beetle 1 in (6,4)
-        stconf.setX(6, (byte) 6);
-        stconf.setY(6, (byte) 4);
-        stconf.setIsOnBoard(6, true);
-
-        //black spider 1 in (4,4)
-        stconf.setX(12, (byte) 4);
-        stconf.setY(12, (byte) 4);
-        stconf.setIsOnBoard(12, true);
-
-        //white beetle 2 in (6,3)
-        stconf.setX(7, (byte) 6);
-        stconf.setY(7, (byte) 3);
-        stconf.setIsOnBoard(7, true);
-
-        //black spider 2 in (3,4)
-        stconf.setX(13, (byte) 3);
-        stconf.setY(13, (byte) 4);
-        stconf.setIsOnBoard(13, true);
-    }*/
             
     @Test
     public void testQueenRespectsOneHive()
@@ -206,9 +169,162 @@ public class BugsDisplacementsTests
         GameConfig gameconf = new GameConfig(stconf, 9);
         List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
 
-        assertEquals(gameconf.getPossibleQueenDestinations(queenNode), outputList);
-        
-        //List<String> actual = Arrays.asList("fee", "fi", "foe");
-        
+        assertEquals(gameconf.getPossibleQueenDestinations(queenNode), outputList);      
     }
+    
+    @Test
+    public void testSpiderRespectsOneHive()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white spider 1 in (6,5)
+        stconf.setX(SPIDER1, (byte) 6);
+        stconf.setY(SPIDER1, (byte) 5);
+        stconf.setIsOnBoard(SPIDER1, true);
+
+        //black spider 1 in (3,6)
+        stconf.setX(SPIDER1 + 14, (byte) 3);
+        stconf.setY(SPIDER1 + 14, (byte) 6);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //white ant 1 in (7,5)
+        stconf.setX(ANT1, (byte) 7);
+        stconf.setY(ANT1, (byte) 5);
+        stconf.setIsOnBoard(ANT1, true);
+        
+        //black spider 2 in (2,6)
+        stconf.setX(SPIDER2 + 14, (byte) 2);
+        stconf.setY(SPIDER2 + 14, (byte) 6);
+        stconf.setIsOnBoard(SPIDER2 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode spiderNode = new PieceNode(stconf, 1);
+        GameConfig gameconf = new GameConfig(stconf, 5);
+        
+        assertFalse(gameconf.RespectsOneHive(spiderNode));
+    }
+    
+    @Test
+    public void testSpiderCannotPassGates()
+    {
+        /*************** initializing test game ***************/
+
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+        
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+        
+        //white ant 1 in (5,4)
+        stconf.setX(ANT1, (byte) 5);
+        stconf.setY(ANT1, (byte) 4);
+        stconf.setIsOnBoard(ANT1, true);
+        
+        //black spider 1 in (3,6)
+        stconf.setX(SPIDER1 + 14, (byte) 3);
+        stconf.setY(SPIDER1 + 14, (byte) 6);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //white spider 1 in (6,3)
+        stconf.setX(SPIDER1, (byte) 6);
+        stconf.setY(SPIDER1, (byte) 3);
+        stconf.setIsOnBoard(SPIDER1, true);
+        
+        //black spider 2 in (3,5)
+        stconf.setX(SPIDER2 + 14, (byte) 3);
+        stconf.setY(SPIDER2 + 14, (byte) 5);
+        stconf.setIsOnBoard(SPIDER2 + 14, true);
+
+        /*************** game initialized ***************/
+        
+        /*************** creating output StoringConfigs ***************/
+        
+        //output config n°1 : white queen moves to (4,3)
+        this.outputconf1 = new StoringConfig(this.stconf);
+        outputconf1.setX(SPIDER1, (byte) 5);
+        outputconf1.setY(SPIDER1, (byte) 6);
+        
+        // output config n°2 : white queen moves to (6,2)
+        this.outputconf2 = new StoringConfig(this.stconf);
+        outputconf2.setX(SPIDER1, (byte) 3);
+        outputconf2.setY(SPIDER1, (byte) 4);
+
+        /*************** output StoringConfigs created ***************/
+            
+        PieceNode spiderNode = new PieceNode(stconf, 1);
+        GameConfig gameconf = new GameConfig(stconf, 7);
+        List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
+
+        assertEquals(gameconf.getPossibleSpiderDestinations(spiderNode),outputList);
+    }
+
+    //TO BE IMPLEMENTED
+    @Test
+    public void testSpiderKeepsPermanentContact()
+    {
+        /*************** initializing test game ***************/
+
+        //white queen in (6,3)
+        stconf.setX(QUEEN, (byte) 6);
+        stconf.setY(QUEEN, (byte) 3);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (6,4)
+        stconf.setX(QUEEN + 14, (byte) 6);
+        stconf.setY(QUEEN + 14, (byte) 4);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white ant 1 in (4,5)
+        stconf.setX(ANT1, (byte) 4);
+        stconf.setY(ANT1, (byte) 5);
+        stconf.setIsOnBoard(ANT1, true);
+
+        //black spider 1 in (5,5)
+        stconf.setX(SPIDER1 + 14, (byte) 5);
+        stconf.setY(SPIDER1 + 14, (byte) 5);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //black ant 1 in (4,4)
+        stconf.setX(ANT1 + 14, (byte) 4);
+        stconf.setY(ANT1 + 14, (byte) 4);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        /*************** creating output StoringConfigs ***************/
+        
+        // output config n°1 : white queen moves to (7,3)
+        this.outputconf1 = new StoringConfig(this.stconf);
+        outputconf1.setX(QUEEN, (byte) 7);
+        outputconf1.setY(QUEEN, (byte) 3);
+        
+        //output config n°2 : white queen moves to (5,4)
+        this.outputconf2 = new StoringConfig(this.stconf);
+        outputconf2.setX(QUEEN, (byte) 5);
+        outputconf2.setY(QUEEN, (byte) 4);
+
+        /*************** output StoringConfigs created ***************/
+        
+        PieceNode queenNode = new PieceNode(stconf, 0);
+        GameConfig gameconf = new GameConfig(stconf, 9);
+        List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
+
+        assertEquals(gameconf.getPossibleQueenDestinations(queenNode), outputList);      
+    }
+    
 }
