@@ -300,10 +300,11 @@ public class StoringConfig {
                 }
             }
         }
+        /* printing all config for study
         System.err.println("PossibleNextTurn :");
         for (StoringConfig storingConfig : result){
             System.err.println(storingConfig.toString());
-        }
+        }*/
         return result;
     }
 

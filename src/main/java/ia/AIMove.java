@@ -23,9 +23,10 @@ public class AIMove {
     public AIMove(StoringConfig origin, StoringConfig arrival, State state) {
         this.state = state;
         this.originalConfig = origin;
+        /*comment printing inventory content
         for (int i=0 ; i<state.getPlayers()[1].getInventory().size() ; i++){
             System.err.println("Piece num"+getPositionInInventory(state.getPlayers()[1].getInventory().get(i).getId())+"dans l'inv a la place "+i);
-        }
+        }*/
         int piece;
         CoordGene<Integer> source, destination;
         int nbPiecesOnBoardBefore = 0, nbPiecesOnBoardAfter = 0;
