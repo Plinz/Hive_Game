@@ -27,9 +27,80 @@ public class BugsDisplacementsTests
     {
         this.stconf = new StoringConfig(TOTALNBPIECES);
     }
-            
+        
     @Test
-    public void testQueenRespectsOneHive()
+    public void testQueenRespectsOneHiveWithOneNeighbor()
+    {
+        /*** initializing test game ***/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (5,6)
+        stconf.setX(QUEEN + 14, (byte) 5);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (6,6)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 6);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black grasshopper 1 in (4,7)
+        stconf.setX(GRASSHOPPER1 + 14, (byte) 4);
+        stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
+        
+        /*** game initialized ***/
+        
+        PieceNode queenNode = new PieceNode(stconf, 0);
+        GameConfig gameconf = new GameConfig(stconf, 5);
+        
+        assertTrue(gameconf.RespectsOneHive(queenNode));
+    }
+    
+    @Test
+    public void testQueenRespectsOneHiveWithManyNeighbors()
+    {
+        /*** initializing test game ***/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,5)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 5);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (5,4)
+        stconf.setX(BEETLE1, (byte) 5);
+        stconf.setY(BEETLE1, (byte) 4);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black spider 1 in (4,4)
+        stconf.setX(SPIDER1 + 14, (byte) 4);
+        stconf.setY(SPIDER1 + 14, (byte) 4);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //black ant 1 in (3,5)
+        stconf.setX(ANT1 + 14, (byte) 3);
+        stconf.setY(ANT1 + 14, (byte) 5);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
+        /*** game initialized ***/
+        
+        PieceNode queenNode = new PieceNode(stconf, 0);
+        GameConfig gameconf = new GameConfig(stconf, 7);
+        
+        assertTrue(gameconf.RespectsOneHive(queenNode));
+    }
+    
+    @Test
+    public void testQueenDoesNotRespectOneHiveWithManyNeighbors()
     {
         /*** initializing test game ***/
         
@@ -47,20 +118,30 @@ public class BugsDisplacementsTests
         stconf.setX(BEETLE1, (byte) 6);
         stconf.setY(BEETLE1, (byte) 4);
         stconf.setIsOnBoard(BEETLE1, true);
-
+        
         //black spider 1 in (4,4)
         stconf.setX(SPIDER1 + 14, (byte) 4);
         stconf.setY(SPIDER1 + 14, (byte) 4);
         stconf.setIsOnBoard(SPIDER1 + 14, true);
         
+        //white grasshopper 1 in (6,3)
+        stconf.setX(GRASSHOPPER1, (byte) 6);
+        stconf.setY(GRASSHOPPER1, (byte) 3);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+        
+        //black ant 1 in (3,5)
+        stconf.setX(ANT1 + 14, (byte) 3);
+        stconf.setY(ANT1 + 14, (byte) 5);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
         /*** game initialized ***/
         
         PieceNode queenNode = new PieceNode(stconf, 0);
-        GameConfig gameconf = new GameConfig(stconf, 5);
+        GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertFalse(gameconf.RespectsOneHive(queenNode));
     }
-    
+        
     @Test
     public void testQueenCannotPassGates()
     {
