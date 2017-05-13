@@ -319,7 +319,7 @@ public class GameConfig {
 
         //now from an arraylist of coords we get arraylist of stconf
         ArrayList<StoringConfig> result = new ArrayList<>();
-        for (Coord coord : resultCoords) {
+        for (Coord coord : possibleDestinations) {
             StoringConfig newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) coord.getX());
             newStoringConfig.setY(node.piece, (byte) coord.getY());
@@ -333,7 +333,7 @@ public class GameConfig {
 
         //save the possible dests in the PieceNode for later heuristics calculations
         node.possibleDestinations = resultCoords;
-
+        System.err.println("PossibleAntDest :result size ="+result.size());
         return result;
     }
 
