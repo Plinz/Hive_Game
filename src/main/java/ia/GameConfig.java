@@ -218,7 +218,7 @@ public class GameConfig {
         ArrayList<Coord> possibleCoords = getPossibleSlidingDestinations(getCoord(node));
 
         //save the possible dests in the PieceNode for later heuristics calculations
-        node.PossibleDestinations = possibleCoords;
+        node.possibleDestinations = possibleCoords;
 
         for (Coord possibleCoord : possibleCoords) {
             StoringConfig newStConfig = new StoringConfig(storingConfig);
@@ -273,7 +273,7 @@ public class GameConfig {
         node.setY(originalY);
 
         //save the possible dests in the PieceNode for later heuristics calculations
-        node.PossibleDestinations = resultCoords;
+        node.possibleDestinations = resultCoords;
 
         return result;
     }
@@ -325,7 +325,7 @@ public class GameConfig {
         node.setY(originalY);
 
         //save the possible dests in the PieceNode for later heuristics calculations
-        node.PossibleDestinations = resultCoords;
+        node.possibleDestinations = resultCoords;
 
         return result;
     }
@@ -351,7 +351,7 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
-            node.PossibleDestinations.add(currentCoord);
+            node.possibleDestinations.add(currentCoord);
         }
 
         //NorthEast
@@ -364,7 +364,7 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
-            node.PossibleDestinations.add(currentCoord);
+            node.possibleDestinations.add(currentCoord);
         }
 
         //SouthEast
@@ -377,7 +377,7 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
-            node.PossibleDestinations.add(currentCoord);
+            node.possibleDestinations.add(currentCoord);
         }
 
         //West
@@ -390,7 +390,7 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
-            node.PossibleDestinations.add(currentCoord);
+            node.possibleDestinations.add(currentCoord);
         }
 
         //NorthWest
@@ -403,7 +403,7 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
-            node.PossibleDestinations.add(currentCoord);
+            node.possibleDestinations.add(currentCoord);
         }
 
         //SouthWest
@@ -416,7 +416,7 @@ public class GameConfig {
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
             newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
             result.add(newStoringConfig);
-            node.PossibleDestinations.add(currentCoord);
+            node.possibleDestinations.add(currentCoord);
         }
 
         return result;
@@ -460,7 +460,7 @@ public class GameConfig {
                     newStoringConfig.setIsStuck(nodeToStuck.piece, true);
                 }
                 //add the coord to the beetle PossibleDest
-                node.PossibleCubeDestinations.add(new Cube<>(neighborsCoords[i].getX(), neighborsCoords[i].getY(), destinationHeight));
+                node.possibleCubeDestinations.add(new Cube<>(neighborsCoords[i].getX(), neighborsCoords[i].getY(), destinationHeight));
                 //and now add the storingConfig to result
                 result.add(newStoringConfig);
             }
