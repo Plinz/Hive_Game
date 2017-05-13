@@ -73,6 +73,7 @@ public class StoringConfig {
                         if (current.getPiece().getTeam() == 1) {
                             index += total_pieces_nb / 2;
                         }
+                        /*
                         //type
                         switch (current.getPiece().getName()) {
                             //Ants
@@ -133,7 +134,8 @@ public class StoringConfig {
                             default:
                                 System.err.println("Erreur : Nom de tuile inconnu présent dans la board");
                                 break;
-                        }
+                        }*/
+                        index += current.getPiece().getId();
                         this.setX(index, (byte) current.getX());
                         this.setY(index, (byte) current.getY());
                         this.setZ(index, (byte) current.getZ());
@@ -253,6 +255,7 @@ public class StoringConfig {
                     StoringConfig newStoringConfig = new StoringConfig(this);
                     newStoringConfig.setX(start, (byte) coord.getX());
                     newStoringConfig.setY(start, (byte) coord.getY());
+                    newStoringConfig.setIsOnBoard(start, true);
                     result.add(newStoringConfig);
                 }
                 System.err.println("Possible 7 & 8 Turn :");
