@@ -84,8 +84,12 @@ public class AIMove {
 
     //translates the pieceID into the index of the piece in the player's inventory
     public int getPositionInInventory(int pieceId) {
-        if (pieceId >= (originalConfig.config.length/2))
+        if (pieceId >= (originalConfig.config.length/2)){
+            System.err.println("getPosInInv : avant modif pieceId="+pieceId);
             pieceId -= originalConfig.config.length/2;
+            System.err.println("getPosInInv : apres modif pieceId="+pieceId);
+        }
+            
         List<Piece> inventory = state.getPlayers()[state.getCurrentPlayer()].getInventory();
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getId() == pieceId) {

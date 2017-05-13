@@ -141,7 +141,12 @@ public class GameConfig {
     }
 
     public PieceNode getHighestNode(Coord coord) {
+        //case of invalid coord
+        if (!coord.isValidCoord()) return null;
+        
         PieceNode node = board[coord.getX()][coord.getY()];
+        //case of empty coord
+        if (node == null) return null;
         while (node.pieceAbove != null) {
             node = node.pieceAbove;
         }
@@ -580,9 +585,11 @@ public class GameConfig {
 
     //same method as getFirstTurnMove,, but we put the new tile east of opponents tile
     ArrayList<StoringConfig> getSecondTurnMove() {
+        int start = currentPlayer * nbPiecesPerColor;
+        int finish = start + nbPiecesPerColor;
         int lastType = -1;
         ArrayList<StoringConfig> result = new ArrayList<>();
-        for (int i = 0; i < nbPiecesPerColor; i++) {
+        for (int i = start; i < finish; i++) {
             //check to try only one typeof piece
             if (IdToType(i) != lastType) {
                 lastType = IdToType(i);
@@ -603,6 +610,10 @@ public class GameConfig {
      */
     //PIECE_ID into PIECE_TYPE
     public int IdToType(int id) {
+        if (id >= nbPiecesPerColor){
+            id -=nbPiecesPerColor;
+        }
+        
         if (id <= Consts.QUEEN) {
             return Consts.QUEEN_TYPE;
         } else if (id <= Consts.SPIDER2) {
