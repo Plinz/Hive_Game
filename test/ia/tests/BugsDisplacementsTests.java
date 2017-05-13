@@ -254,7 +254,7 @@ public class BugsDisplacementsTests
     }
     
     @Test
-    public void testSpiderRespectsOneHive()
+    public void testSpiderDoesNotRespectOneHiveWithManyNeighbors()
     {
         /*************** initializing test game ***************/
         
