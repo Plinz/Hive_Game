@@ -21,6 +21,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
@@ -28,6 +30,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -36,7 +42,6 @@ import javafx.scene.text.Text;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.model.Piece;
-import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.Highlighter;
@@ -53,7 +58,6 @@ public class GameScreenController implements Initializable {
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
     @FXML private Text namePlayer2;
-    @FXML private MenuItem launchNewGame;
     private Main main;
     private Core core;
     private int pieceToChoose;
@@ -63,7 +67,7 @@ public class GameScreenController implements Initializable {
     private Highlighter highlighted;
     private TraducteurBoard t;
     private boolean freeze;
-
+    private ToggleGroup inventoryGroup;
     
     public void setMainApp(Main mainApp) {
         this.main = mainApp;    
@@ -97,6 +101,7 @@ public class GameScreenController implements Initializable {
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         freeze = false;
+        inventoryGroup = new ToggleGroup();
         
         initButtonByInventory();
         initGameCanvas();
@@ -198,22 +203,38 @@ public class GameScreenController implements Initializable {
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX()-10,t.getMoveOrigin().getY()));
     }
     
+    public void handleUndoButton(){
+        core.previousState();
+        resetPiece();
+        highlighted.setListTohighlight(null);
+        initButtonByInventory();
+    }
     
+    public void handleRedoButton(){
+        core.nextState();
+        resetPiece();
+        highlighted.setListTohighlight(null);
+        initButtonByInventory();
+    }
     /*Fin des handlers */
     
     /*Méthodes d'initialisation */
     public void initButtonByInventory() {
-        if(core.getCurrentState().getCurrentPlayer() == 0){
-            
-            //inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.EMPTY)));
-            inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-            inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+        inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
+        if(core.getCurrentState().getCurrentPlayer() == 0){           
+            //inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            //inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
             namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à vous de jouer !");
             namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " attend !");
         }
         else{
-            inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
-            inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            //inventoryPlayer1.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+            //inventoryPlayer2.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
+
             namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " attend !");
             namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à vous de jouer !");
         } 
@@ -229,24 +250,26 @@ public class GameScreenController implements Initializable {
         for (int i = 0; i < inventory.size(); i++) {
             String name = inventory.get(i).getName();
             int team = inventory.get(i).getTeam();
-            Button b = new Button();
+            ToggleButton b = new ToggleButton();
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if(core.getCurrentState().getCurrentPlayer() == 0 && !freeze){
-                b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
+                b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
+                b.getStyleClass().add("buttonInventory");
+                inventoryGroup.getToggles().add(b);
             }
-            if(i%4 == 0){
+            if(i != 0 && i%4 == 0){
                 col = 0;
                 line++;
             }
-            else{
-                col++;
-            }
+            
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
             GridPane.setValignment(b, VPos.TOP);
             inventoryPlayer1.getChildren().add(b);
+            col++;
+            
         }
     }
     
@@ -258,35 +281,36 @@ public class GameScreenController implements Initializable {
         for (int i = 0; i < inventory.size(); i++) {
             String name = inventory.get(i).getName();
             int team = inventory.get(i).getTeam();
-            Button b = new Button();
+            ToggleButton b = new ToggleButton();
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
             
             if(core.getCurrentState().getCurrentPlayer() == 1 && !freeze){
-                b.setOnMousePressed(new ControllerButtonPiece(this,highlighted,core, i));
-                b.setOnMouseEntered(new EventHandler<MouseEvent>(){
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        b.setEffect(new InnerShadow(10, Color.WHITE));
-                    }                  
-                });
+                b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
+                b.getStyleClass().add("buttonInventory");
+                inventoryGroup.getToggles().add(b);
             }
-            if(i%4 == 0){
+            
+            if(i!= 0 && i%4 == 0){
                 col = 0;
                 line++;
             }
-            else{
-                col++;
-            }
+            
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
             GridPane.setValignment(b, VPos.TOP);
             inventoryPlayer2.getChildren().add(b);
+             col++;
         }
+    }
+
+    public ToggleGroup getInventoryGroup() {
+        return inventoryGroup;
     }
     
     public void resetPiece(){
+        if(inventoryGroup.getSelectedToggle() != null)
+            inventoryGroup.getSelectedToggle().setSelected(false);
         pieceToMove = null;
         pieceToChoose = -1;
     }
@@ -299,13 +323,13 @@ public class GameScreenController implements Initializable {
         dialog.setTitle("Fin de partie !");
         switch(core.getStatus()){
             case 0 :
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à perdu !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à gagné !");
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " a perdu !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " a gagné !");
                 dialog.setContentText("Le joueur noir remporte la victoire !");
                 break;
             case 1 :
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à gagné !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à perdu !");
+                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " a gagné !");
+                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " a perdu !");
                 dialog.setContentText("Le joueur blanc remporte la victoire");
                 break;
             case Consts.NUL:

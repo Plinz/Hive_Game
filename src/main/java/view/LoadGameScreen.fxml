@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1270.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoadGameScreenController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1270.0" styleClass="backgroundImage" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoadGameScreenController">
     <stylesheets>
         <URL value="@loadgamescreen.css" />
     </stylesheets>
@@ -29,7 +29,7 @@
          <children>
             <Label alignment="CENTER" prefHeight="25.0" prefWidth="401.0" text="Charger partie" GridPane.columnIndex="1">
                <font>
-                  <Font size="20.0" />
+                  <Font name="System Bold" size="24.0" />
                </font>
             </Label>
             <GridPane prefHeight="321.0" prefWidth="455.0" GridPane.columnIndex="2" GridPane.rowIndex="2">

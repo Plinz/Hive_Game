@@ -176,7 +176,7 @@ public class Core {
 
 	public boolean previousState() {
 		if (history.hasPreviousState()) {
-			currentState = history.getPreviousState();
+			currentState = history.getPreviousState(this.getCurrentState());
 			return true;
 		}
 		return false;
@@ -184,9 +184,10 @@ public class Core {
 
 	public boolean nextState() {
 		if (history.hasNextState()) {
-			currentState = history.getNextState();
+			currentState = history.getNextState(this.getCurrentState());
 			return true;
 		}
+                System.err.println("gargl");
 		return false;
 	}
 

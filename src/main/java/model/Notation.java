@@ -18,7 +18,6 @@ public class Notation {
 			t = neighbors.get(0);
 			char team = t.getPiece().getTeam() == 0 ? 'w' : 'b';
 			CoordGene<Integer> offset = new CoordGene<Integer>(coord.getX() - t.getX(), coord.getY() - t.getY());
-			System.out.println(offset);
 			if (offset.getX() == 1 && offset.getY() == 0)
 				notation += " " + team + Consts.getNotation(t.getPiece().getId()) + "-";
 			if (offset.getX() == 0 && offset.getY() == 1)
@@ -38,7 +37,7 @@ public class Notation {
 	public static String getHumanDescription(String notation, boolean add){
 		String[] tokens = notation.split(" ");
 		String description = (add ? "ajoute" : "déplace") + " la pièce ";
-		description += Consts.getName(Consts.getId(tokens[0].substring(1)));
+		description += Consts.getName(Consts.getId(tokens[0].substring(1))) + (tokens[0].charAt(0) == 'w' ? " blanche" : " noire");
 		if (tokens.length == 2){
 			switch (tokens[1].charAt(0)){
 			case '-':
@@ -60,6 +59,8 @@ public class Notation {
 					break;
 				case '\\':
 					description += " en bas à droite de la pièce " + Consts.getName(Consts.getId(tokens[1].substring(1, tokens[1].length()-1))) + (tokens[1].charAt(0) == 'w' ? " blanche" : " noire");
+				default :
+					description += " sur la pièce " + Consts.getName(Consts.getId(tokens[1].substring(1))) + (tokens[1].charAt(0) == 'w' ? " blanche" : " noire");
 				}
 			}
 		}

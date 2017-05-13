@@ -161,7 +161,6 @@ public class GameConfig {
         Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
         for (int i = 0; i < 6; i++) {
             PieceNode neighbor = getNode(neighborsCoords[i]);
-            System.out.println("getNode : " + neighbor);
             if (neighbor != null) {
                 result.add(neighbor);
             }
@@ -471,7 +470,7 @@ public class GameConfig {
 
     public boolean RespectsOneHive(PieceNode node) {
         // 1st check -> if there's only one neighbor -> no need to go further
-        ArrayList<PieceNode> neighbors = getNeighborsInArrayList(node);
+        ArrayList<PieceNode> neighbors = this.getNeighborsInArrayList(node);
         if (neighbors.size() == 1) {
             return true;
         }
@@ -489,35 +488,28 @@ public class GameConfig {
 
         //marking both the moving node & the first neighbor we put in the set
         node.setIsVisited(true);
-        
+        this.board[node.getX()][node.getY()] = node;
         neighbor.setIsVisited(true);
-        
-        System.out.println("NODE : "+node);
-        System.out.println("FIRST : " + neighbor.toString());
         
         PieceNode current_node;
         ArrayList<PieceNode> nodeSet = new ArrayList<>();
         nodeSet.add(neighbor);
         while (!nodeSet.isEmpty()) {
             current_node = nodeSet.get(0);
-            neighbors = getNeighborsInArrayList(current_node);
+            neighbors = this.getNeighborsInArrayList(current_node);
             for (PieceNode current_node_neighbor : neighbors) {
-                System.out.println("NEIGHBOR" + current_node_neighbor.toString());
                 if (!current_node_neighbor.isVisited) {
-                    System.out.println("NEIGHBOR ADDED");
                     current_node_neighbor.setIsVisited(true);
                     nodeSet.add(current_node_neighbor);
                 }
             }
             nodeSet.remove(current_node);
-            System.out.println("END LOOP");
         }
 
         //CAN BE OPTIMIZED : TEST ONLY OTHER NEIGHBORS OF THE ORIGINAL NODE
         for (PieceNode[] boardX : board) {
             for (PieceNode boardXY : boardX) {
                 if (boardXY != null && !boardXY.isVisited) {
-                    System.out.println(">>>>>>>"+boardXY.toString());
                     return false;
                 }
             }

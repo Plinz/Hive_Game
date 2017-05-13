@@ -67,7 +67,8 @@ public class PieceNode {
         return this.pieceAbove;
     }
 
-    /*public String toString() {
+    @Override
+    public String toString() {
         String result = "Piece : " + piece + ";(x,y,z)=" + x + "," + y + "," + z + ".";
         if (isOnBoard) {
             result += "On board.";
@@ -77,10 +78,13 @@ public class PieceNode {
         if (isStuck()) {
             result += "Is stuck.";
         }
-        result += String.valueOf(this.isVisited());
+        if (isVisited())
+        {
+            result += "Is visited.";
+        }
         result += "\n";
         return result;
-    }*/
+    }
 
     public void setStuck(boolean stuck) {
         this.stuck = stuck;
@@ -102,4 +106,40 @@ public class PieceNode {
     {
         this.isVisited = visited;
     }
+    
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+            return true;
+        
+        if (object == null)
+            return false;
+        
+        if (this.getClass() != object.getClass())
+            return false;
+        
+        PieceNode obj = (PieceNode) object;
+        return ((this.x == obj.x) && (this.y == obj.y) && (this.z == obj.z)
+                && (this.piece == obj.piece) && (this.stuck == obj.stuck)
+                && (this.isOnBoard == obj.isOnBoard) && (this.pieceAbove.equals(obj.pieceAbove))
+                && (this.PossibleDestinations.equals(obj.PossibleDestinations)));
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        final int prime = 83;
+        int result = 5;
+        result += prime * (this.x << 1);
+        result += (prime+1) * (this.y << 2);
+        result += (prime+2) * (this.z << 3);
+        result += prime * this.piece & 11;
+        result += result * (this.stuck ? 3 : 5);
+        result += result * (this.isOnBoard ? 7 : 9);
+        result += prime + ((this.pieceAbove == null) ? 0 : this.pieceAbove.hashCode());
+        result += prime + ((this.PossibleDestinations == null) ? 0 : this.PossibleDestinations.hashCode());
+        return result;
+    }
+    
 }

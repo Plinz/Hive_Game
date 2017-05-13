@@ -36,11 +36,13 @@ public class History {
 		return !this.nextState.isEmpty();
 	}
 	
-	public State getPreviousState(){
-		return this.nextState.push(this.previousState.pop());
+	public State getPreviousState(State current){
+                this.nextState.push(current);
+		return this.previousState.pop();
 	}
 	
-	public State getNextState(){
+	public State getNextState(State current){
+                this.previousState.push(current);
 		return this.nextState.pop();
 	}
 
