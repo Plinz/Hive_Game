@@ -326,4 +326,27 @@ public class StoringConfig {
         }
         return result;
     }
+    
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object)
+            return true;
+        
+        if (object == null)
+            return false;
+        
+        if (this.getClass() != object.getClass())
+            return false;
+        
+        StoringConfig obj = (StoringConfig) object;
+        if (this.config.length != obj.config.length)
+            return false;
+        
+        for (int i = 0; i < this.config.length; i++)
+            if (this.config[i] != obj.config[i])
+                return false;
+        return true;
+    }
+    
 }
