@@ -328,7 +328,7 @@ public class BugsDisplacementsTests
         /*************** game initialized ***************/
         
         PieceNode spiderNode = new PieceNode(stconf, 1);
-        GameConfig gameconf = new GameConfig(stconf, 5);
+        GameConfig gameconf = new GameConfig(stconf, 9);
         
         assertTrue(gameconf.getPossibleSpiderDestinations(spiderNode).isEmpty());
     }
@@ -566,6 +566,84 @@ public class BugsDisplacementsTests
         List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
 
         assertEquals(gameconf.getPossibleSpiderDestinations(spiderNode),outputList);    
+    }
+    
+    @Test
+    public void testGrassHopperCannotMoveWhenStuck()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5,0)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (5,6,0)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white spider 1 in (6,5,0)
+        stconf.setX(GRASSHOPPER1, (byte) 6);
+        stconf.setY(GRASSHOPPER1, (byte) 5);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+        
+        //black grasshopper 1 in (4,7,0)
+        stconf.setX(GRASSHOPPER1 + 14, (byte) 4);
+        stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
+        
+        //white beetle 1 in (6,5,1)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setZ(BEETLE1, (byte) 1);
+        stconf.setIsStuck(GRASSHOPPER1, true);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black grasshopper 2 in (3,7,0)
+        stconf.setX(GRASSHOPPER2 + 14, (byte) 3);
+        stconf.setY(GRASSHOPPER2 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER2 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode grassHopperNode = new PieceNode(stconf, 3);
+        GameConfig gameconf = new GameConfig(stconf, 9);
+        
+        assertTrue(gameconf.getPossibleSpiderDestinations(grassHopperNode).isEmpty());
+    }
+    
+    @Test
+    public void testGrassHopperRespectsOneHiveWithOneNeighbor()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white grasshopper 1 in (6,5)
+        stconf.setX(GRASSHOPPER1, (byte) 6);
+        stconf.setY(GRASSHOPPER1, (byte) 5);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+        
+        //black grasshopper 1 in (4,7)
+        stconf.setX(GRASSHOPPER1 + 14, (byte) 4);
+        stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode grassHopperNode = new PieceNode(stconf, 3);
+        GameConfig gameconf = new GameConfig(stconf, 5);
+        
+        assertTrue(gameconf.RespectsOneHive(grassHopperNode));
     }
     
 }
