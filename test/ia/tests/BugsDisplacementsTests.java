@@ -872,4 +872,56 @@ public class BugsDisplacementsTests
         assertEquals(gameconf.getPossibleGrassHopperDestinations(grassHopperNode),outputList);
     }
     
+    @Test
+    public void testGrassHopperDoesNotJumpWhenFirstTileIsEmpty()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+        
+        //black queen in (4,5)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 5);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+        
+        //white grasshopper 1 in (6,5)
+        stconf.setX(GRASSHOPPER1, (byte) 6);
+        stconf.setY(GRASSHOPPER1, (byte) 5);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+        
+        //black spider 1 in (5,4)
+        stconf.setX(SPIDER1 + 14, (byte) 5);
+        stconf.setY(SPIDER1 + 14, (byte) 4);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //white spider 1 in (6,3)
+        stconf.setX(SPIDER1, (byte) 6);
+        stconf.setY(SPIDER1, (byte) 3);
+        stconf.setIsOnBoard(SPIDER1, true);
+        
+        //black ant 1 in (4,4)
+        stconf.setX(ANT1 + 14, (byte) 4);
+        stconf.setY(ANT1 + 14, (byte) 4);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        /*************** creating output StoringConfigs ***************/
+        
+        //output config n°1 : white grasshopper 1 moves to (3,5)
+        this.outputconf1 = new StoringConfig(this.stconf);
+        outputconf1.setX(GRASSHOPPER1, (byte) 3);
+        outputconf1.setY(GRASSHOPPER1, (byte) 5);
+        
+        PieceNode grassHopperNode = new PieceNode(stconf, GRASSHOPPER1);
+        GameConfig gameconf = new GameConfig(stconf, 9);
+        List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1));
+
+        assertEquals(gameconf.getPossibleGrassHopperDestinations(grassHopperNode),outputList);
+    }
+    
+    
 }
