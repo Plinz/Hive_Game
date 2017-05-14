@@ -1,15 +1,11 @@
 package ia.tests;
-import static java.lang.Boolean.valueOf;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static java.util.Optional.empty;
 import main.java.ia.GameConfig;
 import main.java.ia.PieceNode;
 import main.java.ia.StoringConfig;
 import static main.java.utils.Consts.*;
-import main.java.utils.Coord;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
