@@ -47,7 +47,7 @@ public class BugsDisplacementsTests
         stconf.setX(BEETLE1, (byte) 5);
         stconf.setY(BEETLE1, (byte) 5);
         stconf.setZ(BEETLE1, (byte) 1);
-        stconf.setIsStuck(0, true);
+        stconf.setIsStuck(QUEEN, true);
         stconf.setIsOnBoard(BEETLE1, true);
         
         //black grasshopper 1 in (4,7,0)
@@ -289,9 +289,54 @@ public class BugsDisplacementsTests
     }
     
     @Test
+    public void testSpiderCannotMoveWhenStuck()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5,0)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (5,6,0)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white spider 1 in (6,5,0)
+        stconf.setX(SPIDER1, (byte) 6);
+        stconf.setY(SPIDER1, (byte) 5);
+        stconf.setIsOnBoard(SPIDER1, true);
+        
+        //black grasshopper 1 in (4,7,0)
+        stconf.setX(GRASSHOPPER1 + 14, (byte) 4);
+        stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
+        
+        //white beetle 1 in (6,5,1)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setZ(BEETLE1, (byte) 1);
+        stconf.setIsStuck(SPIDER1, true);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black grasshopper 2 in (3,7,0)
+        stconf.setX(GRASSHOPPER2 + 14, (byte) 3);
+        stconf.setY(GRASSHOPPER2 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER2 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode spiderNode = new PieceNode(stconf, 1);
+        GameConfig gameconf = new GameConfig(stconf, 5);
+        
+        assertTrue(gameconf.getPossibleSpiderDestinations(spiderNode).isEmpty());
+    }
+    
+    @Test
     public void testSpiderRespectsOneHiveWithOneNeighbor()
     {
-        /*** initializing test game ***/
+        /*************** initializing test game ***************/
         
         //white queen in (5,5)
         stconf.setX(QUEEN, (byte) 5);
@@ -313,7 +358,7 @@ public class BugsDisplacementsTests
         stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
         stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
         
-        /*** game initialized ***/
+        /*************** game initialized ***************/
         
         PieceNode spiderNode = new PieceNode(stconf, 1);
         GameConfig gameconf = new GameConfig(stconf, 5);
