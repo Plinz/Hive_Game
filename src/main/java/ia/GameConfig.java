@@ -364,19 +364,6 @@ public class GameConfig {
             node.possibleDestinations.add(currentCoord);
         }
 
-        //NorthEast
-        currentCoord = this.getCoord(node).getNorthEast();
-        if (!this.isFreeCoord(currentCoord)) {
-            while (!this.isFreeCoord(currentCoord)) {
-                currentCoord = currentCoord.getNorthEast();
-            }
-            newStoringConfig = new StoringConfig(storingConfig);
-            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
-            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
-            result.add(newStoringConfig);
-            node.possibleDestinations.add(currentCoord);
-        }
-
         //SouthEast
         currentCoord = this.getCoord(node).getSouthEast();
         if (!this.isFreeCoord(currentCoord)) {
@@ -390,6 +377,19 @@ public class GameConfig {
             node.possibleDestinations.add(currentCoord);
         }
 
+        //SouthWest
+        currentCoord = this.getCoord(node).getSouthWest();
+        if (!this.isFreeCoord(currentCoord)) {
+            while (!this.isFreeCoord(currentCoord)) {
+                currentCoord = currentCoord.getSouthWest();
+            }
+            newStoringConfig = new StoringConfig(storingConfig);
+            newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
+            newStoringConfig.setY(node.piece, (byte) currentCoord.getY());
+            result.add(newStoringConfig);
+            node.possibleDestinations.add(currentCoord);
+        }
+        
         //West
         currentCoord = this.getCoord(node).getWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -416,11 +416,11 @@ public class GameConfig {
             node.possibleDestinations.add(currentCoord);
         }
 
-        //SouthWest
-        currentCoord = this.getCoord(node).getSouthWest();
+        //NorthEast
+        currentCoord = this.getCoord(node).getNorthEast();
         if (!this.isFreeCoord(currentCoord)) {
             while (!this.isFreeCoord(currentCoord)) {
-                currentCoord = currentCoord.getSouthWest();
+                currentCoord = currentCoord.getNorthEast();
             }
             newStoringConfig = new StoringConfig(storingConfig);
             newStoringConfig.setX(node.piece, (byte) currentCoord.getX());
@@ -428,7 +428,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.possibleDestinations.add(currentCoord);
         }
-
+        
         return result;
     }
 

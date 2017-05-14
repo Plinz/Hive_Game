@@ -732,4 +732,103 @@ public class BugsDisplacementsTests
         assertFalse(gameconf.RespectsOneHive(grassHopperNode));
     }
     
+     @Test
+    public void testGrassHopperJumpsOverAllPiecesOfEachLine()
+    {
+        /*************** initializing test game ***************/
+
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+        
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+        
+        //white grasshopper 1 in (4,5)
+        stconf.setX(GRASSHOPPER1, (byte) 4);
+        stconf.setY(GRASSHOPPER1, (byte) 5);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+        
+        //black spider 1 in (3,6)
+        stconf.setX(SPIDER1 + 14, (byte) 3);
+        stconf.setY(SPIDER1 + 14, (byte) 6);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //white spider 1 in (4,4)
+        stconf.setX(SPIDER1, (byte) 4);
+        stconf.setY(SPIDER1, (byte) 4);
+        stconf.setIsOnBoard(SPIDER1, true);
+        
+        //black spider 2 in (5,4)
+        stconf.setX(SPIDER2 + 14, (byte) 5);
+        stconf.setY(SPIDER2 + 14, (byte) 4);
+        stconf.setIsOnBoard(SPIDER2 + 14, true);
+        
+        //white beetle 1 in (6,5)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black ant 1 in (3,5)
+        stconf.setX(ANT1 + 14, (byte) 3);
+        stconf.setY(ANT1 + 14, (byte) 5);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
+        //white grasshopper 2 in (7,5)
+        stconf.setX(GRASSHOPPER2, (byte) 7);
+        stconf.setY(GRASSHOPPER2, (byte) 5);
+        stconf.setIsOnBoard(GRASSHOPPER2, true);
+        
+        //black ant 2 in (2,7)
+        stconf.setX(ANT2 + 14, (byte) 2);
+        stconf.setY(ANT2 + 14, (byte) 7);
+        stconf.setIsOnBoard(ANT2 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        /*************** creating output StoringConfigs ***************/
+        
+        //output config n°1 : white grasshopper 1 moves to (8,5)
+        this.outputconf1 = new StoringConfig(this.stconf);
+        outputconf1.setX(GRASSHOPPER1, (byte) 8);
+        outputconf1.setY(GRASSHOPPER1, (byte) 5);
+        
+        // output config n°2 : white grasshopper 1 moves to (4,7)
+        this.outputconf2 = new StoringConfig(this.stconf);
+        outputconf2.setX(GRASSHOPPER1, (byte) 4);
+        outputconf2.setY(GRASSHOPPER1, (byte) 7);
+        
+        // output config n°3 : white grasshopper 1 moves to (1,8)
+        this.outputconf3 = new StoringConfig(this.stconf);
+        outputconf3.setX(GRASSHOPPER1, (byte) 1);
+        outputconf3.setY(GRASSHOPPER1, (byte) 8);
+        
+        // output config n°4 : white grasshopper 1 moves to (2,5)
+        this.outputconf4 = new StoringConfig(this.stconf);
+        outputconf4.setX(GRASSHOPPER1, (byte) 2);
+        outputconf4.setY(GRASSHOPPER1, (byte) 5);
+        
+        // output config n°5 : white grasshopper 1 moves to (4,3)
+        this.outputconf5 = new StoringConfig(this.stconf);
+        outputconf5.setX(GRASSHOPPER1, (byte) 4);
+        outputconf5.setY(GRASSHOPPER1, (byte) 3);
+        
+        // output config n°6 : white grasshopper 1 moves to (6,3)
+        this.outputconf6 = new StoringConfig(this.stconf);
+        outputconf6.setX(GRASSHOPPER1, (byte) 6);
+        outputconf6.setY(GRASSHOPPER1, (byte) 3);
+
+        /*************** output StoringConfigs created ***************/
+            
+        PieceNode grassHopperNode = new PieceNode(stconf, GRASSHOPPER1);
+        GameConfig gameconf = new GameConfig(stconf, 15);
+        List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2, outputconf3,
+                                                                       outputconf4, outputconf5, outputconf6));
+
+        assertEquals(gameconf.getPossibleGrassHopperDestinations(grassHopperNode),outputList);
+    }
+    
 }
