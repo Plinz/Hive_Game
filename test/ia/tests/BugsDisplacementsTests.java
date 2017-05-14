@@ -57,7 +57,7 @@ public class BugsDisplacementsTests
         
         /*** game initialized ***/
         
-        PieceNode queenNode = new PieceNode(stconf, 0);
+        PieceNode queenNode = new PieceNode(stconf, QUEEN);
         GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertTrue(gameconf.getPossibleQueenDestinations(queenNode).isEmpty());
@@ -90,7 +90,7 @@ public class BugsDisplacementsTests
         
         /*** game initialized ***/
         
-        PieceNode queenNode = new PieceNode(stconf, 0);
+        PieceNode queenNode = new PieceNode(stconf, QUEEN);
         GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertTrue(gameconf.RespectsOneHive(queenNode));
@@ -128,7 +128,7 @@ public class BugsDisplacementsTests
         
         /*** game initialized ***/
         
-        PieceNode queenNode = new PieceNode(stconf, 0);
+        PieceNode queenNode = new PieceNode(stconf, QUEEN);
         GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertTrue(gameconf.RespectsOneHive(queenNode));
@@ -171,7 +171,7 @@ public class BugsDisplacementsTests
         
         /*** game initialized ***/
         
-        PieceNode queenNode = new PieceNode(stconf, 0);
+        PieceNode queenNode = new PieceNode(stconf, QUEEN);
         GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertFalse(gameconf.RespectsOneHive(queenNode));
@@ -228,7 +228,7 @@ public class BugsDisplacementsTests
 
         /*************** output StoringConfigs created ***************/
             
-        PieceNode queenNode = new PieceNode(stconf, 0);
+        PieceNode queenNode = new PieceNode(stconf, QUEEN);
         GameConfig gameconf = new GameConfig(stconf, 7);
         List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
 
@@ -281,7 +281,7 @@ public class BugsDisplacementsTests
 
         /*************** output StoringConfigs created ***************/
         
-        PieceNode queenNode = new PieceNode(stconf, 0);
+        PieceNode queenNode = new PieceNode(stconf, QUEEN);
         GameConfig gameconf = new GameConfig(stconf, 9);
         List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
 
@@ -327,7 +327,7 @@ public class BugsDisplacementsTests
         
         /*************** game initialized ***************/
         
-        PieceNode spiderNode = new PieceNode(stconf, 1);
+        PieceNode spiderNode = new PieceNode(stconf, SPIDER1);
         GameConfig gameconf = new GameConfig(stconf, 9);
         
         assertTrue(gameconf.getPossibleSpiderDestinations(spiderNode).isEmpty());
@@ -360,7 +360,7 @@ public class BugsDisplacementsTests
         
         /*************** game initialized ***************/
         
-        PieceNode spiderNode = new PieceNode(stconf, 1);
+        PieceNode spiderNode = new PieceNode(stconf, SPIDER1);
         GameConfig gameconf = new GameConfig(stconf, 5);
         
         assertTrue(gameconf.RespectsOneHive(spiderNode));
@@ -382,8 +382,8 @@ public class BugsDisplacementsTests
         stconf.setIsOnBoard(QUEEN + 14, true);
 
         //white spider 1 in (5,6)
-        stconf.setX(SPIDER1, (byte) 6);
-        stconf.setY(SPIDER1, (byte) 5);
+        stconf.setX(SPIDER1, (byte) 5);
+        stconf.setY(SPIDER1, (byte) 6);
         stconf.setIsOnBoard(SPIDER1, true);
 
         //black ant 1 in (3,6)
@@ -446,7 +446,7 @@ public class BugsDisplacementsTests
         
         /*************** game initialized ***************/
         
-        PieceNode spiderNode = new PieceNode(stconf, 1);
+        PieceNode spiderNode = new PieceNode(stconf, SPIDER1);
         GameConfig gameconf = new GameConfig(stconf, 5);
         
         assertFalse(gameconf.RespectsOneHive(spiderNode));
@@ -503,7 +503,7 @@ public class BugsDisplacementsTests
 
         /*************** output StoringConfigs created ***************/
             
-        PieceNode spiderNode = new PieceNode(stconf, 1);
+        PieceNode spiderNode = new PieceNode(stconf, SPIDER1);
         GameConfig gameconf = new GameConfig(stconf, 7);
         List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
 
@@ -561,7 +561,7 @@ public class BugsDisplacementsTests
 
         /*************** output StoringConfigs created ***************/
             
-        PieceNode spiderNode = new PieceNode(stconf, 1);
+        PieceNode spiderNode = new PieceNode(stconf, SPIDER1);
         GameConfig gameconf = new GameConfig(stconf, 7);
         List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2));
 
@@ -607,7 +607,7 @@ public class BugsDisplacementsTests
         
         /*************** game initialized ***************/
         
-        PieceNode grassHopperNode = new PieceNode(stconf, 3);
+        PieceNode grassHopperNode = new PieceNode(stconf, GRASSHOPPER1);
         GameConfig gameconf = new GameConfig(stconf, 9);
         
         assertTrue(gameconf.getPossibleSpiderDestinations(grassHopperNode).isEmpty());
@@ -640,10 +640,96 @@ public class BugsDisplacementsTests
         
         /*************** game initialized ***************/
         
-        PieceNode grassHopperNode = new PieceNode(stconf, 3);
+        PieceNode grassHopperNode = new PieceNode(stconf, GRASSHOPPER1);
         GameConfig gameconf = new GameConfig(stconf, 5);
         
         assertTrue(gameconf.RespectsOneHive(grassHopperNode));
+    }
+    
+    @Test
+    public void testGrassHopperRespectsOneHiveWithManyNeighbors()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white grasshopper 1 in (5,6)
+        stconf.setX(GRASSHOPPER1, (byte) 5);
+        stconf.setY(GRASSHOPPER1, (byte) 6);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+
+        //black ant 1 in (3,6)
+        stconf.setX(ANT1 + 14, (byte) 3);
+        stconf.setY(ANT1 + 14, (byte) 6);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
+        //white beetle 1 in (6,5)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black beetle 1 in (4,5)
+        stconf.setX(BEETLE1 + 14, (byte) 4);
+        stconf.setY(BEETLE1 + 14, (byte) 5);
+        stconf.setIsOnBoard(BEETLE1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode grassHopperNode = new PieceNode(stconf, GRASSHOPPER1);
+        GameConfig gameconf = new GameConfig(stconf, 9);
+        
+        assertTrue(gameconf.RespectsOneHive(grassHopperNode));
+    }
+    
+    @Test
+    public void testGrassHopperDoesNotRespectOneHiveWithManyNeighbors()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white grasshopper 1 in (6,5)
+        stconf.setX(GRASSHOPPER1, (byte) 6);
+        stconf.setY(GRASSHOPPER1, (byte) 5);
+        stconf.setIsOnBoard(GRASSHOPPER1, true);
+
+        //black spider 1 in (3,6)
+        stconf.setX(SPIDER1 + 14, (byte) 3);
+        stconf.setY(SPIDER1 + 14, (byte) 6);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        //white ant 1 in (7,5)
+        stconf.setX(ANT1, (byte) 7);
+        stconf.setY(ANT1, (byte) 5);
+        stconf.setIsOnBoard(ANT1, true);
+        
+        //black spider 2 in (2,6)
+        stconf.setX(SPIDER2 + 14, (byte) 2);
+        stconf.setY(SPIDER2 + 14, (byte) 6);
+        stconf.setIsOnBoard(SPIDER2 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode grassHopperNode = new PieceNode(stconf, GRASSHOPPER1);
+        GameConfig gameconf = new GameConfig(stconf, 7);
+        
+        assertFalse(gameconf.RespectsOneHive(grassHopperNode));
     }
     
 }
