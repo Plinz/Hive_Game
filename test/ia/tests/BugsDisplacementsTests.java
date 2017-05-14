@@ -29,6 +29,41 @@ public class BugsDisplacementsTests
     }
         
     @Test
+    public void testQueenCannotMoveWhenStuck()
+    {
+        /*** initializing test game ***/
+        
+        //white queen in (5,5,0)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (5,6,0)
+        stconf.setX(QUEEN + 14, (byte) 5);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (5,5,1)
+        stconf.setX(BEETLE1, (byte) 5);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setZ(BEETLE1, (byte) 1);
+        stconf.setIsStuck(0, true);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black grasshopper 1 in (4,7,0)
+        stconf.setX(GRASSHOPPER1 + 14, (byte) 4);
+        stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
+        
+        /*** game initialized ***/
+        
+        PieceNode queenNode = new PieceNode(stconf, 0);
+        GameConfig gameconf = new GameConfig(stconf, 7);
+        
+        assertTrue(gameconf.getPossibleQueenDestinations(queenNode).isEmpty());
+    }
+    
+    @Test
     public void testQueenRespectsOneHiveWithOneNeighbor()
     {
         /*** initializing test game ***/
@@ -56,7 +91,7 @@ public class BugsDisplacementsTests
         /*** game initialized ***/
         
         PieceNode queenNode = new PieceNode(stconf, 0);
-        GameConfig gameconf = new GameConfig(stconf, 5);
+        GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertTrue(gameconf.RespectsOneHive(queenNode));
     }
