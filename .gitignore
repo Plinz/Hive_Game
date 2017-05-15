@@ -22,3 +22,6 @@ manifest.mf
 nbproject/
 /build/
 /dist/
+
+#config file
+init.xml
