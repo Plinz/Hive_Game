@@ -23,10 +23,7 @@ public class AIMove {
     public AIMove(StoringConfig origin, StoringConfig arrival, State state) {
         this.state = state;
         this.originalConfig = origin;
-        /*comment printing inventory content
-        for (int i=0 ; i<state.getPlayers()[1].getInventory().size() ; i++){
-            System.err.println("Piece num"+getPositionInInventory(state.getPlayers()[1].getInventory().get(i).getId())+"dans l'inv a la place "+i);
-        }*/
+        
         int piece;
         CoordGene<Integer> source, destination;
         int nbPiecesOnBoardBefore = 0, nbPiecesOnBoardAfter = 0;
@@ -43,7 +40,7 @@ public class AIMove {
         if (nbPiecesOnBoardAfter != nbPiecesOnBoardBefore) {
             for (int i = 0; i < origin.config.length; i++) {
                 if (!origin.isOnBoard(i) && arrival.isOnBoard(i)) {
-                    this.piece = getPositionInInventory(i);
+                    this.piece = i;
                     Integer destX, destY;
                     destX = (int) arrival.getX(i);
                     destY = (int) arrival.getY(i);
@@ -75,10 +72,8 @@ public class AIMove {
 
     public boolean play() {
         if (AddNewTile) {
-            System.err.println("AIMove : nextmove : add piece with piece(position in inventory) = " + piece+"and dest="+ destination.toString());
             return core.addPiece(piece, destination);
         } else {
-            System.err.println("AIMove : nextmove : move piece with source = " + source.toString()+"and dest="+ destination.toString());
             return core.movePiece(source, destination);
         }
     }
