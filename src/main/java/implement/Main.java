@@ -28,6 +28,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Hive_Game");
+        this.primaryStage.setScene(new Scene(new AnchorPane()));
         showMainMenu();
         this.primaryStage.show();
     }
@@ -42,8 +43,12 @@ public class Main extends Application {
             MainMenuController controller = loader.getController();
             controller.setMainApp(this);
             
-            Scene scene = new Scene(personOverview);
-            primaryStage.setScene(scene);
+            primaryStage.getScene().setRoot(personOverview);
+            
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
 
             // Set person overview into the center of root layout.
         } catch (IOException e) {
@@ -61,8 +66,12 @@ public class Main extends Application {
             NewGameScreenController controller = loader.getController();
             controller.setMainApp(this);
             
-            Scene scene = new Scene(personOverview);
-            primaryStage.setScene(scene);
+            primaryStage.getScene().setRoot(personOverview);
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
+            
 
             // Set person overview into the center of root layout.
         } catch (IOException e) {
@@ -80,8 +89,11 @@ public class Main extends Application {
             LoadGameScreenController controller = loader.getController();
             controller.setMainApp(this);
             
-            Scene scene = new Scene(personOverview);
-            primaryStage.setScene(scene);
+            primaryStage.getScene().setRoot(personOverview);
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
 
             // Set person overview into the center of root layout.
         } catch (IOException e) {
@@ -100,8 +112,11 @@ public class Main extends Application {
             RulesScreenController controller = loader.getController();
             controller.setMainApp(this);
             
-            Scene scene = new Scene(personOverview);
-            primaryStage.setScene(scene);
+            primaryStage.getScene().setRoot(personOverview);
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
 
             // Set person overview into the center of root layout.
         } catch (IOException e) {
@@ -119,8 +134,11 @@ public class Main extends Application {
             GameScreenController controller = loader.getController();
             controller.initGame(this, c);
             
-            Scene scene = new Scene(personOverview);
-            primaryStage.setScene(scene);
+            primaryStage.getScene().setRoot(personOverview);
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
 
             // Set person overview into the center of root layout.
         } catch (IOException e) {
@@ -137,10 +155,14 @@ public class Main extends Application {
             
             OptionsScreenController controller = loader.getController();
             controller.setMainApp(this);
-            
-            Scene scene = new Scene(personOverview);
+                
             controller.init();
-            primaryStage.setScene(scene);
+            primaryStage.getScene().setRoot(personOverview);
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
+            
 
             // Set person overview into the center of root layout.
         } catch (IOException e) {
