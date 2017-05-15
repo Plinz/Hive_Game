@@ -220,8 +220,8 @@ public class GameScreenController implements Initializable {
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
                 Core c = new Core(core.getMode(),Consts.EASY);
-                c.getCurrentState().getPlayers()[0].setName(core.getCurrentState().getPlayers()[0].getName());
-                c.getCurrentState().getPlayers()[1].setName(core.getCurrentState().getPlayers()[1].getName());
+                c.getPlayers()[0].setName(core.getPlayers()[0].getName());
+                c.getPlayers()[1].setName(core.getPlayers()[1].getName());
                 r.stop();
                 main.showGameScreen(c);
         }
@@ -281,18 +281,18 @@ public class GameScreenController implements Initializable {
     /*Méthodes d'initialisation */
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
-        if(core.getCurrentState().getCurrentPlayer() == 0){           
+        if(core.getCurrentPlayer() == 0){           
             inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
             inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
-            namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " à vous de jouer !");
-            namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " attend !");
+            namePlayer1.setText(core.getPlayers()[0].getName() + " à vous de jouer !");
+            namePlayer2.setText(core.getPlayers()[1].getName() + " attend !");
         }
         else{
             inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
             inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
 
-            namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " attend !");
-            namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " à vous de jouer !");
+            namePlayer1.setText(core.getPlayers()[0].getName() + " attend !");
+            namePlayer2.setText(core.getPlayers()[1].getName() + " à vous de jouer !");
         } 
         initPlayer1Button();
         initPlayer2Button();
@@ -300,7 +300,7 @@ public class GameScreenController implements Initializable {
         
     public void initPlayer1Button(){
         inventoryPlayer1.getChildren().remove(0, inventoryPlayer1.getChildren().size());
-        List<Piece> inventory = core.getCurrentState().getPlayers()[0].getInventory();
+        List<Piece> inventory = core.getPlayers()[0].getInventory();
         int line = 0;
         int col = 0;
         for (int i = 0; i < inventory.size(); i++) {
@@ -310,7 +310,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if(core.getCurrentState().getCurrentPlayer() == 0 && !freeze){
+            if(core.getCurrentPlayer() == 0 && !freeze){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -333,7 +333,7 @@ public class GameScreenController implements Initializable {
     
     public void initPlayer2Button(){
         inventoryPlayer2.getChildren().remove(0, inventoryPlayer2.getChildren().size());
-        List<Piece> inventory = core.getCurrentState().getPlayers()[1].getInventory();
+        List<Piece> inventory = core.getPlayers()[1].getInventory();
         int line = 0;
         int col = 0;
         for (int i = 0; i < inventory.size(); i++) {
@@ -343,7 +343,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
             
-            if(core.getCurrentState().getCurrentPlayer() == 1 && !freeze){
+            if(core.getCurrentPlayer() == 1 && !freeze){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -383,18 +383,18 @@ public class GameScreenController implements Initializable {
         dialog.setTitle("Fin de partie !");
         switch(core.getStatus()){
             case 0 :
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " a perdu !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " a gagné !");
+                namePlayer1.setText(core.getPlayers()[0].getName() + " a perdu !");
+                namePlayer2.setText(core.getPlayers()[1].getName() + " a gagné !");
                 dialog.setContentText("Le joueur noir remporte la victoire !");
                 break;
             case 1 :
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " a gagné !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " a perdu !");
+                namePlayer1.setText(core.getPlayers()[0].getName() + " a gagné !");
+                namePlayer2.setText(core.getPlayers()[1].getName() + " a perdu !");
                 dialog.setContentText("Le joueur blanc remporte la victoire");
                 break;
             case Consts.NUL:
-                namePlayer1.setText(core.getCurrentState().getPlayers()[0].getName() + " : match nul !");
-                namePlayer2.setText(core.getCurrentState().getPlayers()[1].getName() + " : match nul !");
+                namePlayer1.setText(core.getPlayers()[0].getName() + " : match nul !");
+                namePlayer2.setText(core.getPlayers()[1].getName() + " : match nul !");
                 dialog.setContentText("Match nul");
                 break;
             default :
