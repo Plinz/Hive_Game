@@ -26,14 +26,14 @@ public class GameConfig {
     public GameConfig(StoringConfig storingConfig) {
 
         int totalPiecesNb = storingConfig.config.length;
-
+        HeuristicsFactory heuristicsFactory = new HeuristicsFactory();
         this.turn = storingConfig.turn;
         this.currentPlayer = storingConfig.currentPlayer;
         this.nbPiecesPerColor = totalPiecesNb / 2;
         this.storingConfig = storingConfig;
         this.pieces = new PieceNode[totalPiecesNb];
         this.board = new PieceNode[totalPiecesNb][totalPiecesNb];
-
+        this.heuristics = heuristicsFactory.buildHeuristics(storingConfig.difficulty, this);
         PieceNode pieceNode;
         int pieceID;
 
@@ -59,6 +59,7 @@ public class GameConfig {
                 }
             }
         }
+        this.calculateAll();
     }
 
     /*
@@ -523,6 +524,9 @@ public class GameConfig {
         return result;
     }
 
+    /*
+     *              ONE HIVE RULE
+     */
     public boolean RespectsOneHive(PieceNode node) {
         // 1st check -> if there's only one neighbor -> no need to go further
         ArrayList<PieceNode> neighbors = this.getNeighborsInArrayList(node);

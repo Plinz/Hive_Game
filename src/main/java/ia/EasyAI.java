@@ -5,6 +5,7 @@ package main.java.ia;
 
 import java.util.Random;
 import main.java.model.Core;
+import main.java.utils.Consts;
 
 public class EasyAI extends AI {
 
@@ -14,7 +15,7 @@ public class EasyAI extends AI {
 
     public EasyAI(Core core) {
         this.core = core;
-        this.OriginalConfig = new StoringConfig(core);
+        this.OriginalConfig = new StoringConfig(core, Consts.EASY);
     }
 
     @Override
@@ -22,11 +23,9 @@ public class EasyAI extends AI {
         AIMove result;
                 
         this.core = core;
-        this.OriginalConfig = new StoringConfig(core);
+        this.OriginalConfig = new StoringConfig(core, Consts.EASY);
         GameConfig gameConfig = new GameConfig(OriginalConfig);
-        gameConfig.heuristics = new EasyHeuristics(gameConfig);
         
-        gameConfig.calculateAll();
 
         int originalHeuristic = gameConfig.heuristics.getHeuristicsValue();
         int nextMoveHeuristic, bestHeuristic = originalHeuristic;

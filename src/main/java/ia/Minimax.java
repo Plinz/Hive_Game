@@ -15,14 +15,10 @@ public class Minimax {
     int depth;
     
     
-    public Minimax(Core core){
-        this.currentPlayer = core.getCurrentPlayer();
-        this.config = new StoringConfig(core);
-    }
-    
-    public Minimax(StoringConfig stConfig, int player){
+
+    public Minimax(StoringConfig stConfig){
         this.config = stConfig;
-        this.currentPlayer = player;
+        this.currentPlayer = stConfig.currentPlayer;
     }
     
     /*public void makeChildren(){

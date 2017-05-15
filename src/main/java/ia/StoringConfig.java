@@ -18,23 +18,20 @@ import java.util.List;
 import main.java.model.Column;
 import main.java.model.Core;
 import main.java.model.Tile;
-import main.java.utils.Consts;
-import main.java.utils.Coord;
+
 
 public class StoringConfig {
 
     public int config[];
-    public int turn, currentPlayer;
+    public int turn, currentPlayer, difficulty;
 
-    public StoringConfig(int nb_pieces) {
-        config = new int[nb_pieces];
-    }
 
     public StoringConfig(StoringConfig stconf) {
         this.config = new int[stconf.config.length];
         System.arraycopy(stconf.config, 0, this.config, 0, stconf.config.length);
         this.turn = stconf.turn;
         this.currentPlayer = stconf.currentPlayer;
+        this.difficulty = stconf.difficulty;
     }
 
     /*
@@ -43,9 +40,10 @@ public class StoringConfig {
     Advantage -> this is much lighter (about 44 bytes heavy for a whole
     game configuration.
      */
-    public StoringConfig(Core core) {
+    public StoringConfig(Core core, int difficulty) {
         this.turn = core.getTurn();
         this.currentPlayer = core.getCurrentPlayer();
+        this.difficulty = difficulty;
         List<Column> board = core.getBoard().getBoard();
         Tile current;
 
@@ -157,10 +155,6 @@ public class StoringConfig {
         toAdd <<= 6;
         config[index] |= toAdd;
     }
-
-    /*
-     *                   NEXT MOVE
-     */
 
     /*
      *                  UTILS

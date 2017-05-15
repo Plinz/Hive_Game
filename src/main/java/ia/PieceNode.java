@@ -23,13 +23,13 @@ public class PieceNode {
     ArrayList<Coord> possibleDestinations;
     ArrayList<Cube<Integer>> possibleCubeDestinations; //for beetle & mosquito -> we need cube coords
 
-    public PieceNode(StoringConfig config, int index) {
-        this.x = config.getX(index);
-        this.y = config.getY(index);
-        this.z = config.getZ(index);
-        this.piece = index;
-        this.stuck = config.isStuck(index);
-        this.isOnBoard = config.isOnBoard(index);
+    public PieceNode(StoringConfig config, int pieceId) {
+        this.x = config.getX(pieceId);
+        this.y = config.getY(pieceId);
+        this.z = config.getZ(pieceId);
+        this.piece = pieceId;
+        this.stuck = config.isStuck(pieceId);
+        this.isOnBoard = config.isOnBoard(pieceId);
         this.isVisited = false;
         this.pieceAbove = null;
         this.possibleDestinations = new ArrayList<>();
