@@ -23,16 +23,20 @@ public class GameConfig {
     /*
      *              CONSTRUCTOR
      */
-    public GameConfig(StoringConfig storingConfig, int turn) {
+    public GameConfig(StoringConfig storingConfig) {
+
         int totalPiecesNb = storingConfig.config.length;
-        this.turn = turn;
+
+        this.turn = storingConfig.turn;
         this.currentPlayer = storingConfig.currentPlayer;
         this.nbPiecesPerColor = totalPiecesNb / 2;
         this.storingConfig = storingConfig;
         this.pieces = new PieceNode[totalPiecesNb];
         this.board = new PieceNode[totalPiecesNb][totalPiecesNb];
+
         PieceNode pieceNode;
         int pieceID;
+
         //fillling up the pieces and grid arrays
         for (pieceID = 0; pieceID < totalPiecesNb; pieceID++) {
             pieceNode = new PieceNode(storingConfig, pieceID);
@@ -41,6 +45,7 @@ public class GameConfig {
                 board[pieceNode.getX()][pieceNode.getY()] = pieceNode;
             }
         }
+
         //for pieces not on the floor -> we put them in the grid now
         //the piece below can link to the next directly
         for (pieceID = 0; pieceID < totalPiecesNb; pieceID++) {
@@ -57,142 +62,10 @@ public class GameConfig {
     }
 
     /*
-     *              TESTS
-     */
-    public boolean isFreeCoord(Coord coord) {
-        if (!coord.isValidCoord()) {
-            return true;
-        }
-        return this.board[coord.getX()][coord.getY()] == null;
-    }
-
-    public boolean isFreeCoord(Cube<Integer> cube) {
-        if ((cube.getX().intValue() < 0) || (cube.getY().intValue() < 0)) {
-            return true;
-        }
-        PieceNode node = this.board[cube.getX()][cube.getY()];
-        int z = cube.getZ();
-        while ((z > 0) && (node != null)) {
-            node = node.pieceAbove;
-            --z;
-        }
-        return node == null;
-    }
-
-    public boolean isSameColor(PieceNode node1, PieceNode node2) {
-        //one of both is null -> ret true
-        if ((node1 == null) || (node2 == null)) {
-            return true;
-        }
-
-        PieceNode visibleNode1 = node1;
-        PieceNode visibleNode2 = node2;
-
-        while (visibleNode1.pieceAbove != null) {
-            visibleNode1 = visibleNode1.pieceAbove;
-        }
-        while (visibleNode2.pieceAbove != null) {
-            visibleNode2 = visibleNode2.pieceAbove;
-        }
-        boolean isNode1White = visibleNode1.piece < nbPiecesPerColor;
-        boolean isNode2White = visibleNode2.piece < nbPiecesPerColor;
-        return ((isNode1White && isNode2White) || (!isNode1White && !isNode2White));
-    }
-
-    /*
-     *              GETTERS
-     */
-    public PieceNode[] getPieces() {
-        return pieces;
-    }
-
-    public PieceNode[][] getBoard() {
-        return board;
-    }
-
-    public int getNbPiecesPerColor() {
-        return nbPiecesPerColor;
-    }
-
-    public PieceNode getNode(Cube<Integer> cube) {
-        int z = cube.getZ();
-        PieceNode node = this.board[cube.getX()][cube.getY()];
-        while ((node != null) && (z > 0)) {
-            --z;
-            node = node.pieceAbove;
-        }
-        return node;
-    }
-
-    public PieceNode getNode(int pieceID) {
-        return pieces[pieceID];
-    }
-
-    //returns the lowest piece present on (x,y) if there are several
-    // and null if there is nothing
-    public PieceNode getNode(Coord coord) {
-        if (coord.isValidCoord()) {
-            return board[coord.getX()][coord.getY()];
-        } else {
-            return null;
-        }
-    }
-
-    public Coord getCoord(PieceNode node) {
-        return new Coord(node.getX(), node.getY());
-    }
-
-    public Coord getCoord(int pieceId) {
-        return getCoord(pieces[pieceId]);
-    }
-
-    public Cube<Integer> getCube(PieceNode node) {
-        return new Cube<>(node.getX(), node.getY(), node.getZ());
-    }
-
-    public PieceNode getHighestNode(Coord coord) {
-        //case of invalid coord
-        if (!coord.isValidCoord()) {
-            return null;
-        }
-
-        PieceNode node = board[coord.getX()][coord.getY()];
-        //case of empty coord
-        if (node == null) {
-            return null;
-        }
-        while (node.pieceAbove != null) {
-            node = node.pieceAbove;
-        }
-        return node;
-    }
-
-    public int getHeight(Coord coord) {
-        int result = 0;
-        PieceNode currentNode = getNode(coord);
-        while (currentNode != null) {
-            result++;
-            currentNode = currentNode.pieceAbove;
-        }
-        return result;
-    }
-
-    public ArrayList<PieceNode> getNeighborsInArrayList(PieceNode node) {
-        ArrayList<PieceNode> result = new ArrayList<>();
-        Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
-        for (int i = 0; i < 6; i++) {
-            PieceNode neighbor = getNode(neighborsCoords[i]);
-            if (neighbor != null) {
-                result.add(neighbor);
-            }
-        }
-        return result;
-    }
-
-    /*
      *              CALCUL NEXT MOVES & HEURISTICS
      */
     public void calculateAll() {
+        
         int start = nbPiecesPerColor * currentPlayer;
         int finish = start + nbPiecesPerColor;
 
@@ -207,6 +80,7 @@ public class GameConfig {
                 break;
             default:
                 ArrayList<Coord> possibleNewPositions = getNewPossiblePositions();
+                
                 //if queen is not yet on board during turn 7 or 8
                 if ((turn == 7 || turn == 8) && (!getNode(start).isOnBoard)) {
                     for (Coord coord : possibleNewPositions) {
@@ -236,7 +110,7 @@ public class GameConfig {
                                     || ((j == Consts.BEETLE2) && (!getNode(Consts.BEETLE1).isOnBoard))
                                     || ((j == Consts.ANT2) && (!getNode(Consts.ANT1).isOnBoard))
                                     || ((j == Consts.ANT3) && (!getNode(Consts.ANT2).isOnBoard))) {
-                                //do nothing -> the same kind of piece was just added
+                                //if true -> do nothing -> the same kind of piece was just added
                             } else {
                                 for (Coord coord : possibleNewPositions) {
                                     StoringConfig newStoringConfig = new StoringConfig(storingConfig);
@@ -257,17 +131,98 @@ public class GameConfig {
     }
 
     /*
+     *              NEW POSITIONS
+     */
+    public ArrayList<Coord> getNewPossiblePositions() {
+        int start = currentPlayer * nbPiecesPerColor;
+        int finish = start + nbPiecesPerColor;
+        ArrayList<Coord> result = new ArrayList<>();
+        Coord currentNodeCoord, currentNeighborCoord;
+
+        //costy triple loop, but looks like no choice about it 
+        //-> maximum 11*6*6 = around 400
+        for (int pieceId = start; pieceId < finish; pieceId++) {
+            //find pieces from currentPlayer already on board
+            if (pieces[pieceId].isOnBoard) {
+                currentNodeCoord = getCoord(pieces[pieceId]);
+                Coord[] neighborsCoords = currentNodeCoord.getNeighborsInArray();
+                for (int i = 0; i < 6; i++) {
+                    if (isFreeCoord(neighborsCoords[i])) {
+                        Coord[] neighborsOfNeighbor = neighborsCoords[i].getNeighborsInArray();
+                        boolean canBeAdded = true;
+                        for (int j = 0; j < 6; j++) {
+                            currentNeighborCoord = neighborsOfNeighbor[j];
+                            //System.out.println("LOLLOLL " + currentNeighborCoord);
+                            if ((currentNeighborCoord.isValidCoord()) && (!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord)))) {
+                                canBeAdded = false;
+                            }
+                        }
+                        if (canBeAdded) {
+                            result.add(neighborsCoords[i]);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /*
+     *              FIRST & SECOND TURN
+     */
+    ArrayList<StoringConfig> getFirstTurnMove() {
+        //put whatever type of piece on board in position (0,0)
+        int lastType = -1;
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (int i = 0; i < nbPiecesPerColor; i++) {
+            //check to try only one typeof piece
+            if (IdToType(i) != lastType) {
+                lastType = IdToType(i);
+                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+                newStoringConfig.setX(i, (byte) 0);
+                newStoringConfig.setY(i, (byte) 0);
+                newStoringConfig.setZ(i, (byte) 0);
+                newStoringConfig.setIsOnBoard(i, true);
+                result.add(newStoringConfig);
+            }
+        }
+        return result;
+    }
+
+    //same method as getFirstTurnMove,, but we put the new tile east of opponents tile
+    ArrayList<StoringConfig> getSecondTurnMove() {
+        int start = currentPlayer * nbPiecesPerColor;
+        int finish = start + nbPiecesPerColor;
+        int lastType = -1;
+        ArrayList<StoringConfig> result = new ArrayList<>();
+        for (int i = start; i < finish; i++) {
+            //check to try only one typeof piece
+            if (IdToType(i) != lastType) {
+                lastType = IdToType(i);
+                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+                newStoringConfig.setX(i, (byte) 0);
+                newStoringConfig.setY(i, (byte) 1);
+                newStoringConfig.setZ(i, (byte) 0);
+                newStoringConfig.setIsOnBoard(i, true);
+                result.add(newStoringConfig);
+            }
+        }
+
+        return result;
+    }
+
+    /*
      *              DEPLACEMENTS
      */
     public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
         int piece_type = IdToType(node.piece % nbPiecesPerColor);
         int queenId = currentPlayer * nbPiecesPerColor;
-        
+
         //check queen is on board
-        if (!getNode(queenId).isOnBoard){
+        if (!getNode(queenId).isOnBoard) {
             return new ArrayList<>();
         }
-        
+
         switch (piece_type) {
             case Consts.QUEEN_TYPE:
                 return getPossibleQueenDestinations(node);
@@ -284,8 +239,8 @@ public class GameConfig {
         }
     }
 
-    /**
-     * ******************* Slidind bugs (Ant, spider & queen) **************
+    /*
+     *              SLIDING BUGS (Ant, spider & queen) 
      */
     ///Getting the available neighbors when sliding -> method used to calculate
     ///displacements of the ant, spider & queen.
@@ -424,8 +379,8 @@ public class GameConfig {
         return result;
     }
 
-    /**
-     * ******************* Other bugs (Beetle & grasshopper) **************
+    /*
+     *              OTHER BUGS (Beetle & grasshopper)
      */
     public ArrayList<StoringConfig> getPossibleGrassHopperDestinations(PieceNode node) {
         if ((!this.RespectsOneHive(node)) || node.isStuck()) {
@@ -529,13 +484,13 @@ public class GameConfig {
             //setting maxHeight
             int destinationHeight = getHeight(neighborsCoords[i]);
             maxHeight = (node.getZ() > destinationHeight ? node.getZ() : destinationHeight);
-            
+
             //check that the move respects freedom to move rule
             if (((getHeight(neighborsCoords[(i + 1) % 6]) < (maxHeight + 1))
                     || (getHeight(neighborsCoords[(i + 5) % 6]) < (maxHeight + 1)))
                     && ((getNode(neighborsCoords[(i + 1) % 6]) != null)
                     || (getNode(neighborsCoords[(i + 5) % 6]) != null)
-                    ||(destinationHeight>0))) {
+                    || (destinationHeight > 0))) {
                 StoringConfig newStoringConfig = new StoringConfig(storingConfig);
 
                 //Unstuck the piece which was below the beetle
@@ -547,13 +502,13 @@ public class GameConfig {
                         break;
                     }
                 }
-                
+
                 //if there's a piece underneath, set stuck to true
                 PieceNode nodeToStuck = getHighestNode(neighborsCoords[i]);
                 if (nodeToStuck != null) {
                     newStoringConfig.setIsStuck(nodeToStuck.piece, true);
                 }
-                
+
                 //move the beetle to new position in newStoringConfig
                 newStoringConfig.setX(node.piece, (byte) neighborsCoords[i].getX());
                 newStoringConfig.setY(node.piece, (byte) neighborsCoords[i].getY());
@@ -619,83 +574,109 @@ public class GameConfig {
     }
 
     /*
-     *              NEW POSITIONS
+     *              TESTS
      */
-    public ArrayList<Coord> getNewPossiblePositions() {
-        int start = currentPlayer * nbPiecesPerColor;
-        int finish = start + nbPiecesPerColor;
-        ArrayList<Coord> result = new ArrayList<>();
-        Coord currentNodeCoord, currentNeighborCoord;
-
-        //costy triple loop, but looks like no choice about it 
-        //-> maximum 11*6*6 = around 400
-        for (int pieceId = start; pieceId < finish; pieceId++) {
-            //find pieces from currentPlayer already on board
-            if (pieces[pieceId].isOnBoard) {
-                currentNodeCoord = getCoord(pieces[pieceId]);
-                Coord[] neighborsCoords = currentNodeCoord.getNeighborsInArray();
-                for (int i = 0; i < 6; i++) {
-                    if (isFreeCoord(neighborsCoords[i])) {
-                        Coord[] neighborsOfNeighbor = neighborsCoords[i].getNeighborsInArray();
-                        boolean canBeAdded = true;
-                        for (int j = 0; j < 6; j++) {
-                            currentNeighborCoord = neighborsOfNeighbor[j];
-                            //System.out.println("LOLLOLL " + currentNeighborCoord);
-                            if ((currentNeighborCoord.isValidCoord()) && (!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord)))) {
-                                canBeAdded = false;
-                            }
-                        }
-                        if (canBeAdded) {
-                            result.add(neighborsCoords[i]);
-                        }
-                    }
-                }
-            }
+    public boolean isFreeCoord(Coord coord) {
+        if (!coord.isValidCoord()) {
+            return true;
         }
-        return result;
+        return this.board[coord.getX()][coord.getY()] == null;
+    }
+
+    public boolean isFreeCoord(Cube<Integer> cube) {
+        if ((cube.getX().intValue() < 0) || (cube.getY().intValue() < 0)) {
+            return true;
+        }
+        PieceNode node = this.board[cube.getX()][cube.getY()];
+        int z = cube.getZ();
+        while ((z > 0) && (node != null)) {
+            node = node.pieceAbove;
+            --z;
+        }
+        return node == null;
+    }
+
+    public boolean isSameColor(PieceNode node1, PieceNode node2) {
+        //one of both is null -> ret true
+        if ((node1 == null) || (node2 == null)) {
+            return true;
+        }
+
+        PieceNode visibleNode1 = node1;
+        PieceNode visibleNode2 = node2;
+
+        while (visibleNode1.pieceAbove != null) {
+            visibleNode1 = visibleNode1.pieceAbove;
+        }
+        while (visibleNode2.pieceAbove != null) {
+            visibleNode2 = visibleNode2.pieceAbove;
+        }
+        boolean isNode1White = visibleNode1.piece < nbPiecesPerColor;
+        boolean isNode2White = visibleNode2.piece < nbPiecesPerColor;
+        return ((isNode1White && isNode2White) || (!isNode1White && !isNode2White));
     }
 
     /*
-     *              FIRST & SECOND TURN
+     *              GETTERS
      */
-    ArrayList<StoringConfig> getFirstTurnMove() {
-        //put whatever type of piece on board in position (0,0)
-        int lastType = -1;
-        ArrayList<StoringConfig> result = new ArrayList<>();
-        for (int i = 0; i < nbPiecesPerColor; i++) {
-            //check to try only one typeof piece
-            if (IdToType(i) != lastType) {
-                lastType = IdToType(i);
-                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
-                newStoringConfig.setX(i, (byte) 0);
-                newStoringConfig.setY(i, (byte) 0);
-                newStoringConfig.setZ(i, (byte) 0);
-                newStoringConfig.setIsOnBoard(i, true);
-                result.add(newStoringConfig);
-            }
+    public int getNbPiecesPerColor() {
+        return nbPiecesPerColor;
+    }
+
+    public PieceNode getNode(int pieceID) {
+        return pieces[pieceID];
+    }
+
+    //returns the lowest piece present on (x,y) if there are several
+    // and null if there is nothing
+    public PieceNode getNode(Coord coord) {
+        if (coord.isValidCoord()) {
+            return board[coord.getX()][coord.getY()];
+        } else {
+            return null;
+        }
+    }
+
+    public Coord getCoord(PieceNode node) {
+        return new Coord(node.getX(), node.getY());
+    }
+
+    public PieceNode getHighestNode(Coord coord) {
+        //case of invalid coord
+        if (!coord.isValidCoord()) {
+            return null;
+        }
+
+        PieceNode node = board[coord.getX()][coord.getY()];
+        //case of empty coord
+        if (node == null) {
+            return null;
+        }
+        while (node.pieceAbove != null) {
+            node = node.pieceAbove;
+        }
+        return node;
+    }
+
+    public int getHeight(Coord coord) {
+        int result = 0;
+        PieceNode currentNode = getNode(coord);
+        while (currentNode != null) {
+            result++;
+            currentNode = currentNode.pieceAbove;
         }
         return result;
     }
 
-    //same method as getFirstTurnMove,, but we put the new tile east of opponents tile
-    ArrayList<StoringConfig> getSecondTurnMove() {
-        int start = currentPlayer * nbPiecesPerColor;
-        int finish = start + nbPiecesPerColor;
-        int lastType = -1;
-        ArrayList<StoringConfig> result = new ArrayList<>();
-        for (int i = start; i < finish; i++) {
-            //check to try only one typeof piece
-            if (IdToType(i) != lastType) {
-                lastType = IdToType(i);
-                StoringConfig newStoringConfig = new StoringConfig(storingConfig);
-                newStoringConfig.setX(i, (byte) 0);
-                newStoringConfig.setY(i, (byte) 1);
-                newStoringConfig.setZ(i, (byte) 0);
-                newStoringConfig.setIsOnBoard(i, true);
-                result.add(newStoringConfig);
+    public ArrayList<PieceNode> getNeighborsInArrayList(PieceNode node) {
+        ArrayList<PieceNode> result = new ArrayList<>();
+        Coord[] neighborsCoords = getCoord(node).getNeighborsInArray();
+        for (int i = 0; i < 6; i++) {
+            PieceNode neighbor = getNode(neighborsCoords[i]);
+            if (neighbor != null) {
+                result.add(neighbor);
             }
         }
-
         return result;
     }
 

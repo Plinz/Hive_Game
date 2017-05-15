@@ -4,7 +4,7 @@
 package main.java.ia;
 
 import java.util.Random;
-import main.java.model.State;
+import main.java.model.Core;
 
 public class EasyAI extends AI {
 
@@ -12,35 +12,37 @@ public class EasyAI extends AI {
         super();
     }
 
-    public EasyAI(State state) {
-        this.state = state;
-        this.OriginalConfig = new StoringConfig(state);
+    public EasyAI(Core core) {
+        this.core = core;
+        this.OriginalConfig = new StoringConfig(core);
     }
 
     @Override
-    public AIMove getNextMove(State state) {
+    public AIMove getNextMove(Core core) {
         AIMove result;
                 
-        this.state = state;
-        this.OriginalConfig = new StoringConfig(state);
-        GameConfig gameConfig = new GameConfig(OriginalConfig, OriginalConfig.turn);
+        this.core = core;
+        this.OriginalConfig = new StoringConfig(core);
+        GameConfig gameConfig = new GameConfig(OriginalConfig);
         gameConfig.heuristics = new EasyHeuristics(gameConfig);
+        
         gameConfig.calculateAll();
 
-        int originalheuristic = gameConfig.heuristics.getHeuristicsValue();
-        int localHeuristic, bestheuristic = originalheuristic;
+        int originalHeuristic = gameConfig.heuristics.getHeuristicsValue();
+        int nextMoveHeuristic, bestHeuristic = originalHeuristic;
         int originalPieceNb = gameConfig.heuristics.getNbPiecesOnBoard(gameConfig.currentPlayer);
 
         StoringConfig bestConfig = null;
+        
         for (StoringConfig storingConfig : gameConfig.nextPossibleConfigs) {
-            GameConfig newGameConfig = new GameConfig(storingConfig, storingConfig.turn);
+            GameConfig newGameConfig = new GameConfig(storingConfig);
             EasyHeuristics heuristic = new EasyHeuristics(newGameConfig);
-            localHeuristic = heuristic.getHeuristicsValue();
-            System.out.println("Heuristique easy : best ="+bestheuristic+"original="+originalheuristic+"local="+localHeuristic);
-            if (localHeuristic > bestheuristic) {
+            nextMoveHeuristic = heuristic.getHeuristicsValue();
+            System.out.println("Heuristique easy : best ="+bestHeuristic+"original="+originalHeuristic+"local="+nextMoveHeuristic);
+            if (nextMoveHeuristic > bestHeuristic) {
                 bestConfig = storingConfig;
-                bestheuristic = localHeuristic;
-            } else if (bestheuristic == originalheuristic) {
+                bestHeuristic = nextMoveHeuristic;
+            } else if (bestHeuristic == originalHeuristic) {
                 int nbPiecesInNewConfig = heuristic.getNbPiecesOnBoard(gameConfig.currentPlayer);
                 if (nbPiecesInNewConfig > originalPieceNb) {
                     bestConfig = storingConfig;
@@ -48,11 +50,11 @@ public class EasyAI extends AI {
             }
         }
         if (bestConfig != null) {
-            result = new AIMove(OriginalConfig, bestConfig, state);
+            result = new AIMove(OriginalConfig, bestConfig, core);
         } else { //cannot get a better heuristic or add a piece -> do whatever
             Random random = new Random();
             int randomMove = random.nextInt(gameConfig.nextPossibleConfigs.size());
-            result = new AIMove(OriginalConfig, gameConfig.nextPossibleConfigs.get(randomMove), state);
+            result = new AIMove(OriginalConfig, gameConfig.nextPossibleConfigs.get(randomMove), core);
         }
         return result;
     }

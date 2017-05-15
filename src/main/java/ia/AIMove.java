@@ -8,7 +8,6 @@ package main.java.ia;
 import java.util.List;
 import main.java.model.Core;
 import main.java.model.Piece;
-import main.java.model.State;
 import main.java.utils.CoordGene;
 
 public class AIMove {
@@ -17,11 +16,10 @@ public class AIMove {
     CoordGene<Integer> source, destination;
     int piece;
     Core core;
-    State state;
     StoringConfig originalConfig;
     //Constructor -> determines the move from the diff between the 2 configs
-    public AIMove(StoringConfig origin, StoringConfig arrival, State state) {
-        this.state = state;
+    public AIMove(StoringConfig origin, StoringConfig arrival, Core core) {
+        this.core = core;
         this.originalConfig = origin;
         
         int piece;
@@ -90,13 +88,13 @@ public class AIMove {
             System.err.println("getPosInInv : apres modif pieceId="+pieceId);
         }
             
-        List<Piece> inventory = state.getPlayers()[state.getCurrentPlayer()].getInventory();
+        List<Piece> inventory = core.getPlayers()[core.getCurrentPlayer()].getInventory();
         for (int i = 0; i < inventory.size(); i++) {
             if (inventory.get(i).getId() == pieceId) {
                 return i;
             }
         }
-        System.err.println("Erreur : impossible de trouver la piece " + pieceId + " dans l'inventaire du joueur " + state.getCurrentPlayer());
+        System.err.println("Erreur : impossible de trouver la piece " + pieceId + " dans l'inventaire du joueur " + core.getCurrentPlayer());
         return 0;
     }
 

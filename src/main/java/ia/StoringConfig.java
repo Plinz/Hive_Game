@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.model.Column;
-import main.java.model.State;
+import main.java.model.Core;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.Coord;
@@ -43,18 +43,18 @@ public class StoringConfig {
     Advantage -> this is much lighter (about 44 bytes heavy for a whole
     game configuration.
      */
-    public StoringConfig(State state) {
-        this.turn = state.getTurn();
-        this.currentPlayer = state.getCurrentPlayer();
-        List<Column> board = state.getBoard().getBoard();
+    public StoringConfig(Core core) {
+        this.turn = core.getTurn();
+        this.currentPlayer = core.getCurrentPlayer();
+        List<Column> board = core.getBoard().getBoard();
         Tile current;
 
         /// first we find out the total amount of pieces in the game
         //->pieces on the board
-        int total_pieces_nb = state.getBoard().getNbPieceOnTheBoard();
+        int total_pieces_nb = core.getBoard().getNbPieceOnTheBoard();
         // + pieces in hands of p1 & p2
-        total_pieces_nb += state.getPlayers()[0].getInventory().size();
-        total_pieces_nb += state.getPlayers()[1].getInventory().size();
+        total_pieces_nb += core.getPlayers()[0].getInventory().size();
+        total_pieces_nb += core.getPlayers()[1].getInventory().size();
 
         //now it's possible to allocate the config tab
         config = new int[total_pieces_nb];
@@ -161,93 +161,6 @@ public class StoringConfig {
     /*
      *                   NEXT MOVE
      */
-    public ArrayList<StoringConfig> getNextPossibleMoves() {
-        ArrayList<StoringConfig> temp, result = new ArrayList<>();
-        System.err.println("getNextPossibleMove :\nturn =" + turn);
-
-        GameConfig gameConfig = new GameConfig(this, turn);
-
-        //if 1st turn
-        if (turn == 0) {
-            result = gameConfig.getFirstTurnMove();
-            System.err.println("PossibleFirstTurn :");
-            for (StoringConfig storingConfig : result) {
-                System.err.println(storingConfig.toString());
-            }
-            return result;
-            //if 2nd turn
-        } else if (turn == 1) {
-            result = gameConfig.getSecondTurnMove();
-            System.err.println("PossibleSecondTurn :");
-            for (StoringConfig storingConfig : result) {
-                System.err.println(storingConfig.toString());
-            }
-            return result;
-        }
-
-        ArrayList<Coord> possibleNewPositions = gameConfig.getNewPossiblePositions();
-        int start = gameConfig.currentPlayer * gameConfig.nbPiecesPerColor;
-        int finish = start + gameConfig.nbPiecesPerColor;
-
-        //7th & 8th turns -> if player did not play the queen he has to
-        if ((gameConfig.turn == 7) || (gameConfig.turn == 8)) {
-            if (!gameConfig.getNode(start).isOnBoard) {
-                for (Coord coord : possibleNewPositions) {
-                    StoringConfig newStoringConfig = new StoringConfig(this);
-                    newStoringConfig.setX(start, (byte) coord.getX());
-                    newStoringConfig.setY(start, (byte) coord.getY());
-                    newStoringConfig.setIsOnBoard(start, true);
-                    result.add(newStoringConfig);
-                }
-                System.err.println("Possible 7 & 8 Turn :");
-                for (StoringConfig storingConfig : result) {
-                    System.err.println(storingConfig.toString());
-                }
-                return result;
-            }
-        }
-
-        //normal situation
-        // check all pieces from player
-        for (int i = start; i < finish; i++) {
-
-            //piece on board -> check that queen is on board too
-            if (gameConfig.getNode(i).isOnBoard) {
-                if (gameConfig.getNode(start).isOnBoard) {
-                    temp = gameConfig.getPossibleDestinations(gameConfig.getNode(i));
-                    for (StoringConfig stconfig : temp) {
-                        result.add(stconfig);
-                    }
-                }
-            } else {
-                //piece not on board -> add possible positions for it
-                int j = i % gameConfig.nbPiecesPerColor;
-                //stupid condition -> can be refactored
-                if (((j == Consts.SPIDER2) && (!gameConfig.getNode(Consts.SPIDER1).isOnBoard))
-                        || ((j == Consts.GRASSHOPPER2) && (!gameConfig.getNode(Consts.GRASSHOPPER1).isOnBoard))
-                        || ((j == Consts.GRASSHOPPER3) && (!gameConfig.getNode(Consts.GRASSHOPPER2).isOnBoard))
-                        || ((j == Consts.BEETLE2) && (!gameConfig.getNode(Consts.BEETLE1).isOnBoard))
-                        || ((j == Consts.ANT2) && (!gameConfig.getNode(Consts.ANT1).isOnBoard))
-                        || ((j == Consts.ANT3) && (!gameConfig.getNode(Consts.ANT2).isOnBoard))) {
-                    //do nothing -> the same kind of piece was just added
-                } else {
-                    for (Coord coord : possibleNewPositions) {
-                        StoringConfig newStoringConfig = new StoringConfig(this);
-                        newStoringConfig.setX(i, (byte) coord.getX());
-                        newStoringConfig.setY(i, (byte) coord.getY());
-                        newStoringConfig.setIsOnBoard(i, true);
-                        result.add(newStoringConfig);
-                    }
-                }
-            }
-        }
-        /* printing all config for study
-        System.err.println("PossibleNextTurn :");
-        for (StoringConfig storingConfig : result){
-            System.err.println(storingConfig.toString());
-        }*/
-        return result;
-    }
 
     /*
      *                  UTILS
