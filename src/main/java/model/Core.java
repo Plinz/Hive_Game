@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.ia.AIMove;
@@ -17,19 +11,13 @@ import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-@XmlRootElement(name = "core")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Core {
 
-	@XmlElement(name = "history")
-	private History history;
-	@XmlElement(name = "currentState")
+	private HistoryNotation history;
 	private State currentState;
-	@XmlTransient
+	private Emulator emulator;
 	private AI ai;
-	@XmlElement(name = "mode")
 	private int mode;
-	@XmlTransient
 	private int status;
 
 	public Core() {
@@ -38,16 +26,18 @@ public class Core {
 	}
 
 	public Core(int mode, int difficulty) {
-		this.history = new History();
+		this.history = new HistoryNotation();
 		this.currentState = new State();
+		this.emulator = new Emulator(this, currentState.getBoard(), currentState.getPlayers());
 		this.ai = AIFactory.buildAI(difficulty);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 	}
 
-	public Core(History history, State currentState, int mode, int difficulty, int status) {
+	public Core(HistoryNotation history, State currentState, Emulator emulator, int mode, int difficulty, int status) {
 		this.history = history;
 		this.currentState = currentState;
+		this.emulator = emulator;
 		this.ai = AIFactory.buildAI(difficulty);
 		this.mode = mode;
 		this.status = status;
@@ -71,26 +61,34 @@ public class Core {
 				.getBoard().getTile(coord).getPiece().getTeam();
 	}
 
-	public boolean addPiece(int piece, CoordGene<Integer> coord) {
-		if (!canAddPiece(piece))
+	public boolean addPiece(int pieceId, CoordGene<Integer> coord) {
+		if (!canAddPiece(pieceId))
 			return isGameFinish();
+		Piece piece = currentState.getCurrentPlayerObject().removePiece(pieceId);
+		String notation = Notation.getMoveNotation(currentState.getBoard(), piece, coord);
+		String unplay = Notation.getInverseMoveNotation(currentState.getBoard(), piece);
+		currentState.getBoard().addPiece(piece, coord);
+
 		if (mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
-			history.saveState(currentState);
-		System.out.println(Notation.getHumanDescription(Notation.getMoveNotation(currentState.getBoard(), currentState.getCurrentPlayerObject().getInventory().get(piece), coord), true));
-		history.saveMove(currentState.getBoard(), currentState.getCurrentPlayerObject().getInventory().get(piece), coord);
-		currentState.getBoard().addPiece(currentState.getCurrentPlayerObject().removePiece(piece), coord);
+			history.save(notation, unplay);
 		currentState.nextTurn();
 		return playNextTurn();
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
+		Piece piece = currentState.getBoard().getTile(source).getPiece();
+		String notation = Notation.getMoveNotation(currentState.getBoard(), piece, target);
+		String unplay = Notation.getInverseMoveNotation(currentState.getBoard(), piece);
 		if (this.mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
-			history.saveState(currentState);
-		System.out.println(Notation.getHumanDescription(Notation.getMoveNotation(currentState.getBoard(), currentState.getBoard().getTile(source).getPiece(), target), false));
-		history.saveMove(currentState.getBoard(), currentState.getBoard().getTile(source).getPiece(), target);
+			history.save(notation, unplay);
 		currentState.getBoard().movePiece(source, target);
 		currentState.nextTurn();
 		return playNextTurn();
+	}
+	
+	public void removePiece(CoordGene<Integer> coord) {
+		Piece piece = currentState.getBoard().removePiece(coord);
+		currentState.getPlayers()[1 - currentState.getCurrentPlayer()].getInventory().add(piece);
 	}
 
 	private boolean playNextTurn() {
@@ -107,9 +105,9 @@ public class Core {
 		return false;
 	}
 
-	private boolean canAddPiece(int piece) {
+	private boolean canAddPiece(int pieceId) {
 		return (currentState.getTurn() != 6 && currentState.getTurn() != 7) || isQueenOnBoard()
-				|| currentState.getCurrentPlayerObject().getInventory().get(piece).getId() == Consts.QUEEN;
+				|| pieceId == Consts.QUEEN;
 	}
 
 	private boolean isQueenOnBoard() {
@@ -175,39 +173,39 @@ public class Core {
 	}
 
 	public boolean previousState() {
-		if (history.hasPreviousState()) {
-			currentState = history.getPreviousState(this.getCurrentState());
+		if (history.hasPrevious()) {
+			emulator.play(history.getPrevious());
+			currentState.previousTurn();
 			return true;
 		}
 		return false;
 	}
 
 	public boolean nextState() {
-		if (history.hasNextState()) {
-			currentState = history.getNextState(this.getCurrentState());
+		if (history.hasNext()) {
+			emulator.play(history.getNext());
+			currentState.nextTurn();
 			return true;
 		}
-                System.err.println("gargl");
 		return false;
 	}
 
 	public void save(String name) {
-		System.out.println("CICICI");
+		System.out.println("SAVE PROCESS");
 		if (name == null)
 			name = generateSaveName();
 		Save.makeSave(name, this);
 	}
 
 	private String generateSaveName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public History getHistory() {
+	public HistoryNotation getHistory() {
 		return history;
 	}
 
-	public void setHistory(History history) {
+	public void setHistory(HistoryNotation history) {
 		this.history = history;
 	}
 
@@ -217,6 +215,14 @@ public class Core {
 
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
+	}
+
+	public Emulator getEmulator() {
+		return emulator;
+	}
+
+	public void setEmulator(Emulator emulator) {
+		this.emulator = emulator;
 	}
 
 	public AI getAi() {

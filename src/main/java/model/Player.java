@@ -1,6 +1,7 @@
 package main.java.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -86,21 +87,30 @@ public class Player{
 	}
 
 	private void init(){
-		this.inventory.add(new Queen(Consts.QUEEN, team));
-		this.inventory.add(new Spider(Consts.SPIDER1, team));
-		this.inventory.add(new Spider(Consts.SPIDER2, team));
-		this.inventory.add(new Grasshopper(Consts.GRASSHOPPER1, team));
-		this.inventory.add(new Grasshopper(Consts.GRASSHOPPER2, team));
-		this.inventory.add(new Grasshopper(Consts.GRASSHOPPER3, team));
-		this.inventory.add(new Beetle(Consts.BEETLE1, team));
-		this.inventory.add(new Beetle(Consts.BEETLE2, team));
-		this.inventory.add(new Ant(Consts.ANT1, team));
-		this.inventory.add(new Ant(Consts.ANT2, team));
-		this.inventory.add(new Ant(Consts.ANT3, team));
+		inventory.add(new Queen(Consts.QUEEN, team));
+		inventory.add(new Spider(Consts.SPIDER1, team));
+		inventory.add(new Spider(Consts.SPIDER2, team));
+		inventory.add(new Grasshopper(Consts.GRASSHOPPER1, team));
+		inventory.add(new Grasshopper(Consts.GRASSHOPPER2, team));
+		inventory.add(new Grasshopper(Consts.GRASSHOPPER3, team));
+		inventory.add(new Beetle(Consts.BEETLE1, team));
+		inventory.add(new Beetle(Consts.BEETLE2, team));
+		inventory.add(new Ant(Consts.ANT1, team));
+		inventory.add(new Ant(Consts.ANT2, team));
+		inventory.add(new Ant(Consts.ANT3, team));
 	}
 	
-	public Piece removePiece(int piece) {
-		return this.inventory.remove(piece);		
+	public Piece removePiece(int pieceId) {
+		int type = Consts.getType(pieceId);
+		Piece piece = inventory.stream().filter(p -> Consts.getType(p.getId()) == type).min(Comparator.comparing(Piece::getId)).orElse(null);
+		inventory.remove(piece);
+		return piece;		
+	}
+
+	public void addPiece(Piece piece) {
+		int i;
+		for(i=0; inventory.get(i).getId() < piece.getId(); i++);
+		inventory.add(i, piece);
 	}
 
 }

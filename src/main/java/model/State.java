@@ -50,7 +50,13 @@ public class State {
 		board.clearPossibleMovement();
         this.turn++;
     }
-
+    
+	public void previousTurn() {
+		currentPlayer = 1 - currentPlayer;
+		board.clearPossibleMovement();
+        this.turn--;		
+	}
+	
     public Board getBoard() {
         return board;
     }

@@ -11,14 +11,14 @@ import main.java.utils.CoordGene;
 
 @XmlRootElement(name="history")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class History {
+public class StateHistory {
 
     @XmlElement(name="previousState")
 	Stack<State> previousState;
     @XmlElement(name="previousState")
 	Stack<State> nextState;
 	
-	public History(){
+	public StateHistory(){
 		previousState = new Stack<State>();
 		nextState = new Stack<State>();
 	}

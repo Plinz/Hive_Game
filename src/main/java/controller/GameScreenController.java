@@ -316,7 +316,7 @@ public class GameScreenController implements Initializable {
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if(core.getCurrentState().getCurrentPlayer() == 0 && !freeze){
-                b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
+                b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
@@ -349,7 +349,7 @@ public class GameScreenController implements Initializable {
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
             
             if(core.getCurrentState().getCurrentPlayer() == 1 && !freeze){
-                b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
+                b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
