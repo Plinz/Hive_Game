@@ -1038,4 +1038,46 @@ public class BugsDisplacementsTests
         assertEquals(gameconf.getPossibleGrassHopperDestinations(grassHopperNode),outputList);
     }
     
+    @Test
+    public void testBeetleCannotMoveWhenStuck()
+    {
+        /*** initializing test game ***/
+        
+        //white queen in (5,5,0)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (5,6,0)
+        stconf.setX(QUEEN + 14, (byte) 5);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (5,5,1)
+        stconf.setX(BEETLE1, (byte) 5);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setZ(BEETLE1, (byte) 1);
+        stconf.setIsStuck(QUEEN, true);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black beetle 1 in (5,5,2)
+        stconf.setX(BEETLE1 + 14, (byte) 5);
+        stconf.setY(BEETLE1 + 14, (byte) 5);
+        stconf.setZ(BEETLE1 + 14, (byte) 2);
+        stconf.setIsStuck(BEETLE1, true);
+        stconf.setIsOnBoard(BEETLE1 + 14, true);
+        
+        //white ant 1 in (6,4,0)
+        stconf.setX(ANT1, (byte) 6);
+        stconf.setY(ANT1, (byte) 4);
+        stconf.setIsOnBoard(ANT1, true);
+        
+        /*** game initialized ***/
+        
+        PieceNode beetleNode = new PieceNode(stconf, BEETLE1);
+        GameConfig gameconf = new GameConfig(stconf, 11);
+        
+        assertTrue(gameconf.getPossibleQueenDestinations(beetleNode).isEmpty());
+    }
+    
 }
