@@ -27,7 +27,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
@@ -37,6 +39,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -62,6 +65,7 @@ import main.java.view.TraducteurBoard;
  * @author duvernet
  */
 public class GameScreenController implements Initializable {
+    @FXML private AnchorPane mainAnchor;
     @FXML private Canvas gameCanvas;
     @FXML private GridPane inventoryPlayer1;
     @FXML private GridPane inventoryPlayer2;
@@ -208,8 +212,8 @@ public class GameScreenController implements Initializable {
             }
         });
         
-        gameCanvas.widthProperty().bind(main.getPrimaryStage().getScene().widthProperty().multiply(0.712));
-        
+        //gameCanvas.widthProperty().bind(mainAnchor.widthProperty().multiply(0.666));
+        //gameCanvas.heightProperty().bind(mainAnchor.heightProperty());
     }
     public void handleNewGame(){
          Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
@@ -227,7 +231,7 @@ public class GameScreenController implements Initializable {
                 main.showGameScreen(c);
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            System.out.println("A faire");
+            handleSaveGame();
         }
     }
     
@@ -244,7 +248,7 @@ public class GameScreenController implements Initializable {
             main.showMainMenu();
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            System.out.println("A faire");
+            handleSaveGame();
         }
     }
     
@@ -410,5 +414,32 @@ public class GameScreenController implements Initializable {
     }
     
     /*******************/
+    
+    public void handleSaveGame(){
+        
+        Dialog popup = new Dialog();
+        popup.setTitle("Sauvegarder et quitter la partie");
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.LEFT);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().addAll(saveAndQuit,cancel);
+        
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        TextField saveName = new TextField();
+        saveName.setPromptText("Sauvegarde");
+        
+        popup.getDialogPane().setContent(grid);
+        grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
+        grid.add(saveName, 1, 0);
+        
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            r.stop();
+            main.showMainMenu();
+        }
+        main.getPrimaryStage().requestFocus();
+    }
 }
 
