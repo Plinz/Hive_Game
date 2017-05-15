@@ -335,19 +335,15 @@ public class GameConfig {
         node.setX(-1);
         node.setY(-1);
         board[originalX][originalY] = null;
-        System.err.println("CoordOrigin : " + getCoord(node).toString());
         //get coords after one slide move
         ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX, originalY));
         for (Coord coordAfter1Move : CoordsAfterFirstMove) {
-            System.err.println("\tCoordAfter1Move : " + coordAfter1Move.toString());
             ArrayList<Coord> CoordsAfterSecondMove = getPossibleSlidingDestinations(coordAfter1Move);
             for (Coord coordAfter2Move : CoordsAfterSecondMove) {
-                System.err.println("\t\tCoordAfter2Move : " + coordAfter2Move.toString());
                 //check the spider does not try to come back
                 if (!coordAfter2Move.equals(new Coord(originalX, originalY))) {
                     ArrayList<Coord> CoordsAfterThirdMove = getPossibleSlidingDestinations(coordAfter2Move);
                     for (Coord coordAfter3Move : CoordsAfterThirdMove) {
-                        System.err.println("\t\t\tCoordAfter3Move : " + coordAfter3Move.toString());
                         //check the spider does not try to come back && add only if not present in result
                         if ((!coordAfter3Move.equals(coordAfter1Move)) && (!resultCoords.contains(coordAfter3Move))) {
                             resultCoords.add(coordAfter3Move);
@@ -531,15 +527,15 @@ public class GameConfig {
         int maxHeight; // represents max between source height & destination height
         for (int i = 0; i < 6; i++) {
             //setting maxHeight
-            //System.out.println(i + " : " + neighborsCoords[i]);
             int destinationHeight = getHeight(neighborsCoords[i]);
             maxHeight = (node.getZ() > destinationHeight ? node.getZ() : destinationHeight);
-
+            
             //check that the move respects freedom to move rule
             if (((getHeight(neighborsCoords[(i + 1) % 6]) < (maxHeight + 1))
                     || (getHeight(neighborsCoords[(i + 5) % 6]) < (maxHeight + 1)))
                     && ((getNode(neighborsCoords[(i + 1) % 6]) != null)
-                    || (getNode(neighborsCoords[(i + 5) % 6]) != null))) {
+                    || (getNode(neighborsCoords[(i + 5) % 6]) != null)
+                    ||(destinationHeight>0))) {
                 StoringConfig newStoringConfig = new StoringConfig(storingConfig);
 
                 //Unstuck the piece which was below the beetle
@@ -551,15 +547,18 @@ public class GameConfig {
                         break;
                     }
                 }
-                //move the beetle to new position in newStoringConfig
-                newStoringConfig.setX(node.piece, (byte) neighborsCoords[i].getX());
-                newStoringConfig.setY(node.piece, (byte) neighborsCoords[i].getY());
-                newStoringConfig.setZ(node.piece, (byte) destinationHeight);
+                
                 //if there's a piece underneath, set stuck to true
                 PieceNode nodeToStuck = getHighestNode(neighborsCoords[i]);
                 if (nodeToStuck != null) {
                     newStoringConfig.setIsStuck(nodeToStuck.piece, true);
                 }
+                
+                //move the beetle to new position in newStoringConfig
+                newStoringConfig.setX(node.piece, (byte) neighborsCoords[i].getX());
+                newStoringConfig.setY(node.piece, (byte) neighborsCoords[i].getY());
+                newStoringConfig.setZ(node.piece, (byte) destinationHeight);
+
                 //add the coord to the beetle PossibleDest
                 node.possibleCubeDestinations.add(new Cube<>(neighborsCoords[i].getX(), neighborsCoords[i].getY(), destinationHeight));
                 //and now add the storingConfig to result
