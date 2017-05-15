@@ -30,7 +30,7 @@ public class Core {
         this.players[0] = new Player(0);
         this.players[1] = new Player(1);
 		this.emulator = new Emulator(this, board, players);
-		this.ai = AIFactory.buildAI(difficulty);
+		this.ai = AIFactory.buildAI(difficulty, this);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;
@@ -90,7 +90,7 @@ public class Core {
 		if (isPlayerStuck())
 			currentPlayer = (1 - currentPlayer);
 		if (mode == Consts.PVAI && currentPlayer == Consts.AI_PLAYER) {
-			AIMove aiMove = ai.getNextMove(board, players, currentPlayer, turn);
+			AIMove aiMove = ai.getNextMove(this);
 			aiMove.setCore(this);
 			return aiMove.play();
 		}
