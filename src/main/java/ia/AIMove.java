@@ -41,6 +41,9 @@ public class AIMove {
             for (int i = 0; i < origin.config.length; i++) {
                 if (!origin.isOnBoard(i) && arrival.isOnBoard(i)) {
                     this.piece = i;
+                    if(this.piece > (originalConfig.config.length/2)){
+                        this.piece -= originalConfig.config.length/2;
+                    }
                     Integer destX, destY;
                     destX = (int) arrival.getX(i);
                     destY = (int) arrival.getY(i);
