@@ -131,7 +131,11 @@ public class GameConfig {
     //returns the lowest piece present on (x,y) if there are several
     // and null if there is nothing
     public PieceNode getNode(Coord coord) {
-        return board[coord.getX()][coord.getY()];
+        if (coord.isValidCoord()) {
+            return board[coord.getX()][coord.getY()];
+        } else {
+            return null;
+        }
     }
 
     public Coord getCoord(PieceNode node) {
@@ -204,7 +208,7 @@ public class GameConfig {
             default:
                 ArrayList<Coord> possibleNewPositions = getNewPossiblePositions();
                 //if queen is not yet on board during turn 7 or 8
-                if ((!getNode(start).isOnBoard) && (turn >= 7)) {
+                if ((turn == 7 || turn == 8) && (!getNode(start).isOnBoard)) {
                     for (Coord coord : possibleNewPositions) {
                         StoringConfig newConfig = new StoringConfig(storingConfig);
                         newConfig.setX(start, (byte) coord.getX());
@@ -257,6 +261,13 @@ public class GameConfig {
      */
     public ArrayList<StoringConfig> getPossibleDestinations(PieceNode node) {
         int piece_type = IdToType(node.piece % nbPiecesPerColor);
+        int queenId = currentPlayer * nbPiecesPerColor;
+        
+        //check queen is on board
+        if (!getNode(queenId).isOnBoard){
+            return new ArrayList<>();
+        }
+        
         switch (piece_type) {
             case Consts.QUEEN_TYPE:
                 return getPossibleQueenDestinations(node);
@@ -525,8 +536,8 @@ public class GameConfig {
             maxHeight = (node.getZ() > destinationHeight ? node.getZ() : destinationHeight);
 
             //check that the move respects freedom to move rule
-            if (((getHeight(neighborsCoords[(i + 1) % 6]) < (maxHeight+1))
-                    || (getHeight(neighborsCoords[(i + 5) % 6]) < (maxHeight+1)))
+            if (((getHeight(neighborsCoords[(i + 1) % 6]) < (maxHeight + 1))
+                    || (getHeight(neighborsCoords[(i + 5) % 6]) < (maxHeight + 1)))
                     && ((getNode(neighborsCoords[(i + 1) % 6]) != null)
                     || (getNode(neighborsCoords[(i + 5) % 6]) != null))) {
                 StoringConfig newStoringConfig = new StoringConfig(storingConfig);
