@@ -3,6 +3,9 @@ package main.java.utils;
 
 public class Consts {
     
+    //MACRO RESOLUTION
+    public static final String[] RESOLUTIONS= {"1280x720"};
+    
     //MACROS PIECES -> PLEASE DO NOT MODIFY /!\
     public static final int QUEEN = 0;
     public static final int SPIDER1 = 1;

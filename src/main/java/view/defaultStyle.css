@@ -504,7 +504,7 @@ and open the template in the editor.
 }
 
 
-#goalGame::hover{
+#goalGame:hover{
     -fx-background-color: #e1ab0a;
 }
 
@@ -565,5 +565,4 @@ and open the template in the editor.
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
     -fx-background-radius: 0px, 0px, 0px, 0px;
     -fx-background-color: transparent;
-      
  }
