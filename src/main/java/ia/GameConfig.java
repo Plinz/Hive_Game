@@ -252,7 +252,7 @@ public class GameConfig {
                 break;
         }
 
-        heuristicValue = heuristics.getHeuristicsValue(this);
+        heuristicValue = heuristics.getHeuristicsValue();
 
     }
 
