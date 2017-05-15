@@ -73,68 +73,7 @@ public class StoringConfig {
                         if (current.getPiece().getTeam() == 1) {
                             index += total_pieces_nb / 2;
                         }
-                        /*
-                        //type
-                        switch (current.getPiece().getName()) {
-                            //Ants
-                            case Consts.ANT_NAME:
-                                if (config[index + Consts.ANT1] == 0) {
-                                    index += Consts.ANT1;
-                                } else if (config[index + Consts.ANT2] == 0) {
-                                    index += Consts.ANT2;
-                                } else if (config[index + Consts.ANT3] == 0) {
-                                    index += Consts.ANT3;
-                                } else {
-                                    //means there are 4 Ants with same color in the field -> should never happen
-                                    System.err.println("Erreur : 4 fourmis de la même couleur sur la board");
-                                }
-                                break;
-                            //Beetles
-                            case Consts.BEETLE_NAME:
-                                if (config[index + Consts.BEETLE1] == 0) {
-                                    index += Consts.BEETLE1;
-                                } else if (config[index + Consts.BEETLE2] == 0) {
-                                    index += Consts.BEETLE2;
-                                } else {
-                                    //means there are 3 beetles with same color in the field -> should never happen
-                                    System.err.println("Erreur : 3 scarabées de la même couleur sur la board");
-                                }
-                                break;
-                            //Queens
-                            case Consts.QUEEN_NAME:
-                                if (config[index + Consts.QUEEN] == 0) {
-                                    index += Consts.QUEEN;
-                                } else {
-                                    //means there are 2 queens with same color in the field -> should never happen
-                                    System.err.println("Erreur : 2 reines de la même couleur sur la board");
-                                }
-                                break;
-                            case Consts.SPIDER_NAME:
-                                if (config[index + Consts.SPIDER1] == 0) {
-                                    index += Consts.SPIDER1;
-                                } else if (config[index + Consts.SPIDER2] == 0) {
-                                    index += Consts.SPIDER2;
-                                } else {
-                                    //means there are 3 spiders with same color in the field -> should never happen
-                                    System.err.println("Erreur : 3 araignées de la même couleur sur la board");
-                                }
-                                break;
-                            case Consts.GRASSHOPPER_NAME:
-                                if (config[index + Consts.GRASSHOPPER1] == 0) {
-                                    index += Consts.GRASSHOPPER1;
-                                } else if (config[index + Consts.GRASSHOPPER2] == 0) {
-                                    index += Consts.GRASSHOPPER2;
-                                } else if (config[index + Consts.GRASSHOPPER3] == 0) {
-                                    index += Consts.GRASSHOPPER3;
-                                } else {
-                                    //means there are 4 grasshoppers with same color in the field -> should never happen
-                                    System.err.println("Erreur : 4 sauterelles de la même couleur sur la board");
-                                }
-                                break;
-                            default:
-                                System.err.println("Erreur : Nom de tuile inconnu présent dans la board");
-                                break;
-                        }*/
+                        
                         index += current.getPiece().getId();
                         this.setX(index, (byte) current.getX());
                         this.setY(index, (byte) current.getY());
