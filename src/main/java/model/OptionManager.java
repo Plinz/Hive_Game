@@ -18,7 +18,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 /**
@@ -35,7 +35,6 @@ public final class OptionManager {
     public static void init() throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException, SAXException{
         File file = new File("init.xml");
         if(file.exists()){
-            System.out.println("Il existe !");
             initByFile(file);
         }
         else{
@@ -82,13 +81,11 @@ public final class OptionManager {
         res = (Element) racine.getElementsByTagName("help").item(0);
         helpEnable = Integer.parseInt(res.getTextContent()) != 0;
 
-        System.out.println("Resolution = " + resolution + " \n Fullscreen =" + fullscreen + " \n Help =" + helpEnable);
     }               
 
 
     
     private static void createAndInitializeFile(File file) throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException{
-        System.out.println("Création du fichier d'options");
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
     
@@ -115,4 +112,37 @@ public final class OptionManager {
     
         transformer.transform(source, result);
     }
-}
+    
+    public static void modifyOptions(int res, boolean fs, boolean help) throws SAXException, IOException, ParserConfigurationException, TransformerException{
+        resolution = res;
+        fullscreen = fs;
+        helpEnable = help;
+        
+        String filepath = "init.xml";
+	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	Document doc = docBuilder.parse(filepath);
+        
+        Node n = doc.getElementsByTagName("resolution").item(0);
+        n.setTextContent(String.valueOf(res));
+        
+        n = doc.getElementsByTagName("fullscreen").item(0);
+        if(fs)
+            n.setTextContent("1");
+        else
+            n.setTextContent("0");
+        
+        n = doc.getElementsByTagName("help").item(0);
+        if(help)
+            n.setTextContent("1");
+        else
+            n.setTextContent("0");
+        
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+	StreamResult result = new StreamResult(new File(filepath));
+	transformer.transform(source, result);
+        
+    }
+ }

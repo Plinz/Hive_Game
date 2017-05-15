@@ -7,6 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import main.java.model.Core;
 import main.java.controller.GameScreenController;
 import main.java.controller.LoadGameScreenController;
@@ -15,6 +18,7 @@ import main.java.controller.NewGameScreenController;
 import main.java.controller.OptionsScreenController;
 import main.java.controller.RulesScreenController;
 import main.java.model.OptionManager;
+import org.xml.sax.SAXException;
 
 public class Main extends Application {
 
@@ -152,7 +156,7 @@ public class Main extends Application {
         return primaryStage;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, TransformerConfigurationException, SAXException {
         OptionManager.init();
         launch(args);
     }
