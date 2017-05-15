@@ -152,7 +152,7 @@ public class Main extends Application {
         return primaryStage;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         OptionManager.init();
         launch(args);
     }

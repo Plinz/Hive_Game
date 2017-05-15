@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 import main.java.implement.Main;
+import main.java.utils.Consts;
 
 /**
  * FXML Controller class
@@ -47,7 +48,9 @@ public class OptionsScreenController implements Initializable {
     
     public void initResolution(){
         ObservableList<String> resolutions = FXCollections.observableArrayList();
-        resolutions.add("1270x720");
+        for(int i = 0; i < Consts.RESOLUTIONS.length;i++){
+            resolutions.add(Consts.RESOLUTIONS[i]);
+        }
         choiceResolution.setItems(resolutions);
     }
     
