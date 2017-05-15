@@ -33,6 +33,8 @@ public class StoringConfig {
     public StoringConfig(StoringConfig stconf) {
         this.config = new int[stconf.config.length];
         System.arraycopy(stconf.config, 0, this.config, 0, stconf.config.length);
+        this.turn = stconf.turn;
+        this.currentPlayer = stconf.currentPlayer;
     }
 
     /*

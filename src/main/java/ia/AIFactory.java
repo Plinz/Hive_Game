@@ -11,7 +11,7 @@ public class AIFactory {
     public static AI buildAI(int difficulty){
         switch (difficulty){
             case Consts.EASY :
-                return new RandomAI();
+                return new EasyAI();
             default :
                 System.err.println("Not implemented yet");
                 return null;

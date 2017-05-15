@@ -54,9 +54,7 @@ public class MainMenuController implements Initializable {
     
      @FXML 
     public void handleOptionsClick(){
-        Alert a = new Alert(Alert.AlertType.INFORMATION);
-        a.setContentText("Pas encore implémenté");
-        a.show();
+        main.showOptionsScreen();
     }
     
     @FXML 

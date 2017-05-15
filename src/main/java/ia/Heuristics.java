@@ -7,30 +7,48 @@ import main.java.utils.Consts;
 import main.java.utils.Coord;
 
 public class Heuristics {
+
     GameConfig gameConfig;
+
     /*
      *                  CONSTUCTOR
      */
-    public Heuristics(GameConfig gameConfig){
+    public Heuristics(GameConfig gameConfig) {
         this.gameConfig = gameConfig;
     }
-    
+
     /*
      *                  GETTERS
      */
-    
-    public int getNbPiecesAroundQueen(int player){
+    public int getNbPiecesAroundQueen(int player) {
         int QueenId = gameConfig.getNbPiecesPerColor() * player;
         PieceNode QueenNode = gameConfig.getNode(QueenId);
         return gameConfig.getNeighborsInArrayList(QueenNode).size();
     }
-    
-    //public int getMobility
-    /*
+
+    public int getHeuristicsValue() {
+        System.err.println("Erreur : getHeuristics vaalue ne doit as être appelée depuis la classe mère");
+        return 0;
+    }
+
+    public int getNbPiecesOnBoard(int player) {
+        int result = 0;
+        int start = player * gameConfig.nbPiecesPerColor;
+        int finish = start + gameConfig.nbPiecesPerColor;
+        for (int i = start; i < finish; i++) {
+            if (gameConfig.getNode(i).isOnBoard) {
+                result++;
+            }
+        }
+        return result;
+    }
+}
+//public int getMobility
+/*
      *                  TESTERS
-     */
-    
-    /*
+ */
+
+ /*
     public boolean isPinned(int PieceId){
         if (gameConfig.getPieces()[PieceId].stuck) return true;
         //bug on the ground (ie not beetle or mosquito)
@@ -42,4 +60,3 @@ public class Heuristics {
             return (gameConfig.getPieces()[PieceId].PossibleDestinationsCalculated &&
                     gameConfig.getPieces()[PieceId].PossibleCubeDestinations.size() == 0);
     }*/
-}
