@@ -26,9 +26,21 @@ public class Heuristics {
         return gameConfig.getNeighborsInArrayList(QueenNode).size();
     }
 
-    public int getHeuristicsValue(GameConfig gameConfig1) {
+    public int getHeuristicsValue() {
         System.err.println("Erreur : getHeuristics vaalue ne doit as être appelée depuis la classe mère");
         return 0;
+    }
+
+    public int getNbPiecesOnBoard(int player) {
+        int result = 0;
+        int start = player * gameConfig.nbPiecesPerColor;
+        int finish = start + gameConfig.nbPiecesPerColor;
+        for (int i = start; i < finish; i++) {
+            if (gameConfig.getNode(i).isOnBoard) {
+                result++;
+            }
+        }
+        return result;
     }
 }
 //public int getMobility
