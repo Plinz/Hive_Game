@@ -6,6 +6,7 @@
 package main.java.controller;
 
 
+import com.sun.javafx.cursor.CursorFrame;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,6 +32,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -161,12 +165,35 @@ public class GameScreenController implements Initializable {
         });
         
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
+                
                 public void handle(MouseEvent m) {
+
                     t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
      
         });
+           
+         gameCanvas.setOnDragDetected(e-> {
+                String name = getClass().getClassLoader().getResource("main/resources/img/misc/crossCursor.png").toString();
+                Image n = new Image(name);  
+                gameCanvas.setCursor(new ImageCursor(n));
+                e.consume();
+            });
+            
+        gameCanvas.setOnMouseReleased(new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent t) {
+                gameCanvas.setCursor(Cursor.DEFAULT);
+            }
+            
+        });
         
+        gameCanvas.setOnDragDone(event->{
+                gameCanvas.setCursor(Cursor.DEFAULT);
+                event.consume();
+        });
+              
         gameCanvas.setOnScroll(new EventHandler<ScrollEvent>(){
 
             @Override
