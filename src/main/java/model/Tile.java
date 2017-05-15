@@ -1,42 +1,14 @@
 package main.java.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import main.java.model.piece.Ant;
-import main.java.model.piece.Beetle;
-import main.java.model.piece.Grasshopper;
-import main.java.model.piece.Queen;
-import main.java.model.piece.Spider;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-@XmlRootElement(name="tile")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Tile {
 
-    @XmlElements({
-        @XmlElement(name="ant", type=Ant.class),
-        @XmlElement(name="beetle", type=Beetle.class),
-        @XmlElement(name="grasshopper", type=Grasshopper.class),
-//        @XmlElement(name="ladybug", type=Ladybug.class),
-//        @XmlElement(name="mosquito", type=Mosquito.class),
-//        @XmlElement(name="pillbug", type=Pillbug.class),
-        @XmlElement(name="queen", type=Queen.class),
-        @XmlElement(name="spider", type=Spider.class)
-    })
 	private Piece piece;
-    @XmlElement(name="blocked")
 	private boolean blocked;
-    @XmlAttribute(name="x")
 	private int x;
-    @XmlAttribute(name="y")
 	private int y;
-    @XmlAttribute(name="z")
 	private int z;
 
     public Tile(){

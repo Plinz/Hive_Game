@@ -3,28 +3,14 @@ package main.java.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import main.java.utils.CoordGene;
 
-@XmlRootElement(name="piece")
-@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Piece implements Cloneable{
 
-    @XmlElement(name="name")
 	protected String name;
-    @XmlAttribute
     protected int id;
-    @XmlElement(name="team")
     protected int team;
-    @XmlElement(name="description")
     protected String description;
-    @XmlTransient
     protected List<CoordGene<Integer>> possibleMovement;
 
     public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);

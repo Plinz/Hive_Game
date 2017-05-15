@@ -3,22 +3,12 @@ package main.java.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-@XmlRootElement(name="board")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Board{
 
-    @XmlElementWrapper
 	private List<Column> columns;
-    @XmlElement(name="nbP")
 	private int nbPieceOnTheBoard;
 
 	public Board() {
