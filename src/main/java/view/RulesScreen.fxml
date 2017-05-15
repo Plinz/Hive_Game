@@ -25,7 +25,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane id="gridMenuRules" prefHeight="720.0" prefWidth="317.0" stylesheets="@rulesScreen.css">
+            <GridPane id="gridMenuRules" prefHeight="720.0" prefWidth="317.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="450.0" minWidth="10.0" prefWidth="434.0" />
               </columnConstraints>
@@ -185,7 +185,10 @@
                   <ImageView fx:id="imageRule" fitHeight="375.0" fitWidth="669.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <Text fx:id="textRule" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." textAlignment="JUSTIFY" wrappingWidth="453.7294921875" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                   <ImageView fx:id="imageTitleRule" fitHeight="98.0" fitWidth="336.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                  <Button id="buttonMenu" alignment="CENTER" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleMenuClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonMenu" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Button id="buttonMenu" alignment="CENTER" minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleMenuClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonMenu" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </children>
             </GridPane>
          </children>
