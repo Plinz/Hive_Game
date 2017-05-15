@@ -110,7 +110,6 @@ public class NewGameScreenController implements Initializable {
     
     @FXML 
     public void handleMenuClick(){
-        System.out.println("Menu");
         main.showMainMenu();
     }
     

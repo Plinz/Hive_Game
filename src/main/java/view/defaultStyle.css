@@ -548,3 +548,22 @@ and open the template in the editor.
   -fx-border-color : #e1ab0a;
   -fx-border-width: 3 ; 
 }
+  
+ #applyButton{
+     -fx-background-image: url("/main/resources/img/misc/Apply.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+      
+ }
+ #applyButton:hover{
+     -fx-background-image: url("/main/resources/img/misc/Applyhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+      
+ }

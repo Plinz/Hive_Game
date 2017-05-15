@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="backgroundImage" stylesheets="@defaultStyle.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="main.java.controller.OptionsScreenController">
+   <children>
+      <GridPane alignment="TOP_CENTER" layoutX="26.0" layoutY="18.0" prefHeight="708.0" prefWidth="1280.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="499.0" minWidth="10.0" prefWidth="484.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.0" minWidth="10.0" prefWidth="339.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="0.0" prefWidth="457.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="165.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="408.0" minHeight="0.0" prefHeight="398.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="25.0" prefWidth="401.0" text="Options" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <GridPane prefHeight="321.0" prefWidth="455.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button id="applyButton" minWidth="140.0" mnemonicParsing="false" onMousePressed="#handleApplyClick" prefHeight="65.0" prefWidth="250.0" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button minWidth="140.0" mnemonicParsing="false" onMousePressed="#handleMenuClick" prefHeight="65.0" prefWidth="250.0" styleClass="buttonMenu" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
