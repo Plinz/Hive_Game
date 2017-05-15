@@ -1,0 +1,550 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15 mai 2017, 14:29:22
+    Author     : gontardb
+*/
+/* Main Menu */
+
+.imageBackground{
+    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+}
+
+.imageMenu{
+    -fx-image: url("/main/resources/img/misc/logo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;    
+}
+
+.buttonNewGame{
+    
+    -fx-background-image: url("/main/resources/img/misc/newGame.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonNewGame:hover{
+    
+    -fx-background-image: url("/main/resources/img/misc/newGame_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLoadGame{
+    -fx-background-image: url("/main/resources/img/misc/LoadGame.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLoadGame:hover{
+    -fx-background-image: url("/main/resources/img/misc/loadGame_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRules{
+    -fx-background-image: url("/main/resources/img/misc/GameRules.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRules:hover{
+    -fx-background-image: url("/main/resources/img/misc/rules_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonTutorial{
+    -fx-background-image: url("/main/resources/img/misc/didacticiel.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonTutorial:hover{
+    -fx-background-image: url("/main/resources/img/misc/didacticiel_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonOptions{
+    -fx-background-image: url("/main/resources/img/misc/options.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonOptions:hover{
+    -fx-background-image: url("/main/resources/img/misc/options_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLeave{
+    -fx-background-image: url("/main/resources/img/misc/quit.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLeave:hover{
+    -fx-background-image: url("/main/resources/img/misc/quit_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+/* New Game Screen */
+
+.buttonLaunchGame{
+    
+    -fx-background-image: url("/main/resources/img/misc/launchGame.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLaunchGame:hover{
+    
+    -fx-background-image: url("/main/resources/img/misc/launchGame_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonMenu{
+    
+    -fx-background-image: url("/main/resources/img/misc/mainMenu.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonMenu:hover{
+    
+    -fx-background-image: url("/main/resources/img/misc/mainMenu_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+#pvpChoice{
+    -fx-background-image: url("/main/resources/img/misc/humanvshuman.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#pvpChoice:hover{
+    -fx-background-image: url("/main/resources/img/misc/humanvshumanhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#pvpChoice:selected{
+    -fx-background-image: url("/main/resources/img/misc/humanvshumanhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#pvaiChoice{
+    -fx-background-image: url("/main/resources/img/misc/humanvsai.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+#pvaiChoice:hover{
+    -fx-background-image: url("/main/resources/img/misc/humanvsaihover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#pvaiChoice:selected{
+    -fx-background-image: url("/main/resources/img/misc/humanvsaihover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#hardAI{
+    -fx-background-image: url("/main/resources/img/misc/hardAI.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+#hardAI:hover{
+    -fx-background-image: url("/main/resources/img/misc/hardAIhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#hardAI:selected{
+    -fx-background-image: url("/main/resources/img/misc/hardAIhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#mediumAI{
+    -fx-background-image: url("/main/resources/img/misc/mediumAI.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+#mediumAI:hover{
+    -fx-background-image: url("/main/resources/img/misc/mediumAIhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#mediumAI:selected{
+    -fx-background-image: url("/main/resources/img/misc/mediumAIhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#easyAI{
+    -fx-background-image: url("/main/resources/img/misc/easyAI.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+#easyAI:hover{
+    -fx-background-image: url("/main/resources/img/misc/easyAIhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+
+#easyAI:selected{
+    -fx-background-image: url("/main/resources/img/misc/easyAIhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent
+}
+/* Load Game screen */
+
+.buttonLaunchLoadGame{
+    
+    -fx-background-image: url("/main/resources/img/misc/launchGame.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLaunchLoadGame:hover{
+    
+    -fx-background-image: url("/main/resources/img/misc/launchGame_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonMenu{
+    
+    -fx-background-image: url("/main/resources/img/misc/mainMenu.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonMenu:hover{
+    
+    -fx-background-image: url("/main/resources/img/misc/mainMenu_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+
+/* GameMenu */
+
+
+.backgroundImage{
+    
+    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonUndo{
+    -fx-background-image: url("/main/resources/img/misc/undo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonUndo:hover{
+    -fx-background-image: url("/main/resources/img/misc/undohover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRedo{
+    -fx-background-image: url("/main/resources/img/misc/redo.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRedo:hover{
+    -fx-background-image: url("/main/resources/img/misc/redohover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonLamp{
+    -fx-background-image: url("/main/resources/img/misc/lamp.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRefresh{
+    -fx-background-image: url("/main/resources/img/misc/refresh.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonRefresh:hover{
+    -fx-background-image: url("/main/resources/img/misc/refresh.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonGear{
+    -fx-background-image: url("/main/resources/img/misc/gear.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonGear:hover{
+    -fx-background-image: url("/main/resources/img/misc/gearhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonGear:selected{
+    -fx-background-image: url("/main/resources/img/misc/gearhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonInventory:selected{
+    -fx-effect: innershadow(one-pass-box, lightblue, 100, 0.1, 1, 1);
+}
+
+#westArrow{
+    -fx-background-image: url("/main/resources/img/misc/westarrow.png");    
+-fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0,0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+#eastArrow{
+    -fx-background-image: url("/main/resources/img/misc/eastarrow.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+#northArrow{
+    -fx-background-image: url("/main/resources/img/misc/northarrow.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+#southArrow{
+    -fx-background-image: url("/main/resources/img/misc/southarrow.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+/* Rules screen */
+
+#titleRulesScreen{
+    -fx-image: url("/main/resources/img/rulesTitle/rules.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+}
+
+
+#goalGame::hover{
+    -fx-background-color: #e1ab0a;
+}
+
+.panelItemTitle:hover{
+     -fx-background-color: #e1ab0a;
+}
+
+.panelItem{
+    
+}
+
+#imageBackground{
+    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+}
+
+#buttonMenu{
+    
+    -fx-background-image: url("/main/resources/img/misc/mainMenu.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+#buttonMenu:hover{
+    -fx-background-image: url("/main/resources/img/misc/mainMenu_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+#separator{
+    -fx-background-color: #e1ab0a;
+}
+
+#gridMenuRules{  
+  -fx-border-color : #e1ab0a;
+  -fx-border-width: 3 ; 
+}
