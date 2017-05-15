@@ -91,7 +91,6 @@ public class Core {
 			currentPlayer = (1 - currentPlayer);
 		if (mode == Consts.PVAI && currentPlayer == Consts.AI_PLAYER) {
 			AIMove aiMove = ai.getNextMove(this);
-			aiMove.setCore(this);
 			return aiMove.play();
 		}
 

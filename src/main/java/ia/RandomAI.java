@@ -1,6 +1,10 @@
 /*
 
- */
+
+
+CETTE IA EST DEVENUE INUTILE SUITE A L'IMPLEM DE L'IA FACILE -> CODE MORT MAIS PEU RESTER UTILE
+
+
 package main.java.ia;
 
 import java.util.ArrayList;
@@ -33,3 +37,4 @@ public class RandomAI extends AI {
         return nextMove;
     }
 }
+*/

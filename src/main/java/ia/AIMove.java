@@ -17,7 +17,12 @@ public class AIMove {
     int piece;
     Core core;
     StoringConfig originalConfig;
-    //Constructor -> determines the move from the diff between the 2 configs
+    
+    /*
+     *              CONSTRUCTOR
+     */
+
+    //determines the move from the diff between the 2 configs
     public AIMove(StoringConfig origin, StoringConfig arrival, Core core) {
         this.core = core;
         this.originalConfig = origin;
@@ -68,10 +73,6 @@ public class AIMove {
         }
     }
 
-    public void setCore(Core newCore) {
-        this.core = newCore;
-    }
-
     public boolean play() {
         if (AddNewTile) {
             return core.addPiece(piece, destination);
@@ -80,29 +81,4 @@ public class AIMove {
         }
     }
 
-    //translates the pieceID into the index of the piece in the player's inventory
-    public int getPositionInInventory(int pieceId) {
-        if (pieceId >= (originalConfig.config.length/2)){
-            System.err.println("getPosInInv : avant modif pieceId="+pieceId);
-            pieceId -= originalConfig.config.length/2;
-            System.err.println("getPosInInv : apres modif pieceId="+pieceId);
-        }
-            
-        List<Piece> inventory = core.getPlayers()[core.getCurrentPlayer()].getInventory();
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).getId() == pieceId) {
-                return i;
-            }
-        }
-        System.err.println("Erreur : impossible de trouver la piece " + pieceId + " dans l'inventaire du joueur " + core.getCurrentPlayer());
-        return 0;
-    }
-
-    /*tostring a moitié foireux, il faut test les null avant de les  apppeler
-    public String toString(){
-        String result = "AIMove :\n"+"\tbool AddNewTile : "+AddNewTile+"\tpiece : "+piece+"\n\tSource :"+source.toString()+"\tDest :"+destination.toString()
-                ;
-        return result;
-        
-    }*/
 }
