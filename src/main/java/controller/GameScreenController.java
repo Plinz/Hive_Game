@@ -30,6 +30,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
@@ -207,6 +208,8 @@ public class GameScreenController implements Initializable {
             }
         });
         
+        gameCanvas.widthProperty().bind(main.getPrimaryStage().getScene().widthProperty().multiply(0.712));
+        
     }
     public void handleNewGame(){
          Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
@@ -316,6 +319,7 @@ public class GameScreenController implements Initializable {
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
+                b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
                 inventoryGroup.getToggles().add(b);
             }
             if(i != 0 && i%4 == 0){
@@ -348,6 +352,7 @@ public class GameScreenController implements Initializable {
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
+                b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
                 inventoryGroup.getToggles().add(b);
             }
             
