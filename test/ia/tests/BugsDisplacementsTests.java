@@ -1080,4 +1080,71 @@ public class BugsDisplacementsTests
         assertTrue(gameconf.getPossibleQueenDestinations(beetleNode).isEmpty());
     }
     
+    @Test
+    public void testBeetleRespectsOneHiveWithOneNeighbor()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (6,5)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setIsOnBoard(BEETLE1, true);
+        
+        //black grasshopper 1 in (4,7)
+        stconf.setX(GRASSHOPPER1 + 14, (byte) 4);
+        stconf.setY(GRASSHOPPER1 + 14, (byte) 7);
+        stconf.setIsOnBoard(GRASSHOPPER1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode beetleNode = new PieceNode(stconf, BEETLE1);
+        GameConfig gameconf = new GameConfig(stconf, 5);
+        
+        assertTrue(gameconf.RespectsOneHive(beetleNode));
+    }
+    
+    @Test
+    public void testBeetleRespectsOneHiveWithManyNeighbors()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (5,6)
+        stconf.setX(BEETLE1, (byte) 5);
+        stconf.setY(BEETLE1, (byte) 6);
+        stconf.setIsOnBoard(BEETLE1, true);
+
+        //black ant 1 in (6,5)
+        stconf.setX(ANT1 + 14, (byte) 6);
+        stconf.setY(ANT1 + 14, (byte) 5);
+        stconf.setIsOnBoard(ANT1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        PieceNode beetleNode = new PieceNode(stconf, BEETLE1);
+        GameConfig gameconf = new GameConfig(stconf, 7);
+        
+        assertTrue(gameconf.RespectsOneHive(beetleNode));
+    }
+    
+    
 }
