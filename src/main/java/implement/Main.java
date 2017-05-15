@@ -14,6 +14,7 @@ import main.java.controller.MainMenuController;
 import main.java.controller.NewGameScreenController;
 import main.java.controller.OptionsScreenController;
 import main.java.controller.RulesScreenController;
+import main.java.model.OptionManager;
 
 public class Main extends Application {
 
@@ -134,6 +135,7 @@ public class Main extends Application {
             controller.setMainApp(this);
             
             Scene scene = new Scene(personOverview);
+            controller.init();
             primaryStage.setScene(scene);
 
             // Set person overview into the center of root layout.
@@ -151,6 +153,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        OptionManager.init();
         launch(args);
     }
 }

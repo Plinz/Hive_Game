@@ -7,8 +7,11 @@ package main.java.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 import main.java.implement.Main;
 
 /**
@@ -17,7 +20,7 @@ import main.java.implement.Main;
  * @author gontardb
  */
 public class OptionsScreenController implements Initializable {
-    
+    @FXML private ChoiceBox<String> choiceResolution;
     private Main main;
 
     /**
@@ -36,6 +39,16 @@ public class OptionsScreenController implements Initializable {
     @FXML 
     public void handleMenuClick(){
         main.showMainMenu();
+    }
+    
+    public void init(){
+        initResolution();
+    }
+    
+    public void initResolution(){
+        ObservableList<String> resolutions = FXCollections.observableArrayList();
+        resolutions.add("1270x720");
+        choiceResolution.setItems(resolutions);
     }
     
     public void setMainApp(Main mainApp) {
