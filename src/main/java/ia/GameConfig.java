@@ -13,10 +13,12 @@ public class GameConfig {
     private final PieceNode[] pieces;
     private final PieceNode[][] board;
     private final StoringConfig storingConfig;
-
+    Heuristics heuristics;
+    ArrayList<StoringConfig> nextPossibleConfigs;
     int nbPiecesPerColor;
     int currentPlayer;
     int turn;
+    int heuristicValue;
 
     /*
      *              CONSTRUCTOR
@@ -58,12 +60,16 @@ public class GameConfig {
      *              TESTS
      */
     public boolean isFreeCoord(Coord coord) {
-        if (!coord.isValidCoord()) return true;
+        if (!coord.isValidCoord()) {
+            return true;
+        }
         return this.board[coord.getX()][coord.getY()] == null;
     }
 
     public boolean isFreeCoord(Cube<Integer> cube) {
-        if ((cube.getX().intValue() < 0 ) ||  (cube.getY().intValue()< 0)) return true;
+        if ((cube.getX().intValue() < 0) || (cube.getY().intValue() < 0)) {
+            return true;
+        }
         PieceNode node = this.board[cube.getX()][cube.getY()];
         int z = cube.getZ();
         while ((z > 0) && (node != null)) {
@@ -142,11 +148,15 @@ public class GameConfig {
 
     public PieceNode getHighestNode(Coord coord) {
         //case of invalid coord
-        if (!coord.isValidCoord()) return null;
-        
+        if (!coord.isValidCoord()) {
+            return null;
+        }
+
         PieceNode node = board[coord.getX()][coord.getY()];
         //case of empty coord
-        if (node == null) return null;
+        if (node == null) {
+            return null;
+        }
         while (node.pieceAbove != null) {
             node = node.pieceAbove;
         }
@@ -173,6 +183,73 @@ public class GameConfig {
             }
         }
         return result;
+    }
+
+    /*
+     *              CALCUL NEXT MOVES & HEURISTICS
+     */
+    public void calculateAll() {
+        int start = nbPiecesPerColor * currentPlayer;
+        int finish = start + nbPiecesPerColor;
+
+        nextPossibleConfigs = new ArrayList<>();
+        //different cases depending on the turn
+        switch (turn) {
+            case 0:
+                nextPossibleConfigs = getFirstTurnMove();
+                break;
+            case 1:
+                nextPossibleConfigs = getSecondTurnMove();
+                break;
+            default:
+                ArrayList<Coord> possibleNewPositions = getNewPossiblePositions();
+                //if queen is not yet on board during turn 7 or 8
+                if ((!getNode(start).isOnBoard) && (turn >= 7)) {
+                    for (Coord coord : possibleNewPositions) {
+                        StoringConfig newConfig = new StoringConfig(storingConfig);
+                        newConfig.setX(start, (byte) coord.getX());
+                        newConfig.setY(start, (byte) coord.getY());
+                        newConfig.setIsOnBoard(start, true);
+                        nextPossibleConfigs.add(newConfig);
+                    }
+                } else { //queen is already on board or turn is different than 7 or 8
+                    for (int i = start; i < finish; i++) {
+                        //piece is on board -> move it
+                        if (getNode(i).isOnBoard) {
+                            ArrayList<StoringConfig> temp = getPossibleDestinations(getNode(i));
+                            for (StoringConfig config : temp) {
+                                if (!possibleNewPositions.contains(config)) {
+                                    nextPossibleConfigs.add(config);
+                                }
+                            }
+                        } else {
+                            //piece not on board -> add possible positions for it
+                            int j = i % nbPiecesPerColor;
+                            //stupid condition -> can be refactored
+                            if (((j == Consts.SPIDER2) && (!getNode(Consts.SPIDER1).isOnBoard))
+                                    || ((j == Consts.GRASSHOPPER2) && (!getNode(Consts.GRASSHOPPER1).isOnBoard))
+                                    || ((j == Consts.GRASSHOPPER3) && (!getNode(Consts.GRASSHOPPER2).isOnBoard))
+                                    || ((j == Consts.BEETLE2) && (!getNode(Consts.BEETLE1).isOnBoard))
+                                    || ((j == Consts.ANT2) && (!getNode(Consts.ANT1).isOnBoard))
+                                    || ((j == Consts.ANT3) && (!getNode(Consts.ANT2).isOnBoard))) {
+                                //do nothing -> the same kind of piece was just added
+                            } else {
+                                for (Coord coord : possibleNewPositions) {
+                                    StoringConfig newStoringConfig = new StoringConfig(storingConfig);
+                                    newStoringConfig.setX(i, (byte) coord.getX());
+                                    newStoringConfig.setY(i, (byte) coord.getY());
+                                    newStoringConfig.setIsOnBoard(i, true);
+                                    nextPossibleConfigs.add(newStoringConfig);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+
+        heuristicValue = heuristics.getHeuristicsValue(this);
+
     }
 
     /*
@@ -247,19 +324,19 @@ public class GameConfig {
         node.setX(-1);
         node.setY(-1);
         board[originalX][originalY] = null;
-        System.err.println("CoordOrigin : "+getCoord(node).toString());
+        System.err.println("CoordOrigin : " + getCoord(node).toString());
         //get coords after one slide move
         ArrayList<Coord> CoordsAfterFirstMove = getPossibleSlidingDestinations(new Coord(originalX, originalY));
         for (Coord coordAfter1Move : CoordsAfterFirstMove) {
-            System.err.println("\tCoordAfter1Move : "+coordAfter1Move.toString());
+            System.err.println("\tCoordAfter1Move : " + coordAfter1Move.toString());
             ArrayList<Coord> CoordsAfterSecondMove = getPossibleSlidingDestinations(coordAfter1Move);
             for (Coord coordAfter2Move : CoordsAfterSecondMove) {
-                System.err.println("\t\tCoordAfter2Move : "+coordAfter2Move.toString());
+                System.err.println("\t\tCoordAfter2Move : " + coordAfter2Move.toString());
                 //check the spider does not try to come back
-                if (!coordAfter2Move.equals(new Coord(originalX,originalY))) {
+                if (!coordAfter2Move.equals(new Coord(originalX, originalY))) {
                     ArrayList<Coord> CoordsAfterThirdMove = getPossibleSlidingDestinations(coordAfter2Move);
                     for (Coord coordAfter3Move : CoordsAfterThirdMove) {
-                        System.err.println("\t\t\tCoordAfter3Move : "+coordAfter3Move.toString());
+                        System.err.println("\t\t\tCoordAfter3Move : " + coordAfter3Move.toString());
                         //check the spider does not try to come back && add only if not present in result
                         if ((!coordAfter3Move.equals(coordAfter1Move)) && (!resultCoords.contains(coordAfter3Move))) {
                             resultCoords.add(coordAfter3Move);
@@ -336,7 +413,7 @@ public class GameConfig {
 
         //save the possible dests in the PieceNode for later heuristics calculations
         node.possibleDestinations = resultCoords;
-        System.err.println("PossibleAntDest :result size ="+result.size());
+        System.err.println("PossibleAntDest :result size =" + result.size());
         return result;
     }
 
@@ -389,7 +466,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.possibleDestinations.add(currentCoord);
         }
-        
+
         //West
         currentCoord = this.getCoord(node).getWest();
         if (!this.isFreeCoord(currentCoord)) {
@@ -428,7 +505,7 @@ public class GameConfig {
             result.add(newStoringConfig);
             node.possibleDestinations.add(currentCoord);
         }
-        
+
         return result;
     }
 
@@ -443,12 +520,14 @@ public class GameConfig {
         int maxHeight; // represents max between source height & destination height
         for (int i = 0; i < 6; i++) {
             //setting maxHeight
-            int destinationHeight = getHeight(neighborsCoords[i]);
+            int destinationHeight = getHeight(neighborsCoords[i]) + 1;
             maxHeight = (node.getZ() > destinationHeight ? node.getZ() : destinationHeight);
 
             //check that the move respects freedom to move rule
-            if ((getHeight(neighborsCoords[(i + 1) % 6]) < maxHeight)
-                    || (getHeight(neighborsCoords[(i + 5) % 6]) < maxHeight)) {
+            if (((getHeight(neighborsCoords[(i + 1) % 6]) < maxHeight)
+                    || (getHeight(neighborsCoords[(i + 5) % 6]) < maxHeight))
+                    && ((getNode(neighborsCoords[(i + 1) % 6]) != null)
+                    || (getNode(neighborsCoords[(i + 5) % 6]) != null))) {
                 StoringConfig newStoringConfig = new StoringConfig(storingConfig);
 
                 //Unstuck the piece which was below the beetle
@@ -488,8 +567,9 @@ public class GameConfig {
         //Setting all booleans 'isVisited' to false
         for (PieceNode[] boardX : board) {
             for (PieceNode boardXY : boardX) {
-                if (boardXY != null)
+                if (boardXY != null) {
                     boardXY.setIsVisited(false);
+                }
             }
         }
 
@@ -500,7 +580,7 @@ public class GameConfig {
         node.setIsVisited(true);
         this.board[node.getX()][node.getY()] = node;
         neighbor.setIsVisited(true);
-        
+
         PieceNode current_node;
         ArrayList<PieceNode> nodeSet = new ArrayList<>();
         nodeSet.add(neighbor);
@@ -550,7 +630,7 @@ public class GameConfig {
                         for (int j = 0; j < 6; j++) {
                             currentNeighborCoord = neighborsOfNeighbor[j];
                             //System.out.println("LOLLOLL " + currentNeighborCoord);
-                            if ((currentNeighborCoord.isValidCoord())&&(!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord)))) {
+                            if ((currentNeighborCoord.isValidCoord()) && (!isSameColor(getNode(currentNodeCoord), getNode(currentNeighborCoord)))) {
                                 canBeAdded = false;
                             }
                         }
@@ -604,7 +684,7 @@ public class GameConfig {
                 result.add(newStoringConfig);
             }
         }
-        
+
         return result;
     }
 
@@ -613,10 +693,10 @@ public class GameConfig {
      */
     //PIECE_ID into PIECE_TYPE
     public int IdToType(int id) {
-        if (id >= nbPiecesPerColor){
-            id -=nbPiecesPerColor;
+        if (id >= nbPiecesPerColor) {
+            id -= nbPiecesPerColor;
         }
-        
+
         if (id <= Consts.QUEEN) {
             return Consts.QUEEN_TYPE;
         } else if (id <= Consts.SPIDER2) {

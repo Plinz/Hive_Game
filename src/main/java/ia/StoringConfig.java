@@ -218,25 +218,7 @@ public class StoringConfig {
                     }
                 }
             } else {
-                //piece not on board -> add possible positions for it
-                int j = i % gameConfig.nbPiecesPerColor;
-                //stupid condition -> can be refactored
-                if (((j == Consts.SPIDER2) && (!gameConfig.getNode(Consts.SPIDER1).isOnBoard))
-                        || ((j == Consts.GRASSHOPPER2) && (!gameConfig.getNode(Consts.GRASSHOPPER1).isOnBoard))
-                        || ((j == Consts.GRASSHOPPER3) && (!gameConfig.getNode(Consts.GRASSHOPPER2).isOnBoard))
-                        || ((j == Consts.BEETLE2) && (!gameConfig.getNode(Consts.BEETLE1).isOnBoard))
-                        || ((j == Consts.ANT2) && (!gameConfig.getNode(Consts.ANT1).isOnBoard))
-                        || ((j == Consts.ANT3) && (!gameConfig.getNode(Consts.ANT2).isOnBoard))) {
-                    //do nothing -> the same kind of piece was just added
-                } else {
-                    for (Coord coord : possibleNewPositions) {
-                        StoringConfig newStoringConfig = new StoringConfig(this);
-                        newStoringConfig.setX(i, (byte) coord.getX());
-                        newStoringConfig.setY(i, (byte) coord.getY());
-                        newStoringConfig.setIsOnBoard(i, true);
-                        result.add(newStoringConfig);
-                    }
-                }
+                
             }
         }
         /* printing all config for study
