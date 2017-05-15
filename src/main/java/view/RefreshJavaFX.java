@@ -34,6 +34,6 @@ public class RefreshJavaFX extends AnimationTimer{
     public void handle(long now) {
        core.accept(drawer);
        h.accept(drawer);
-
+       
     }
 }

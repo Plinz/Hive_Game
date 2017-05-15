@@ -20,8 +20,6 @@ public class TraducteurBoard {
     
     public TraducteurBoard(){
         moveOrigin = new CoordGene<Double>(sizeHex,sizeHex);
-        moveOrigin.setX(sizeHex);
-        moveOrigin.setY(sizeHex);
     }
  
     private CoordGene<Double> cubeToAxial(Cube<Double> cube){
@@ -60,7 +58,7 @@ public class TraducteurBoard {
         CoordGene<Double> hex = new CoordGene<>(q,r); 
         hex = hexRound(hex);
             
-        System.out.println("RX :"+(hex.getX() )+ " RY " + (hex.getY()));
+       // System.out.println("RX :"+(hex.getX() )+ " RY " + (hex.getY()));
             
         return hex;
     }
