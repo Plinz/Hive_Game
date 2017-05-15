@@ -520,12 +520,13 @@ public class GameConfig {
         int maxHeight; // represents max between source height & destination height
         for (int i = 0; i < 6; i++) {
             //setting maxHeight
-            int destinationHeight = getHeight(neighborsCoords[i]) + 1;
+            //System.out.println(i + " : " + neighborsCoords[i]);
+            int destinationHeight = getHeight(neighborsCoords[i]);
             maxHeight = (node.getZ() > destinationHeight ? node.getZ() : destinationHeight);
 
             //check that the move respects freedom to move rule
-            if (((getHeight(neighborsCoords[(i + 1) % 6]) < maxHeight)
-                    || (getHeight(neighborsCoords[(i + 5) % 6]) < maxHeight))
+            if (((getHeight(neighborsCoords[(i + 1) % 6]) < (maxHeight+1))
+                    || (getHeight(neighborsCoords[(i + 5) % 6]) < (maxHeight+1)))
                     && ((getNode(neighborsCoords[(i + 1) % 6]) != null)
                     || (getNode(neighborsCoords[(i + 5) % 6]) != null))) {
                 StoringConfig newStoringConfig = new StoringConfig(storingConfig);

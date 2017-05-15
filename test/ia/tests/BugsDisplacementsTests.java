@@ -1205,7 +1205,7 @@ public class BugsDisplacementsTests
         stconf.setIsOnBoard(QUEEN + 14, true);
 
         //white beetle 1 in (4,5,0)
-        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setX(BEETLE1, (byte) 4);
         stconf.setY(BEETLE1, (byte) 5);
         stconf.setIsOnBoard(BEETLE1, true);
 
