@@ -1151,32 +1151,32 @@ public class BugsDisplacementsTests
     {
         /*************** initializing test game ***************/
         
-        //white queen in (5,5)
+        //white queen in (5,5,0)
         stconf.setX(QUEEN, (byte) 5);
         stconf.setY(QUEEN, (byte) 5);
         stconf.setIsOnBoard(QUEEN, true);
 
-        //black queen in (4,6)
+        //black queen in (4,6,0)
         stconf.setX(QUEEN + 14, (byte) 4);
         stconf.setY(QUEEN + 14, (byte) 6);
         stconf.setIsOnBoard(QUEEN + 14, true);
 
-        //white beetle 1 in (6,5)
+        //white beetle 1 in (6,5,0)
         stconf.setX(BEETLE1, (byte) 6);
         stconf.setY(BEETLE1, (byte) 5);
         stconf.setIsOnBoard(BEETLE1, true);
 
-        //black spider 1 in (3,6)
+        //black spider 1 in (3,6,0)
         stconf.setX(SPIDER1 + 14, (byte) 3);
         stconf.setY(SPIDER1 + 14, (byte) 6);
         stconf.setIsOnBoard(SPIDER1 + 14, true);
         
-        //white ant 1 in (7,5)
+        //white ant 1 in (7,5,0)
         stconf.setX(ANT1, (byte) 7);
         stconf.setY(ANT1, (byte) 5);
         stconf.setIsOnBoard(ANT1, true);
         
-        //black spider 2 in (2,6)
+        //black spider 2 in (2,6,0)
         stconf.setX(SPIDER2 + 14, (byte) 2);
         stconf.setY(SPIDER2 + 14, (byte) 6);
         stconf.setIsOnBoard(SPIDER2 + 14, true);
@@ -1187,5 +1187,97 @@ public class BugsDisplacementsTests
         GameConfig gameconf = new GameConfig(stconf, 7);
         
         assertFalse(gameconf.RespectsOneHive(beetleNode));
+    }
+    
+    @Test
+    public void testBeetleCanMoveToAnyAdjacentTile()
+    {
+        /*************** initializing test game ***************/
+        
+        //white queen in (5,5,0)
+        stconf.setX(QUEEN, (byte) 5);
+        stconf.setY(QUEEN, (byte) 5);
+        stconf.setIsOnBoard(QUEEN, true);
+
+        //black queen in (4,6,0)
+        stconf.setX(QUEEN + 14, (byte) 4);
+        stconf.setY(QUEEN + 14, (byte) 6);
+        stconf.setIsOnBoard(QUEEN + 14, true);
+
+        //white beetle 1 in (4,5,0)
+        stconf.setX(BEETLE1, (byte) 6);
+        stconf.setY(BEETLE1, (byte) 5);
+        stconf.setIsOnBoard(BEETLE1, true);
+
+        //black beetle 1 in (3,6,0)
+        stconf.setX(BEETLE1 + 14, (byte) 3);
+        stconf.setY(BEETLE1 + 14, (byte) 6);
+        stconf.setIsOnBoard(BEETLE1 + 14, true);
+        
+        //black spider 1 in (3,5,0)
+        stconf.setX(SPIDER1 + 14, (byte) 3);
+        stconf.setY(SPIDER1 + 14, (byte) 5);
+        stconf.setIsOnBoard(SPIDER1 + 14, true);
+        
+        /*************** game initialized ***************/
+        
+        /*************** creating output StoringConfigs ***************/
+        
+        //output config n°1 : white beetle moves to (5,5,1)
+        this.outputconf1 = new StoringConfig(this.stconf);
+        outputconf1.setX(BEETLE1, (byte) 5);
+        outputconf1.setY(BEETLE1, (byte) 5);
+        outputconf1.setZ(BEETLE1, (byte) 1);       
+        outputconf1.setIsStuck(QUEEN, true);
+        
+        //output config n°2 : white beetle moves to (4,6,1)
+        this.outputconf2 = new StoringConfig(this.stconf);
+        outputconf2.setX(BEETLE1, (byte) 4);
+        outputconf2.setY(BEETLE1, (byte) 6);
+        outputconf2.setZ(BEETLE1, (byte) 1);
+        outputconf2.setIsStuck(QUEEN + 14, true);
+        
+        //output config n°3 : white beetle moves to (3,6,1)
+        this.outputconf3 = new StoringConfig(this.stconf);
+        outputconf3.setX(BEETLE1, (byte) 3);
+        outputconf3.setY(BEETLE1, (byte) 6);
+        outputconf3.setZ(BEETLE1, (byte) 1);
+        outputconf3.setIsStuck(BEETLE1 + 14, true);
+        
+        //output config n°4 : white beetle moves to (3,5,1)
+        this.outputconf4 = new StoringConfig(this.stconf);
+        outputconf4.setX(BEETLE1, (byte) 3);
+        outputconf4.setY(BEETLE1, (byte) 5);
+        outputconf4.setZ(BEETLE1, (byte) 1);
+        outputconf4.setIsStuck(SPIDER1 + 14, true);
+
+        //output config n°5 : white beetle moves to (4,4,0)
+        this.outputconf5 = new StoringConfig(this.stconf);
+        outputconf5.setX(BEETLE1, (byte) 4);
+        outputconf5.setY(BEETLE1, (byte) 4);
+        
+        //output config n°6 : white beetle moves to (5,4,0)
+        this.outputconf6 = new StoringConfig(this.stconf);
+        outputconf6.setX(BEETLE1, (byte) 5);
+        outputconf6.setY(BEETLE1, (byte) 4);
+        
+        /*************** output StoringConfigs created ***************/
+        
+        PieceNode beetleNode = new PieceNode(stconf, BEETLE1);
+        GameConfig gameconf = new GameConfig(stconf, 9);
+        List<StoringConfig> outputList = new ArrayList<>(Arrays.asList(outputconf1, outputconf2, outputconf3,
+                                                                        outputconf4, outputconf5, outputconf6));
+
+        System.out.println("SIZE : " + gameconf.getPossibleBeetleDestinations(beetleNode).size());
+        for (int i = 0; i < gameconf.getPossibleBeetleDestinations(beetleNode).size(); i++)
+        {
+            System.out.println("FUNC : " + gameconf.getPossibleBeetleDestinations(beetleNode).get(i).toString());
+        }
+        for (int i = 0; i < gameconf.getPossibleBeetleDestinations(beetleNode).size(); i++)
+        {
+            System.out.println("OUTPUT" + outputList.get(i).toString());
+        }
+        
+        assertEquals(gameconf.getPossibleBeetleDestinations(beetleNode),outputList);
     }
 }
