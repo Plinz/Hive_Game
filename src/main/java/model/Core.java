@@ -71,8 +71,6 @@ public class Core {
 		String notation = Notation.getMoveNotation(board, piece, coord);
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
-
-		// if (mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
 		history.save(notation, unplay);
 		nextTurn();
 		return playNextTurn();
@@ -82,7 +80,6 @@ public class Core {
 		Piece piece = board.getTile(source).getPiece();
 		String notation = Notation.getMoveNotation(board, piece, target);
 		String unplay = Notation.getInverseMoveNotation(board, piece);
-		// if (this.mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
@@ -98,13 +95,10 @@ public class Core {
 	private boolean playNextTurn() {
 		if (isGameFinish())
 			return true;
-		if (isPlayerStuck())
-			currentPlayer = (1 - currentPlayer);
 		if (mode == Consts.PVAI && currentPlayer == Consts.AI_PLAYER) {
 			AIMove aiMove = ai.getNextMove(this);
 			return aiMove.play();
 		}
-
 		return false;
 	}
 
@@ -171,11 +165,15 @@ public class Core {
 
 	public boolean previousState() {
 		if (history.hasPrevious()) {
-			emulator.play(history.getPrevious());
-			previousTurn();
-			if (mode == Consts.PVAI) {
-				emulator.play(history.getPrevious());
+			String notation = history.getPrevious();
+			emulator.play(notation);
+			if (Consts.getPlayer(notation.charAt(0)) != players[currentPlayer].getTeam())
 				previousTurn();
+			if (mode == Consts.PVAI) {
+				notation = history.getPrevious();
+				emulator.play(notation);
+				if (Consts.getPlayer(notation.charAt(0)) != players[currentPlayer].getTeam())
+					previousTurn();
 			}
 			return true;
 		}
@@ -270,12 +268,16 @@ public class Core {
 	public void nextTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
+		if (isPlayerStuck())
+			currentPlayer = 1 - currentPlayer;
 		turn++;
 	}
 
 	public void previousTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
+		if (isPlayerStuck())
+			currentPlayer = 1 - currentPlayer;
 		turn--;
 	}
 	public int getMode() {

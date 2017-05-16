@@ -16,7 +16,7 @@ public class Notation {
 			char team = t.getPiece().getTeam() == 0 ? 'w' : 'b';
 			notation += " " + team + Consts.getNotation(t.getPiece().getId());
 		} else if (!neighbors.isEmpty()) {
-			t = neighbors.get(0);
+			while((t = neighbors.get(0)).isBlocked()) System.out.println(t);;
 			char team = t.getPiece().getTeam() == 0 ? 'w' : 'b';
 			CoordGene<Integer> offset = new CoordGene<Integer>(coord.getX() - t.getX(), coord.getY() - t.getY());
 			if (offset.getX() == 1 && offset.getY() == 0)

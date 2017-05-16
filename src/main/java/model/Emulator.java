@@ -32,7 +32,7 @@ public class Emulator {
 		}
 
 		CoordGene<Integer> target = new CoordGene<Integer>(0, 0);
-
+		
 		if (tokens.length == 2) {
 			switch (tokens[1].charAt(0)) {
 			case 'R':
@@ -65,7 +65,7 @@ public class Emulator {
 							.getCoord().getSouthEast();
 					break;
 				default:
-					target = getTile(Consts.getId(tokens[1].substring(1, tokens[1].length() - 1)), Consts.getPlayer(tokens[1].charAt(0)))
+					target = getTile(Consts.getId(tokens[1].substring(1, tokens[1].length())), Consts.getPlayer(tokens[1].charAt(0)))
 							.getCoord();
 				}
 			}
