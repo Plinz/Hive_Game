@@ -34,7 +34,7 @@ public class Spider extends Piece {
 			Set<CoordGene<Integer>> visited, CoordGene<Integer> from) {
 		List<CoordGene<Integer>> nextBox = new ArrayList<CoordGene<Integer>>();
 		if (deep == 3) {
-			if (!visited.contains(from))
+			if (origin.equals(from) || !visited.contains(from))
 				nextBox.add(from);
 			return nextBox;
 		}
@@ -45,7 +45,7 @@ public class Spider extends Piece {
 			CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
 			CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
 
-			if (board.getTile(target) != null && board.getTile(target).getPiece() == null
+			if (board.getTile(target) != null && (board.getTile(target).getPiece() == null || (deep == 2 && target.equals(origin)))
 					&& Rules.freedomToMove(board, 0, left, right, origin)
 					&& Rules.permanentContact(board, 0, left, right, origin))
 				nextBox.addAll(path(board, origin, deep + 1, visited, target));
