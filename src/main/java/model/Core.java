@@ -62,7 +62,7 @@ public class Core {
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
 
-		if (mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
+		//if (mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
 			history.save(notation, unplay);
 		nextTurn();
 		return playNextTurn();
@@ -72,7 +72,7 @@ public class Core {
 		Piece piece = board.getTile(source).getPiece();
 		String notation = Notation.getMoveNotation(board, piece, target);
 		String unplay = Notation.getInverseMoveNotation(board, piece);
-		if (this.mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
+		//if (this.mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
 			history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
@@ -164,6 +164,10 @@ public class Core {
 		if (history.hasPrevious()) {
 			emulator.play(history.getPrevious());
 			previousTurn();
+			if (mode == Consts.PVAI){
+				emulator.play(history.getPrevious());
+				previousTurn();
+			}
 			return true;
 		}
 		return false;
@@ -173,6 +177,10 @@ public class Core {
 		if (history.hasNext()) {
 			emulator.play(history.getNext());
 			nextTurn();
+			if (mode == Consts.PVAI){
+				emulator.play(history.getNext());
+				nextTurn();
+			}
 			return true;
 		}
 		return false;
