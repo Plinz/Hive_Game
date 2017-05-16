@@ -7,7 +7,6 @@ import java.util.Set;
 
 import main.java.model.Board;
 import main.java.model.Piece;
-import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -23,7 +22,7 @@ public class Ant extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
-		if (!tile.isBlocked() && Rules.oneHive(board, tile))
+		if (!tile.isBlocked() && board.oneHive(tile))
 			list.addAll(path(board, tile.getCoord(), new HashSet<CoordGene<Integer>>(), tile.getCoord()));
 		this.possibleMovement = list;
 		return list;
@@ -40,8 +39,8 @@ public class Ant extends Piece {
 			CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
 
 			if (!visited.contains(target) && board.getTile(target) != null && board.getTile(target).getPiece() == null
-					&& Rules.freedomToMove(board, 0, left, right, origin)
-					&& Rules.permanentContact(board, 0, left, right, origin)) {
+					&& board.freedomToMove(0, left, right, origin)
+					&& board.permanentContact(0, left, right, origin)) {
 				nextBox.add(target);
 				visited.add(target);
 				nextBox.addAll(path(board, origin, visited, target));

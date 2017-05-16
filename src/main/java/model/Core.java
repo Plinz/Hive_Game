@@ -1,7 +1,14 @@
 package main.java.model;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 import main.java.ia.AI;
@@ -22,19 +29,21 @@ public class Core {
 	private int status;
 	private int turn;
 	private int currentPlayer;
+	private int difficulty;
 
 	public Core(int mode, int difficulty) {
 		this.history = new HistoryNotation();
 		this.board = new Board();
-        this.players = new Player[2];
-        this.players[0] = new Player(0);
-        this.players[1] = new Player(1);
+		this.players = new Player[2];
+		this.players[0] = new Player(0);
+		this.players[1] = new Player(1);
 		this.emulator = new Emulator(this, board, players);
 		this.ai = AIFactory.buildAI(difficulty, this);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;
 		this.currentPlayer = Consts.PLAYER1;
+		this.difficulty = difficulty;
 	}
 
 	public boolean accept(BoardDrawer b) {
@@ -51,7 +60,8 @@ public class Core {
 	}
 
 	public boolean isPieceOfCurrentPlayer(CoordGene<Integer> coord) {
-		return isTile(coord) && isPiece(coord) && getCurrentPlayerObj().getTeam() == board.getTile(coord).getPiece().getTeam();
+		return isTile(coord) && isPiece(coord)
+				&& getCurrentPlayerObj().getTeam() == board.getTile(coord).getPiece().getTeam();
 	}
 
 	public boolean addPiece(int pieceId, CoordGene<Integer> coord) {
@@ -62,8 +72,8 @@ public class Core {
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
 
-		//if (mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
-			history.save(notation, unplay);
+		// if (mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
+		history.save(notation, unplay);
 		nextTurn();
 		return playNextTurn();
 	}
@@ -72,16 +82,17 @@ public class Core {
 		Piece piece = board.getTile(source).getPiece();
 		String notation = Notation.getMoveNotation(board, piece, target);
 		String unplay = Notation.getInverseMoveNotation(board, piece);
-		//if (this.mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
-			history.save(notation, unplay);
+		// if (this.mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
+		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
 		return playNextTurn();
 	}
-	
+
 	public void removePiece(CoordGene<Integer> coord) {
 		Piece piece = board.removePiece(coord);
-		players[1 - currentPlayer].addPiece(piece);;
+		players[1 - currentPlayer].addPiece(piece);
+		;
 	}
 
 	private boolean playNextTurn() {
@@ -98,13 +109,11 @@ public class Core {
 	}
 
 	private boolean canAddPiece(int pieceId) {
-		return (turn != 6 && turn != 7) || isQueenOnBoard()
-				|| pieceId == Consts.QUEEN;
+		return (turn != 6 && turn != 7) || isQueenOnBoard() || pieceId == Consts.QUEEN;
 	}
 
 	private boolean isQueenOnBoard() {
-		return getCurrentPlayerObj().getInventory().stream()
-				.noneMatch(piece -> piece.getId() == Consts.QUEEN);
+		return getCurrentPlayerObj().getInventory().stream().noneMatch(piece -> piece.getId() == Consts.QUEEN);
 	}
 
 	private boolean isGameFinish() {
@@ -153,8 +162,8 @@ public class Core {
 			for (Column column : board.getBoard())
 				for (Box box : column)
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
-							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty() && !neighbors
-									.stream().anyMatch(it -> it.getPiece().team != currentPlayer))
+							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
+							&& !neighbors.stream().anyMatch(it -> it.getPiece().team != currentPlayer))
 						pos.add(current.getCoord());
 		}
 		return pos;
@@ -164,7 +173,7 @@ public class Core {
 		if (history.hasPrevious()) {
 			emulator.play(history.getPrevious());
 			previousTurn();
-			if (mode == Consts.PVAI){
+			if (mode == Consts.PVAI) {
 				emulator.play(history.getPrevious());
 				previousTurn();
 			}
@@ -177,7 +186,7 @@ public class Core {
 		if (history.hasNext()) {
 			emulator.play(history.getNext());
 			nextTurn();
-			if (mode == Consts.PVAI){
+			if (mode == Consts.PVAI) {
 				emulator.play(history.getNext());
 				nextTurn();
 			}
@@ -187,30 +196,86 @@ public class Core {
 	}
 
 	public void save(String name) {
-		System.out.println("SAVE PROCESS");
-		if (name == null)
-			name = generateSaveName();
-		Save.makeSave(name, this);
+		if (name == null) {
+			if (mode == Consts.PVP)
+				name = players[Consts.PLAYER1].getName() + "-" + players[Consts.PLAYER2].getName() + "-turn" + turn;
+			else
+				name = players[Consts.PLAYER1].getName() + "-AI_"
+						+ (difficulty == Consts.EASY ? "EASY" : difficulty == Consts.MEDIUM ? "MEDIUM" : "HARD")
+						+ "-turn" + turn;
+		}
+
+		try {
+			if (!Files.isDirectory(Paths.get("Hive_save")))
+				Files.createDirectories(Paths.get("Hive_save"));
+			Path path = Paths.get("Hive_save/" + name);
+			BufferedWriter writer = Files.newBufferedWriter(path);
+			writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
+			if (mode == Consts.PVAI)
+				writer.write(difficulty+"\n");
+			else
+				writer.write(players[Consts.PLAYER2].getName()+"\n");
+			Stack<String> prevPlay = history.getPrevPlay();
+			Stack<String> prevUnplay = history.getPrevUnplay();
+			writer.write(prevPlay.size());
+			if (prevPlay.size() == prevUnplay.size())
+				for (int i = 0; i < prevPlay.size(); i++)
+					writer.write(prevPlay.get(i) + ";" + prevUnplay.get(i) + "\n");
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private String generateSaveName() {
+	public List<String> load() {
+		try {
+			if (!Files.isDirectory(Paths.get("Hive_save")))
+				Files.createDirectories(Paths.get("Hive_save"));
+			return Files.list(Paths.get("Hive_save")).map(p -> p.getFileName().toFile().getName()).collect(Collectors.toList());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
-	public Player getCurrentPlayerObj(){
+	public void load(String saveFile){
+		try {
+			Path path = Paths.get("Hive_save/"+saveFile);
+			BufferedReader reader = Files.newBufferedReader(path);
+			mode = Integer.parseInt(reader.readLine());
+			currentPlayer = Integer.parseInt(reader.readLine());
+			players[Consts.PLAYER1].setName(reader.readLine());
+			if (mode == Consts.PVAI){
+				difficulty = Integer.parseInt(reader.readLine());
+				ai = AIFactory.buildAI(difficulty, this);
+			}
+			else
+				players[Consts.PLAYER2].setName(reader.readLine());
+			String tmp = reader.readLine();
+			while(tmp != null && !tmp.isEmpty()){
+				String[] token = tmp.split(";");
+				emulator.play(token[0]);
+				history.save(token[0], token[1]);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Player getCurrentPlayerObj() {
 		return players[currentPlayer];
 	}
-	
-    public void nextTurn() {
+
+	public void nextTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
-        turn++;
-    }
-    
+		turn++;
+	}
+
 	public void previousTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
-        turn--;		
+		turn--;
 	}
 
 	public HistoryNotation getHistory() {
@@ -276,13 +341,21 @@ public class Core {
 	public void setTurn(int turn) {
 		this.turn = turn;
 	}
-	
-	public int getCurrentPlayer(){
+
+	public int getCurrentPlayer() {
 		return this.currentPlayer;
 	}
 
 	public void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 
 }

@@ -19,7 +19,6 @@ public class Emulator {
 	}
 
 	public void play(String notation) {
-		System.out.println(notation);
 		String[] tokens = notation.split(" ");
 		boolean move = false;
 		Player player = players[Consts.getPlayer(tokens[0].charAt(0))];

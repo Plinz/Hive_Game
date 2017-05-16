@@ -4,10 +4,10 @@ import java.util.Stack;
 
 public class HistoryNotation {
 
-	Stack<String> prevPlay;
-	Stack<String> prevUnplay;
-	Stack<String> nextPlay;
-	Stack<String> nextUnplay;
+	private Stack<String> prevPlay;
+	private Stack<String> prevUnplay;
+	private Stack<String> nextPlay;
+	private Stack<String> nextUnplay;
 	
 
 	public HistoryNotation() {
@@ -40,6 +40,14 @@ public class HistoryNotation {
 	public String getNext() {
 		prevUnplay.push(nextUnplay.pop());
 		return prevPlay.push(nextPlay.pop());
+	}
+	
+	public Stack<String> getPrevPlay(){
+		return prevPlay;
+	}
+	
+	public Stack<String> getPrevUnplay(){
+		return prevUnplay;
 	}
 	
 

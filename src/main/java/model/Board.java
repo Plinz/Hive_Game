@@ -1,7 +1,9 @@
 package main.java.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
@@ -298,5 +300,45 @@ public class Board{
 				for (Tile tile : box)
 					if (tile != null && tile.getPiece() != null)
 						tile.getPiece().clear();
+	}
+	
+	public boolean oneHive(Tile toMove) {
+		List<Tile> list = getPieceNeighbors(toMove);
+
+		if (toMove.getZ() != 0 || list.isEmpty())
+			return true;
+
+		HashSet<Tile> visited = new HashSet<Tile>();
+		Stack<Tile> nextTiles = new Stack<Tile>();
+
+		visited.add(toMove);
+		nextTiles.add(list.get(0));
+		Tile current;
+		while (!nextTiles.isEmpty()) {
+			if (!visited.contains(current = nextTiles.pop())) {
+				nextTiles.addAll(getPieceNeighbors(current));
+				visited.add(current);
+			}
 		}
+		return getNbPieceOnTheBoard() == visited.size();
+	}
+
+	public boolean freedomToMove(int floor, CoordGene<Integer> left, CoordGene<Integer> right,
+			CoordGene<Integer> exception) {
+		Tile leftTile = getTile(left);
+		Tile rightTile = getTile(right);
+		return (leftTile == null || leftTile.getPiece() == null || leftTile.getZ() < floor || rightTile == null
+				|| rightTile.getPiece() == null || rightTile.getZ() < floor || left.equals(exception)
+				|| right.equals(exception));
+	}
+
+	public boolean permanentContact(int floor, CoordGene<Integer> left, CoordGene<Integer> right,
+			CoordGene<Integer> exception) {
+		if (floor > 0)
+			return true;
+		Tile leftTile = getTile(left);
+		Tile rightTile = getTile(right);
+		return (leftTile != null && leftTile.getPiece() != null && !left.equals(exception))
+				|| (rightTile != null && rightTile.getPiece() != null && !right.equals(exception));
+	}
 }

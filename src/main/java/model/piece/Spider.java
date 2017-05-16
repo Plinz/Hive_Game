@@ -7,7 +7,6 @@ import java.util.Set;
 
 import main.java.model.Board;
 import main.java.model.Piece;
-import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -23,7 +22,7 @@ public class Spider extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
-		if (!tile.isBlocked() && Rules.oneHive(board, tile))
+		if (!tile.isBlocked() && board.oneHive(tile))
 			list.addAll(path(board, tile.getCoord(), 0, new HashSet<CoordGene<Integer>>(), tile.getCoord()));
 		this.possibleMovement = list;
 		return list;
@@ -46,8 +45,8 @@ public class Spider extends Piece {
 			CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
 
 			if (board.getTile(target) != null && (board.getTile(target).getPiece() == null || (deep == 2 && target.equals(origin)))
-					&& Rules.freedomToMove(board, 0, left, right, origin)
-					&& Rules.permanentContact(board, 0, left, right, origin))
+					&& board.freedomToMove(0, left, right, origin)
+					&& board.permanentContact(0, left, right, origin))
 				nextBox.addAll(path(board, origin, deep + 1, visited, target));
 		}
 		return nextBox;

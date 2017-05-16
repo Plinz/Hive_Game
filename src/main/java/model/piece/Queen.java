@@ -5,7 +5,6 @@ import java.util.List;
 
 import main.java.model.Board;
 import main.java.model.Piece;
-import main.java.model.Rules;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -22,7 +21,7 @@ public class Queen extends Piece {
 			return this.possibleMovement;
 
 		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
-		if (!tile.isBlocked() && Rules.oneHive(board, tile)) {
+		if (!tile.isBlocked() && board.oneHive(tile)) {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {
 				CoordGene<Integer> target = neighbors.get(i);
@@ -30,8 +29,8 @@ public class Queen extends Piece {
 				CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
 
 				if (board.getTile(target).getPiece() == null
-						&& Rules.freedomToMove(board, 0, left, right, tile.getCoord())
-						&& Rules.permanentContact(board, 0, left, right, tile.getCoord()))
+						&& board.freedomToMove(0, left, right, tile.getCoord())
+						&& board.permanentContact(0, left, right, tile.getCoord()))
 					list.add(target);
 			}
 		}
