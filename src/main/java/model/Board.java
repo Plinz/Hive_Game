@@ -105,11 +105,13 @@ public class Board{
 			for (Column column : columns)
 				column.add(0, new Box());
 			resize(0, 1);
+                        //Ici trouver un moyen de notifier le TraducteurBoard
 		}
 		if (coord.getX() == 0) {
 			Column column = new Column();
 			columns.add(0, column);
 			resize(1, 0);
+                        //Ici trouver un moyen de notifier le TraducteurBoard
 		}
 		if (added.getY() + 1 == columns.get(added.getX()).size())
 			columns.get(added.getX()).add(new Box());

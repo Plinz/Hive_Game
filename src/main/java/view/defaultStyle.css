@@ -192,7 +192,7 @@ and open the template in the editor.
 }
 
 #pvpChoice:selected{
-    -fx-background-image: url("/main/resources/img/misc/humanvshumanhover.png");
+    -fx-background-image: url("/main/resources/img/misc/humanvshumanselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -218,7 +218,7 @@ and open the template in the editor.
 }
 
 #pvaiChoice:selected{
-    -fx-background-image: url("/main/resources/img/misc/humanvsaihover.png");
+    -fx-background-image: url("/main/resources/img/misc/humanvsaiselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
