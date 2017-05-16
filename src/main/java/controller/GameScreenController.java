@@ -501,5 +501,6 @@ public class GameScreenController implements Initializable {
         }
             t.setMoveOrigin(newOrigin);
     }
+    
 }
 
