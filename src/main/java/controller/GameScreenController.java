@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.PathTransition;
+import javafx.event.ActionEvent;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -43,14 +48,21 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.Text;
 import main.java.implement.Main;
 import main.java.model.Core;
 import main.java.model.Piece;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.view.AnimationTile;
 import main.java.view.Highlighter;
 import main.java.view.RefreshJavaFX;
 import main.java.view.TraducteurBoard;
@@ -62,6 +74,9 @@ import main.java.view.TraducteurBoard;
 public class GameScreenController implements Initializable {
     @FXML private AnchorPane mainAnchor;
     @FXML private Canvas gameCanvas;
+    @FXML private Pane panCanvas;
+    @FXML private Path path;
+    
     @FXML private GridPane inventoryPlayer1;
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
@@ -77,6 +92,7 @@ public class GameScreenController implements Initializable {
     private boolean freeze;
     private ToggleGroup inventoryGroup;
     private RefreshJavaFX r;
+    private AnimationTile animation;
     
     public void setMainApp(Main mainApp) {
         this.main = mainApp;    
@@ -113,6 +129,8 @@ public class GameScreenController implements Initializable {
         inventoryGroup = new ToggleGroup();
         
         initButtonByInventory();
+        animation = new AnimationTile(panCanvas,t);      
+              
         initGameCanvas();
         
         r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
@@ -139,6 +157,31 @@ public class GameScreenController implements Initializable {
                                 else{
                                     resetPiece();
                                     initButtonByInventory();
+                                                                    
+                                    panCanvas.getChildren().add(animation.getPolygon());  
+                                    
+                                    System.out.print("LOL");
+                                    path  = new Path( 
+                new MoveTo(50, 50), 
+                new LineTo(100, 50), 
+                new LineTo(150, 150), 
+                new QuadCurveTo(150, 100, 250, 200), 
+                new CubicCurveTo(0, 250, 400, 0, 300, 250)); 
+                                    
+                                    animation.setPath(path);
+                                    PathTransition pathTr  = animation.getPathAnimation();
+                                    pathTr.setOnFinished(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent t) {
+                                            panCanvas.getChildren().remove(animation.getPolygon());
+                                        }
+                                    });
+                                    pathTr.play();
+                                    
+                                    
+                                    
+                                            
+                                    //panCanvas.getChildren().remove(animation.getPolygon());
                                     highlighted.setListTohighlight(null);
                                 }
                             } else if (core.isPieceOfCurrentPlayer(coord)) {
@@ -198,11 +241,11 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(ScrollEvent event) {
-                if(event.getDeltaY() > 0){
-                     t.setSizeHex(t.getSizeHex()*1.1);
+                if(event.getDeltaY() > 0){        
+                    Consts.SIDE_SIZE*=1.1;
                 }
                 else{
-                    t.setSizeHex(t.getSizeHex()*0.9);
+                    Consts.SIDE_SIZE*=0.9;
                 }
             }
         });

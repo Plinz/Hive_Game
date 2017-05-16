@@ -8,6 +8,7 @@ package main.java.view;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import main.java.model.Core;
+import main.java.utils.Consts;
 
 /**
  *
@@ -34,6 +35,7 @@ public class RefreshJavaFX extends AnimationTimer{
     public void handle(long now) {
        core.accept(drawer);
        h.accept(drawer);
+        System.err.println(Consts.SIDE_SIZE);
        
     }
 }

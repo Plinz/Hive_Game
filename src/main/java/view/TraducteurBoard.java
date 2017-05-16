@@ -5,6 +5,7 @@
  */
 package main.java.view;
 
+import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.utils.Cube;
 
@@ -13,13 +14,13 @@ import main.java.utils.Cube;
  * @author duvernet
  */
 public class TraducteurBoard {
-    private double sizeHex =50;
+    //private double Consts.SIDE_SIZE = Consts.SIDE_SIZE;
     private CoordGene<Double> centerPix;
     private CoordGene<Double> centerAxial;
     private CoordGene<Double> moveOrigin; 
     
     public TraducteurBoard(){
-        moveOrigin = new CoordGene<Double>(sizeHex,sizeHex);
+        moveOrigin = new CoordGene<Double>(Consts.SIDE_SIZE,Consts.SIDE_SIZE);
     }
  
     private CoordGene<Double> cubeToAxial(Cube<Double> cube){
@@ -29,10 +30,6 @@ public class TraducteurBoard {
         return  new CoordGene<>(q,r);
     }
 
-    public void setSizeHex(double sizeHex) {
-        this.sizeHex = sizeHex;
-    }
-    
     private Cube<Double> axialToCube(CoordGene<Double> coord){
         double x = coord.getX();
         double z =  coord.getY();
@@ -43,8 +40,8 @@ public class TraducteurBoard {
     
     public CoordGene<Double> axialToPixel(CoordGene<Double> hex){
        
-        double x = sizeHex * Math.sqrt(3) * (hex.getX() + hex.getY()/2);
-        double y = sizeHex * 3/2 * hex.getY();
+        double x = Consts.SIDE_SIZE * Math.sqrt(3) * (hex.getX() + hex.getY()/2);
+        double y = Consts.SIDE_SIZE * 3/2 * hex.getY();
         
         return new CoordGene<>(x,y);
         
@@ -52,8 +49,8 @@ public class TraducteurBoard {
     
     public CoordGene<Double> pixelToAxial(CoordGene<Double> pix){
       
-        double q =  (((pix.getX()-getMoveOrigin().getX())* Math.sqrt(3)/3 - (pix.getY()-getMoveOrigin().getY())/ 3) / sizeHex);
-        double r =  ((pix.getY()-getMoveOrigin().getY())*  2/3 / sizeHex);
+        double q =  (((pix.getX()-getMoveOrigin().getX())* Math.sqrt(3)/3 - (pix.getY()-getMoveOrigin().getY())/ 3) / Consts.SIDE_SIZE);
+        double r =  ((pix.getY()-getMoveOrigin().getY())*  2/3 / Consts.SIDE_SIZE);
 
         CoordGene<Double> hex = new CoordGene<>(q,r); 
         hex = hexRound(hex);
@@ -88,13 +85,6 @@ public class TraducteurBoard {
     }
 
     /**
-     * @return the sizeHex
-     */
-    public double getSizeHex() {
-        return sizeHex;
-    }
-
-    /**
      * @return the moveOrigin
      */
     public CoordGene<Double> getMoveOrigin() {
@@ -105,7 +95,7 @@ public class TraducteurBoard {
      * @param moveOrigin the moveOrigin to set
      */
     public void setMoveOrigin(CoordGene<Double> moveOrigin)  {
-        //if(moveOrigin.getX()>=sizeHex && moveOrigin.getY()>=sizeHex)
+        //if(moveOrigin.getX()>=Consts.SIDE_SIZE && moveOrigin.getY()>=Consts.SIDE_SIZE)
             this.moveOrigin = moveOrigin;
         //else
           //  throw new IndexOutOfBoundsException("Attention la carte risque d'être mal affichée");
