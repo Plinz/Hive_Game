@@ -12,6 +12,8 @@ public class AIFactory {
         switch (difficulty){
             case Consts.EASY :
                 return new EasyAI(core);
+            case Consts.MEDIUM :
+                return new MediumAI(core);
             default :
                 System.err.println("Not implemented yet");
                 return null;
