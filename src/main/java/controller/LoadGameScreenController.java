@@ -6,13 +6,17 @@
 package main.java.controller;
 
 
+import java.io.File;
 import javafx.fxml.FXML;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.ListView;
 import main.java.implement.Main;
+import main.java.model.Core;
 
 /**
  * FXML Controller class
@@ -26,26 +30,39 @@ public class LoadGameScreenController implements Initializable {
      */
     
     private Main main;
+    private Core core;
+    @FXML private ListView saveList;
     
     public LoadGameScreenController() {
     }
     
     @FXML
     public void handleLaunchGameClick(){
-        Dialog d = new Alert(Alert.AlertType.INFORMATION);
-        d.setTitle("Information");
-        d.setContentText("Pas encore implémenté");
-        d.show();
+        if(saveList.getSelectionModel().getSelectedItems() != null){
+            int selectedItem = saveList.getSelectionModel().getSelectedIndex();
+            String saveName = (String)saveList.getSelectionModel().getSelectedItems().get(selectedItem);
+            System.out.println(saveName + " salut");
+            core.load(saveName);
+        }
+        main.showGameScreen(core);
     }
     
     @FXML 
     public void handleMenuClick(){
         main.showMainMenu();
     }
+
     
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
     }    
+    
+    public void initGameList(){
+        core = new Core(0, 0);
+        List<String> saves = core.load();
+        saveList.getItems().addAll(saves);
+    }
+    
     
     public void setMainApp(Main mainApp) {
         this.main = mainApp;   

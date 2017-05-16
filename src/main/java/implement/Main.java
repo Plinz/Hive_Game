@@ -88,6 +88,7 @@ public class Main extends Application {
             
             LoadGameScreenController controller = loader.getController();
             controller.setMainApp(this);
+            controller.initGameList();
             
             primaryStage.getScene().setRoot(personOverview);
             if(OptionManager.isFullscreen())

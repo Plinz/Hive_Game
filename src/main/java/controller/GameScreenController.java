@@ -137,6 +137,7 @@ public class GameScreenController implements Initializable {
                                 if(core.movePiece(pieceToMove, coord))
                                     handleEndGame();
                                 else{
+                                    handleResize(coord);
                                     resetPiece();
                                     initButtonByInventory();
                                     highlighted.setListTohighlight(null);
@@ -149,6 +150,7 @@ public class GameScreenController implements Initializable {
                             } else {
                                 if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord) && core.addPiece(pieceToChoose, coord))
                                 	handleEndGame();
+                                handleResize(coord);
                                 resetPiece();
                                 initButtonByInventory();
                                 highlighted.setListTohighlight(possibleMovement = null);
@@ -207,7 +209,7 @@ public class GameScreenController implements Initializable {
             }
         });
         
-        //gameCanvas.widthProperty().bind(mainAnchor.widthProperty().multiply(0.666));
+        //gameCanvas.widthProperty().bind(mainAnchor.widthProperty().multiply(0.71));
         //gameCanvas.heightProperty().bind(mainAnchor.heightProperty());
     }
     public void handleNewGame(){
@@ -431,6 +433,23 @@ public class GameScreenController implements Initializable {
             main.showMainMenu();
         }
         main.getPrimaryStage().requestFocus();
+    }
+    
+    public void handleResize(CoordGene<Integer> coord){
+        CoordGene<Double> newOrigin = t.getMoveOrigin();
+        if(coord.getX() == 0){
+            newOrigin.setX(newOrigin.getX()-t.getSizeHex()*2.25);
+        }
+        if(coord.getY() == 0){
+            newOrigin.setY(newOrigin.getY()-t.getSizeHex()*1.5);
+        }
+        if(coord.getX() == core.getBoard().getBoard().size()-1){
+            newOrigin.setX(newOrigin.getX()-t.getSizeHex()/2.25);
+        }
+        if(coord.getY() == core.getBoard().getBoard().get(coord.getX()).size()-1){
+            newOrigin.setY(newOrigin.getX()-t.getSizeHex()/1.5);
+        }
+            t.setMoveOrigin(newOrigin);
     }
 }
 
