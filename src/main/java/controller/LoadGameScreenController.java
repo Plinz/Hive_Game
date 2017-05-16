@@ -15,8 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
+import main.java.engine.Core;
 import main.java.implement.Main;
-import main.java.model.Core;
 
 /**
  * FXML Controller class

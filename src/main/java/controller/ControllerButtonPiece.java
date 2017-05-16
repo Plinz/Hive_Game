@@ -7,7 +7,7 @@ package main.java.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import main.java.model.Core;
+import main.java.engine.Core;
 import main.java.view.Highlighter;
 
 /**

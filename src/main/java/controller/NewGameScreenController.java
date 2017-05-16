@@ -15,8 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import main.java.engine.Core;
 import main.java.implement.Main;
-import main.java.model.Core;
 import main.java.utils.Consts;
 
 /**

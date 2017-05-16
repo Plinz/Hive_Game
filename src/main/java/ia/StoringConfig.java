@@ -15,8 +15,8 @@ package main.java.ia;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.engine.Core;
 import main.java.model.Column;
-import main.java.model.Core;
 import main.java.model.Tile;
 
 

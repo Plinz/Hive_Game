@@ -1,8 +1,8 @@
-package main.java.model;
+package main.java.engine;
 
 import java.util.Stack;
 
-public class HistoryNotation {
+public class History {
 
 	private Stack<String> prevPlay;
 	private Stack<String> prevUnplay;
@@ -10,7 +10,7 @@ public class HistoryNotation {
 	private Stack<String> nextUnplay;
 	
 
-	public HistoryNotation() {
+	public History() {
 		prevPlay = new Stack<String>();
 		prevUnplay = new Stack<String>();
 		nextPlay = new Stack<String>();

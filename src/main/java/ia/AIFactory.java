@@ -3,7 +3,7 @@
  */
 package main.java.ia;
 
-import main.java.model.Core;
+import main.java.engine.Core;
 import main.java.utils.Consts;
 
 public class AIFactory {

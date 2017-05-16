@@ -10,10 +10,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import main.java.engine.Visitor;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
-import main.java.model.Visitor;
 import main.java.utils.CoordGene;
 
 

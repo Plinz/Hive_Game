@@ -4,7 +4,8 @@
 package main.java.ia;
 
 import java.util.Random;
-import main.java.model.Core;
+
+import main.java.engine.Core;
 import main.java.utils.Consts;
 
 public class EasyAI extends AI {

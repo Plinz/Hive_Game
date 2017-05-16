@@ -1,4 +1,4 @@
-package main.java.model;
+package main.java.engine;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,13 +14,19 @@ import java.util.stream.Collectors;
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.ia.AIMove;
+import main.java.model.Board;
+import main.java.model.Box;
+import main.java.model.Column;
+import main.java.model.Piece;
+import main.java.model.Player;
+import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
 public class Core {
 
-	private HistoryNotation history;
+	private History history;
 	private Board board;
 	private Player[] players;
 	private Emulator emulator;
@@ -32,7 +38,7 @@ public class Core {
 	private int difficulty;
 
 	public Core(int mode, int difficulty) {
-		this.history = new HistoryNotation();
+		this.history = new History();
 		this.board = new Board();
 		this.players = new Player[2];
 		this.players[0] = new Player(0);
@@ -157,7 +163,7 @@ public class Core {
 				for (Box box : column)
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
 							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
-							&& !neighbors.stream().anyMatch(it -> it.getPiece().team != currentPlayer))
+							&& !neighbors.stream().anyMatch(it -> it.getPiece().getTeam() != currentPlayer))
 						pos.add(current.getCoord());
 		}
 		return pos;

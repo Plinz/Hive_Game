@@ -1,5 +1,8 @@
-package main.java.model;
+package main.java.engine;
 
+import main.java.model.Board;
+import main.java.model.Piece;
+import main.java.model.Tile;
 import main.java.utils.CoordGene;
 
 public abstract class Visitor {

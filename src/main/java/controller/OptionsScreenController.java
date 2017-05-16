@@ -17,8 +17,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+
+import main.java.engine.OptionManager;
 import main.java.implement.Main;
-import main.java.model.OptionManager;
 import main.java.utils.Consts;
 import org.xml.sax.SAXException;
 

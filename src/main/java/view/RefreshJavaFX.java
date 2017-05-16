@@ -7,7 +7,7 @@ package main.java.view;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
-import main.java.model.Core;
+import main.java.engine.Core;
 
 /**
  *

@@ -1,8 +1,11 @@
-package main.java.model;
+package main.java.engine;
 
 import java.util.Collection;
 import java.util.List;
 
+import main.java.model.Board;
+import main.java.model.Piece;
+import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
