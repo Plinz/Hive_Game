@@ -43,16 +43,8 @@ public class Board{
 		return columns;
 	}
 
-	public void setBoard(List<Column> board) {
-		this.columns = board;
-	}
-
 	public int getNbPieceOnTheBoard() {
 		return nbPieceOnTheBoard;
-	}
-
-	public void setNbPieceOnTheBoard(int nbPieceOnTheBoard) {
-		this.nbPieceOnTheBoard = nbPieceOnTheBoard;
 	}
 
 	public boolean accept(BoardDrawer b) {

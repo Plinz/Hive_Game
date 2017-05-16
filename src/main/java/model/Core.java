@@ -277,85 +277,22 @@ public class Core {
 		board.clearPossibleMovement();
 		turn--;
 	}
-
-	public HistoryNotation getHistory() {
-		return history;
-	}
-
-	public void setHistory(HistoryNotation history) {
-		this.history = history;
-	}
-
-	public Emulator getEmulator() {
-		return emulator;
-	}
-
-	public void setEmulator(Emulator emulator) {
-		this.emulator = emulator;
-	}
-
-	public AI getAi() {
-		return ai;
-	}
-
-	public void setAi(AI ai) {
-		this.ai = ai;
-	}
-
 	public int getMode() {
 		return mode;
 	}
-
-	public void setMode(int mode) {
-		this.mode = mode;
-	}
-
 	public int getStatus() {
 		return status;
 	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 	public Board getBoard() {
 		return board;
 	}
-
-	public void setBoard(Board board) {
-		this.board = board;
-	}
-
 	public Player[] getPlayers() {
 		return players;
 	}
-
-	public void setPlayers(Player[] players) {
-		this.players = players;
-	}
-
 	public int getTurn() {
 		return turn;
 	}
-
-	public void setTurn(int turn) {
-		this.turn = turn;
-	}
-
 	public int getCurrentPlayer() {
-		return this.currentPlayer;
+		return currentPlayer;
 	}
-
-	public void setCurrentPlayer(int currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-
-	public int getDifficulty() {
-		return difficulty;
-	}
-
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
-
 }

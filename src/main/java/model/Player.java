@@ -29,7 +29,7 @@ public class Player{
 	}
 	
 	public Player(int team){
-		this.name = "Anonymous";
+		this.name = "Anonymous"+team;
 		this.team = team;
 		this.inventory = new ArrayList<Piece>();
 		this.init();
