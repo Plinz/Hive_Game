@@ -491,7 +491,8 @@ public class GameConfig {
                     || (getHeight(neighborsCoords[(i + 5) % 6]) < (maxHeight + 1)))
                     && ((getNode(neighborsCoords[(i + 1) % 6]) != null)
                     || (getNode(neighborsCoords[(i + 5) % 6]) != null)
-                    || (destinationHeight > 0))) {
+                    || (destinationHeight > 0)
+                    || (node.getZ() > 0))) {
                 StoringConfig newStoringConfig = new StoringConfig(storingConfig);
 
                 //Unstuck the piece which was below the beetle

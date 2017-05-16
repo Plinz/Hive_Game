@@ -34,6 +34,10 @@ public class StoringConfig {
         this.difficulty = stconf.difficulty;
     }
 
+    public StoringConfig(int nb_pieces) {
+         config = new int[nb_pieces];
+    }
+    
     /*
     This is the translator -> translates a state given by the 
     core into a Storing config.
