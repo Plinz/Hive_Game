@@ -24,6 +24,7 @@ import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.TraducteurBoard;
 
@@ -36,7 +37,7 @@ public class TestAnimation extends Application {
     
     public void start(final Stage primaryStage) { 
             TraducteurBoard traducteur = new TraducteurBoard();
-            double sizeHex = traducteur.getSizeHex();
+            double sizeHex = Consts.SIDE_SIZE;
               
               double a = Math.sqrt((sizeHex*sizeHex)- ((sizeHex/2)*(sizeHex/2)));             
                     

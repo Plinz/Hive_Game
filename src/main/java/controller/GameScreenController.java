@@ -488,16 +488,16 @@ public class GameScreenController implements Initializable {
     public void handleResize(CoordGene<Integer> coord){
         CoordGene<Double> newOrigin = t.getMoveOrigin();
         if(coord.getX() == 0){
-            newOrigin.setX(newOrigin.getX()-t.getSizeHex()*2.25);
+            newOrigin.setX(newOrigin.getX()-Consts.SIDE_SIZE*2.25);
         }
         if(coord.getY() == 0){
-            newOrigin.setY(newOrigin.getY()-t.getSizeHex()*1.5);
+            newOrigin.setY(newOrigin.getY()-Consts.SIDE_SIZE*1.5);
         }
         if(coord.getX() == core.getBoard().getBoard().size()-1){
-            newOrigin.setX(newOrigin.getX()-t.getSizeHex()/2.25);
+            newOrigin.setX(newOrigin.getX()-Consts.SIDE_SIZE/2.25);
         }
         if(coord.getY() == core.getBoard().getBoard().get(coord.getX()).size()-1){
-            newOrigin.setY(newOrigin.getX()-t.getSizeHex()/1.5);
+            newOrigin.setY(newOrigin.getX()-Consts.SIDE_SIZE/1.5);
         }
             t.setMoveOrigin(newOrigin);
     }
