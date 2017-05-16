@@ -39,9 +39,7 @@ public class LoadGameScreenController implements Initializable {
     @FXML
     public void handleLaunchGameClick(){
         if(saveList.getSelectionModel().getSelectedItems() != null){
-            int selectedItem = saveList.getSelectionModel().getSelectedIndex();
-            String saveName = (String)saveList.getSelectionModel().getSelectedItems().get(selectedItem);
-            System.out.println(saveName + " salut");
+            String saveName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
             core.load(saveName);
         }
         main.showGameScreen(core);

@@ -430,6 +430,13 @@ public class GameScreenController implements Initializable {
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
             r.stop();
+            String saveString = saveName.getText();
+            if(saveString.equals("")){
+                core.save(null);
+            }
+            else{
+                core.save(saveString);
+            } 
             main.showMainMenu();
         }
         main.getPrimaryStage().requestFocus();
