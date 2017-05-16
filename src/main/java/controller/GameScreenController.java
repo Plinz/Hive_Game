@@ -1,7 +1,6 @@
 package main.java.controller;
 
 
-import com.sun.javafx.cursor.CursorFrame;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -11,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.PathTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -512,7 +509,6 @@ public class GameScreenController implements Initializable {
                 Files.createDirectories(Paths.get("Hive_save_images"));
        
         File file = new File("Hive_save_images/"+name+".png");
-        ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);
-        System.out.println("snapshot saved: " + file.getAbsolutePath());     
+        ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);  
     }
 }
