@@ -217,7 +217,6 @@ public class Core {
 				writer.write(players[Consts.PLAYER2].getName()+"\n");
 			Stack<String> prevPlay = history.getPrevPlay();
 			Stack<String> prevUnplay = history.getPrevUnplay();
-			writer.write(prevPlay.size());
 			if (prevPlay.size() == prevUnplay.size())
 				for (int i = 0; i < prevPlay.size(); i++)
 					writer.write(prevPlay.get(i) + ";" + prevUnplay.get(i) + "\n");
@@ -255,7 +254,9 @@ public class Core {
 			while(tmp != null && !tmp.isEmpty()){
 				String[] token = tmp.split(";");
 				emulator.play(token[0]);
+				turn++;
 				history.save(token[0], token[1]);
+				tmp = reader.readLine();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
