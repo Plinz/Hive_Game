@@ -48,7 +48,7 @@
                      </cursor></Button>
                </children>
             </GridPane>
-            <ListView prefHeight="183.0" prefWidth="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ListView fx:id="saveList" prefHeight="183.0" prefWidth="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

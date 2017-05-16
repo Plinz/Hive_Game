@@ -3,6 +3,9 @@ package main.java.utils;
 
 public class Consts {
     
+    //MACRO RESOLUTION
+    public static final String[] RESOLUTIONS= {"1280x720"};
+    
     //MACROS PIECES -> PLEASE DO NOT MODIFY /!\
     public static final int QUEEN = 0;
     public static final int SPIDER1 = 1;
@@ -68,6 +71,26 @@ public class Consts {
     public static final int WIN_TEAM2 = 2;
     public static final int NUL = 3;
     
+    public static final int getType (int id){
+    	switch (id){
+	    	case 0 : return 0;
+	    	case 1 :
+	    	case 2 : return 1;
+	    	case 3 :
+	    	case 4 :
+	    	case 5 : return 2;
+	    	case 6 :
+	    	case 7 : return 3;
+	    	case 8 :
+	    	case 9 :
+	    	case 10 : return 4;
+	    	case 11 : return 5;
+	    	case 12 : return 6;
+	    	case 13 : return 7;
+		}
+		return -1;   	
+    }
+    
     public static final String getNotation(int id){
     	switch (id){
 	    	case 0 : return "Q";
@@ -127,6 +150,15 @@ public class Consts {
     	}
     	return null;
     }
+    
+    public static final char getColor(int player){
+    	return player == Consts.PLAYER1 ? 'w' : 'b';
+    }
+    
+    public static final int getPlayer(char c){
+    	return c == 'w' ? Consts.PLAYER1 : Consts.PLAYER2;
+    }
+    
     //MACRO REGLES DU JEU
     public static String GOAL = "Le but du jeu est d'encercler totalement la reine des abeilles adverse, à l'aide de vos pièces et de celles de votre adversaire.";
     public static String DURING_THE_GAME = "Le joueur blanc commence la partie. Ensuite les joueurs jouent tour à tour leurs pièces avec les restrictions suivantes : \n- Chaque joueur doit poser sa reine des abeilles dans les 4 premiers tours.\n- Dès lors, il est possible au joueur de déplacer les pièces présentes sur le plateau. \nLa partie se termine par une victoire d'un des deux joueurs lorsque l'une des reines est totalement encerclée. \n Si les deux reines sont encerclées, alors il s'agit d'un match nul.";

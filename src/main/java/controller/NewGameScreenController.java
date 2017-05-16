@@ -59,8 +59,8 @@ public class NewGameScreenController implements Initializable {
         }else{
             core = new Core(Consts.PVP, Consts.EASY);
         }
-        core.getCurrentState().getPlayers()[0].setName(namePlayer1.getText());
-        core.getCurrentState().getPlayers()[1].setName(namePlayer2.getText());
+        core.getPlayers()[0].setName(namePlayer1.getText());
+        core.getPlayers()[1].setName(namePlayer2.getText());
         main.showGameScreen(core);
         
     }
@@ -110,7 +110,6 @@ public class NewGameScreenController implements Initializable {
     
     @FXML 
     public void handleMenuClick(){
-        System.out.println("Menu");
         main.showMainMenu();
     }
     

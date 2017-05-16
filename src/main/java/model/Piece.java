@@ -3,28 +3,14 @@ package main.java.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-
 import main.java.utils.CoordGene;
 
-@XmlRootElement(name="piece")
-@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class Piece implements Cloneable{
 
-    @XmlElement(name="name")
 	protected String name;
-    @XmlAttribute
     protected int id;
-    @XmlElement(name="team")
     protected int team;
-    @XmlElement(name="description")
     protected String description;
-    @XmlTransient
     protected List<CoordGene<Integer>> possibleMovement;
 
     public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
@@ -45,33 +31,14 @@ public abstract class Piece implements Cloneable{
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getTeam() {
         return team;
     }
-
-    public void setTeam(int team) {
-        this.team = team;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public void clear() {

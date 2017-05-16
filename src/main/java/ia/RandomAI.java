@@ -1,11 +1,15 @@
 /*
 
- */
+
+
+CETTE IA EST DEVENUE INUTILE SUITE A L'IMPLEM DE L'IA FACILE -> CODE MORT MAIS PEU RESTER UTILE
+
+
 package main.java.ia;
 
 import java.util.ArrayList;
 import java.util.Random;
-import main.java.model.State;
+import main.java.model.Core;
 
 public class RandomAI extends AI {
 
@@ -13,22 +17,24 @@ public class RandomAI extends AI {
         
     }
     
-    public RandomAI(State state) {
-        this.state = state;
-        this.OriginalConfig = new StoringConfig(state);
+    public RandomAI(Core core) {
+        this.core = core;
+        this.OriginalConfig = new StoringConfig(core);
     }
 
     @Override
-    public AIMove getNextMove(State state) {
-        this.state = state;
-        this.OriginalConfig = new StoringConfig(state);
-        ArrayList<StoringConfig> possibleGameConfigs = OriginalConfig.getNextPossibleMoves();
+    public AIMove getNextMove(Core core) {
+        this.core = core;
+        this.OriginalConfig = new StoringConfig(core);
+        GameConfig gameConfig = new GameConfig(OriginalConfig);
+        ArrayList<StoringConfig> possibleGameConfigs = gameConfig.nextPossibleConfigs;
         Random random = new Random();
-        
+                System.err.println("possible game config size :"+possibleGameConfigs.size());
         int randomMove = random.nextInt(possibleGameConfigs.size());
         System.err.println("possible game config size :"+possibleGameConfigs.size()+"random : get"+randomMove);
-        AIMove nextMove = new AIMove(OriginalConfig, possibleGameConfigs.get(randomMove), state);
+        AIMove nextMove = new AIMove(OriginalConfig, possibleGameConfigs.get(randomMove), core);
         //System.err.println(nextMove.toString());
         return nextMove;
     }
 }
+*/

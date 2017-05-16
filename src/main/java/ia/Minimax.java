@@ -4,7 +4,7 @@
 package main.java.ia;
 
 import java.util.ArrayList;
-import main.java.model.State;
+import main.java.model.Core;
 
 public class Minimax {
     StoringConfig config;
@@ -15,14 +15,10 @@ public class Minimax {
     int depth;
     
     
-    public Minimax(State state){
-        this.currentPlayer = state.getCurrentPlayer();
-        this.config = new StoringConfig(state);
-    }
-    
-    public Minimax(StoringConfig stConfig, int player){
+
+    public Minimax(StoringConfig stConfig){
         this.config = stConfig;
-        this.currentPlayer = player;
+        this.currentPlayer = stConfig.currentPlayer;
     }
     
     /*public void makeChildren(){

@@ -192,7 +192,7 @@ and open the template in the editor.
 }
 
 #pvpChoice:selected{
-    -fx-background-image: url("/main/resources/img/misc/humanvshumanhover.png");
+    -fx-background-image: url("/main/resources/img/misc/humanvshumanselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -218,7 +218,7 @@ and open the template in the editor.
 }
 
 #pvaiChoice:selected{
-    -fx-background-image: url("/main/resources/img/misc/humanvsaihover.png");
+    -fx-background-image: url("/main/resources/img/misc/humanvsaiselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -504,7 +504,7 @@ and open the template in the editor.
 }
 
 
-#goalGame::hover{
+#goalGame:hover{
     -fx-background-color: #e1ab0a;
 }
 
@@ -548,3 +548,21 @@ and open the template in the editor.
   -fx-border-color : #e1ab0a;
   -fx-border-width: 3 ; 
 }
+  
+ #applyButton{
+     -fx-background-image: url("/main/resources/img/misc/Apply.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+      
+ }
+ #applyButton:hover{
+     -fx-background-image: url("/main/resources/img/misc/Applyhover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+ }

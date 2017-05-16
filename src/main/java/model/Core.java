@@ -1,14 +1,15 @@
 package main.java.model;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
@@ -17,108 +18,105 @@ import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-@XmlRootElement(name = "core")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Core {
 
-	@XmlElement(name = "history")
-	private History history;
-	@XmlElement(name = "currentState")
-	private State currentState;
-	@XmlTransient
+	private HistoryNotation history;
+	private Board board;
+	private Player[] players;
+	private Emulator emulator;
 	private AI ai;
-	@XmlElement(name = "mode")
 	private int mode;
-	@XmlTransient
 	private int status;
-
-	public Core() {
-		this.mode = -1;
-		this.status = -1;
-	}
+	private int turn;
+	private int currentPlayer;
+	private int difficulty;
 
 	public Core(int mode, int difficulty) {
-		this.history = new History();
-		this.currentState = new State();
-		this.ai = AIFactory.buildAI(difficulty);
+		this.history = new HistoryNotation();
+		this.board = new Board();
+		this.players = new Player[2];
+		this.players[0] = new Player(0);
+		this.players[1] = new Player(1);
+		this.emulator = new Emulator(this, board, players);
+		this.ai = AIFactory.buildAI(difficulty, this);
 		this.mode = mode;
 		this.status = Consts.INGAME;
-	}
-
-	public Core(History history, State currentState, int mode, int difficulty, int status) {
-		this.history = history;
-		this.currentState = currentState;
-		this.ai = AIFactory.buildAI(difficulty);
-		this.mode = mode;
-		this.status = status;
+		this.turn = 0;
+		this.currentPlayer = Consts.PLAYER1;
+		this.difficulty = difficulty;
 	}
 
 	public boolean accept(BoardDrawer b) {
-		currentState.getBoard().accept(b);
+		board.accept(b);
 		return false;
 	}
 
 	public boolean isTile(CoordGene<Integer> coord) {
-		return currentState.getBoard().getTile(coord) != null;
+		return board.getTile(coord) != null;
 	}
 
 	public boolean isPiece(CoordGene<Integer> coord) {
-		return isTile(coord) && currentState.getBoard().getTile(coord).getPiece() != null;
+		return isTile(coord) && board.getTile(coord).getPiece() != null;
 	}
 
 	public boolean isPieceOfCurrentPlayer(CoordGene<Integer> coord) {
-		return isTile(coord) && isPiece(coord) && currentState.getCurrentPlayerObject().getTeam() == currentState
-				.getBoard().getTile(coord).getPiece().getTeam();
+		return isTile(coord) && isPiece(coord)
+				&& getCurrentPlayerObj().getTeam() == board.getTile(coord).getPiece().getTeam();
 	}
 
-	public boolean addPiece(int piece, CoordGene<Integer> coord) {
-		if (!canAddPiece(piece))
+	public boolean addPiece(int pieceId, CoordGene<Integer> coord) {
+		if (!canAddPiece(pieceId))
 			return isGameFinish();
-		if (mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
-			history.saveState(currentState);
-		System.out.println(Notation.getHumanDescription(Notation.getMoveNotation(currentState.getBoard(), currentState.getCurrentPlayerObject().getInventory().get(piece), coord), true));
-		history.saveMove(currentState.getBoard(), currentState.getCurrentPlayerObject().getInventory().get(piece), coord);
-		currentState.getBoard().addPiece(currentState.getCurrentPlayerObject().removePiece(piece), coord);
-		currentState.nextTurn();
+		Piece piece = getCurrentPlayerObj().removePiece(pieceId);
+		String notation = Notation.getMoveNotation(board, piece, coord);
+		String unplay = Notation.getInverseMoveNotation(board, piece);
+		board.addPiece(piece, coord);
+
+		// if (mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
+		history.save(notation, unplay);
+		nextTurn();
 		return playNextTurn();
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
-		if (this.mode == Consts.PVP || currentState.getCurrentPlayer() == Consts.PLAYER1)
-			history.saveState(currentState);
-		System.out.println(Notation.getHumanDescription(Notation.getMoveNotation(currentState.getBoard(), currentState.getBoard().getTile(source).getPiece(), target), false));
-		history.saveMove(currentState.getBoard(), currentState.getBoard().getTile(source).getPiece(), target);
-		currentState.getBoard().movePiece(source, target);
-		currentState.nextTurn();
+		Piece piece = board.getTile(source).getPiece();
+		String notation = Notation.getMoveNotation(board, piece, target);
+		String unplay = Notation.getInverseMoveNotation(board, piece);
+		// if (this.mode == Consts.PVP || currentPlayer == Consts.PLAYER1)
+		history.save(notation, unplay);
+		board.movePiece(source, target);
+		nextTurn();
 		return playNextTurn();
+	}
+
+	public void removePiece(CoordGene<Integer> coord) {
+		Piece piece = board.removePiece(coord);
+		players[1 - currentPlayer].addPiece(piece);
+		;
 	}
 
 	private boolean playNextTurn() {
 		if (isGameFinish())
 			return true;
 		if (isPlayerStuck())
-			currentState.setCurrentPlayer(1 - currentState.getCurrentPlayer());
-		if (mode == Consts.PVAI && currentState.getCurrentPlayer() == Consts.AI_PLAYER) {
-			AIMove aiMove = ai.getNextMove(currentState);
-			aiMove.setCore(this);
+			currentPlayer = (1 - currentPlayer);
+		if (mode == Consts.PVAI && currentPlayer == Consts.AI_PLAYER) {
+			AIMove aiMove = ai.getNextMove(this);
 			return aiMove.play();
 		}
 
 		return false;
 	}
 
-	private boolean canAddPiece(int piece) {
-		return (currentState.getTurn() != 6 && currentState.getTurn() != 7) || isQueenOnBoard()
-				|| currentState.getCurrentPlayerObject().getInventory().get(piece).getId() == Consts.QUEEN;
+	private boolean canAddPiece(int pieceId) {
+		return (turn != 6 && turn != 7) || isQueenOnBoard() || pieceId == Consts.QUEEN;
 	}
 
 	private boolean isQueenOnBoard() {
-		return currentState.getCurrentPlayerObject().getInventory().stream()
-				.noneMatch(piece -> piece.getId() == Consts.QUEEN);
+		return getCurrentPlayerObj().getInventory().stream().noneMatch(piece -> piece.getId() == Consts.QUEEN);
 	}
 
 	private boolean isGameFinish() {
-		Board board = currentState.getBoard();
 		List<Tile> queenStuck = new ArrayList<Tile>();
 		board.getBoard().stream().forEach(column -> column.stream().forEach(box -> queenStuck.addAll(box.stream()
 				.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getId() == Consts.QUEEN)
@@ -131,9 +129,8 @@ public class Core {
 	}
 
 	private boolean isPlayerStuck() {
-		int team = currentState.getCurrentPlayerObject().getTeam();
-		Board board = currentState.getBoard();
-		List<CoordGene<Integer>> possibleMovement = currentState.getCurrentPlayerObject().getInventory().isEmpty()
+		int team = getCurrentPlayerObj().getTeam();
+		List<CoordGene<Integer>> possibleMovement = getCurrentPlayerObj().getInventory().isEmpty()
 				? new ArrayList<CoordGene<Integer>>() : getPossibleAdd();
 		board.getBoard().stream()
 				.forEach(column -> column.stream().forEach(box -> box.stream()
@@ -144,7 +141,6 @@ public class Core {
 
 	public List<CoordGene<Integer>> getPossibleMovement(CoordGene<Integer> coord) {
 		if (isQueenOnBoard()) {
-			Board board = currentState.getBoard();
 			Tile tile = board.getTile(coord);
 			return tile.getPiece().getPossibleMovement(tile, board);
 		}
@@ -153,7 +149,7 @@ public class Core {
 
 	public List<CoordGene<Integer>> getPossibleAdd() {
 		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
-		switch (currentState.getTurn()) {
+		switch (turn) {
 		case 0:
 			pos.add(new CoordGene<Integer>(0, 0));
 			break;
@@ -161,86 +157,143 @@ public class Core {
 			pos.addAll(new CoordGene<Integer>(1, 1).getNeighbors());
 			break;
 		default:
-			Board board = currentState.getBoard();
 			Tile current;
 			List<Tile> neighbors;
 			for (Column column : board.getBoard())
 				for (Box box : column)
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
-							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty() && !neighbors
-									.stream().anyMatch(it -> it.getPiece().team != currentState.getCurrentPlayer()))
+							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
+							&& !neighbors.stream().anyMatch(it -> it.getPiece().team != currentPlayer))
 						pos.add(current.getCoord());
 		}
 		return pos;
 	}
 
 	public boolean previousState() {
-		if (history.hasPreviousState()) {
-			currentState = history.getPreviousState(this.getCurrentState());
+		if (history.hasPrevious()) {
+			emulator.play(history.getPrevious());
+			previousTurn();
+			if (mode == Consts.PVAI) {
+				emulator.play(history.getPrevious());
+				previousTurn();
+			}
 			return true;
 		}
 		return false;
 	}
 
 	public boolean nextState() {
-		if (history.hasNextState()) {
-			currentState = history.getNextState(this.getCurrentState());
+		if (history.hasNext()) {
+			emulator.play(history.getNext());
+			nextTurn();
+			if (mode == Consts.PVAI) {
+				emulator.play(history.getNext());
+				nextTurn();
+			}
 			return true;
 		}
-                System.err.println("gargl");
 		return false;
 	}
 
 	public void save(String name) {
-		System.out.println("CICICI");
-		if (name == null)
-			name = generateSaveName();
-		Save.makeSave(name, this);
+		if (name == null) {
+			if (mode == Consts.PVP)
+				name = players[Consts.PLAYER1].getName() + "-" + players[Consts.PLAYER2].getName() + "-turn" + turn;
+			else
+				name = players[Consts.PLAYER1].getName() + "-AI_"
+						+ (difficulty == Consts.EASY ? "EASY" : difficulty == Consts.MEDIUM ? "MEDIUM" : "HARD")
+						+ "-turn" + turn;
+		}
+
+		try {
+			if (!Files.isDirectory(Paths.get("Hive_save")))
+				Files.createDirectories(Paths.get("Hive_save"));
+			Path path = Paths.get("Hive_save/" + name);
+			BufferedWriter writer = Files.newBufferedWriter(path);
+			writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
+			if (mode == Consts.PVAI)
+				writer.write(difficulty+"\n");
+			else
+				writer.write(players[Consts.PLAYER2].getName()+"\n");
+			Stack<String> prevPlay = history.getPrevPlay();
+			Stack<String> prevUnplay = history.getPrevUnplay();
+			if (prevPlay.size() == prevUnplay.size())
+				for (int i = 0; i < prevPlay.size(); i++)
+					writer.write(prevPlay.get(i) + ";" + prevUnplay.get(i) + "\n");
+			writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private String generateSaveName() {
-		// TODO Auto-generated method stub
+	public List<String> load() {
+		try {
+			if (!Files.isDirectory(Paths.get("Hive_save")))
+				Files.createDirectories(Paths.get("Hive_save"));
+			return Files.list(Paths.get("Hive_save")).map(p -> p.getFileName().toFile().getName()).collect(Collectors.toList());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
-
-	public History getHistory() {
-		return history;
+	
+	public void load(String saveFile){
+		try {
+			Path path = Paths.get("Hive_save/"+saveFile);
+			BufferedReader reader = Files.newBufferedReader(path);
+			mode = Integer.parseInt(reader.readLine());
+			currentPlayer = Integer.parseInt(reader.readLine());
+			players[Consts.PLAYER1].setName(reader.readLine());
+			if (mode == Consts.PVAI){
+				difficulty = Integer.parseInt(reader.readLine());
+				ai = AIFactory.buildAI(difficulty, this);
+			}
+			else
+				players[Consts.PLAYER2].setName(reader.readLine());
+			String tmp = reader.readLine();
+			while(tmp != null && !tmp.isEmpty()){
+				String[] token = tmp.split(";");
+				emulator.play(token[0]);
+				turn++;
+				history.save(token[0], token[1]);
+				tmp = reader.readLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void setHistory(History history) {
-		this.history = history;
+	public Player getCurrentPlayerObj() {
+		return players[currentPlayer];
 	}
 
-	public State getCurrentState() {
-		return currentState;
+	public void nextTurn() {
+		currentPlayer = 1 - currentPlayer;
+		board.clearPossibleMovement();
+		turn++;
 	}
 
-	public void setCurrentState(State currentState) {
-		this.currentState = currentState;
+	public void previousTurn() {
+		currentPlayer = 1 - currentPlayer;
+		board.clearPossibleMovement();
+		turn--;
 	}
-
-	public AI getAi() {
-		return ai;
-	}
-
-	public void setAi(AI ai) {
-		this.ai = ai;
-	}
-
 	public int getMode() {
 		return mode;
 	}
-
-	public void setMode(int mode) {
-		this.mode = mode;
-	}
-
 	public int getStatus() {
 		return status;
 	}
-
-	public void setStatus(int status) {
-		this.status = status;
+	public Board getBoard() {
+		return board;
 	}
-
+	public Player[] getPlayers() {
+		return players;
+	}
+	public int getTurn() {
+		return turn;
+	}
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
 }
