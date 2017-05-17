@@ -212,11 +212,6 @@ public class Core implements Cloneable {
 			emulator.play(history.getNext());
 			nextTurn();
 			isGameFinish();
-			if (mode == Consts.PVAI) {
-				emulator.play(history.getNext());
-				nextTurn();
-				isGameFinish();
-			}
 			return true;
 		}
 		return false;
