@@ -134,7 +134,6 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                System.out.println("Tour : " + gameCanvas.widthProperty().get());
                 if(!endOfGame && !freeze.getValue()){
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
