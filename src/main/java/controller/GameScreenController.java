@@ -53,7 +53,6 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.Text;
 import javax.imageio.ImageIO;
 import main.java.implement.Main;
@@ -128,8 +127,7 @@ public class GameScreenController implements Initializable {
         inventoryGroup = new ToggleGroup();
        
         initButtonByInventory();
-        animation = new AnimationTile(panCanvas,t);     
-             
+        animation = new AnimationTile(panCanvas);                     
         initGameCanvas();
        
         r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
@@ -151,37 +149,14 @@ public class GameScreenController implements Initializable {
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null &&  possibleMovement.contains(coord)) {
+                                
+                                startAnimation(pieceToMove,coord);
                                 if(core.movePiece(pieceToMove, coord))
                                     handleEndGame();
                                 else{
                                     handleResize(coord);
                                     resetPiece();
                                     initButtonByInventory();
-                                                                   
-                                    panCanvas.getChildren().add(animation.getPolygon()); 
-                                   
-                                    System.out.print("LOL");
-                                    path  = new Path(
-                new MoveTo(50, 50),
-                new LineTo(100, 50),
-                new LineTo(150, 150),
-                new QuadCurveTo(150, 100, 250, 200),
-                new CubicCurveTo(0, 250, 400, 0, 300, 250));
-                                   
-                                    animation.setPath(path);
-                                    PathTransition pathTr  = animation.getPathAnimation();
-                                    pathTr.setOnFinished(new EventHandler<ActionEvent>() {
-                                        @Override
-                                        public void handle(ActionEvent t) {
-                                            panCanvas.getChildren().remove(animation.getPolygon());
-                                        }
-                                    });
-                                    pathTr.play();
-                                   
-                                   
-                                   
-                                           
-                                    //panCanvas.getChildren().remove(animation.getPolygon());
                                     highlighted.setListTohighlight(null);
                                 }
                             } else if (core.isPieceOfCurrentPlayer(coord)) {
@@ -248,10 +223,6 @@ public class GameScreenController implements Initializable {
                 }
             }
         });
-
-       
-        //gameCanvas.widthProperty().bind(panCanvas.widthProperty());
-        //gameCanvas.heightProperty().bind(panCanvas.heightProperty());
 
     }
     public void handleNewGame() throws IOException{
@@ -417,6 +388,24 @@ public class GameScreenController implements Initializable {
             inventoryGroup.getSelectedToggle().setSelected(false);
         pieceToMove = null;
         pieceToChoose = -1;
+    }
+    
+    public void startAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
+        Piece piece = core.getBoard().getTile(coordStart).getPiece();
+        
+        CoordGene<Double> start = new CoordGene<>((double)coordStart.getX(),(double)coordStart.getY());
+        CoordGene<Double> end = new CoordGene<>((double)coordEnd.getX(),(double)coordEnd.getY());       
+        start = t.axialToPixel(start);
+        end = t.axialToPixel(end);
+        
+        String name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();
+        Image image = new Image(name);
+        animation.setImagePolygon(image);
+        animation.setPath(new Path( 
+            new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY()+t.getMoveOrigin().getY()), 
+            new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY()+t.getMoveOrigin().getY()))); 
+        animation.play();
+
     }
    
     public void handleEndGame(){
