@@ -70,7 +70,6 @@ public class GameScreenController implements Initializable {
     @FXML private Canvas gameCanvas;
     @FXML private Pane panCanvas;
     @FXML private Path path;
-   
     @FXML private GridPane inventoryPlayer1;
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
@@ -84,31 +83,15 @@ public class GameScreenController implements Initializable {
     private Highlighter highlighted;
     private TraducteurBoard t;
     private boolean freeze;
+    private boolean endOfGame;
+    
     private ToggleGroup inventoryGroup;
     private RefreshJavaFX r;
     private AnimationTile animation;
    
-    public void setMainApp(Main mainApp) {
-        this.main = mainApp;   
-    }
-    public void setCore(Core c) {
-        this.core = c;   
-    }
-
-    public void setPieceToChoose(int pieceToChoose) {
-        this.pieceToChoose = pieceToChoose;
-    }
-
-    public void setPieceToMove(CoordGene<Integer> pieceToMove) {
-        this.pieceToMove = pieceToMove;
-    }
-
-    public void setHighlighted(Highlighter highlighted) {
-        this.highlighted = highlighted;
-    }
+    
    
-   
-   
+  
      @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
@@ -120,6 +103,7 @@ public class GameScreenController implements Initializable {
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         freeze = false;
+        endOfGame = false;
         inventoryGroup = new ToggleGroup();
        
         initButtonByInventory();
@@ -136,7 +120,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                if(!freeze){
+                if(!endOfGame && !freeze){
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                     CoordGene<Double> origin = t.getMoveOrigin();
@@ -171,8 +155,8 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
                
                 public void handle(MouseEvent m) {
-
-                    t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
+                    if(!freeze)
+                        t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
     
         });
@@ -185,7 +169,6 @@ public class GameScreenController implements Initializable {
             });
            
         gameCanvas.setOnMouseReleased(new EventHandler<MouseEvent>(){
-
             @Override
             public void handle(MouseEvent t) {
                 gameCanvas.setCursor(Cursor.DEFAULT);
@@ -345,7 +328,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
            
-            if(core.getCurrentPlayer() == 1 && !freeze){
+            if(core.getCurrentPlayer() == 1 && !endOfGame){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -378,6 +361,10 @@ public class GameScreenController implements Initializable {
     }
     
     public void startMovingAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
+        
+        freeze = true;
+        highlighted.setListTohighlight(null);
+
         Piece piece = core.getBoard().getTile(coordStart).getPiece();
         
         CoordGene<Double> start = new CoordGene<>((double)coordStart.getX(),(double)coordStart.getY());
@@ -399,10 +386,11 @@ public class GameScreenController implements Initializable {
                     handleEndGame();
                 else{
                     handleResize(coordEnd);
-                    resetPiece();
-                    initButtonByInventory();
-                    highlighted.setListTohighlight(null);
                     panCanvas.getChildren().remove(animation.getPolygon());
+                    resetPiece();
+                    freeze = false;
+                    initButtonByInventory();
+                    
                 }
             }
         });
@@ -411,7 +399,7 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleEndGame(){
-        freeze = true;
+        endOfGame = true;
         highlighted.setListTohighlight(null);
         initButtonByInventory();
         Dialog dialog = new Alert(Alert.AlertType.INFORMATION);
@@ -517,6 +505,7 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleResize(CoordGene<Integer> coord){
+        System.out.println("Resize");
         CoordGene<Double> newOrigin = t.getMoveOrigin();
         if(coord.getX() == 0){
             newOrigin.setX(newOrigin.getX()-Consts.SIDE_SIZE*2.25);
@@ -541,5 +530,28 @@ public class GameScreenController implements Initializable {
        
         File file = new File("Hive_save_images/"+name+".png");
         ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);  
+    }
+    
+    public void setMainApp(Main mainApp) {
+        this.main = mainApp;   
+    }
+    public void setCore(Core c) {
+        this.core = c;   
+    }
+
+    public void setPieceToChoose(int pieceToChoose) {
+        this.pieceToChoose = pieceToChoose;
+    }
+
+    public void setPieceToMove(CoordGene<Integer> pieceToMove) {
+        this.pieceToMove = pieceToMove;
+    }
+
+    public void setHighlighted(Highlighter highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    public boolean isFreeze() {
+        return freeze;
     }
 }
