@@ -160,7 +160,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
                
                 public void handle(MouseEvent m) {
-                    if(!freeze.getValue())
+                    if(!freeze.getValue() || endOfGame)
                         t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
     
@@ -392,11 +392,11 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
+                panCanvas.getChildren().remove(animation.getPolygon());
                 if(core.movePiece(pieceToMove, coordEnd))
                     handleEndGame();
                 else{
                     handleResize(coordEnd);
-                    panCanvas.getChildren().remove(animation.getPolygon());
                     resetPiece();
                     freeze.setValue(false);
                     initButtonByInventory();
@@ -413,13 +413,14 @@ public class GameScreenController implements Initializable {
         initButtonByInventory();
         Dialog dialog = new Alert(Alert.AlertType.INFORMATION);
         dialog.setTitle("Fin de partie !");
+        System.err.println(core.getStatus() + "statut de fin");
         switch(core.getStatus()){
-            case 0 :
+            case Consts.WIN_TEAM1 :
                 namePlayer1.setText(core.getPlayers()[0].getName() + " a perdu !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " a gagné !");
                 dialog.setContentText("Le joueur noir remporte la victoire !");
                 break;
-            case 1 :
+            case Consts.WIN_TEAM2 :
                 namePlayer1.setText(core.getPlayers()[0].getName() + " a gagné !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " a perdu !");
                 dialog.setContentText("Le joueur blanc remporte la victoire");

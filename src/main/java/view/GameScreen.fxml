@@ -91,7 +91,7 @@
                         </MenuButton>
                         <Button mnemonicParsing="false" onMousePressed="#handleRedoButton" prefHeight="80.0" prefWidth="90.0" styleClass="buttonRedo" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <GridPane.margin>
-                              <Insets />
+                              <Insets top="5.0" />
                            </GridPane.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -213,7 +213,7 @@
                   <Button id="westArrow" mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                   <Button id="northArrow" mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                   <Button id="southArrow" mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                  <Pane fx:id="panCanvas" prefHeight="200.0" prefWidth="200.0" styleClass="myBG" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Pane fx:id="panCanvas" styleClass="myBG" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Path fx:id="path" fill="DODGERBLUE" stroke="BLACK" strokeType="INSIDE" />
                         <Canvas fx:id="gameCanvas" height="761.0" width="800.0" />
