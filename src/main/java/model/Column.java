@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Column implements List<Box>{
-	private List<Box> boxs;
+public class Column implements List<Box>, Cloneable{
+	private ArrayList<Box> boxs;
     
     public Column(){
     	this.boxs = new ArrayList<Box>();
@@ -126,5 +126,17 @@ public class Column implements List<Box>{
 	@Override
 	public <T> T[] toArray(T[] a) {
 		return boxs.toArray(a);
+	}
+	
+	@Override
+	protected Column clone() {
+		Column column = null;
+        try {
+        	column = (Column) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        column.boxs = (ArrayList<Box>) boxs.clone();
+        return column;
 	}
 }

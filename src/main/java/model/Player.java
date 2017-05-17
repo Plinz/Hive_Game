@@ -11,11 +11,11 @@ import main.java.model.piece.Queen;
 import main.java.model.piece.Spider;
 import main.java.utils.Consts;
 
-public class Player{
+public class Player implements Cloneable{
 	
 	private String name;
 	private int team;
-	private List<Piece> inventory;
+	private ArrayList<Piece> inventory;
 	
     public Player(){
     	this.team = -1;
@@ -44,10 +44,10 @@ public class Player{
 		}
 	}
 
-	public List<Piece> getInventory() {
+	public ArrayList<Piece> getInventory() {
 		return inventory;
 	}
-	public void setInventory(List<Piece> inventory) {
+	public void setInventory(ArrayList<Piece> inventory) {
 		this.inventory = inventory;
 	}
 	public String getName() {
@@ -88,6 +88,20 @@ public class Player{
 		int i;
 		for(i=0; inventory.get(i).getId() < piece.getId(); i++);
 		inventory.add(i, piece);
+	}
+	
+	@Override
+	protected Player clone() {
+		Player player = null;
+        try {
+        	player = (Player) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        player.inventory = (ArrayList<Piece>) inventory.clone();
+        player.name = name;
+        player.team = team;
+        return player;
 	}
 
 }

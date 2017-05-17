@@ -10,7 +10,7 @@ import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
-public class Emulator {
+public class Emulator{
 
 	Core core;
 	Board board;
@@ -93,5 +93,4 @@ public class Emulator {
 						&& t.getPiece() != null && t.getPiece().getTeam() == team && t.getPiece().getId() == piece)
 				.findFirst().orElse(null);
 	}
-
 }

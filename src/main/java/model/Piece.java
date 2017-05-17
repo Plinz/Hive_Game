@@ -54,10 +54,10 @@ public abstract class Piece implements Cloneable{
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        clone.description = new String(this.description);
-        clone.name = new String(this.name);
-        clone.id = this.id;
-        clone.team = this.team;
+        clone.description = description;
+        clone.name = name;
+        clone.id = id;
+        clone.team = team;
         clone.possibleMovement = new ArrayList<CoordGene<Integer>>();
         if (this.possibleMovement != null)
             for (CoordGene<Integer> coord : this.possibleMovement)

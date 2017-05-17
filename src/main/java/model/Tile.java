@@ -3,7 +3,7 @@ package main.java.model;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Tile {
+public class Tile implements Cloneable{
 
 	private Piece piece;
 	private boolean blocked;
@@ -94,5 +94,21 @@ public class Tile {
 	@Override
 	public String toString() {
 		return "Tile{" + "x=" + x + ", y=" + y + '}';
+	}
+	
+	@Override
+	protected Tile clone() {
+		Tile tile = null;
+        try {
+        	tile = (Tile) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        tile.blocked = blocked;
+        tile.piece = piece.clone();
+        tile.x = x;
+        tile.y = y;
+        tile.z = z;
+        return tile;
 	}
 }

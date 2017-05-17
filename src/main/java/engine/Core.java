@@ -23,7 +23,7 @@ import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Core {
+public class Core implements Cloneable{
 
 	private History history;
 	private Board board;
@@ -33,14 +33,6 @@ public class Core {
 	private int mode;
 	private int status;
 	private int turn;
-
-    public int getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
-    }
 	private int currentPlayer;
 	private int difficulty;
 
@@ -59,19 +51,21 @@ public class Core {
 		this.difficulty = difficulty;
 	}
 
-        public Core(Core core1){
-            this.history = new History();
-            this.board = new Board(core1.getBoard());
-            this.players = new Player[2];
-            this.players[0] = new Player(core1.players[0]);
-            this.players[1] = new Player(core1.players[1]);
-            this.mode = core1.mode;
-            this.status = core1.status;
-            this.turn = core1.turn;
-            this.currentPlayer = core1.currentPlayer;
-            this.difficulty = core1.difficulty;
-            this.emulator = new Emulator(this, this.board, this.players);
-        }
+	@Deprecated
+    public Core(Core core1){
+        this.history = new History();
+        this.board = new Board(core1.getBoard());
+        this.players = new Player[2];
+        this.players[0] = new Player(core1.players[0]);
+        this.players[1] = new Player(core1.players[1]);
+        this.mode = core1.mode;
+        this.status = core1.status;
+        this.turn = core1.turn;
+        this.currentPlayer = core1.currentPlayer;
+        this.difficulty = core1.difficulty;
+        this.emulator = new Emulator(this, this.board, this.players);
+    }
+    
 	public boolean accept(BoardDrawer b) {
 		board.accept(b);
 		return false;
@@ -328,6 +322,28 @@ public class Core {
 			currentPlayer = 1 - currentPlayer;
 		turn--;
 	}
+	
+	@Override
+	protected Core clone() {
+        Core core = null;
+        try {
+            core = (Core) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        core.history = history.clone();
+        core.board = board.clone();
+        core.players = players.clone();
+        core.emulator = new Emulator(core, core.board, core.players);
+        core.ai = AIFactory.buildAI(difficulty);
+        core.mode = mode;
+        core.status = status;
+        core.turn = turn;
+        core.currentPlayer = currentPlayer;
+        core.difficulty = difficulty;
+        return core;
+	}
+	
 	public int getMode() {
 		return mode;
 	}
@@ -346,4 +362,10 @@ public class Core {
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
+    public int getDifficulty() {
+        return difficulty;
+    }
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 }

@@ -2,7 +2,7 @@ package main.java.engine;
 
 import java.util.Stack;
 
-public class History {
+public class History implements Cloneable{
 
 	private Stack<String> prevPlay;
 	private Stack<String> prevUnplay;
@@ -50,5 +50,18 @@ public class History {
 		return prevUnplay;
 	}
 	
-
+	@Override
+	protected History clone() {
+		History history = null;
+        try {
+        	history = (History) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        history.nextPlay = (Stack<String>) nextPlay.clone();
+        history.nextUnplay = (Stack<String>) nextUnplay.clone();
+        history.prevPlay = (Stack<String>) prevPlay.clone();
+        history.prevUnplay = (Stack<String>) prevUnplay.clone();
+        return history;
+   }
 }

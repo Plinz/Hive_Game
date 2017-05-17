@@ -5,12 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
+import main.java.engine.History;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Board{
+public class Board implements Cloneable{
 
-	private List<Column> columns;
+	private ArrayList<Column> columns;
 	private int nbPieceOnTheBoard;
 
 	public Board() {
@@ -338,5 +339,18 @@ public class Board{
 		Tile rightTile = getTile(right);
 		return (leftTile != null && leftTile.getPiece() != null && !left.equals(exception))
 				|| (rightTile != null && rightTile.getPiece() != null && !right.equals(exception));
+	}
+	
+	@Override
+	public Board clone() {
+		Board board = null;
+        try {
+        	board = (Board) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        board.columns = (ArrayList<Column>) columns.clone();
+        board.nbPieceOnTheBoard = nbPieceOnTheBoard;
+        return board;
 	}
 }
