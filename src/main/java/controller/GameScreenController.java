@@ -9,10 +9,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javax.imageio.ImageIO;
-
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -146,16 +145,7 @@ public class GameScreenController implements Initializable {
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null &&  possibleMovement.contains(coord)) {
-                                
-                                startAnimation(pieceToMove,coord);
-                                if(core.movePiece(pieceToMove, coord))
-                                    handleEndGame();
-                                else{
-                                    handleResize(coord);
-                                    resetPiece();
-                                    initButtonByInventory();
-                                    highlighted.setListTohighlight(null);
-                                }
+                                startMovingAnimation(pieceToMove,coord);
                             } else if (core.isPieceOfCurrentPlayer(coord)) {
                                     pieceToMove = coord;
                                     possibleMovement = core.getPossibleMovement(coord);
@@ -387,7 +377,7 @@ public class GameScreenController implements Initializable {
         pieceToChoose = -1;
     }
     
-    public void startAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
+    public void startMovingAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
         Piece piece = core.getBoard().getTile(coordStart).getPiece();
         
         CoordGene<Double> start = new CoordGene<>((double)coordStart.getX(),(double)coordStart.getY());
@@ -401,6 +391,21 @@ public class GameScreenController implements Initializable {
         animation.setPath(new Path( 
             new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY()+t.getMoveOrigin().getY()), 
             new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY()+t.getMoveOrigin().getY()))); 
+        animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                if(core.movePiece(pieceToMove, coordEnd))
+                    handleEndGame();
+                else{
+                    handleResize(coordEnd);
+                    resetPiece();
+                    initButtonByInventory();
+                    highlighted.setListTohighlight(null);
+                    panCanvas.getChildren().remove(animation.getPolygon());
+                }
+            }
+        });
         animation.play();
 
     }

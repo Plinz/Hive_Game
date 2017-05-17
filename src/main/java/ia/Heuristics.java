@@ -52,23 +52,7 @@ public class Heuristics {
         System.err.println("Erreur : getHeuristics value ne doit as être appelée depuis la classe mère");
         return 0;
     }
-
     
-    /*public int getMobility(int player)
-    {
-        int result = 0;
-        int start = player * gameConfig.nbPiecesPerColor;
-        int finish = start + gameConfig.nbPiecesPerColor;
-        for (int i = start; i < finish; i++) 
-        {
-            if ((gameConfig.getNode(i).isOnBoard) && (!(gameConfig.getPossibleDestinations(gameConfig.getNode(i)).isEmpty()))) 
-            {
-                result++;
-            }
-        }
-        return result;
-    }
-*/
  /*
     public boolean isPinned(int PieceId){
         if (gameConfig.getPieces()[PieceId].stuck) return true;

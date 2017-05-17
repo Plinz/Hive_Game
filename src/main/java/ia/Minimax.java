@@ -140,6 +140,23 @@ public class Minimax {
             }
             return worstHeuristic;
         }
-
     }
+    
+    public int getMobility(Player player)
+    {
+        int result = 0;
+        for (Column column : board.getBoard()){
+            for (Box box : column) {
+                for (Tile tile : box){
+                    if ((tile.getPiece() != null) && (tile.getPiece().getTeam() == player.getTeam())){
+                        result++;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+        
+    
+
 }

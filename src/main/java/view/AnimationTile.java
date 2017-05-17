@@ -85,6 +85,16 @@ public class AnimationTile {
     public void setImagePolygon(Image image){     
         polygon.setFill(new ImagePattern(image));
     }
+
+    public PathTransition getPathAnimation() {
+        return pathAnimation;
+    }
+
+    public void setPathAnimation(PathTransition pathAnimation) {
+        this.pathAnimation = pathAnimation;
+    }
+    
+    
         
     public void play(){
         panCanvas.getChildren().add(polygon);
