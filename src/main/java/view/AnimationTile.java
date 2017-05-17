@@ -28,37 +28,11 @@ public class AnimationTile {
     private Pane panCanvas;
     private Hexagon hex;
     
-    public AnimationTile(Pane panCanvas){
-                
-        hex = new Hexagon(); 
-        hex.setxPixel(0.0);
-        hex.setyPixel(0.0);
-        hex.calculHex(); 
-        
-        double x[] =  hex.getListXCoord();
-        double y[] =  hex.getListYCoord();
-        
-        polygon = new Polygon();
-        polygon.setFill(Color.RED);
-        polygon.getPoints().addAll(new Double[]{
-                    x[0], y[0],
-                    x[1], y[1],
-                    x[2], y[2],
-                    x[3], y[3],
-                    x[4], y[4],
-                    x[5], y[5] }); 
-        
+    public AnimationTile(){
+        calculPolygon();        
         pathAnimation = new PathTransition();
-        pathAnimation.setDuration(Duration.seconds(2));
+        pathAnimation.setDuration(Duration.seconds(1));
         pathAnimation.setNode(polygon);
-        
-        pathAnimation.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent t) {        
-                    panCanvas.getChildren().remove(polygon);
-                }
-        });
-        this.panCanvas = panCanvas;
     };
 
     /**
@@ -92,14 +66,32 @@ public class AnimationTile {
 
     public void setPathAnimation(PathTransition pathAnimation) {
         this.pathAnimation = pathAnimation;
-    }
-    
-    
+    }      
         
     public void play(){
-        panCanvas.getChildren().add(polygon);
+        //calculPolygon();
         pathAnimation.setPath(path);
         pathAnimation.play();
+    }
+    private void calculPolygon(){
+        
+        hex = new Hexagon(); 
+        hex.setxPixel(0.0);
+        hex.setyPixel(0.0);
+        hex.calculHex(); 
+        
+        double x[] =  hex.getListXCoord();
+        double y[] =  hex.getListYCoord();
+        
+        polygon = new Polygon();
+        polygon.setFill(Color.RED);
+        polygon.getPoints().addAll(new Double[]{
+                    x[0], y[0],
+                    x[1], y[1],
+                    x[2], y[2],
+                    x[3], y[3],
+                    x[4], y[4],
+                    x[5], y[5] }); 
     }
     
 }
