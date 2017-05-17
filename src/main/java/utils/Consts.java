@@ -77,7 +77,7 @@ public class Consts {
     public static final int MINIMUM_HEURISTICS = -500;
     public static final int BEST_HEURISTICS = 500;
     
-    public static final int DEPTH_EASY = 4;
+    public static final int DEPTH_EASY = 1;
     public static final int DEPTH_MEDIUM = 3;
     public static final int DEPTH_HARD = 4;
     
