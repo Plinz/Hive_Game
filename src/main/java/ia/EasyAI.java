@@ -3,10 +3,10 @@
  */
 package main.java.ia;
 
+import java.util.List;
 import java.util.Random;
 
 import main.java.engine.Core;
-import main.java.utils.Consts;
 
 public class EasyAI extends AI {
 
@@ -14,32 +14,40 @@ public class EasyAI extends AI {
         super();
     }
 
-    public EasyAI(Core core) {
-        this.core = core;
-        this.OriginalConfig = new StoringConfig(core, Consts.EASY);
-    }
-
     @Override
-    public AIMove getNextMove(Core core) {
-        AIMove result;
-                
-        this.core = core;
-        this.OriginalConfig = new StoringConfig(core, Consts.EASY);
-        GameConfig gameConfig = new GameConfig(OriginalConfig);
-        
+    public String getNextMove(Core core) {
 
-        int originalHeuristic = gameConfig.heuristics.getHeuristicsValue();
+        Minimax minimax = new Minimax(core);
+        int originalHeuristic = minimax.heuristics.getHeuristicsValue();
+
         int nextMoveHeuristic, bestHeuristic = originalHeuristic;
-        int originalPieceNb = gameConfig.heuristics.getNbPiecesOnBoard(gameConfig.currentPlayer);
+        String chosenMove = null;
+        List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
+        //case -> less than 5 pieces around opposing queen -> try to do better
+        if (minimax.heuristics.getNbPiecesAroundQueen(1 - core.getCurrentPlayer()) < 5) {
+            for (Minimax child : possibleMovements ) {
+                if (child.heuristicValue > bestHeuristic) {
+                    chosenMove = child.moveFromParent;
+                    bestHeuristic = child.heuristicValue;
+                }
+            }
+            
+            if (bestHeuristic > originalHeuristic){
+                return chosenMove;
+            } else {
+                Random random = new Random();
+                int rand = random.nextInt(possibleMovements.size());
+                return possibleMovements.get(rand).moveFromParent;
+            }
+        } else {
+            Random random = new Random();
+                int rand = random.nextInt(possibleMovements.size());
+                return possibleMovements.get(rand).moveFromParent;
+        }
 
-        StoringConfig bestConfig = null;
+        /*
         
-        for (StoringConfig storingConfig : gameConfig.nextPossibleConfigs) {
-            GameConfig newGameConfig = new GameConfig(storingConfig);
-            EasyHeuristics heuristic = new EasyHeuristics(newGameConfig);
-            nextMoveHeuristic = heuristic.getHeuristicsValue();
-            System.out.println("Heuristique easy : best ="+bestHeuristic+"original="+originalHeuristic+"local="+nextMoveHeuristic);
-            if (nextMoveHeuristic > bestHeuristic) {
+               if (nextMoveHeuristic > bestHeuristic) {
                 bestConfig = storingConfig;
                 bestHeuristic = nextMoveHeuristic;
             } else if (bestHeuristic == originalHeuristic) {
@@ -56,6 +64,6 @@ public class EasyAI extends AI {
             int randomMove = random.nextInt(gameConfig.nextPossibleConfigs.size());
             result = new AIMove(OriginalConfig, gameConfig.nextPossibleConfigs.get(randomMove), core);
         }
-        return result;
+        return result;*/
     }
 }

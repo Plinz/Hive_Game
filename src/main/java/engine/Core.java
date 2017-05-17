@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
-import main.java.ia.AIMove;
 import main.java.model.Board;
 import main.java.model.Box;
 import main.java.model.Column;
@@ -44,7 +43,7 @@ public class Core {
 		this.players[0] = new Player(0);
 		this.players[1] = new Player(1);
 		this.emulator = new Emulator(this, board, players);
-		this.ai = AIFactory.buildAI(difficulty, this);
+		this.ai = AIFactory.buildAI(difficulty);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;
@@ -52,6 +51,19 @@ public class Core {
 		this.difficulty = difficulty;
 	}
 
+        public Core(Core core1){
+            this.history = new History();
+            this.board = new Board(core1.getBoard());
+            this.players = new Player[2];
+            this.players[0] = new Player(core1.players[0]);
+            this.players[1] = new Player(core1.players[1]);
+            this.mode = core1.mode;
+            this.status = core1.status;
+            this.turn = core1.turn;
+            this.currentPlayer = core1.currentPlayer;
+            this.difficulty = core1.difficulty;
+            this.emulator = new Emulator(this, this.board, this.players);
+        }
 	public boolean accept(BoardDrawer b) {
 		board.accept(b);
 		return false;
@@ -102,8 +114,8 @@ public class Core {
 		if (isGameFinish())
 			return true;
 		if (mode == Consts.PVAI && currentPlayer == Consts.AI_PLAYER) {
-			AIMove aiMove = ai.getNextMove(this);
-			return aiMove.play();
+			emulator.play(ai.getNextMove(this));
+                        return playNextTurn();
 		}
 		return false;
 	}
@@ -164,6 +176,28 @@ public class Core {
 					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
 							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
 							&& !neighbors.stream().anyMatch(it -> it.getPiece().getTeam() != currentPlayer))
+						pos.add(current.getCoord());
+		}
+		return pos;
+	}
+        
+        public List<CoordGene<Integer>> getPossibleAdd(int player) {
+		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
+		switch (turn) {
+		case 0:
+			pos.add(new CoordGene<Integer>(0, 0));
+			break;
+		case 1:
+			pos.addAll(new CoordGene<Integer>(1, 1).getNeighbors());
+			break;
+		default:
+			Tile current;
+			List<Tile> neighbors;
+			for (Column column : board.getBoard())
+				for (Box box : column)
+					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
+							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
+							&& !neighbors.stream().anyMatch(it -> it.getPiece().getTeam() != player))
 						pos.add(current.getCoord());
 		}
 		return pos;
@@ -250,7 +284,7 @@ public class Core {
 			players[Consts.PLAYER1].setName(reader.readLine());
 			if (mode == Consts.PVAI){
 				difficulty = Integer.parseInt(reader.readLine());
-				ai = AIFactory.buildAI(difficulty, this);
+				ai = AIFactory.buildAI(difficulty);
 			}
 			else
 				players[Consts.PLAYER2].setName(reader.readLine());
@@ -304,4 +338,7 @@ public class Core {
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
+        public int getDifficulty() {
+            return this.difficulty;
+        }
 }

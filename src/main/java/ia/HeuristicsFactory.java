@@ -3,21 +3,22 @@
  */
 package main.java.ia;
 
+import main.java.engine.Core;
 import main.java.utils.Consts;
 
 public class HeuristicsFactory {
 
-    public Heuristics buildHeuristics(int difficulty, GameConfig config) {
+    public Heuristics buildHeuristics(int difficulty, Core core) {
         switch (difficulty) {
             case Consts.EASY:
-                return new EasyHeuristics(config);
+                return new EasyHeuristics(core);
             case Consts.MEDIUM:
-                return new MediumHeuristics(config);
+                return new MediumHeuristics(core);
             case Consts.HARD:
-                return new HardHeuristics(config);
+                return new HardHeuristics(core);
             default :
                 System.err.println("Erreur : niveau de difficulté inconnu dans la HeuristicsFactory");
-                return new EasyHeuristics(config);
+                return new EasyHeuristics(core);
         }
     }
 }
