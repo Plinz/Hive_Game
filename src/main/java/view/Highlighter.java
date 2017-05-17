@@ -5,12 +5,9 @@
  */
 package main.java.view;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import main.java.view.BoardDrawer;
 import main.java.engine.Visitor;
-import main.java.utils.Coord;
 import main.java.utils.CoordGene;
 
 /**

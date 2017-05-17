@@ -115,7 +115,7 @@ public class Core implements Cloneable{
 	private boolean playNextTurn() {
 		if (isGameFinish())
 			return true;
-		if (mode == Consts.PVAI && currentPlayer == Consts.AI_PLAYER) {
+		if ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2)) {
 			emulator.play(ai.getNextMove(this));
                         return playNextTurn();
 		}
