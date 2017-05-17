@@ -29,6 +29,8 @@ public class AnimationTile {
     private Hexagon hex;
     
     public AnimationTile(){
+        hex = new Hexagon(); 
+        polygon = new Polygon();
         calculPolygon();        
         pathAnimation = new PathTransition();
         pathAnimation.setDuration(Duration.seconds(1));
@@ -69,13 +71,13 @@ public class AnimationTile {
     }      
         
     public void play(){
-        //calculPolygon();
+        calculPolygon();
         pathAnimation.setPath(path);
         pathAnimation.play();
     }
     private void calculPolygon(){
         
-        hex = new Hexagon(); 
+
         hex.setxPixel(0.0);
         hex.setyPixel(0.0);
         hex.calculHex(); 
@@ -83,8 +85,6 @@ public class AnimationTile {
         double x[] =  hex.getListXCoord();
         double y[] =  hex.getListYCoord();
         
-        polygon = new Polygon();
-        polygon.setFill(Color.RED);
         polygon.getPoints().addAll(new Double[]{
                     x[0], y[0],
                     x[1], y[1],
