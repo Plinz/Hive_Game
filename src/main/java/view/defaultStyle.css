@@ -244,7 +244,7 @@ and open the template in the editor.
 }
 
 #hardAI:selected{
-    -fx-background-image: url("/main/resources/img/misc/hardAIhover.png");
+    -fx-background-image: url("/main/resources/img/misc/hardAIselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -270,7 +270,7 @@ and open the template in the editor.
 }
 
 #mediumAI:selected{
-    -fx-background-image: url("/main/resources/img/misc/mediumAIhover.png");
+    -fx-background-image: url("/main/resources/img/misc/mediumAIselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
@@ -296,7 +296,7 @@ and open the template in the editor.
 }
 
 #easyAI:selected{
-    -fx-background-image: url("/main/resources/img/misc/easyAIhover.png");
+    -fx-background-image: url("/main/resources/img/misc/easyAIselect.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 0, 0, 0;

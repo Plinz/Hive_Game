@@ -111,6 +111,21 @@ public class NewGameScreenController implements Initializable {
         
     }
     
+    @FXML
+    public void handleEasyAI(){
+        easyButton.setSelected(true);
+    }
+    
+    @FXML
+    public void handleMediumAI(){
+        normalButton.setSelected(true);
+    }
+    
+    @FXML
+    public void handleHardAI(){
+        hardButton.setSelected(true);
+    }
+    
     @FXML 
     public void handleMenuClick(){
         main.showMainMenu();
