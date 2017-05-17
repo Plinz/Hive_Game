@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
-import main.java.engine.History;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
@@ -341,6 +340,7 @@ public class Board implements Cloneable{
 				|| (rightTile != null && rightTile.getPiece() != null && !right.equals(exception));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Board clone() {
 		Board board = null;

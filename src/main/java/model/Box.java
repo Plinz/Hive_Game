@@ -128,6 +128,7 @@ public class Box implements List<Tile>, Cloneable{
 		return tiles.toArray(a);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Box clone() {
 		Box box = null;

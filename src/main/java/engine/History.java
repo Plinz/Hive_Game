@@ -50,6 +50,7 @@ public class History implements Cloneable{
 		return prevUnplay;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected History clone() {
 		History history = null;

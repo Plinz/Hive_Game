@@ -128,6 +128,7 @@ public class Column implements List<Box>, Cloneable{
 		return boxs.toArray(a);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Column clone() {
 		Column column = null;
