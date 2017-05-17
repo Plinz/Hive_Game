@@ -211,10 +211,10 @@
                 <RowConstraints maxHeight="280.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button id="westArrow" mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                  <Button id="northArrow" mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button id="southArrow" mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-                  <Pane fx:id="panCanvas" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button id="westArrow" mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                  <Button id="northArrow" mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button id="southArrow" mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <Pane fx:id="panCanvas" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Path fx:id="path" fill="DODGERBLUE" stroke="BLACK" strokeType="INSIDE" />
                         <Canvas fx:id="gameCanvas" height="761.0" width="800.0" />
@@ -225,7 +225,7 @@
                   <Insets bottom="10.0" left="5.0" top="10.0" />
                </padding>
             </GridPane>
-            <Button id="eastArrow" mnemonicParsing="false" onMouseClicked="#handleRightButton" onMousePressed="#handleRightButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button id="eastArrow" mnemonicParsing="false" onMouseClicked="#handleRightButton" onMousePressed="#handleRightButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>

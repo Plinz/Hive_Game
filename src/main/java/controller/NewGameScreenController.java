@@ -39,6 +39,8 @@ public class NewGameScreenController implements Initializable {
     @FXML private ToggleButton easyButton;
     @FXML private ToggleButton normalButton;
     @FXML private ToggleButton hardButton;
+    @FXML private ToggleButton choicePVP;
+    @FXML private ToggleButton choicePVAI;
     
     public NewGameScreenController() {
     }
@@ -67,6 +69,7 @@ public class NewGameScreenController implements Initializable {
     
     @FXML
     public void handleChoiceButtonPVP(){
+        choicePVP.setSelected(true);
         labelPlayer2.setVisible(true);
         namePlayer2.setVisible(true);
         easyButton.setVisible(false);
@@ -77,18 +80,18 @@ public class NewGameScreenController implements Initializable {
     
     @FXML
     public void handleChoiceButtonPVAI(){
+        choicePVAI.setSelected(true);
         labelPlayer2.setVisible(false);
         namePlayer2.setVisible(false);
         easyButton.setVisible(true);
         normalButton.setVisible(true);
         hardButton.setVisible(true);
-        
     }
     
     
     @FXML
     public void handleChoicePVP(){
-        gameChoice.setText("Joueur contre joueur");
+        choicePVP.setSelected(true);
         labelPlayer2.setVisible(true);
         namePlayer2.setVisible(true);
         easyButton.setVisible(false);
@@ -99,7 +102,7 @@ public class NewGameScreenController implements Initializable {
     
     @FXML
     public void handleChangeChoicePVIA(){
-        gameChoice.setText("Joueur contre ordinateur");
+
         labelPlayer2.setVisible(false);
         namePlayer2.setVisible(false);
         easyButton.setVisible(true);

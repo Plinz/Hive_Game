@@ -248,9 +248,11 @@ public class GameScreenController implements Initializable {
                 }
             }
         });
+
        
-        //gameCanvas.widthProperty().bind(mainAnchor.widthProperty().multiply(0.71));
-        //gameCanvas.heightProperty().bind(mainAnchor.heightProperty());
+        //gameCanvas.widthProperty().bind(panCanvas.widthProperty());
+        //gameCanvas.heightProperty().bind(panCanvas.heightProperty());
+
     }
     public void handleNewGame() throws IOException{
         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
@@ -483,7 +485,7 @@ public class GameScreenController implements Initializable {
         }
         main.getPrimaryStage().requestFocus();
     }
-    
+   
    
     public void handleSaveAndQuitGame() throws IOException{
        
