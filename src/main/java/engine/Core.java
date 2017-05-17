@@ -93,7 +93,9 @@ public class Core implements Cloneable{
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
 		nextTurn();
-		return playNextTurn();
+		if(!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2))
+			playAI();
+		return status != Consts.INGAME;
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
@@ -103,7 +105,9 @@ public class Core implements Cloneable{
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-		return playNextTurn();
+		if (!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2))
+			playAI();
+		return status != Consts.INGAME;
 	}
 
 	public void removePiece(CoordGene<Integer> coord) {
@@ -112,14 +116,18 @@ public class Core implements Cloneable{
 		;
 	}
 
-	private boolean playNextTurn() {
-		if (isGameFinish())
-			return true;
-		if ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2)) {
-			emulator.play(ai.getNextMove(this));
-                        return playNextTurn();
-		}
-		return false;
+	private void playAI() {
+		String[] move = ai.getNextMove(this).split("|");
+		playEmulate(move[0], move[1]);
+		nextTurn();
+		isGameFinish();
+	}
+
+	public void playEmulate(String play, String unplay) {
+		emulator.play(play);
+		history.save(play, unplay);
+		nextTurn();
+		isGameFinish();
 	}
 
 	private boolean canAddPiece(int pieceId) {
@@ -145,7 +153,7 @@ public class Core implements Cloneable{
 	private boolean isPlayerStuck() {
 		int team = getCurrentPlayerObj().getTeam();
 		List<CoordGene<Integer>> possibleMovement = getCurrentPlayerObj().getInventory().isEmpty()
-				? new ArrayList<CoordGene<Integer>>() : getPossibleAdd();
+				? new ArrayList<CoordGene<Integer>>() : getPossibleAdd(currentPlayer);
 		board.getBoard().stream()
 				.forEach(column -> column.stream().forEach(box -> box.stream()
 						.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getTeam() == team)
@@ -160,30 +168,8 @@ public class Core implements Cloneable{
 		}
 		return new ArrayList<CoordGene<Integer>>();
 	}
-
-	public List<CoordGene<Integer>> getPossibleAdd() {
-		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
-		switch (turn) {
-		case 0:
-			pos.add(new CoordGene<Integer>(0, 0));
-			break;
-		case 1:
-			pos.addAll(new CoordGene<Integer>(1, 1).getNeighbors());
-			break;
-		default:
-			Tile current;
-			List<Tile> neighbors;
-			for (Column column : board.getBoard())
-				for (Box box : column)
-					if (!box.isEmpty() && (current = box.get(0)) != null && current.getPiece() == null
-							&& !(neighbors = board.getPieceNeighbors(current.getCoord())).isEmpty()
-							&& !neighbors.stream().anyMatch(it -> it.getPiece().getTeam() != currentPlayer))
-						pos.add(current.getCoord());
-		}
-		return pos;
-	}
         
-        public List<CoordGene<Integer>> getPossibleAdd(int player) {
+	public List<CoordGene<Integer>> getPossibleAdd(int player) {
 		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
 		switch (turn) {
 		case 0:
@@ -209,6 +195,7 @@ public class Core implements Cloneable{
 		if (history.hasPrevious()) {
 			String notation = history.getPrevious();
 			emulator.play(notation);
+			status = Consts.INGAME;
 			if (Consts.getPlayer(notation.charAt(0)) != players[currentPlayer].getTeam())
 				previousTurn();
 			if (mode == Consts.PVAI) {
@@ -226,9 +213,11 @@ public class Core implements Cloneable{
 		if (history.hasNext()) {
 			emulator.play(history.getNext());
 			nextTurn();
+			isGameFinish();
 			if (mode == Consts.PVAI) {
 				emulator.play(history.getNext());
 				nextTurn();
+				isGameFinish();
 			}
 			return true;
 		}
@@ -307,7 +296,7 @@ public class Core implements Cloneable{
 		return players[currentPlayer];
 	}
 
-	public void nextTurn() {
+	private void nextTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
 		if (isPlayerStuck())
@@ -315,7 +304,7 @@ public class Core implements Cloneable{
 		turn++;
 	}
 
-	public void previousTurn() {
+	private void previousTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
 		if (isPlayerStuck())

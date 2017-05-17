@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javafx.animation.PathTransition;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
+import javax.imageio.ImageIO;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -49,14 +48,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
-import javax.imageio.ImageIO;
-import main.java.implement.Main;
 import main.java.engine.Core;
+import main.java.implement.Main;
 import main.java.model.Piece;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -165,7 +162,7 @@ public class GameScreenController implements Initializable {
                                     highlighted.setListTohighlight(possibleMovement);
                                     pieceToChoose = -1;
                             } else {
-                                if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord) && core.addPiece(pieceToChoose, coord))
+                                if (pieceToChoose != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord) && core.addPiece(pieceToChoose, coord))
                                     handleEndGame();
                                 handleResize(coord);
                                 resetPiece();

@@ -39,7 +39,7 @@ public class ControllerButtonPiece implements EventHandler<MouseEvent> {
         gameController.getInventoryGroup().getToggles().get(i).setSelected(true);
         /**/
         gameController.setPieceToChoose(indexPiece);
-        highlighted.setListTohighlight(c.getPossibleAdd());
+        highlighted.setListTohighlight(c.getPossibleAdd(c.getCurrentPlayer()));
         
     }
 }
