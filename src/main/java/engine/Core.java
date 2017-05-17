@@ -346,7 +346,4 @@ public class Core {
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
-        public int getDifficulty() {
-            return this.difficulty;
-        }
 }

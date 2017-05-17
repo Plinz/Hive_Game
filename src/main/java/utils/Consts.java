@@ -71,6 +71,15 @@ public class Consts {
     public static final int WIN_TEAM2 = 2;
     public static final int NUL = 3;
     
+    //MACRO HEURISTIQUE
+    public static final int MINIMUM_HEURISTICS = -500;
+    public static final int BEST_HEURISTICS = 500;
+    
+    public static final int DEPTH_EASY = 4;
+    public static final int DEPTH_MEDIUM = 3;
+    public static final int DEPTH_HARD = 4;
+    
+    //METHODES
     public static final int getType (int id){
     	switch (id){
 	    	case 0 : return 0;
