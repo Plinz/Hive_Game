@@ -142,36 +142,6 @@ public class Minimax {
         }
     }
     
-    public int getMobility(Player player)
-    {
-        int result = 0;
-        for (Column column : board.getBoard()){
-            for (Box box : column) {
-                for (Tile tile : box){
-                    if ((tile.getPiece() != null) && (tile.getPiece().getTeam() == player.getTeam())){
-                        result++;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-        
-    
-    public boolean isPinned(int PieceId){
-        
-        //bug on the ground (ie not beetle or mosquito)
-        for (Column column : board.getBoard()){
-            for (Box box : column) {
-                for (Tile tile : box){
-                    if ((tile.getPiece() != null) && (tile.getPiece().getId() == PieceId)){
-                        if (tile.getPiece().getPossibleMovement(tile, this.board).isEmpty()) 
-                            return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+
 
 }
