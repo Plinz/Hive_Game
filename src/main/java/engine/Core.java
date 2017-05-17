@@ -93,7 +93,7 @@ public class Core implements Cloneable{
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
 		nextTurn();
-		if(!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2))
+		if(!isGameFinish() && ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER2) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1)))
 			playAI();
 		return status != Consts.INGAME;
 	}
