@@ -77,7 +77,6 @@ public class AnimationTile {
     }
     private void calculPolygon(){
         
-
         hex.setxPixel(0.0);
         hex.setyPixel(0.0);
         hex.calculHex(); 
