@@ -110,7 +110,7 @@ public class GameScreenController implements Initializable {
         inventoryGroup = new ToggleGroup();
        
         initButtonByInventory();
-        animation = new AnimationTile(panCanvas);                     
+        animation = new AnimationTile();                     
         initGameCanvas();
        
         r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
@@ -380,9 +380,10 @@ public class GameScreenController implements Initializable {
         CoordGene<Double> end = new CoordGene<>((double)coordEnd.getX(),(double)coordEnd.getY());       
         start = t.axialToPixel(start);
         end = t.axialToPixel(end);
-        
+                
+        panCanvas.getChildren().add(animation.getPolygon());
         String name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();
-        Image image = new Image(name);
+        Image image = new Image(name);       
         animation.setImagePolygon(image);
         animation.setPath(new Path( 
             new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY()+t.getMoveOrigin().getY()), 
