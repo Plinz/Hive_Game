@@ -21,9 +21,9 @@ public class Spider extends Piece {
 	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
-		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
+		List<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile))
-			list.addAll(path(board, tile.getCoord(), 0, new HashSet<CoordGene<Integer>>(), tile.getCoord()));
+			list.addAll(path(board, tile.getCoord(), 0, new HashSet<>(), tile.getCoord()));
 		this.possibleMovement = list;
 		return list;
 
@@ -31,7 +31,7 @@ public class Spider extends Piece {
 
 	private List<CoordGene<Integer>> path(Board board, CoordGene<Integer> origin, int deep,
 			Set<CoordGene<Integer>> visited, CoordGene<Integer> from) {
-		List<CoordGene<Integer>> nextBox = new ArrayList<CoordGene<Integer>>();
+		List<CoordGene<Integer>> nextBox = new ArrayList<>();
 		if (deep == 3) {
 			if (origin.equals(from) || !visited.contains(from))
 				nextBox.add(from);

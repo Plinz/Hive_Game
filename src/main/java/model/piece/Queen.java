@@ -20,7 +20,7 @@ public class Queen extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 
-		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
+		List<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile)) {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
 			for (int i = 0; i < neighbors.size(); i++) {

@@ -21,9 +21,9 @@ public class Ant extends Piece {
 	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
-		List<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
+		List<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile))
-			list.addAll(path(board, tile.getCoord(), new HashSet<CoordGene<Integer>>(), tile.getCoord()));
+			list.addAll(path(board, tile.getCoord(), new HashSet<>(), tile.getCoord()));
 		this.possibleMovement = list;
 		return list;
 
@@ -31,7 +31,7 @@ public class Ant extends Piece {
 
 	private List<CoordGene<Integer>> path(Board board, CoordGene<Integer> origin, Set<CoordGene<Integer>> visited,
 			CoordGene<Integer> from) {
-		List<CoordGene<Integer>> nextBox = new ArrayList<CoordGene<Integer>>();
+		List<CoordGene<Integer>> nextBox = new ArrayList<>();
 		List<CoordGene<Integer>> neighbors = from.getNeighbors();
 		for (int i = 0; i < neighbors.size(); i++) {
 			CoordGene<Integer> target = neighbors.get(i);

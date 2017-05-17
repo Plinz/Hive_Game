@@ -20,7 +20,7 @@ public class Grasshopper extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		
-		ArrayList<CoordGene<Integer>> list = new ArrayList<CoordGene<Integer>>();
+		ArrayList<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile)) {
 			CoordGene<Integer> coord = tile.getCoord();
 			
