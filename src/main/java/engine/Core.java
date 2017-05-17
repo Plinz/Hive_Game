@@ -33,6 +33,14 @@ public class Core {
 	private int mode;
 	private int status;
 	private int turn;
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
 	private int currentPlayer;
 	private int difficulty;
 

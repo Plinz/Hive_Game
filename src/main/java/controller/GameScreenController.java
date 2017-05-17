@@ -1,20 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package main.java.controller;
 
 
-import com.sun.javafx.cursor.CursorFrame;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.PathTransition;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 
 import javafx.event.EventHandler;
@@ -36,6 +33,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -57,8 +55,9 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.text.Text;
-import main.java.engine.Core;
+import javax.imageio.ImageIO;
 import main.java.implement.Main;
+import main.java.engine.Core;
 import main.java.model.Piece;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
@@ -76,7 +75,7 @@ public class GameScreenController implements Initializable {
     @FXML private Canvas gameCanvas;
     @FXML private Pane panCanvas;
     @FXML private Path path;
-    
+   
     @FXML private GridPane inventoryPlayer1;
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
@@ -93,12 +92,12 @@ public class GameScreenController implements Initializable {
     private ToggleGroup inventoryGroup;
     private RefreshJavaFX r;
     private AnimationTile animation;
-    
+   
     public void setMainApp(Main mainApp) {
-        this.main = mainApp;    
+        this.main = mainApp;   
     }
     public void setCore(Core c) {
-        this.core = c;    
+        this.core = c;   
     }
 
     public void setPieceToChoose(int pieceToChoose) {
@@ -112,13 +111,13 @@ public class GameScreenController implements Initializable {
     public void setHighlighted(Highlighter highlighted) {
         this.highlighted = highlighted;
     }
-    
-    
-    
+   
+   
+   
      @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
-    
+   
     public void initGame(Main mainApp, Core c){
         setMainApp(mainApp);
         setCore(c);
@@ -127,28 +126,28 @@ public class GameScreenController implements Initializable {
         t = new TraducteurBoard();
         freeze = false;
         inventoryGroup = new ToggleGroup();
-        
+       
         initButtonByInventory();
-        animation = new AnimationTile(panCanvas,t);      
-              
+        animation = new AnimationTile(panCanvas,t);     
+             
         initGameCanvas();
-        
+       
         r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
         r.start();
-        
+       
     }
     /* Inititialisation des handlers */
     public void initGameCanvas(){
-        
+       
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
                 if(!freeze){
-                	CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
-                	CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
-                	CoordGene<Double> origin = t.getMoveOrigin();
-                	lastCoord = new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY());
-                    
+                    CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
+                    CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
+                    CoordGene<Double> origin = t.getMoveOrigin();
+                    lastCoord = new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY());
+                   
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null &&  possibleMovement.contains(coord)) {
@@ -158,17 +157,17 @@ public class GameScreenController implements Initializable {
                                     handleResize(coord);
                                     resetPiece();
                                     initButtonByInventory();
-                                                                    
-                                    panCanvas.getChildren().add(animation.getPolygon());  
-                                    
+                                                                   
+                                    panCanvas.getChildren().add(animation.getPolygon()); 
+                                   
                                     System.out.print("LOL");
-                                    path  = new Path( 
-                new MoveTo(50, 50), 
-                new LineTo(100, 50), 
-                new LineTo(150, 150), 
-                new QuadCurveTo(150, 100, 250, 200), 
-                new CubicCurveTo(0, 250, 400, 0, 300, 250)); 
-                                    
+                                    path  = new Path(
+                new MoveTo(50, 50),
+                new LineTo(100, 50),
+                new LineTo(150, 150),
+                new QuadCurveTo(150, 100, 250, 200),
+                new CubicCurveTo(0, 250, 400, 0, 300, 250));
+                                   
                                     animation.setPath(path);
                                     PathTransition pathTr  = animation.getPathAnimation();
                                     pathTr.setOnFinished(new EventHandler<ActionEvent>() {
@@ -178,10 +177,10 @@ public class GameScreenController implements Initializable {
                                         }
                                     });
                                     pathTr.play();
-                                    
-                                    
-                                    
-                                            
+                                   
+                                   
+                                   
+                                           
                                     //panCanvas.getChildren().remove(animation.getPolygon());
                                     highlighted.setListTohighlight(null);
                                 }
@@ -192,7 +191,7 @@ public class GameScreenController implements Initializable {
                                     pieceToChoose = -1;
                             } else {
                                 if (pieceToChoose != -1 && core.getPossibleAdd().contains(coord) && core.addPiece(pieceToChoose, coord))
-                                	handleEndGame();
+                                    handleEndGame();
                                 handleResize(coord);
                                 resetPiece();
                                 initButtonByInventory();
@@ -203,47 +202,45 @@ public class GameScreenController implements Initializable {
                             highlighted.setListTohighlight(null);
                         }
                     }
-                    else if (m.getButton() == MouseButton.SECONDARY)
-                    	core.save("COCO");
                 }
             }
         });
-        
+       
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
-                
+               
                 public void handle(MouseEvent m) {
 
                     t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
-     
+    
         });
-           
+          
          gameCanvas.setOnDragDetected(e-> {
                 String name = getClass().getClassLoader().getResource("main/resources/img/misc/crossCursor.png").toString();
-                Image n = new Image(name);  
+                Image n = new Image(name); 
                 gameCanvas.setCursor(new ImageCursor(n));
                 e.consume();
             });
-            
+           
         gameCanvas.setOnMouseReleased(new EventHandler<MouseEvent>(){
 
             @Override
             public void handle(MouseEvent t) {
                 gameCanvas.setCursor(Cursor.DEFAULT);
             }
-            
+           
         });
-        
+       
         gameCanvas.setOnDragDone(event->{
                 gameCanvas.setCursor(Cursor.DEFAULT);
                 event.consume();
         });
-              
+             
         gameCanvas.setOnScroll(new EventHandler<ScrollEvent>(){
 
             @Override
             public void handle(ScrollEvent event) {
-                if(event.getDeltaY() > 0){        
+                if(event.getDeltaY() > 0){       
                     Consts.SIDE_SIZE*=1.1;
                 }
                 else{
@@ -251,70 +248,70 @@ public class GameScreenController implements Initializable {
                 }
             }
         });
-        
+       
         //gameCanvas.widthProperty().bind(mainAnchor.widthProperty().multiply(0.71));
         //gameCanvas.heightProperty().bind(mainAnchor.heightProperty());
     }
-    public void handleNewGame(){
-         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
+    public void handleNewGame() throws IOException{
+        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
         ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
         popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-        
+       
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
-                Core c = new Core(core.getMode(),Consts.EASY);
+                Core c = new Core(core.getMode(),core.getDifficulty());
                 c.getPlayers()[0].setName(core.getPlayers()[0].getName());
                 c.getPlayers()[1].setName(core.getPlayers()[1].getName());
                 r.stop();
                 main.showGameScreen(c);
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveGame();
+            handleSaveAndQuitGame();
         }
     }
-    
-    public void handleLeaveGame(){
+   
+    public void handleLeaveGame() throws IOException{
         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
         ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
         popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-        
+       
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
             r.stop();
             main.showMainMenu();
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveGame();
+            handleSaveAndQuitGame();
         }
     }
-    
+   
     public void handleUpButton(){
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()-10));
     }
-    
+   
     public void handleRightButton(){
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX()+10,t.getMoveOrigin().getY()));
     }
-    
+   
     public void handleDownButton(){
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()+10));
     }
-    
+   
     public void handleLeftButton(){
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX()-10,t.getMoveOrigin().getY()));
     }
-    
+   
     public void handleUndoButton(){
         core.previousState();
         resetPiece();
         highlighted.setListTohighlight(null);
         initButtonByInventory();
     }
-    
+   
     public void handleRedoButton(){
         core.nextState();
         resetPiece();
@@ -322,11 +319,11 @@ public class GameScreenController implements Initializable {
         initButtonByInventory();
     }
     /*Fin des handlers */
-    
+   
     /*Méthodes d'initialisation */
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
-        if(core.getCurrentPlayer() == 0){           
+        if(core.getCurrentPlayer() == 0){          
             inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
             inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,new BorderWidths(5))));
             namePlayer1.setText(core.getPlayers()[0].getName() + " à vous de jouer !");
@@ -338,11 +335,11 @@ public class GameScreenController implements Initializable {
 
             namePlayer1.setText(core.getPlayers()[0].getName() + " attend !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " à vous de jouer !");
-        } 
+        }
         initPlayer1Button();
         initPlayer2Button();
     }
-        
+       
     public void initPlayer1Button(){
         inventoryPlayer1.getChildren().remove(0, inventoryPlayer1.getChildren().size());
         List<Piece> inventory = core.getPlayers()[0].getInventory();
@@ -366,16 +363,16 @@ public class GameScreenController implements Initializable {
                 col = 0;
                 line++;
             }
-            
+           
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
             GridPane.setValignment(b, VPos.TOP);
             inventoryPlayer1.getChildren().add(b);
             col++;
-            
+           
         }
     }
-    
+   
     public void initPlayer2Button(){
         inventoryPlayer2.getChildren().remove(0, inventoryPlayer2.getChildren().size());
         List<Piece> inventory = core.getPlayers()[1].getInventory();
@@ -387,7 +384,7 @@ public class GameScreenController implements Initializable {
             ToggleButton b = new ToggleButton();
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
-            
+           
             if(core.getCurrentPlayer() == 1 && !freeze){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
@@ -395,12 +392,12 @@ public class GameScreenController implements Initializable {
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
                 inventoryGroup.getToggles().add(b);
             }
-            
+           
             if(i!= 0 && i%4 == 0){
                 col = 0;
                 line++;
             }
-            
+           
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
             GridPane.setValignment(b, VPos.TOP);
@@ -412,14 +409,14 @@ public class GameScreenController implements Initializable {
     public ToggleGroup getInventoryGroup() {
         return inventoryGroup;
     }
-    
+   
     public void resetPiece(){
         if(inventoryGroup.getSelectedToggle() != null)
             inventoryGroup.getSelectedToggle().setSelected(false);
         pieceToMove = null;
         pieceToChoose = -1;
     }
-    
+   
     public void handleEndGame(){
         freeze = true;
         highlighted.setListTohighlight(null);
@@ -448,43 +445,84 @@ public class GameScreenController implements Initializable {
         }
         dialog.show();
     }
-    
+   
     /*******************/
     
-    public void handleSaveGame(){
-        
+    public void handleSaveGame() throws IOException{
+       
         Dialog popup = new Dialog();
-        popup.setTitle("Sauvegarder et quitter la partie");
-        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.LEFT);
+        popup.setTitle("Sauvegarder la partie");
+        ButtonType save = new ButtonType("Sauvegarder",ButtonBar.ButtonData.LEFT);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getDialogPane().getButtonTypes().addAll(saveAndQuit,cancel);
-        
+        popup.getDialogPane().getButtonTypes().addAll(save,cancel);
+       
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
         TextField saveName = new TextField();
         saveName.setPromptText("Sauvegarde");
-        
+       
         popup.getDialogPane().setContent(grid);
         grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
         grid.add(saveName, 1, 0);
-        
+       
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            String saveString = saveName.getText();
+            if(saveString.equals("")){
+                if (core.getMode() == Consts.PVP)
+                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+                    else
+                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+    			+ (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+			+ "-turn" + core.getTurn();
+            }
+            core.save(saveString);
+            takeSnapshot(saveString);
+        }
+        main.getPrimaryStage().requestFocus();
+    }
+    
+   
+    public void handleSaveAndQuitGame() throws IOException{
+       
+        Dialog popup = new Dialog();
+        popup.setTitle("Sauvegarder et quitter la partie");
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.LEFT);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().addAll(saveAndQuit,cancel);
+       
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        TextField saveName = new TextField();
+        saveName.setPromptText("Sauvegarde");
+       
+        popup.getDialogPane().setContent(grid);
+        grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
+        grid.add(saveName, 1, 0);
+       
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
             r.stop();
             String saveString = saveName.getText();
             if(saveString.equals("")){
-                core.save(null);
+                if (core.getMode() == Consts.PVP)
+				saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+			else
+				saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+						+ (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+						+ "-turn" + core.getTurn();
             }
-            else{
-                core.save(saveString);
-            } 
+            core.save(saveString);
+            takeSnapshot(saveString);
             main.showMainMenu();
         }
         main.getPrimaryStage().requestFocus();
     }
-    
+   
     public void handleResize(CoordGene<Integer> coord){
         CoordGene<Double> newOrigin = t.getMoveOrigin();
         if(coord.getX() == 0){
@@ -501,6 +539,14 @@ public class GameScreenController implements Initializable {
         }
             t.setMoveOrigin(newOrigin);
     }
-    
+   
+    public void takeSnapshot(String name) throws IOException{
+        WritableImage screenshot = new WritableImage((int)main.getPrimaryStage().getScene().getWidth(),(int)main.getPrimaryStage().getScene().getHeight());
+        main.getPrimaryStage().getScene().snapshot(screenshot);
+        if (!Files.isDirectory(Paths.get("Hive_save_images")))
+                Files.createDirectories(Paths.get("Hive_save_images"));
+       
+        File file = new File("Hive_save_images/"+name+".png");
+        ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);  
+    }
 }
-
