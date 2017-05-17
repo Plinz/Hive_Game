@@ -23,7 +23,7 @@ import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.BoardDrawer;
 
-public class Core implements Cloneable{
+public class Core implements Cloneable {
 
 	private History history;
 	private Board board;
@@ -52,20 +52,20 @@ public class Core implements Cloneable{
 	}
 
 	@Deprecated
-    public Core(Core core1){
-        this.history = new History();
-        this.board = new Board(core1.getBoard());
-        this.players = new Player[2];
-        this.players[0] = new Player(core1.players[0]);
-        this.players[1] = new Player(core1.players[1]);
-        this.mode = core1.mode;
-        this.status = core1.status;
-        this.turn = core1.turn;
-        this.currentPlayer = core1.currentPlayer;
-        this.difficulty = core1.difficulty;
-        this.emulator = new Emulator(this, this.board, this.players);
-    }
-    
+	public Core(Core core1) {
+		this.history = new History();
+		this.board = new Board(core1.getBoard());
+		this.players = new Player[2];
+		this.players[0] = new Player(core1.players[0]);
+		this.players[1] = new Player(core1.players[1]);
+		this.mode = core1.mode;
+		this.status = core1.status;
+		this.turn = core1.turn;
+		this.currentPlayer = core1.currentPlayer;
+		this.difficulty = core1.difficulty;
+		this.emulator = new Emulator(this, this.board, this.players);
+	}
+
 	public boolean accept(BoardDrawer b) {
 		board.accept(b);
 		return false;
@@ -93,7 +93,8 @@ public class Core implements Cloneable{
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
 		nextTurn();
-		if(!isGameFinish() && ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER2) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1)))
+		if (!isGameFinish() && ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER2)
+				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1)))
 			playAI();
 		return status != Consts.INGAME;
 	}
@@ -105,7 +106,8 @@ public class Core implements Cloneable{
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-		if (!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2))
+		if (!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER1)
+				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2))
 			playAI();
 		return status != Consts.INGAME;
 	}
@@ -113,7 +115,6 @@ public class Core implements Cloneable{
 	public void removePiece(CoordGene<Integer> coord) {
 		Piece piece = board.removePiece(coord);
 		players[1 - currentPlayer].addPiece(piece);
-		;
 	}
 
 	private void playAI() {
@@ -140,11 +141,14 @@ public class Core implements Cloneable{
 
 	private boolean isGameFinish() {
 		List<Tile> queenStuck = new ArrayList<Tile>();
-		board.getBoard().stream().forEach(column -> column.stream().forEach(box -> queenStuck.addAll(box.stream()
-				.filter(tile -> tile.getPiece() != null).filter(tile -> tile.getPiece().getId() == Consts.QUEEN)
-				.filter(tile -> board.getPieceNeighbors(tile.getCoord()).size() == 6).collect(Collectors.toList()))));
+		board.getBoard().stream()
+				.forEach(column -> column.stream()
+						.forEach(box -> queenStuck.addAll(box.stream()
+								.filter(tile -> tile.getPiece() != null && tile.getPiece().getId() == Consts.QUEEN
+										&& board.getPieceNeighbors(tile.getCoord()).size() == 6)
+								.collect(Collectors.toList()))));
 		if (queenStuck.size() == 1)
-			status = queenStuck.get(0).getPiece().getTeam();
+			status = queenStuck.get(0).getPiece().getTeam() + 1;
 		else if (queenStuck.size() == 2)
 			status = Consts.NUL;
 		return !queenStuck.isEmpty();
@@ -168,7 +172,7 @@ public class Core implements Cloneable{
 		}
 		return new ArrayList<CoordGene<Integer>>();
 	}
-        
+
 	public List<CoordGene<Integer>> getPossibleAdd(int player) {
 		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
 		switch (turn) {
@@ -241,9 +245,9 @@ public class Core implements Cloneable{
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
 			if (mode == Consts.PVAI)
-				writer.write(difficulty+"\n");
+				writer.write(difficulty + "\n");
 			else
-				writer.write(players[Consts.PLAYER2].getName()+"\n");
+				writer.write(players[Consts.PLAYER2].getName() + "\n");
 			Stack<String> prevPlay = history.getPrevPlay();
 			Stack<String> prevUnplay = history.getPrevUnplay();
 			if (prevPlay.size() == prevUnplay.size())
@@ -259,28 +263,28 @@ public class Core implements Cloneable{
 		try {
 			if (!Files.isDirectory(Paths.get("Hive_save")))
 				Files.createDirectories(Paths.get("Hive_save"));
-			return Files.list(Paths.get("Hive_save")).map(p -> p.getFileName().toFile().getName()).collect(Collectors.toList());
+			return Files.list(Paths.get("Hive_save")).map(p -> p.getFileName().toFile().getName())
+					.collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public void load(String saveFile){
+
+	public void load(String saveFile) {
 		try {
-			Path path = Paths.get("Hive_save/"+saveFile);
+			Path path = Paths.get("Hive_save/" + saveFile);
 			BufferedReader reader = Files.newBufferedReader(path);
 			mode = Integer.parseInt(reader.readLine());
 			currentPlayer = Integer.parseInt(reader.readLine());
 			players[Consts.PLAYER1].setName(reader.readLine());
-			if (mode == Consts.PVAI){
+			if (mode == Consts.PVAI) {
 				difficulty = Integer.parseInt(reader.readLine());
 				ai = AIFactory.buildAI(difficulty);
-			}
-			else
+			} else
 				players[Consts.PLAYER2].setName(reader.readLine());
 			String tmp = reader.readLine();
-			while(tmp != null && !tmp.isEmpty()){
+			while (tmp != null && !tmp.isEmpty()) {
 				String[] token = tmp.split(";");
 				emulator.play(token[0]);
 				turn++;
@@ -311,50 +315,57 @@ public class Core implements Cloneable{
 			currentPlayer = 1 - currentPlayer;
 		turn--;
 	}
-	
+
 	@Override
 	protected Core clone() {
-        Core core = null;
-        try {
-            core = (Core) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        core.history = history.clone();
-        core.board = board.clone();
-        core.players = players.clone();
-        core.emulator = new Emulator(core, core.board, core.players);
-        core.ai = AIFactory.buildAI(difficulty);
-        core.mode = mode;
-        core.status = status;
-        core.turn = turn;
-        core.currentPlayer = currentPlayer;
-        core.difficulty = difficulty;
-        return core;
+		Core core = null;
+		try {
+			core = (Core) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		core.history = history.clone();
+		core.board = board.clone();
+		core.players = players.clone();
+		core.emulator = new Emulator(core, core.board, core.players);
+		core.ai = AIFactory.buildAI(difficulty);
+		core.mode = mode;
+		core.status = status;
+		core.turn = turn;
+		core.currentPlayer = currentPlayer;
+		core.difficulty = difficulty;
+		return core;
 	}
-	
+
 	public int getMode() {
 		return mode;
 	}
+
 	public int getStatus() {
 		return status;
 	}
+
 	public Board getBoard() {
 		return board;
 	}
+
 	public Player[] getPlayers() {
 		return players;
 	}
+
 	public int getTurn() {
 		return turn;
 	}
+
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
-    public int getDifficulty() {
-        return difficulty;
-    }
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
-    }
+
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
 }
