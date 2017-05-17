@@ -18,9 +18,9 @@ IsPinnedWeight : 6
 
 # Insects Heuristics 
 
-ValidMoveWeight : 0
-ValidPlacementWeight : 1
-ValidMovementWeight : 2
+ValidMoveWeight : 0 --> Nombre de deplacement/placement possible
+ValidPlacementWeight : 1 --> Nombre de Placements possibles si piece en main
+ValidMovementWeight : 2 --> Nombre de deplacements possibles si pieces en jeu
 NeighborWeight : 3   --> Possède des voisins
 InHandWeight : 4 --> Est en main ??
 InPlayWeight : 5 --> Est en jeu ??
