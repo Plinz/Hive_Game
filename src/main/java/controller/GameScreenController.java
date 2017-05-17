@@ -202,8 +202,6 @@ public class GameScreenController implements Initializable {
                             highlighted.setListTohighlight(null);
                         }
                     }
-                    else if (m.getButton() == MouseButton.SECONDARY)
-                        core.save("COCO");
                 }
             }
         });
@@ -255,7 +253,7 @@ public class GameScreenController implements Initializable {
         //gameCanvas.heightProperty().bind(mainAnchor.heightProperty());
     }
     public void handleNewGame() throws IOException{
-         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
+        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
         ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
@@ -263,14 +261,14 @@ public class GameScreenController implements Initializable {
        
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
-                Core c = new Core(core.getMode(),Consts.EASY);
+                Core c = new Core(core.getMode(),core.getDifficulty());
                 c.getPlayers()[0].setName(core.getPlayers()[0].getName());
                 c.getPlayers()[1].setName(core.getPlayers()[1].getName());
                 r.stop();
                 main.showGameScreen(c);
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveGame();
+            handleSaveAndQuitGame();
         }
     }
    
@@ -287,7 +285,7 @@ public class GameScreenController implements Initializable {
             main.showMainMenu();
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveGame();
+            handleSaveAndQuitGame();
         }
     }
    
@@ -449,8 +447,45 @@ public class GameScreenController implements Initializable {
     }
    
     /*******************/
-   
+    
     public void handleSaveGame() throws IOException{
+       
+        Dialog popup = new Dialog();
+        popup.setTitle("Sauvegarder la partie");
+        ButtonType save = new ButtonType("Sauvegarder",ButtonBar.ButtonData.LEFT);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().addAll(save,cancel);
+       
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        TextField saveName = new TextField();
+        saveName.setPromptText("Sauvegarde");
+       
+        popup.getDialogPane().setContent(grid);
+        grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
+        grid.add(saveName, 1, 0);
+       
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            String saveString = saveName.getText();
+            if(saveString.equals("")){
+                if (core.getMode() == Consts.PVP)
+                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+                    else
+                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+    			+ (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+			+ "-turn" + core.getTurn();
+            }
+            core.save(saveString);
+            takeSnapshot(saveString);
+        }
+        main.getPrimaryStage().requestFocus();
+    }
+    
+   
+    public void handleSaveAndQuitGame() throws IOException{
        
         Dialog popup = new Dialog();
         popup.setTitle("Sauvegarder et quitter la partie");
@@ -474,12 +509,15 @@ public class GameScreenController implements Initializable {
             r.stop();
             String saveString = saveName.getText();
             if(saveString.equals("")){
-                core.save(null);
+                if (core.getMode() == Consts.PVP)
+				saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+			else
+				saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+						+ (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+						+ "-turn" + core.getTurn();
             }
-            else{
-                core.save(saveString);
-                takeSnapshot(saveString);
-            }
+            core.save(saveString);
+            takeSnapshot(saveString);
             main.showMainMenu();
         }
         main.getPrimaryStage().requestFocus();

@@ -49,8 +49,8 @@
                      </cursor></Button>
                </children>
             </GridPane>
-            <ListView fx:id="saveList" prefHeight="183.0" prefWidth="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <ImageView fx:id="saveImage" fitHeight="311.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ListView fx:id="saveList" prefHeight="183.0" prefWidth="330.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fx:id="saveImage" fitHeight="399.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
