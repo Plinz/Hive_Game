@@ -24,6 +24,7 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -76,6 +77,8 @@ public class GameScreenController implements Initializable {
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
     @FXML private Text namePlayer2;
+    @FXML private Button undo;
+    @FXML private Button redo;
     private Main main;
     private Core core;
     private int pieceToChoose;
@@ -110,6 +113,7 @@ public class GameScreenController implements Initializable {
         inventoryGroup = new ToggleGroup();
        
         initButtonByInventory();
+        initButtonActivation();
         animation = new AnimationTile();                     
         initGameCanvas();
        
@@ -118,11 +122,19 @@ public class GameScreenController implements Initializable {
        
     }
     /* Inititialisation des handlers */
+    
+    public void initButtonActivation(){
+        undo.disableProperty().bind(freeze);
+        redo.disableProperty().bind(freeze);
+    }
+    
+    
     public void initGameCanvas(){
        
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
+                System.out.println("Tour : " + gameCanvas.widthProperty().get());
                 if(!endOfGame && !freeze.getValue()){
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
