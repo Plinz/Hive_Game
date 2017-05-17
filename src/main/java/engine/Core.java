@@ -202,12 +202,6 @@ public class Core implements Cloneable {
 			status = Consts.INGAME;
 			if (Consts.getPlayer(notation.charAt(0)) != players[currentPlayer].getTeam())
 				previousTurn();
-			if (mode == Consts.PVAI) {
-				notation = history.getPrevious();
-				emulator.play(notation);
-				if (Consts.getPlayer(notation.charAt(0)) != players[currentPlayer].getTeam())
-					previousTurn();
-			}
 			return true;
 		}
 		return false;
