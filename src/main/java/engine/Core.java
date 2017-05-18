@@ -106,8 +106,8 @@ public class Core implements Cloneable {
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-		if (!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER1)
-				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER2))
+		if (!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER2)
+				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1))
 			playAI();
 		return status != Consts.INGAME;
 	}
@@ -118,8 +118,7 @@ public class Core implements Cloneable {
 	}
 
 	private void playAI() {
-                String s = ai.getNextMove(this);
-                String[] moveAndUnplay = s.split(";");
+		String[] moveAndUnplay = ai.getNextMove(this).split(";");
 		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
 		isGameFinish();
 	}
