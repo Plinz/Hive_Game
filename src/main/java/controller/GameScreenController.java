@@ -274,6 +274,8 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleUndoButton(){
+    	if (core.getMode() != Consts.PVP)
+    		core.previousState();
         if (core.previousState())
         	redo.setDisable(false);
         if (!core.hasPreviousState())
@@ -284,6 +286,8 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleRedoButton(){
+    	if (core.getMode() != Consts.PVP)
+    		core.nextState();
         if (core.nextState())
         	undo.setDisable(false);
         if (!core.hasNextState())
