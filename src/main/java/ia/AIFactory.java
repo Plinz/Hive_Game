@@ -12,9 +12,13 @@ public class AIFactory {
         switch (difficulty){
             case Consts.EASY :
                 return new EasyAI(core);
+            case Consts.MEDIUM :
+                return new EasyAI(core);
+            case Consts.HARD : 
+                return new EasyAI(core);
             default :
                 System.err.println("Not implemented yet");
-                return null;
+                return new EasyAI(core);
         }
     }
 }
