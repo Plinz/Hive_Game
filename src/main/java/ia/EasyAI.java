@@ -41,7 +41,7 @@ public class EasyAI extends AI {
                 chosenMove = possibleMovements.get(rand).moveFromParent;
                 chosenUnplay = possibleMovements.get(rand).moveToParent;
             }
-        } else {
+        } else { //case -> only one more piece is needed to beat the player
             Random random = new Random();
             int rand = random.nextInt(possibleMovements.size());
             chosenMove = possibleMovements.get(rand).moveFromParent;

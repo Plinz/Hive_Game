@@ -120,7 +120,7 @@ public class Core implements Cloneable {
 		return (turn != 6 && turn != 7) || isQueenOnBoard() || pieceId == Consts.QUEEN;
 	}
 
-	private boolean isQueenOnBoard() {
+	public boolean isQueenOnBoard() {
 		return getCurrentPlayerObj().getInventory().stream().noneMatch(piece -> piece.getId() == Consts.QUEEN);
 	}
 
