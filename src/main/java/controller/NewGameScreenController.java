@@ -32,6 +32,8 @@ public class NewGameScreenController implements Initializable {
     
     
     private Main main;
+    private int state = 0;
+    
     @FXML private MenuButton gameChoice;
     @FXML private Label labelPlayer2;
     @FXML private TextField namePlayer1;
@@ -41,6 +43,8 @@ public class NewGameScreenController implements Initializable {
     @FXML private ToggleButton hardButton;
     @FXML private ToggleButton choicePVP;
     @FXML private ToggleButton choicePVAI;
+    @FXML private ToggleButton colorPlayer1;
+    @FXML private ToggleButton colorPlayer2;
     
     public NewGameScreenController() {
     }
@@ -51,18 +55,22 @@ public class NewGameScreenController implements Initializable {
         if(easyButton.isVisible()){
             if(easyButton.isSelected()){
                 core = new Core(Consts.PVAI, Consts.EASY);
+                core.getPlayers()[1].setName("IA_Facile");
             }
             else if(normalButton.isSelected()){
                 core = new Core(Consts.PVAI, Consts.MEDIUM);
+                core.getPlayers()[1].setName("IA_Normal");
             }
             else{
                 core = new Core(Consts.PVAI, Consts.HARD);
+                core.getPlayers()[1].setName("IA_Difficile");
             }
+            
         }else{
             core = new Core(Consts.PVP, Consts.EASY);
+            core.getPlayers()[1].setName(namePlayer2.getText());
         }
         core.getPlayers()[0].setName(namePlayer1.getText());
-        core.getPlayers()[1].setName(namePlayer2.getText());
         main.showGameScreen(core);
         
     }
@@ -75,6 +83,7 @@ public class NewGameScreenController implements Initializable {
         easyButton.setVisible(false);
         normalButton.setVisible(false);
         hardButton.setVisible(false);
+        colorPlayer2.setVisible(true);
         
     }
     
@@ -86,29 +95,7 @@ public class NewGameScreenController implements Initializable {
         easyButton.setVisible(true);
         normalButton.setVisible(true);
         hardButton.setVisible(true);
-    }
-    
-    
-    @FXML
-    public void handleChoicePVP(){
-        choicePVP.setSelected(true);
-        labelPlayer2.setVisible(true);
-        namePlayer2.setVisible(true);
-        easyButton.setVisible(false);
-        normalButton.setVisible(false);
-        hardButton.setVisible(false);
-        
-    }
-    
-    @FXML
-    public void handleChangeChoicePVIA(){
-
-        labelPlayer2.setVisible(false);
-        namePlayer2.setVisible(false);
-        easyButton.setVisible(true);
-        normalButton.setVisible(true);
-        hardButton.setVisible(true);
-        
+        colorPlayer2.setVisible(false);
     }
     
     @FXML
