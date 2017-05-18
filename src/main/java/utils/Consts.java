@@ -180,7 +180,14 @@ public class Consts {
     public static String GRASSHOPPER_MOVEMENT = "La sauterelle peut sauter par dessus une rangée de cases, le nombre de cases qu'elle saute n'est pas restreint.";
     public static String BEETLE_MOVEMENT = "Le scarabée peut se déplacer d'une case.\nCependant il peut aussi monter sur les pièces adjacentes, les empêchant ainsi de bouger." ;
 
+    //MACRO QUITTER MENU DE JEU
     public static final int GO_TO_MAIN = 0;
     public static final int GO_TO_GAME = 1;
     public static final int GO_TO_LOAD = 2;
+    
+    //MACRO ETAT NOUVELLE PARTIE
+    public static final int WHITE_FIRST = 0;
+    public static final int BLACK_FIRST = 1;
+    public static final int RANDOM = 2;
+    
 }

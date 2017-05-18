@@ -180,7 +180,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
                
                 public void handle(MouseEvent m) {
-                    if(!freeze.getValue() || endOfGame)
+                    if(!freeze.getValue() /*|| endOfGame*/)
                         t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
     
@@ -220,66 +220,8 @@ public class GameScreenController implements Initializable {
         });
         gameCanvas.widthProperty().bind(panCanvas.widthProperty());
         gameCanvas.heightProperty().bind(panCanvas.heightProperty());
+    }
 
-    }
-    public void handleNewGame() throws IOException{
-        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
-        ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
-        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
-        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-       
-        Optional<ButtonType> result = popup.showAndWait();
-        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
-                gameScreen();
-        }
-        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveAndQuitGame(Consts.GO_TO_GAME);
-        }
-    }
-   
-    public void gameScreen(){
-        Core c = new Core(core.getMode(),core.getDifficulty());
-        c.getPlayers()[0].setName(core.getPlayers()[0].getName());
-        c.getPlayers()[1].setName(core.getPlayers()[1].getName());
-        r.stop();
-        main.showGameScreen(c);
-    }
-    
-    public void handleLeaveGame() throws IOException{
-        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
-        ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
-        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
-        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-       
-        Optional<ButtonType> result = popup.showAndWait();
-        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
-            r.stop();
-            main.showMainMenu();
-        }
-        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveAndQuitGame(Consts.GO_TO_MAIN);
-        }
-    }
-    
-    public void handleLoadGame() throws IOException{
-        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
-        ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
-        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
-        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-       
-        Optional<ButtonType> result = popup.showAndWait();
-        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
-            r.stop();
-            main.showLoadGameScreen();
-        }
-        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
-            handleSaveAndQuitGame(Consts.GO_TO_LOAD);
-        }
-    }
-   
     public void handleUpButton(){
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()-10));
     }
@@ -298,7 +240,7 @@ public class GameScreenController implements Initializable {
    
     public void handleUndoButton(){
     	core.previousState();
-    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
+    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
     		core.previousState();
     	checkHistory();
         resetPiece();
@@ -308,7 +250,7 @@ public class GameScreenController implements Initializable {
    
 	public void handleRedoButton(){
 		core.nextState();
-    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
+    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
     		core.nextState();
         checkHistory();
         resetPiece();
@@ -349,7 +291,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if(core.getCurrentPlayer() == 0 && !endOfGame){
+            if(core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -360,8 +302,7 @@ public class GameScreenController implements Initializable {
             if(i != 0 && i%4 == 0){
                 col = 0;
                 line++;
-            }
-           
+            }  
             GridPane.setConstraints(b, col, line);
             GridPane.setHalignment(b, HPos.CENTER);
             GridPane.setValignment(b, VPos.TOP);
@@ -383,7 +324,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(45, 45);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/"+name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
            
-            if(core.getCurrentPlayer() == 1 && !endOfGame){
+            if(core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame){
                 b.setOnMouseClicked(new ControllerButtonPiece(this,highlighted,core, inventory.get(i).getId(),i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -457,8 +398,68 @@ public class GameScreenController implements Initializable {
         animation.play();
 
     }
+    
+     public void handleNewGame() throws IOException{
+        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
+        ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+       
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+                gameScreen();
+        }
+        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
+            handleSaveAndQuitGame(Consts.GO_TO_GAME);
+        }
+    }
+   
+    public void gameScreen(){
+        Core c = new Core(core.getMode(),core.getDifficulty());
+        c.getPlayers()[0].setName(core.getPlayers()[0].getName());
+        c.getPlayers()[1].setName(core.getPlayers()[1].getName());
+        r.stop();
+        main.showGameScreen(c);
+    }
+    
+    public void handleLeaveGame() throws IOException{
+        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
+        ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+       
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            r.stop();
+            main.showMainMenu();
+        }
+        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
+            handleSaveAndQuitGame(Consts.GO_TO_MAIN);
+        }
+    }
+    
+    public void handleLoadGame() throws IOException{
+        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
+        ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
+        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+       
+        Optional<ButtonType> result = popup.showAndWait();
+        if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
+            r.stop();
+            main.showLoadGameScreen();
+        }
+        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
+            handleSaveAndQuitGame(Consts.GO_TO_LOAD);
+        }
+    }
+    
    
     public void handleEndGame(){
+        freeze.setValue(true);
         endOfGame = true;
         highlighted.setListTohighlight(null);
         initButtonByInventory();

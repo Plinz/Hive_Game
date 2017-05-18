@@ -67,6 +67,7 @@ public class Main extends Application {
             
             NewGameScreenController controller = loader.getController();
             controller.setMainApp(this);
+            controller.majColorButton();
             
             primaryStage.getScene().setRoot(personOverview);
             if(OptionManager.isFullscreen())
