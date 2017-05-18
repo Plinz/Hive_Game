@@ -75,7 +75,7 @@ public class Emulator{
 				}
 			}
 		}
-		return new HelpMove(move, piece.getId(), tile.getCoord(), target);
+		return new HelpMove(!move, !move?piece.getId():null, move?tile.getCoord():null, target);
 	}
 	
 	public void play(String notation) {

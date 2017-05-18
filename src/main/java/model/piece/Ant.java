@@ -14,7 +14,7 @@ import main.java.utils.CoordGene;
 public class Ant extends Piece {
 
 	public Ant(int id, int team) {
-		super(Consts.ANT_NAME, id, team, "Fourmi description");
+		super(Consts.ANT_NAME, id, team, "La fourmi peut se déplacer d'autant d'espaces que le joueur le désire");
 	}
 
 	@Override

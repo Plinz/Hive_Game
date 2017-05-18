@@ -12,7 +12,7 @@ import main.java.utils.CoordGene;
 public class Grasshopper extends Piece {
 
 	public Grasshopper(int id, int team) {
-		super(Consts.GRASSHOPPER_NAME, id, team, "Grasshopper description");
+		super(Consts.GRASSHOPPER_NAME, id, team, "La sauterelle se déplace en sautant en ligne droite par-dessus\nune ou plusieurs autres pièces, jusqu'au premier espace libre");
 	}
 
 	@Override

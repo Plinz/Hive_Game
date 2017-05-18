@@ -14,7 +14,7 @@ import main.java.utils.CoordGene;
 public class Spider extends Piece {
 
 	public Spider(int id, int team) {
-		super(Consts.SPIDER_NAME, id, team, "Spider description");
+		super(Consts.SPIDER_NAME, id, team, "L'araignée se déplace de trois espaces, ni plus, ni moins");
 	}
 
 	@Override
