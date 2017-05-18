@@ -135,9 +135,9 @@ public class Minimax {
 
             core.getBoard().getBoard().stream().forEach((Column column) -> {
                 column.stream().forEach((Box box) -> {
-                    box.stream().filter((Tile tile) -> {
-                        return tile != null && tile.getPiece() != null && tile.getPiece().getTeam() == core.getCurrentPlayer();
-                    }).forEach((tile) -> {
+                    box.stream().filter(tile -> 
+                         tile != null && tile.getPiece() != null && !tile.isBlocked() && tile.getPiece().getTeam() == core.getCurrentPlayer()
+                    ).forEach((tile) -> {
                         List<CoordGene<Integer>> PossibleDestinations = core.getPossibleMovement(tile.getCoord());
                         PossibleDestinations.stream().forEach((Destination) -> {
                             possibleMovements.add(Notation.getMoveNotation(core.getBoard(), tile.getPiece(), Destination));
