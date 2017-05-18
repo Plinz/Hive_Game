@@ -17,7 +17,7 @@ public class EasyAI extends AI {
 
     @Override
     public String getNextMove() {
-        if (core.getTurn() <= 6){
+        if (core.getTurn() <= 6 && core.getCurrentPlayer() == heuristics.AIPlayer){
             switch(core.getTurn()){
                 case 0 :
                 case 1 :
@@ -30,10 +30,18 @@ public class EasyAI extends AI {
                     return addPieceWherever(chooseAPiece(Consts.EASY_ADD_TURN_3));
                 case 6 :
                 case 7 :
-                    
-                    break;
+                    if (!core.isQueenOnBoard(core.getCurrentPlayer())){
+                        return addPieceWherever(chooseAPiece(Consts.CHOOSE_QUEEN));
+                    } else {
+                        Random random = new Random();
+                        double rand = random.nextDouble();
+                        if (rand < Consts.EASY_TURN_4_CHOOSE_TO_ADD)
+                            return addPieceWherever(chooseAPiece(Consts.EASY_ADD_TURN_4));
+                        else
+                            return movePieceNearOpponent(chooseWhateverFreeTileOnBoard(core.getCurrentPlayer()));
+                    }
                 default :
-                    System.out.println("Erreur : Ne devrais jamais se produire");
+                    System.out.println("Erreur : Ne devrait jamais se produire");
             }
         }
         Minimax minimax = new Minimax(core);
