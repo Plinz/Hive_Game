@@ -89,6 +89,18 @@ public class Player implements Cloneable{
 		inventory.add(i, piece);
 	}
 	
+        public ArrayList<Piece> getFirstPieceOfEachType(){
+            int lastType = -1;
+            ArrayList<Piece> result = new ArrayList<>();
+            for (Piece piece : inventory){
+                if (Consts.getType(piece.getId()) != lastType){
+                    lastType = Consts.getType(piece.getId());
+                    result.add(piece);
+                }
+            }
+            return result;
+        }
+        
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Player clone() {

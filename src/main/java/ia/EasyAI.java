@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import main.java.engine.Core;
+import main.java.utils.CoordGene;
 
 public class EasyAI extends AI {
 
@@ -22,48 +23,32 @@ public class EasyAI extends AI {
 
         int nextMoveHeuristic, bestHeuristic = originalHeuristic;
         String chosenMove = null;
+        String chosenUnplay = null;
         List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
         //case -> less than 5 pieces around opposing queen -> try to do better
         if (minimax.heuristics.getNbPiecesAroundQueen(1 - core.getCurrentPlayer()) < 5) {
-            for (Minimax child : possibleMovements ) {
+            for (Minimax child : possibleMovements) {
                 if (child.heuristicValue > bestHeuristic) {
                     chosenMove = child.moveFromParent;
+                    chosenUnplay = child.moveToParent;
                     bestHeuristic = child.heuristicValue;
                 }
             }
-            
-            if (bestHeuristic > originalHeuristic){
-                return chosenMove;
-            } else {
+
+            if (bestHeuristic <= originalHeuristic) {
                 Random random = new Random();
                 int rand = random.nextInt(possibleMovements.size());
-                return possibleMovements.get(rand).moveFromParent;
+                chosenMove = possibleMovements.get(rand).moveFromParent;
+                chosenUnplay = possibleMovements.get(rand).moveToParent;
             }
         } else {
             Random random = new Random();
-                int rand = random.nextInt(possibleMovements.size());
-                return possibleMovements.get(rand).moveFromParent;
+            int rand = random.nextInt(possibleMovements.size());
+            chosenMove = possibleMovements.get(rand).moveFromParent;
+            chosenUnplay = possibleMovements.get(rand).moveToParent;
         }
-
-        /*
-        
-               if (nextMoveHeuristic > bestHeuristic) {
-                bestConfig = storingConfig;
-                bestHeuristic = nextMoveHeuristic;
-            } else if (bestHeuristic == originalHeuristic) {
-                int nbPiecesInNewConfig = heuristic.getNbPiecesOnBoard(gameConfig.currentPlayer);
-                if (nbPiecesInNewConfig > originalPieceNb) {
-                    bestConfig = storingConfig;
-                }
-            }
-        }
-        if (bestConfig != null) {
-            result = new AIMove(OriginalConfig, bestConfig, core);
-        } else { //cannot get a better heuristic or add a piece -> do whatever
-            Random random = new Random();
-            int randomMove = random.nextInt(gameConfig.nextPossibleConfigs.size());
-            result = new AIMove(OriginalConfig, gameConfig.nextPossibleConfigs.get(randomMove), core);
-        }
-        return result;*/
+        String moveAndUnplay = chosenMove + ";" + chosenUnplay;
+        return moveAndUnplay;
     }
 }
+

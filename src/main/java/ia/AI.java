@@ -4,6 +4,7 @@
 package main.java.ia;
 
 import main.java.engine.Core;
+import main.java.utils.CoordGene;
 
 public abstract class AI {
 

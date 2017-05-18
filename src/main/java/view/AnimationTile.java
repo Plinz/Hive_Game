@@ -33,7 +33,7 @@ public class AnimationTile {
         polygon = new Polygon();
         calculPolygon();        
         pathAnimation = new PathTransition();
-        pathAnimation.setDuration(Duration.seconds(1));
+        pathAnimation.setDuration(Duration.seconds(0));
         pathAnimation.setNode(polygon);
     };
 
