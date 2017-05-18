@@ -118,20 +118,14 @@ public class GameScreenController implements Initializable {
         if (!core.hasNextState())
         	redo.setDisable(true);
         initButtonByInventory();
-//        initButtonActivation();
-        animation = new AnimationTile();                     
-        initGameCanvas();
-       
+        animation = new AnimationTile();   
+        
         r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
+        initGameCanvas();
+        
         r.start();
        
     }
-    /* Inititialisation des handlers */
-//    
-//    public void initButtonActivation(){
-//        undo.disableProperty().bind(freeze);
-//        redo.disableProperty().bind(freeze);
-//    }
     
     
     public void initGameCanvas(){
@@ -459,7 +453,7 @@ public class GameScreenController implements Initializable {
     
    
     public void handleEndGame(){
-        freeze.setValue(true);
+        freeze.setValue(false);
         endOfGame = true;
         highlighted.setListTohighlight(null);
         initButtonByInventory();
