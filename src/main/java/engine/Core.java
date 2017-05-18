@@ -118,16 +118,18 @@ public class Core implements Cloneable {
 	}
 
 	private void playAI() {
-		String[] move = ai.getNextMove(this).split("|");
-		playEmulate(move[0], move[1]);
-		nextTurn();
+		CoordGene<String> move = ai.getNextMove(this);
+                
+		playEmulate(move.getX(), move.getY());
 		isGameFinish();
 	}
 
 	public void playEmulate(String play, String unplay) {
+            System.out.println("playemulate : current pl = "+currentPlayer);
 		emulator.play(play);
 		history.save(play, unplay);
 		nextTurn();
+                System.out.println("playemulate2 : current pl = "+currentPlayer);
 		isGameFinish();
 	}
 
