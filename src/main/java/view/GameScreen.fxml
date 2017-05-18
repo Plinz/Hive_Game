@@ -60,7 +60,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="90.0" styleClass="buttonLamp" GridPane.columnIndex="2">
+                        <Button mnemonicParsing="false" onMouseClicked="#handleHelp" prefHeight="80.0" prefWidth="90.0" styleClass="buttonLamp" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets top="5.0" />
                            </GridPane.margin>

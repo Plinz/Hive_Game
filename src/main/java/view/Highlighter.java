@@ -8,6 +8,7 @@ package main.java.view;
 import java.util.List;
 
 import main.java.engine.Visitor;
+import main.java.model.HelpMove;
 import main.java.utils.CoordGene;
 
 /**
@@ -16,6 +17,7 @@ import main.java.utils.CoordGene;
  */
 public class Highlighter {
      private List<CoordGene<Integer>> listTohighlight;
+     private HelpMove help;
      
      public Highlighter(){}
      
@@ -24,6 +26,9 @@ public class Highlighter {
             for(CoordGene<Integer> c : getListTohighlight()){
                 v.visit(c);
             }
+         }
+         if(help != null){
+             v.visit(help);
          }
          return false;
      }
@@ -40,5 +45,9 @@ public class Highlighter {
      */
     public void setListTohighlight(List<CoordGene<Integer>> listCoord) {
         this.listTohighlight = listCoord;
+    }
+
+    public void setHelp(HelpMove help) {
+        this.help = help;
     }
 }

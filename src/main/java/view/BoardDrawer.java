@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import main.java.engine.Visitor;
 import main.java.model.Board;
+import main.java.model.HelpMove;
 import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
@@ -94,5 +95,34 @@ public class BoardDrawer extends Visitor {
     @Override
     protected boolean visit(Piece p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean visit(HelpMove h) {
+        if(h.isAdd()){
+            
+        }
+        else{
+            drawHelp(h.getFrom());
+            drawHelp(h.getTarget());
+        }
+        return false;
+    }
+    
+    public void drawHelp(CoordGene<Integer> c){
+        CoordGene<Double> coord = new CoordGene((double)c.getX(),(double)c.getY()); 
+            CoordGene<Double> coordPix =traducteur.axialToPixel(coord);
+            
+            hex.setxPixel(coordPix.getX() + traducteur.getMoveOrigin().getX());
+            hex.setyPixel(coordPix.getY() + traducteur.getMoveOrigin().getY());
+            hex.calculHex();
+            
+            gc.setStroke(Color.BLACK);
+            gc.setGlobalAlpha(0.5);
+            gc.setFill(Color.RED);
+            gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
+            gc.setGlobalAlpha(1);
+            gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6); 
+        
     }
 }

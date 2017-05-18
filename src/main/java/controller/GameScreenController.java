@@ -161,10 +161,12 @@ public class GameScreenController implements Initializable {
                                 resetPiece();
                                 initButtonByInventory();
                                 highlighted.setListTohighlight(possibleMovement = null);
+                                highlighted.setHelp(null);
                             }
                         } else {
                             resetPiece();
                             highlighted.setListTohighlight(null);
+                            highlighted.setHelp(null);
                         }
                     }
                 }
@@ -215,6 +217,10 @@ public class GameScreenController implements Initializable {
         gameCanvas.widthProperty().bind(panCanvas.widthProperty());
         gameCanvas.heightProperty().bind(panCanvas.heightProperty());
     }
+    
+    public void handleHelp(){
+        highlighted.setHelp(core.help());
+    }
 
     public void handleUpButton(){
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(),t.getMoveOrigin().getY()-10));
@@ -239,6 +245,7 @@ public class GameScreenController implements Initializable {
     	checkHistory();
         resetPiece();
         highlighted.setListTohighlight(null);
+        highlighted.setHelp(null);
         initButtonByInventory();
     }
    
@@ -249,6 +256,7 @@ public class GameScreenController implements Initializable {
         checkHistory();
         resetPiece();
         highlighted.setListTohighlight(null);
+        highlighted.setHelp(null);
         initButtonByInventory();
     }
     /*Fin des handlers */
@@ -355,6 +363,7 @@ public class GameScreenController implements Initializable {
         
         freeze.setValue(true);
         highlighted.setListTohighlight(null);
+        highlighted.setHelp(null);
 
         Piece piece = core.getBoard().getTile(coordStart).getPiece();
         
@@ -378,10 +387,10 @@ public class GameScreenController implements Initializable {
                 if(core.movePiece(pieceToMove, coordEnd))
                     handleEndGame();
                 else{
-                	if (core.getMode() != Consts.PVP)
-	                	while(core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)){
+                    if (core.getMode() != Consts.PVP)
+	                while(core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)){
 	                		core.playAI();
-	                	}
+	                }
                     handleResize(coordEnd);
                     resetPiece();
                     freeze.setValue(false);
