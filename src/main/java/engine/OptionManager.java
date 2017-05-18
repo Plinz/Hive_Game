@@ -31,6 +31,7 @@ public final class OptionManager {
     private static int resolution = 0;
     private static boolean fullscreen = false;
     private static boolean helpEnable = true;
+    private static boolean animationsEnable = false;
     
     public static void init() throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException, SAXException{
         File file = new File("init.xml");
@@ -65,6 +66,16 @@ public final class OptionManager {
     public static void setHelp(boolean h) {
         helpEnable = h;
     } 
+
+    public static boolean isAnimationsEnable() {
+        return animationsEnable;
+    }
+
+    public static void setAnimationsEnable(boolean animationsEnable) {
+        OptionManager.animationsEnable = animationsEnable;
+    }
+    
+    
     
     private static void initByFile(File file) throws ParserConfigurationException, SAXException, IOException{
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -80,6 +91,9 @@ public final class OptionManager {
         
         res = (Element) racine.getElementsByTagName("help").item(0);
         helpEnable = Integer.parseInt(res.getTextContent()) != 0;
+        
+        res = (Element) racine.getElementsByTagName("animations").item(0); 
+        animationsEnable = Integer.parseInt(res.getTextContent()) != 0;
 
     }               
 
@@ -105,6 +119,10 @@ public final class OptionManager {
         help.appendChild(doc.createTextNode("1"));
         rootElement.appendChild(help);
         
+        Element animations = doc.createElement("animations");
+        animations.appendChild(doc.createTextNode("0"));
+        rootElement.appendChild(animations);
+        
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	Transformer transformer = transformerFactory.newTransformer();
 	DOMSource source = new DOMSource(doc);		
@@ -113,10 +131,11 @@ public final class OptionManager {
         transformer.transform(source, result);
     }
     
-    public static void modifyOptions(int res, boolean fs, boolean help) throws SAXException, IOException, ParserConfigurationException, TransformerException{
+    public static void modifyOptions(int res, boolean fs, boolean help, boolean anim) throws SAXException, IOException, ParserConfigurationException, TransformerException{
         resolution = res;
         fullscreen = fs;
         helpEnable = help;
+        animationsEnable = anim;
         
         String filepath = "init.xml";
 	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -138,11 +157,16 @@ public final class OptionManager {
         else
             n.setTextContent("0");
         
+        n = doc.getElementsByTagName("animations").item(0);
+        if(anim)
+            n.setTextContent("1");
+        else
+            n.setTextContent("0");
+        
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 	StreamResult result = new StreamResult(new File(filepath));
 	transformer.transform(source, result);
-        
     }
  }

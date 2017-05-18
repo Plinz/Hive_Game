@@ -6,16 +6,14 @@
 package main.java.view;
 
 import javafx.animation.PathTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
-import main.java.utils.CoordGene;
+import main.java.engine.OptionManager;
+
 
 /**
  *
@@ -33,7 +31,10 @@ public class AnimationTile {
         polygon = new Polygon();
         calculPolygon();        
         pathAnimation = new PathTransition();
-        pathAnimation.setDuration(Duration.seconds(0));
+        if(OptionManager.isAnimationsEnable())
+            pathAnimation.setDuration(Duration.seconds(1));
+        else
+            pathAnimation.setDuration(Duration.seconds(0));
         pathAnimation.setNode(polygon);
     };
 

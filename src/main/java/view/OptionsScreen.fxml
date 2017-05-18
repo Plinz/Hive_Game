@@ -15,14 +15,14 @@
    <children>
       <GridPane alignment="TOP_CENTER" layoutX="26.0" layoutY="18.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="499.0" minWidth="10.0" prefWidth="484.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.0" minWidth="10.0" prefWidth="339.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="499.0" minWidth="10.0" prefWidth="473.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.0" minWidth="10.0" prefWidth="350.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="0.0" prefWidth="457.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="165.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="408.0" minHeight="0.0" prefHeight="398.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="408.0" minHeight="0.0" prefHeight="376.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="179.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Label alignment="CENTER" prefHeight="25.0" prefWidth="401.0" text="Options" GridPane.columnIndex="1">
@@ -51,7 +51,7 @@
                   </Button>
                </children>
             </GridPane>
-            <GridPane prefHeight="104.0" prefWidth="366.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane prefHeight="388.0" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="147.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="180.0" />
@@ -59,15 +59,17 @@
                <rowConstraints>
                   <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="86.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="116.0" minHeight="10.0" prefHeight="116.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="116.0" minHeight="10.0" prefHeight="116.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="116.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label prefHeight="16.0" prefWidth="125.0" text="Résolution :" textAlignment="CENTER" wrapText="true" />
-                  <Label fx:id="labelPlayer2" prefHeight="16.0" prefWidth="125.0" text="Plein écran :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1" />
-                  <Label fx:id="labelPlayer21" prefHeight="16.0" prefWidth="125.0" text="Activer les aides :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2" />
-                  <CheckBox fx:id="fullScreen" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <CheckBox fx:id="help" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="labelPlayer2" prefHeight="16.0" prefWidth="125.0" text="Plein écran :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                  <Label fx:id="labelPlayer21" prefHeight="16.0" prefWidth="125.0" text="Activer les aides :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                  <CheckBox fx:id="fullScreen" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                  <CheckBox fx:id="help" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                   <ChoiceBox fx:id="choiceResolution" prefWidth="150.0" GridPane.columnIndex="1" />
+                  <Label text="Activer les animations :" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <CheckBox fx:id="animations" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                </children>
             </GridPane>
          </children>
