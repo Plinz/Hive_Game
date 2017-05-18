@@ -59,25 +59,55 @@ public class NewGameScreenController implements Initializable {
     @FXML
     public void handleLaunchGameClick(){
         Core core;
+        String nameP1 = namePlayer1.getText();
+        String nameP2;
+        int iaDifficulty = 0;
+        int mode;
+        //Si on est en mode PVIA
         if(easyButton.isVisible()){
+            
+            
             if(easyButton.isSelected()){
-                core = new Core(Consts.PVAI, Consts.EASY);
-                core.getPlayers()[1].setName("IA_Facile");
+                nameP2 = "IA_Facile";
+                iaDifficulty = Consts.EASY;
             }
             else if(normalButton.isSelected()){
-                core = new Core(Consts.PVAI, Consts.MEDIUM);
-                core.getPlayers()[1].setName("IA_Normal");
+
+                nameP2 = "IA_Facile";
+                iaDifficulty = Consts.MEDIUM;
             }
             else{
-                core = new Core(Consts.PVAI, Consts.HARD);
-                core.getPlayers()[1].setName("IA_Difficile");
+                nameP2 = "IA_Facile";
+                iaDifficulty = Consts.HARD;
             }
             
-        }else{
-            core = new Core(Consts.PVP, Consts.EASY);
-            core.getPlayers()[1].setName(namePlayer2.getText());
+            if(state == Consts.WHITE_FIRST){
+                core = new Core(Consts.PVAI, iaDifficulty);
+                core.getPlayers()[0].setName(nameP1);
+                core.getPlayers()[1].setName(nameP2);
+            }
+            else{
+                core = new Core(Consts.AIVP, iaDifficulty);
+                core.getPlayers()[0].setName(nameP2);
+                core.getPlayers()[1].setName(nameP1);
+            }
+            
+            
         }
-        core.getPlayers()[0].setName(namePlayer1.getText());
+        //Sinon si on est en mode PVP
+        else{
+            core = new Core(Consts.PVP, Consts.EASY);
+            if(state == Consts.WHITE_FIRST){
+                core.getPlayers()[0].setName(namePlayer1.getText());
+                core.getPlayers()[1].setName(namePlayer2.getText());
+            }
+            else{
+                core.getPlayers()[0].setName(namePlayer2.getText());
+                core.getPlayers()[1].setName(namePlayer1.getText());
+            }
+            
+        }
+        
         main.showGameScreen(core);
         
     }
