@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import main.java.engine.Core;
-import main.java.utils.CoordGene;
 
 public class EasyAI extends AI {
 
@@ -17,7 +16,28 @@ public class EasyAI extends AI {
 
     @Override
     public String getNextMove() {
-        
+        if (core.getTurn() <= 6){
+            switch(core.getTurn()){
+                case 0 :
+                case 1 :
+                    
+                    break;
+                case 2 :
+                case 3 :
+                    
+                    break;
+                case 4 :
+                case 5 :
+                    
+                    break;
+                case 6 :
+                case 7 :
+                    
+                    break;
+                default :
+                    System.out.println("Erreur : Ne devrais jamais se produire");
+            }
+        }
         Minimax minimax = new Minimax(core);
         int originalHeuristic = minimax.heuristics.getHeuristicsValue();
 
