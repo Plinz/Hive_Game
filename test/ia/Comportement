@@ -1,0 +1,119 @@
+Liste des comportements opti en :
+
+Early Game
+
+{Queen,Spider,GH,Beetle,Ant}
+
+
+T1 W :
+{0, 0.5, 0.5, 0, 0}
+
+T1 B :
+
+Si T1W : Queen
+{1, 0, 0, 0, 0}
+Sinon :
+{0, 0.5, 0.5, 0, 0}
+
+T2 W :
+Si T1B : Queen
+{1, 0, 0, 0, 0}
+
+Sinon :
+{0.5,0,0,0,0.5}
+
+T2B :
+{1, 0, 0, 0, 0}
+
+
+T3W :
+Si Q pas jouée par W :
+{1, 0, 0, 0, 0}
+
+Sinon :
+{0, 0.25, 0, 0, 0.75}
+
+T3B :
+Si W a une fourmis qu'il peut bouger : 
+{0,1,0,0,0}
+
+Sinon
+{0,0,0,0,1}
+
+T4W : 
+Pin intéressant :
+Bouger la Spider/Ant (pin ant ou queen)
+
+Sinon :
+{0,0,0,0,1}
+
+T4B :
+Pin intéressant :
+Bouger la Spider/Ant (bloquer ant ennemie)
+
+Sinon :
+{0,0,0,0,1}
+
+___________
+
+Mid Game :
+
+MOBILITY 
+
+Calculer utilité du play/bug 
+
+--> L'ennemi a un Beetle Offensif qui s'approche de notre reine :
+	-> On peut le pin ? On le fait
+	Sinon : On drop un Beetle défensif.
+	Si rien de tout ça est possible ? On essaye d'éloigner notre reine... ( L'eloignement de reine n'est à faire que si ça réduit drastiquement le nombre de bugs autour d'elle)
+	Mais si on peut pas , on pleure.
+
+	-> Placer notre Beetle défensif de manière à ce qu'il menace de se mettre sûr le Beetle ennemi si il s'approche trop.
+
+	-> Si l'ennemi a un beetle sur notre reine, mettre le notre par dessus.
+		
+
+
+
+--> Ant Mobile :
+	-> Une Ant ne pin rien d'important 
+		-> On peut la pin ? On joue pour le faire.
+		Sinon : Autre play qui n'est pas jouer une pièce importante.
+
+--> Quelle phase offensive adopter ?
+	-> Bloquer la queen avec une pièce mobile 
+		-> Drop un Beetle et le poser sur la Reine
+			-> Direct drop ses pièces autour 
+			-> Garder ses Grasshopper pour la fin au moment où il y a des gate,des trous.
+
+--> Une fois queen bloquée, Direct Drop == Deplacement. Faire des placements d'autres type que si on a pas assez de pièces mobiles pour finir d'entourer de la reine.
+
+-----> Heuristique Négative :
+	-> Pin une Spider
+	-> Avoir une ant qui se fait Pin.
+	-> Faire un circle et laisser l'ennemi le casser
+
+_________
+
+Late Game :
+
+Reste que des hopper et Spider dans l'inventaire des deux joueurs.
+
+STRENGTH
+
+--> Commencer à réfléchir à Depin/libérer le Pin de ses pièces ou mettre une sauterelle à la place d'une fourmis qui pin qqchose.
+
+--> Former des Gate pour empêcher des spider/ant de se coller à sa reine.
+
+
+
+
+_____
+
+
+Autre approche : Peut être qu'en regardant dans l'avenir on pourra voir qu'un play défini plus haut offre une meilleure value sans avoir à dire "WAI FAIS CA" à l'AI :p
+
+
+
+
+
