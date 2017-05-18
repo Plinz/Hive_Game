@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import main.java.engine.Core;
+import main.java.utils.Consts;
 
 public class EasyAI extends AI {
 
@@ -20,16 +21,13 @@ public class EasyAI extends AI {
             switch(core.getTurn()){
                 case 0 :
                 case 1 :
-                    
-                    break;
+                    return addPieceWherever(chooseAPiece(Consts.EASY_ADD_TURN_1));
                 case 2 :
                 case 3 :
-                    
-                    break;
+                    return addPieceWherever(chooseAPiece(Consts.EASY_ADD_TURN_2));
                 case 4 :
                 case 5 :
-                    
-                    break;
+                    return addPieceWherever(chooseAPiece(Consts.EASY_ADD_TURN_3));
                 case 6 :
                 case 7 :
                     

@@ -3,9 +3,12 @@
  */
 package main.java.ia;
 
+import java.util.List;
 import java.util.Random;
 import main.java.engine.Core;
+import main.java.engine.Notation;
 import main.java.model.Piece;
+import main.java.utils.CoordGene;
 
 public abstract class AI {
 
@@ -21,7 +24,7 @@ public abstract class AI {
         return null;
     }
 
-    public Piece addSomePiece(double[] proportions) {
+    public Piece chooseAPiece(double[] proportions) {
         Piece piece = null;
         do{ 
             Random random = new Random();
@@ -40,6 +43,15 @@ public abstract class AI {
             }
         } while (piece == null);
         return piece;
+    }
+    
+    public String addPieceWherever(Piece piece){
+        List<CoordGene<Integer>> possibleAddCoords = core.getPossibleAdd(core.getCurrentPlayer());
+        Random random = new Random();
+        int rand = random.nextInt(possibleAddCoords.size());
+        String move = Notation.getMoveNotation(core.getBoard(), piece, possibleAddCoords.get(rand));
+        String unMove = Notation.getInverseMoveNotation(core.getBoard(), piece);
+        return move+";"+unMove;
     }
     
     
