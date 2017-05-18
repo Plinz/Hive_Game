@@ -80,10 +80,19 @@ public class Consts {
     public static final int DEPTH_EASY = 1;
     public static final int DEPTH_MEDIUM = 3;
     public static final int DEPTH_HARD = 4;
-    
+        //MACRO HEURISTIQUE -> OPENINGS   
+        //  /!\ la somme des doubles DOIT faire 1 et la taille du tableau = 5
+        //rappel ordre : queen - spider -grasshopper - beetle - ant  
+    public static final double[] CHOOSE_QUEEN = {1, 0, 0, 0, 0};
+    public static final double[] CHOOSE_WHATEVER = {0.2, 0.2, 0.2, 0.2, 0.2};
+
     public static final double[] EASY_ADD_TURN_1 = {0.2, 0.3, 0.3, 0.2, 0};
     public static final double[] EASY_ADD_TURN_2 = {0.2, 0.3, 0.3, 0.2, 0};
+    public static final double[] EASY_ADD_TURN_3 = {0.2, 0.2, 0.2, 0.2, 0.2};
+    public static final double[] EASY_ADD_TURN_4 = {0, 0.15, 0.15, 0.35, 0.35};
     
+    public static final double EASY_TURN_4_CHOOSE_TO_ADD = 0.75;
+
     //METHODES
     public static final int getType (int id){
     	switch (id){

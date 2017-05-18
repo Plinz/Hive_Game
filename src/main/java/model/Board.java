@@ -394,6 +394,20 @@ public class Board implements Cloneable{
 				|| (rightTile != null && rightTile.getPiece() != null && !right.equals(exception));
 	}
 	
+        public List<Tile> getFreePiecesOnBoard(int player){
+            ArrayList<Tile> result = new ArrayList<>();
+            for (Column column : columns){
+                for (Box box : column){
+                    for (Tile tile : box){
+                        if (tile != null && tile.getPiece() != null && tile.getPiece().getTeam() == player && !tile.isBlocked()){
+                            result.add(tile);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        
 	@SuppressWarnings("unchecked")
 	@Override
 	public Board clone() {

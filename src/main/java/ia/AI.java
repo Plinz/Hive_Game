@@ -3,9 +3,15 @@
  */
 package main.java.ia;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import main.java.engine.Core;
+import main.java.engine.Notation;
 import main.java.model.Piece;
+import main.java.model.Tile;
+import main.java.utils.Consts;
+import main.java.utils.CoordGene;
 
 public abstract class AI {
 
@@ -21,7 +27,7 @@ public abstract class AI {
         return null;
     }
 
-    public Piece addSomePiece(double[] proportions) {
+    public Piece chooseAPiece(double[] proportions) {
         Piece piece = null;
         do{ 
             Random random = new Random();
@@ -42,5 +48,41 @@ public abstract class AI {
         return piece;
     }
     
+    public String addPieceWherever(Piece piece){
+        List<CoordGene<Integer>> possibleAddCoords = core.getPossibleAdd(core.getCurrentPlayer());
+        Random random = new Random();
+        int rand = random.nextInt(possibleAddCoords.size());
+        String move = Notation.getMoveNotation(core.getBoard(), piece, possibleAddCoords.get(rand));
+        String unMove = Notation.getInverseMoveNotation(core.getBoard(), piece);
+        return move+";"+unMove;
+    }
     
+    public Tile chooseWhateverFreeTileOnBoard (int currentPlayer){
+        List<Tile> tilesOnBoard = core.getBoard().getFreePiecesOnBoard(core.getCurrentPlayer());
+        Random random = new Random();
+        int rand = random.nextInt(tilesOnBoard.size());
+        return tilesOnBoard.get(rand);
+    }
+    
+    public String movePieceNearOpponent(Tile tile){
+        List<CoordGene<Integer>> possibleDestinations = tile.getPiece().getPossibleMovement(tile, core.getBoard());
+        List<CoordGene<Integer>> possibleDestinationsNearOpponent = new ArrayList<>();
+        for (CoordGene<Integer> destination : possibleDestinations){
+            for (Tile destinationNeighbor : core.getBoard().getPieceNeighbors(destination)){
+                if (tile.getPiece().getTeam() == core.getCurrentPlayer()){
+                    possibleDestinationsNearOpponent.add(destination);
+                    break;                
+                }
+            }
+        }
+        if (!possibleDestinationsNearOpponent.isEmpty()){
+            Random random = new Random();
+            int rand = random.nextInt(possibleDestinationsNearOpponent.size());
+            String move = Notation.getMoveNotation(core.getBoard(), tile.getPiece(), possibleDestinationsNearOpponent.get(rand));
+            String unMove = Notation.getInverseMoveNotation(core.getBoard(), tile.getPiece());
+            return move+";"+unMove;
+        } else {
+            return addPieceWherever(chooseAPiece(Consts.CHOOSE_WHATEVER));
+        }
+    }
 }
