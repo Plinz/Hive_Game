@@ -85,7 +85,7 @@ public class Player implements Cloneable{
 
 	public void addPiece(Piece piece) {
 		int i;
-		for(i=0; inventory.get(i).getId() < piece.getId(); i++);
+		for(i=0; i<inventory.size() && inventory.get(i).getId() < piece.getId(); i++);
 		inventory.add(i, piece);
 	}
 	

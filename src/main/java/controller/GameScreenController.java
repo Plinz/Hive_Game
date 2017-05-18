@@ -111,9 +111,12 @@ public class GameScreenController implements Initializable {
         freeze.setValue(false);
         endOfGame = false;
         inventoryGroup = new ToggleGroup();
-       
+        if (!core.hasPreviousState())
+        	undo.setDisable(true);
+        if (!core.hasNextState())
+        	redo.setDisable(true);
         initButtonByInventory();
-        initButtonActivation();
+//        initButtonActivation();
         animation = new AnimationTile();                     
         initGameCanvas();
        
@@ -122,11 +125,11 @@ public class GameScreenController implements Initializable {
        
     }
     /* Inititialisation des handlers */
-    
-    public void initButtonActivation(){
-        undo.disableProperty().bind(freeze);
-        redo.disableProperty().bind(freeze);
-    }
+//    
+//    public void initButtonActivation(){
+//        undo.disableProperty().bind(freeze);
+//        redo.disableProperty().bind(freeze);
+//    }
     
     
     public void initGameCanvas(){
@@ -144,6 +147,8 @@ public class GameScreenController implements Initializable {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null &&  possibleMovement.contains(coord)) {
                                 startMovingAnimation(pieceToMove,coord);
+                                undo.setDisable(false);
+                                redo.setDisable(true);
                             } else if (core.isPieceOfCurrentPlayer(coord)) {
                                     pieceToMove = coord;
                                     possibleMovement = core.getPossibleMovement(coord);
@@ -154,6 +159,8 @@ public class GameScreenController implements Initializable {
                                     if(core.addPiece(pieceToChoose, coord))
                                         handleEndGame();
                                     handleResize(coord); 
+                                    undo.setDisable(false);
+                                    redo.setDisable(true);
                                 }
                                 resetPiece();
                                 initButtonByInventory();
@@ -267,14 +274,20 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleUndoButton(){
-        core.previousState();
+        if (core.previousState())
+        	redo.setDisable(false);
+        if (!core.hasPreviousState())
+        	undo.setDisable(true);
         resetPiece();
         highlighted.setListTohighlight(null);
         initButtonByInventory();
     }
    
     public void handleRedoButton(){
-        core.nextState();
+        if (core.nextState())
+        	undo.setDisable(false);
+        if (!core.hasNextState())
+        	redo.setDisable(true);
         resetPiece();
         highlighted.setListTohighlight(null);
         initButtonByInventory();
