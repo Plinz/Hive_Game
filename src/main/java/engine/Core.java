@@ -49,21 +49,8 @@ public class Core implements Cloneable {
 		this.turn = 0;
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
-	}
-
-	@Deprecated
-	public Core(Core core1) {
-		this.history = new History();
-		this.board = new Board(core1.getBoard());
-		this.players = new Player[2];
-		this.players[0] = new Player(core1.players[0]);
-		this.players[1] = new Player(core1.players[1]);
-		this.mode = core1.mode;
-		this.status = core1.status;
-		this.turn = core1.turn;
-		this.currentPlayer = core1.currentPlayer;
-		this.difficulty = core1.difficulty;
-		this.emulator = new Emulator(this, this.board, this.players);
+		if (this.mode == Consts.AIVP)
+			playAI();
 	}
 
 	public boolean accept(BoardDrawer b) {
