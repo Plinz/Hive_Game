@@ -298,7 +298,7 @@ public class GameScreenController implements Initializable {
    
     public void handleUndoButton(){
     	core.previousState();
-    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
+    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
     		core.previousState();
     	checkHistory();
         resetPiece();
@@ -308,7 +308,7 @@ public class GameScreenController implements Initializable {
    
 	public void handleRedoButton(){
 		core.nextState();
-    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
+    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
     		core.nextState();
         checkHistory();
         resetPiece();
