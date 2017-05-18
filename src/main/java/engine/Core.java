@@ -197,6 +197,14 @@ public class Core implements Cloneable {
 		return pos;
 	}
 
+	public boolean hasPreviousState(){
+		return history.hasPrevious();
+	}
+	
+	public boolean hasNextState(){
+		return history.hasNext();
+	}
+	
 	public boolean previousState() {
 		if (history.hasPrevious()) {
 			String notation = history.getPrevious();
