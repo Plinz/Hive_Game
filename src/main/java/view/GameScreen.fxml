@@ -78,7 +78,7 @@
                           <items>
                             <MenuItem mnemonicParsing="false" onAction="#handleNewGame" text="Lancer nouvelle partie" />
                             <MenuItem mnemonicParsing="false" onAction="#handleSaveGame" text="Sauvegarder" />
-                              <MenuItem mnemonicParsing="false" text="Charger partie" />
+                              <MenuItem mnemonicParsing="false" onAction="#handleLoadGame" text="Charger partie" />
                               <MenuItem mnemonicParsing="false" text="Afficher historique" />
                               <MenuItem mnemonicParsing="false" onAction="#handleLeaveGame" text="Quitter partie" />
                           </items>
