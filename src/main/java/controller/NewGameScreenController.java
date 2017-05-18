@@ -73,11 +73,11 @@ public class NewGameScreenController implements Initializable {
             }
             else if(normalButton.isSelected()){
 
-                nameP2 = "IA_Facile";
+                nameP2 = "IA_Normale";
                 iaDifficulty = Consts.MEDIUM;
             }
             else{
-                nameP2 = "IA_Facile";
+                nameP2 = "IA_Difficile";
                 iaDifficulty = Consts.HARD;
             }
             
