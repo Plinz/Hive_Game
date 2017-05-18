@@ -40,6 +40,7 @@ public class Minimax {
         this.AIPlayer = this.currentPlayer;
         HeuristicsFactory heuristicsFactory = new HeuristicsFactory();
         this.heuristics = heuristicsFactory.buildHeuristics(this.core.getDifficulty(), this.core);
+        this.heuristics.AIPlayer = this.AIPlayer;
         this.moveFromParent = null;
         this.moveToParent = null;
         this.depth = 0;
@@ -68,6 +69,7 @@ public class Minimax {
     }
     
     public List<Minimax> getChildrenWithHeuristics() {
+        //if (core.getTurn() == 6 || core.getTurn() == 7);
         List<Minimax> children = new ArrayList<>();
         List<String> possibleMovements = new ArrayList<>();
         List<String> possibleUnplay = new ArrayList<>();

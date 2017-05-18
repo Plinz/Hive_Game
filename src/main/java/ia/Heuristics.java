@@ -18,6 +18,7 @@ public class Heuristics {
     
     int maxdepth;
     Core core;
+    int AIPlayer;
 
     /*
      *                  CONSTUCTOR

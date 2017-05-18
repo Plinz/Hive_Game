@@ -15,6 +15,6 @@ public class EasyHeuristics extends Heuristics {
     }
 
     public int getHeuristicsValue() {
-        return getNbPiecesAroundQueen(1-core.getCurrentPlayer()) - getNbPiecesAroundQueen(core.getCurrentPlayer());
+        return getNbPiecesAroundQueen(1-AIPlayer) - getNbPiecesAroundQueen(AIPlayer);
     }
 }
