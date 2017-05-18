@@ -297,25 +297,20 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleUndoButton(){
+    	core.previousState();
     	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
-    	if (core.getMode() != Consts.PVP)
     		core.previousState();
-        if (core.previousState())
-        	redo.setDisable(false);
-        if (!core.hasPreviousState())
-        	undo.setDisable(true);
+    	checkHistory();
         resetPiece();
         highlighted.setListTohighlight(null);
         initButtonByInventory();
     }
    
-    public void handleRedoButton(){
-    	if (core.getMode() != Consts.PVP)
+	public void handleRedoButton(){
+		core.nextState();
+    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
     		core.nextState();
-        if (core.nextState())
-        	undo.setDisable(false);
-        if (!core.hasNextState())
-        	redo.setDisable(true);
+        checkHistory();
         resetPiece();
         highlighted.setListTohighlight(null);
         initButtonByInventory();
@@ -630,4 +625,15 @@ public class GameScreenController implements Initializable {
     public boolean isFreeze() {
         return freeze.getValue();
     }
+    
+    private void checkHistory() {
+    	if (core.hasNextState())
+    		redo.setDisable(false);
+    	else
+    		redo.setDisable(true);
+    	if (core.hasPreviousState())
+    		undo.setDisable(false);
+    	else
+    		undo.setDisable(true);
+	}
 }
