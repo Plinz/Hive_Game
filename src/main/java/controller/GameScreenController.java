@@ -59,6 +59,7 @@ import javafx.scene.text.Text;
 import main.java.engine.Core;
 import main.java.implement.Main;
 import main.java.model.Piece;
+import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 import main.java.view.AnimationTile;
@@ -181,12 +182,35 @@ public class GameScreenController implements Initializable {
                 }
     
         });
+        
+        gameCanvas.setOnMouseMoved(new EventHandler<MouseEvent>(){
+               
+                public void handle(MouseEvent m) {
+                    Tooltip tool;
+                    String pieces = "";
+                    CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
+                    CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
+                    if(core.isTile(coord)){
+                        Tile tileTemp = core.getBoard().getTile(coord);
+                        List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
+                        for(Tile tile : listTiles){
+                            System.out.print(tile.getPiece().getName()+" "+tile.getPiece().getTeam());
+                            System.out.println("");
+                            pieces += tile.getPiece().getName()+" "+tile.getPiece().getTeam()+ "\n";
+                        }
+                        tool = new Tooltip(pieces);
+                        Tooltip.install(gameCanvas, tool);
+                    }
+                    
+                }
+        });
           
          gameCanvas.setOnDragDetected(e-> {
                 String name = getClass().getClassLoader().getResource("main/resources/img/misc/crossCursor.png").toString();
                 Image n = new Image(name); 
                 gameCanvas.setCursor(new ImageCursor(n));
                 e.consume();
+             
             });
            
         gameCanvas.setOnMouseReleased(new EventHandler<MouseEvent>(){
