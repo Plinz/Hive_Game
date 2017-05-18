@@ -16,6 +16,7 @@ import main.java.ia.AIFactory;
 import main.java.model.Board;
 import main.java.model.Box;
 import main.java.model.Column;
+import main.java.model.HelpMove;
 import main.java.model.Piece;
 import main.java.model.Player;
 import main.java.model.Tile;
@@ -299,6 +300,12 @@ public class Core implements Cloneable {
 		turn--;
 	}
 
+	public HelpMove help(){
+		AI helpAI = AIFactory.buildAI(Consts.EASY, this);
+		String move = helpAI.getNextMove().split(";")[0];
+		return emulator.getMove(move);
+	}
+	
 	@Override
 	protected Core clone() {
 		Core core = null;
