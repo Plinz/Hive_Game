@@ -105,7 +105,8 @@ public class BoardDrawer extends Visitor {
     @Override
     public boolean visit(HelpMove h) {
         if(h.isAdd()){
-            
+            //Il manque à highlighter
+            drawHelp(h.getTarget());
         }
         else{
             drawHelp(h.getFrom());
