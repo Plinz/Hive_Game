@@ -58,12 +58,17 @@ public class BoardDrawer extends Visitor {
             hex.calculHex();         
             Piece piece = t.getPiece(); 
             if(piece !=null){
-                
-                String name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();
+                String name;
+                if(t.getZ() == 0){
+                    name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();         
+                }
+                else{
+                    name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+"2.png").toString();
+                }
                 gc.setFill(new ImagePattern(new Image(name)));
                 gc.setStroke(Color.RED);
                 gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
-                gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);   
+                gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6); 
                 
             }else{
                   gc.setStroke(Color.BLACK);   
