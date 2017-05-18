@@ -117,10 +117,10 @@ public class Core implements Cloneable {
 	}
 
 	private boolean canAddPiece(int pieceId) {
-		return (turn != 6 && turn != 7) || isQueenOnBoard() || pieceId == Consts.QUEEN;
+		return (turn != 6 && turn != 7) || isQueenOnBoard(currentPlayer) || pieceId == Consts.QUEEN;
 	}
 
-	public boolean isQueenOnBoard() {
+	public boolean isQueenOnBoard(int player) {
 		return getCurrentPlayerObj().getInventory().stream().noneMatch(piece -> piece.getId() == Consts.QUEEN);
 	}
 
@@ -151,7 +151,7 @@ public class Core implements Cloneable {
 	}
 
 	public List<CoordGene<Integer>> getPossibleMovement(CoordGene<Integer> coord) {
-		if (isQueenOnBoard()) {
+		if (isQueenOnBoard(currentPlayer)) {
 			Tile tile = board.getTile(coord);
 			return tile.getPiece().getPossibleMovement(tile, board);
 		}

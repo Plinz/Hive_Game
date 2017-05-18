@@ -114,7 +114,7 @@ public class Minimax {
         List<String> possibleMovements = new ArrayList<>();
         List<String> possibleUnplay = new ArrayList<>();
 
-        if ((core.getTurn() == 6 || core.getTurn() == 7) && !core.isQueenOnBoard()) {
+        if ((core.getTurn() == 6 || core.getTurn() == 7) && !core.isQueenOnBoard(core.getCurrentPlayer())) {
             Piece queen = null;
             for (Piece piece : core.getCurrentPlayerObj().getInventory()) {
                 if (piece.getId() == Consts.QUEEN) {
