@@ -118,9 +118,9 @@ public class Core implements Cloneable {
 	}
 
 	private void playAI() {
-		CoordGene<String> move = ai.getNextMove(this);
-                
-		playEmulate(move.getX(), move.getY());
+                String s = ai.getNextMove(this);
+                String[] moveAndUnplay = s.split(";");
+		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
 		isGameFinish();
 	}
 
