@@ -180,7 +180,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>(){
                
                 public void handle(MouseEvent m) {
-                    if(!freeze.getValue() || endOfGame)
+                    if(!freeze.getValue() /*|| endOfGame*/)
                         t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(),m.getY() - lastCoord.getY()));
                 }
     
@@ -459,6 +459,7 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleEndGame(){
+        freeze.setValue(true);
         endOfGame = true;
         highlighted.setListTohighlight(null);
         initButtonByInventory();
