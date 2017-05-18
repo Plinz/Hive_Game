@@ -82,11 +82,12 @@ public class Minimax {
             for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                Minimax child = new Minimax(this, splitted[0], splitted[1]);
-                child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
-                if (child.heuristicValue > bestHeuristic) {
-                    bestHeuristic = child.heuristicValue;
+                depth ++;
+                getHeuristicsValueRecursively(heuristics.maxdepth);
+                if (heuristicValue > bestHeuristic) {
+                    bestHeuristic = heuristicValue;
                 }
+                depth --;
                 core.previousState();
             }
             return bestHeuristic;
@@ -96,11 +97,12 @@ public class Minimax {
             for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                Minimax child = new Minimax(this, splitted[0], splitted[1]);
-                child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
-                if (child.heuristicValue < worstHeuristic) {
-                    worstHeuristic = child.heuristicValue;
+                depth ++;
+                getHeuristicsValueRecursively(heuristics.maxdepth);
+                if (heuristicValue < worstHeuristic) {
+                    worstHeuristic = heuristicValue;
                 }
+                depth --;
                 core.previousState();
             }
             return worstHeuristic;
