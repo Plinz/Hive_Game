@@ -16,7 +16,7 @@ public class EasyAI extends AI {
     }
 
     @Override
-    public CoordGene<String> getNextMove(Core core) {
+    public String getNextMove(Core core) {
 
         Minimax minimax = new Minimax(core);
         int originalHeuristic = minimax.heuristics.getHeuristicsValue();
@@ -47,8 +47,8 @@ public class EasyAI extends AI {
             chosenMove = possibleMovements.get(rand).moveFromParent;
             chosenUnplay = possibleMovements.get(rand).moveToParent;
         }
-        System.out.println("1-chosenMove = " + chosenMove.concat("|").concat(chosenUnplay));
-        return new CoordGene<>(chosenMove, chosenUnplay);
+        String moveAndUnplay = chosenMove + ";" + chosenUnplay;
+        return moveAndUnplay;
     }
 }
 
