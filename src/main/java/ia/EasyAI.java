@@ -11,13 +11,13 @@ import main.java.utils.CoordGene;
 
 public class EasyAI extends AI {
 
-    public EasyAI() {
-        super();
+    public EasyAI(Core core) {
+        super(core);
     }
 
     @Override
-    public String getNextMove(Core core) {
-
+    public String getNextMove() {
+        
         Minimax minimax = new Minimax(core);
         int originalHeuristic = minimax.heuristics.getHeuristicsValue();
 

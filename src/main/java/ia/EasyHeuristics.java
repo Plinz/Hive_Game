@@ -15,6 +15,8 @@ public class EasyHeuristics extends Heuristics {
 
     public int getHeuristicsValue() {
         nbConfigsStudied++;
-        return getNbPiecesAroundQueen(1 - AIPlayer) - getNbPiecesAroundQueen(AIPlayer);
+        int result = getNbPiecesAroundQueen(1 - AIPlayer) - getNbPiecesAroundQueen(AIPlayer);
+        System.out.println("heuristics = "+result);
+        return result;
     }
 }

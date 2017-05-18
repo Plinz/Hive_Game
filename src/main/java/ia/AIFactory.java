@@ -8,10 +8,10 @@ import main.java.utils.Consts;
 
 public class AIFactory {
     
-    public static AI buildAI(int difficulty){
+    public static AI buildAI(int difficulty, Core core){
         switch (difficulty){
             case Consts.EASY :
-                return new EasyAI();
+                return new EasyAI(core);
             default :
                 System.err.println("Not implemented yet");
                 return null;

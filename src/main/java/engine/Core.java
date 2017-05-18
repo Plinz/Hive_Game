@@ -43,7 +43,7 @@ public class Core implements Cloneable {
 		this.players[0] = new Player(0);
 		this.players[1] = new Player(1);
 		this.emulator = new Emulator(this, board, players);
-		this.ai = AIFactory.buildAI(difficulty);
+		this.ai = AIFactory.buildAI(difficulty, this);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;
@@ -105,7 +105,7 @@ public class Core implements Cloneable {
 	}
 
 	public void playAI() {
-		String[] moveAndUnplay = ai.getNextMove(this).split(";");
+		String[] moveAndUnplay = ai.getNextMove().split(";");
 		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
 	}
 
@@ -263,7 +263,7 @@ public class Core implements Cloneable {
 			players[Consts.PLAYER1].setName(reader.readLine());
 			if (mode == Consts.PVAI) {
 				difficulty = Integer.parseInt(reader.readLine());
-				ai = AIFactory.buildAI(difficulty);
+				ai = AIFactory.buildAI(difficulty, this);
 			} else
 				players[Consts.PLAYER2].setName(reader.readLine());
 			String tmp = reader.readLine();
@@ -311,7 +311,7 @@ public class Core implements Cloneable {
 		core.board = board.clone();
 		core.players = players.clone();
 		core.emulator = new Emulator(core, core.board, core.players);
-		core.ai = AIFactory.buildAI(difficulty);
+		core.ai = AIFactory.buildAI(difficulty, this);
 		core.mode = mode;
 		core.status = status;
 		core.turn = turn;

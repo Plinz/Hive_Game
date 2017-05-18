@@ -4,13 +4,17 @@
 package main.java.ia;
 
 import main.java.engine.Core;
-import main.java.utils.CoordGene;
 
 public abstract class AI {
 
     Core core;
     Heuristics heuristics;
-    public String getNextMove(Core core) {
+
+    public AI(Core core){
+        this.core = core;
+    }
+
+    public String getNextMove() {
         System.err.println("Erreur : AI abstraite");
         return null;
     }
