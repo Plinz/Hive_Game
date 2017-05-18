@@ -9,9 +9,11 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javax.imageio.ImageIO;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -274,6 +276,7 @@ public class GameScreenController implements Initializable {
     }
    
     public void handleUndoButton(){
+    	while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2))
     	if (core.getMode() != Consts.PVP)
     		core.previousState();
         if (core.previousState())
@@ -424,6 +427,10 @@ public class GameScreenController implements Initializable {
                 if(core.movePiece(pieceToMove, coordEnd))
                     handleEndGame();
                 else{
+                	if (core.getMode() != Consts.PVP)
+	                	while(core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)){
+	                		core.playAI();
+	                	}
                     handleResize(coordEnd);
                     resetPiece();
                     freeze.setValue(false);
