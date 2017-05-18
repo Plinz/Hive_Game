@@ -117,10 +117,9 @@ public class Core implements Cloneable {
 		players[1 - currentPlayer].addPiece(piece);
 	}
 
-	private void playAI() {
+	public void playAI() {
 		String[] moveAndUnplay = ai.getNextMove(this).split(";");
 		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
-		isGameFinish();
 	}
 
 	public void playEmulate(String play, String unplay) {
