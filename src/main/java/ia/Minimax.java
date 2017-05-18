@@ -48,8 +48,8 @@ public class Minimax {
     public Minimax(Minimax parent, String moveFromParent, String moveToParent) {
         this.core = parent.core;
         this.board = parent.board;
-        this.currentPlayer = parent.currentPlayer;
-        this.depth = parent.depth + 1;
+        this.currentPlayer = 1- parent.currentPlayer;
+        this.depth = parent.depth +1;
         this.emulator = parent.emulator;
         this.heuristics = parent.heuristics;
         this.players = parent.players;
@@ -57,6 +57,16 @@ public class Minimax {
         this.moveToParent = moveToParent;
     }
 
+    public Minimax (Minimax parent){ //in the case one player is blocked
+        this.core = parent.core;
+        this.board = parent.board;
+        this.currentPlayer = 1- parent.currentPlayer;
+        this.depth = parent.depth ;
+        this.emulator = parent.emulator;
+        this.heuristics = parent.heuristics;
+        this.players = parent.players;
+    }
+    
     public List<Minimax> getChildrenWithHeuristics() {
         List<Minimax> children = new ArrayList<>();
         List<String> possibleMovements = new ArrayList<>();
@@ -102,7 +112,6 @@ public class Minimax {
     }
 
     private int getHeuristicsValueRecursively(int maxdepth) {
-        System.out.println("getheuristicsRecurs : depth ="+depth+",currentplayer = "+currentPlayer);
         if (depth >= maxdepth) {
             return heuristics.getHeuristicsValue();
         }
@@ -111,7 +120,7 @@ public class Minimax {
         List<String> possibleUnplay = new ArrayList<>();
 
         core.getPossibleAdd(this.currentPlayer).stream().forEach((PossibleAdd) -> {
-            players[currentPlayer].getInventory().stream().forEach((piece) -> {
+            players[currentPlayer].getFirstPieceOfEachType().stream().forEach((piece) -> {
                 possibleMovements.add(Notation.getMoveNotation(board, piece, PossibleAdd));
                 possibleUnplay.add(Notation.getInverseMoveNotation(board, piece));
 
@@ -131,18 +140,26 @@ public class Minimax {
                 });
             });
         });
-
+        
+        if (possibleMovements.isEmpty()){
+            System.out.println("Player "+currentPlayer+" is blocked");
+            Minimax child = new Minimax(this);
+            return getHeuristicsValueRecursively(maxdepth);
+        }
+        
         if (AIPlayer == currentPlayer) {
             int bestHeuristic = Consts.MINIMUM_HEURISTICS;
             for (int i = 0; i <possibleMovements.size() ; i++) {
                 String move = possibleMovements.get(i);            
                 String unplay = possibleUnplay.get(i);
+                System.out.println("Depth ="+depth+",move :"+move);
                 core.playEmulate(move, unplay);
                 Minimax child = new Minimax(this, move, unplay);
                 child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (child.heuristicValue > bestHeuristic) {
                     bestHeuristic = child.heuristicValue;
                 }
+                System.out.println("unplay :"+unplay);
                 core.previousState();
             }
             return bestHeuristic;
@@ -151,12 +168,14 @@ public class Minimax {
             for (int i = 0; i <possibleMovements.size() ; i++) {
                 String move = possibleMovements.get(i);            
                 String unplay = possibleUnplay.get(i);
+                System.out.println("Depth ="+depth+"current player = "+currentPlayer+",move :"+move);
                 core.playEmulate(move, unplay);
                 Minimax child = new Minimax(this, move, unplay);
                 child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (child.heuristicValue < worstHeuristic) {
                     worstHeuristic = child.heuristicValue;
                 }
+                System.out.println("unplay :"+unplay);
                 core.previousState();
             }
             return worstHeuristic;
