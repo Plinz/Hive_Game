@@ -7,6 +7,7 @@ package main.java.controller;
 
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -58,39 +59,36 @@ public class NewGameScreenController implements Initializable {
     @FXML
     public void handleLaunchGameClick(){
         Core core;
-        String nameP1 = namePlayer1.getText();
-        String nameP2;
         int iaDifficulty = 0;
-        int mode;
         //Si on est en mode PVIA
+        
+        if(state == Consts.RANDOM)
+        	state = (new Random()).nextInt(2);
+
         if(easyButton.isVisible()){
-            
-            
+            String iaName;            
             if(easyButton.isSelected()){
-                nameP2 = "IA_Facile";
+            	iaName = "IA_Facile";
                 iaDifficulty = Consts.EASY;
             }
             else if(normalButton.isSelected()){
-
-                nameP2 = "IA_Normale";
+            	iaName = "IA_Normale";
                 iaDifficulty = Consts.MEDIUM;
             }
             else{
-                nameP2 = "IA_Difficile";
+            	iaName = "IA_Difficile";
                 iaDifficulty = Consts.HARD;
             }
-            
             if(state == Consts.WHITE_FIRST){
                 core = new Core(Consts.PVAI, iaDifficulty);
-                core.getPlayers()[0].setName(nameP1);
-                core.getPlayers()[1].setName(nameP2);
+                core.getPlayers()[0].setName(namePlayer1.getText());
+                core.getPlayers()[1].setName(iaName);
             }
-            else{
+            else {
                 core = new Core(Consts.AIVP, iaDifficulty);
-                core.getPlayers()[0].setName(nameP2);
-                core.getPlayers()[1].setName(nameP1);
+                core.getPlayers()[0].setName(iaName);
+                core.getPlayers()[1].setName(namePlayer1.getText());
             }
-            
             
         }
         //Sinon si on est en mode PVP
