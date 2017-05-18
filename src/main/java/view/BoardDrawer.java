@@ -14,6 +14,7 @@ import main.java.engine.Visitor;
 import main.java.model.Board;
 import main.java.model.Piece;
 import main.java.model.Tile;
+import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
 
@@ -27,7 +28,6 @@ public class BoardDrawer extends Visitor {
         this.can = c;
         this.gc = can.getGraphicsContext2D();         
         traducteur = new TraducteurBoard();
-        
     }
     
     public BoardDrawer(Canvas c, TraducteurBoard t){
@@ -35,7 +35,7 @@ public class BoardDrawer extends Visitor {
         this.gc = can.getGraphicsContext2D(); 
         hex = new Hexagon();
         traducteur = t;
-        traducteur.setMoveOrigin(new CoordGene<Double>(can.getWidth()/2,can.getHeight()/2));
+        traducteur.setMoveOrigin(new CoordGene<Double>(can.getWidth()/2,(can.getHeight()/2)-Consts.SIDE_SIZE));
     }
      
     public boolean visit(Board b){
