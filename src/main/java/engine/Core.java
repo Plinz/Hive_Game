@@ -302,10 +302,7 @@ public class Core implements Cloneable {
 
 	public HelpMove help(){
 		AI helpAI = AIFactory.buildAI(Consts.EASY, this);
-		String move = helpAI.getNextMove().split(";")[0];
-		HelpMove helpmove = emulator.getMove(move);
-		System.out.println("nbPiece :"+board.getNbPieceOnTheBoard());
-		return helpmove;
+		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
 	}
 	
 	@Override

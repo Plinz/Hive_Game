@@ -53,7 +53,7 @@ public class Minimax {
         //System.out.println("Minimax : possible moves = " + possibleMovements.toString());
         //System.out.println("size :" + possibleMovements.size());
         for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
-            String[] splitted = moveAndUnmove.split(";");
+            String[] splitted = moveAndUnmove.split(";");   //  move;unmove
             core.playEmulate(splitted[0], splitted[1]);
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             children.add(child);
@@ -136,7 +136,7 @@ public class Minimax {
             });
 
             heuristics.possiblePlacements = possibleMovements.size();
-
+            /*ancienne version avec des streams -> pas compatible avec les apppels de methode 
             core.getBoard().getBoard().stream().forEach((Column column) -> {
                 column.stream().forEach((Box box) -> {
                     box.stream().filter(tile
@@ -150,28 +150,23 @@ public class Minimax {
                         });
                     });
                 });
-            });
+            });*/
 
-            /*   for (Column column : core.getBoard().getBoard()) {
+            for (Column column : core.getBoard().getBoard()) {
                 for (Box box : column) {
                     for (Tile tile : box) {
                         if (tile != null && tile.getPiece() != null && tile.getPiece().getTeam() == core.getCurrentPlayer()) {
                             List<CoordGene<Integer>> PossibleDestinations = core.getPossibleMovement(tile.getCoord());
-                            if (!PossibleDestinations.isEmpty()){
-                                heuristics.incrementMobility(AIPlayer);
-                                heuristics.pieces[tile.getPiece().getId()].isPinned = false;
-                                for (CoordGene<Integer> destination : PossibleDestinations){
+                            if (!PossibleDestinations.isEmpty()) {
+                                for (CoordGene<Integer> destination : PossibleDestinations) {
                                     possibleMovements.add(Notation.getMoveNotation(core.getBoard(), tile.getPiece(), destination));
                                     possibleUnplay.add(Notation.getInverseMoveNotation(core.getBoard(), tile.getPiece()));
                                 }
-                            } else {
-                                heuristics.pieces[tile.getPiece().getId()].isPinned = false;
                             }
                         }
                     }
                 }
             }
-        }*/
             for (int i = 0;
                     i < possibleMovements.size();
                     i++) {

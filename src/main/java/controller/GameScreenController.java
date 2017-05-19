@@ -163,18 +163,19 @@ public class GameScreenController implements Initializable {
                                     redo.setDisable(true);
                                 }
                                 else{
+                                    resetPiece();
                                     initButtonByInventory();
                                     highlighted.setListTohighlight(possibleMovement = null);
                                     highlighted.setHelp(null);
                                 }
                             }
                         } else {
+                            resetPiece();
                             highlighted.setListTohighlight(null);
                             highlighted.setHelp(null);
                         }
                     }
                 }
-                resetPiece();
                 clearHelp();
             }
         });
