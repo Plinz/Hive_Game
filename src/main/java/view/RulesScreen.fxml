@@ -168,7 +168,7 @@
                      </opaqueInsets>
                   </GridPane>
                   <ImageView id="titleRulesScreen" fitHeight="93.0" fitWidth="333.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" />
-                  <Pane maxHeight="1.7976931348623157E308" />
+                  <Pane fx:id="menuRules" maxHeight="1.7976931348623157E308" />
                </children>
             </GridPane>
             <GridPane prefHeight="720.0" prefWidth="600.0" GridPane.columnIndex="1">

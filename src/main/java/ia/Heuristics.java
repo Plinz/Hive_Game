@@ -15,6 +15,7 @@ Heuristic Data : heuristicData[player][insect][typeHeuristique]
 package main.java.ia;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import main.java.engine.Core;
 import main.java.model.Board;
@@ -24,6 +25,7 @@ import main.java.model.Piece;
 import main.java.model.Player;
 import main.java.model.Tile;
 import main.java.utils.Consts;
+import main.java.utils.CoordGene;
 
 public class Heuristics {
 
@@ -156,16 +158,50 @@ public class Heuristics {
             mobilityOpponent ++;
         }
     }
-    /*
-    public boolean isPinned(int PieceId){
-        if (gameConfig.getPieces()[PieceId].stuck) return true;
-        //bug on the ground (ie not beetle or mosquito)
-        if (gameConfig.IdToType(PieceId) != Consts.BEETLE_TYPE
-                && gameConfig.IdToType(PieceId) != Consts.MOSQUITO_TYPE)
-            return (gameConfig.getPieces()[PieceId].PossibleDestinationsCalculated &&
-                    gameConfig.getPieces()[PieceId].PossibleDestinations.size() == 0);
-        else
-            return (gameConfig.getPieces()[PieceId].PossibleDestinationsCalculated &&
-                    gameConfig.getPieces()[PieceId].PossibleCubeDestinations.size() == 0);
-    }*/
+    
+    public boolean isOpponentsQueenNeighbor(int player, Tile tile)
+    {
+        for (Tile t : core.getBoard().getNeighbors(getTile(Consts.QUEEN, 1 - player)))
+        {
+            if (tile.getCoord() == t.getCoord())
+                return true;
+        }
+        return false;
+    }
+    
+    public int grassHopperToOpponentsQueensFreeNeighbor(int player, Tile tile)
+    {
+        int turn = 0;
+        HashSet<Tile> tileSet = new HashSet();
+        HashSet<Tile> markedTiles = new HashSet();
+        boolean destFound = false;
+        tileSet.add(tile);
+        do
+        {
+            turn++;
+            for (Tile tileElem : tileSet)
+            {
+                for (CoordGene coords : tileElem.getCoord().getNeighbors())
+                {
+                    if (!(tileSet.contains(this.core.getBoard().getTile(coords))))
+                    {
+                        if (this.isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(coords)))
+                        {
+                            destFound = true;
+                            break;
+                        }
+                        tileSet.add(this.core.getBoard().getTile(coords));
+                    }
+                    if (destFound)
+                        break;
+                }
+                tileSet.remove(tileElem);
+            }
+        }
+        while((!(tileSet.isEmpty())) && (!(destFound)));
+        
+        if (destFound)
+            return turn;
+        return -1;
+    }
 }

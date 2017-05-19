@@ -59,7 +59,7 @@ public class NewGameScreenController implements Initializable {
     @FXML
     public void handleLaunchGameClick(){
         Core core;
-        int iaDifficulty = 0;
+        int iaDifficulty = -1;
         //Si on est en mode PVIA
         
         if(state == Consts.RANDOM)
