@@ -83,7 +83,7 @@ public class Consts {
     
     public static final int DEPTH_EASY = 1;
     public static final int DEPTH_MEDIUM = 3;
-    public static final int DEPTH_HARD = 4;
+    public static final int DEPTH_HARD = 3;
         //MACRO HEURISTIQUE -> OPENINGS   
         //  /!\ la somme des doubles DOIT faire 1 et la taille du tableau = 5
         //rappel ordre : queen - spider -grasshopper - beetle - ant  
