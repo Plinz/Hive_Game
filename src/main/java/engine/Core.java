@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
+import main.java.io.IO;
 import main.java.model.Board;
 import main.java.model.Box;
 import main.java.model.Column;
@@ -31,6 +32,7 @@ public class Core implements Cloneable {
 	private Player[] players;
 	private Emulator emulator;
 	private AI ai;
+	private IO io;
 	private int mode;
 	private int status;
 	private int turn;
@@ -44,7 +46,10 @@ public class Core implements Cloneable {
 		this.players[0] = new Player(0);
 		this.players[1] = new Player(1);
 		this.emulator = new Emulator(this, board, players);
-		this.ai = AIFactory.buildAI(difficulty, this);
+		if (mode == Consts.PVAI || mode == Consts.AIVP)
+			this.ai = AIFactory.buildAI(difficulty, this);
+//		if (mode == Consts.PVEX)
+//			this.io = new IO();
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;

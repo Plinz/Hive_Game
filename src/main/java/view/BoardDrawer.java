@@ -65,7 +65,7 @@ public class BoardDrawer extends Visitor {
 						.toString();
 			} else {
 				name = getClass().getClassLoader()
-						.getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() + "2.png")
+						.getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() + t.getZ() + ".png")
 						.toString();
 			}
 			gc.setFill(new ImagePattern(new Image(name)));
