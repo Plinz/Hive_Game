@@ -84,7 +84,7 @@ public abstract class AI {
         List<CoordGene<Integer>> possibleDestinationsNearOpponent = new ArrayList<>();
         for (CoordGene<Integer> destination : possibleDestinations) {
             for (Tile destinationNeighbor : core.getBoard().getPieceNeighbors(destination)) {
-                if (tile.getPiece().getTeam() == core.getCurrentPlayer()) {
+                if (destinationNeighbor.getPiece().getTeam() == core.getCurrentPlayer()) {
                     possibleDestinationsNearOpponent.add(destination);
                     break;
                 }
