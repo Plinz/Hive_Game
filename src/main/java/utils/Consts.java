@@ -6,6 +6,10 @@ public class Consts {
     //MACRO RESOLUTION
     public static final String[] RESOLUTIONS= {"1280x720"};
     
+    //MACRO NB PIECES TOTAL
+    public static final int NB_PIECES_PER_PLAYER = 11;
+    public static final int NB_PIECES_IN_GAME = 22;
+    
     //MACROS PIECES -> PLEASE DO NOT MODIFY /!\
     public static final int QUEEN = 0;
     public static final int SPIDER1 = 1;
