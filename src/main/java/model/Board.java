@@ -339,7 +339,7 @@ public class Board implements Cloneable{
 
 	public List<Tile> getAboveAndBelow(Tile tile) {
 		Box box = columns.get(tile.getX()).get(tile.getY());
-		List<Tile> list = new ArrayList<Tile>();
+		List<Tile> list = new ArrayList<Tile>();                
 		for (Tile t : box)
 			if (tile.getZ() != t.getZ())
 				list.add(t);

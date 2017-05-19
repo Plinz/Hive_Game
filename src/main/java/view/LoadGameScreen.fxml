@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -49,7 +50,10 @@
                      </cursor></Button>
                </children>
             </GridPane>
-            <ListView fx:id="saveList" prefHeight="183.0" prefWidth="330.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ListView fx:id="saveList" prefHeight="183.0" prefWidth="330.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin></ListView>
             <ImageView fx:id="saveImage" fitHeight="399.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
