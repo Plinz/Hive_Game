@@ -33,6 +33,7 @@ public class OptionsScreenController implements Initializable {
     @FXML private CheckBox fullScreen;
     @FXML private CheckBox help;
     @FXML private CheckBox animations;
+    @FXML private CheckBox grid;
     private Main main;
 
     /**
@@ -45,7 +46,7 @@ public class OptionsScreenController implements Initializable {
     
     @FXML 
     public void handleApplyClick() throws SAXException, IOException, ParserConfigurationException, TransformerException{
-        OptionManager.modifyOptions(choiceResolution.getSelectionModel().getSelectedIndex(), fullScreen.isSelected(), help.isSelected(),animations.isSelected());
+        OptionManager.modifyOptions(choiceResolution.getSelectionModel().getSelectedIndex(), fullScreen.isSelected(), help.isSelected(),animations.isSelected(), grid.isSelected());
         main.showMainMenu();
     }
     
@@ -67,14 +68,14 @@ public class OptionsScreenController implements Initializable {
         if(OptionManager.isFullscreen()){
             fullScreen.setSelected(true);
         }
-        if(OptionManager.isHelpEnabled()){
-            help.setSelected(true);
-        }
-        if(OptionManager.isHelpEnabled()){
+        if(OptionManager.isHelpEnable()){
             help.setSelected(true);
         }
         if(OptionManager.isAnimationsEnable()){
             animations.setSelected(true);
+        }
+        if(OptionManager.isGridEnable()){
+            grid.setSelected(true);
         }
     }
     

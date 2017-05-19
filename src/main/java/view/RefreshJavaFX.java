@@ -8,6 +8,7 @@ package main.java.view;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import main.java.engine.Core;
+import main.java.engine.OptionManager;
 
 /**
  *
@@ -33,6 +34,7 @@ public class RefreshJavaFX extends AnimationTimer{
     @Override
     public void handle(long now) {
        core.accept(drawer);
-       h.accept(drawer);
+       if (OptionManager.isHelpEnable() || (core.getTurn() == 0 && !OptionManager.isGridEnable()))
+    	   h.accept(drawer);
     }
 }
