@@ -24,6 +24,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -59,6 +60,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import main.java.engine.Core;
 import main.java.implement.Main;
+import main.java.model.HelpMove;
 import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
@@ -161,19 +163,19 @@ public class GameScreenController implements Initializable {
                                     redo.setDisable(true);
                                 }
                                 else{
-                                    resetPiece();
                                     initButtonByInventory();
                                     highlighted.setListTohighlight(possibleMovement = null);
                                     highlighted.setHelp(null);
                                 }
                             }
                         } else {
-                            resetPiece();
                             highlighted.setListTohighlight(null);
                             highlighted.setHelp(null);
                         }
                     }
                 }
+                resetPiece();
+                clearHelp();
             }
         });
        
@@ -243,7 +245,16 @@ public class GameScreenController implements Initializable {
     }
     
     public void handleHelp(){
-        highlighted.setHelp(core.help());
+    	clearHelp();
+    	HelpMove helpMove = core.help();
+        highlighted.setHelp(helpMove);
+        if (helpMove.isAdd()){
+        	int index;
+        	List<Piece> list = core.getCurrentPlayerObj().getInventory();
+        	for (index = 0; index<list.size() && list.get(index).getId() != helpMove.getPieceId(); index++);
+        	ToggleButton n = (ToggleButton)((core.getCurrentPlayer() == 0)?inventoryPlayer1:inventoryPlayer2).getChildren().get(index);
+        	n.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));;
+        }
     }
 
     public void handleUpButton(){
@@ -268,6 +279,7 @@ public class GameScreenController implements Initializable {
     		core.previousState();
     	checkHistory();
         resetPiece();
+        clearHelp();
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
         initButtonByInventory();
@@ -279,6 +291,7 @@ public class GameScreenController implements Initializable {
     		core.nextState();
         checkHistory();
         resetPiece();
+        clearHelp();
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
         initButtonByInventory();
@@ -383,6 +396,13 @@ public class GameScreenController implements Initializable {
         pieceToChoose = -1;
     }
     
+    public void clearHelp(){
+		for(Node n : inventoryPlayer1.getChildren())
+			((ToggleButton) n).setBorder(null);
+		for(Node n : inventoryPlayer2.getChildren())
+			((ToggleButton) n).setBorder(null);
+    }
+    
     public void startMovingAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
         
         freeze.setValue(true);
@@ -417,6 +437,7 @@ public class GameScreenController implements Initializable {
 	                }
                     handleResize(coordEnd);
                     resetPiece();
+                    clearHelp();
                     freeze.setValue(false);
                     initButtonByInventory();
                 }
@@ -466,6 +487,7 @@ public class GameScreenController implements Initializable {
 	                }
                     handleResize(coordEnd);
                     resetPiece();
+                    clearHelp();
                     freeze.setValue(false);
                     initButtonByInventory();
                 }
@@ -548,7 +570,7 @@ public class GameScreenController implements Initializable {
         endOfGame = true;
         highlighted.setListTohighlight(null);
         initButtonByInventory();
-        Dialog dialog = new Alert(Alert.AlertType.INFORMATION);
+        Dialog<?> dialog = new Alert(Alert.AlertType.INFORMATION);
         dialog.setTitle("Fin de partie !");
         System.err.println(core.getStatus() + "statut de fin");
         switch(core.getStatus()){
@@ -578,7 +600,7 @@ public class GameScreenController implements Initializable {
     
     public void handleSaveGame() throws IOException{
        
-        Dialog popup = new Dialog();
+        Dialog<ButtonType> popup = new Dialog<>();
         popup.setTitle("Sauvegarder la partie");
         ButtonType save = new ButtonType("Sauvegarder",ButtonBar.ButtonData.LEFT);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
@@ -616,7 +638,7 @@ public class GameScreenController implements Initializable {
    
     public void handleSaveAndQuitGame(int status) throws IOException{
        
-        Dialog popup = new Dialog();
+        Dialog<ButtonType> popup = new Dialog<>();
         popup.setTitle("Sauvegarder et quitter la partie");
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.LEFT);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);

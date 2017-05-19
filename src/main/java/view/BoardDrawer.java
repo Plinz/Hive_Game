@@ -69,7 +69,8 @@ public class BoardDrawer extends Visitor {
 						.toString();
 			}
 			gc.setFill(new ImagePattern(new Image(name)));
-			// gc.setStroke(Color.RED);
+			gc.setStroke(Color.BLACK);
+			gc.setLineWidth(1);
 			gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
 			gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
 
@@ -118,7 +119,6 @@ public class BoardDrawer extends Visitor {
 	@Override
 	public boolean visit(HelpMove h) {
 		if (h.isAdd()) {
-			// Il manque à highlighter
 			drawHelp(h.getTarget());
 		} else {
 			drawHelp(h.getFrom());
@@ -135,11 +135,12 @@ public class BoardDrawer extends Visitor {
 		hex.setyPixel(coordPix.getY() + traducteur.getMoveOrigin().getY());
 		hex.calculHex();
 
-		gc.setStroke(Color.BLACK);
-		gc.setGlobalAlpha(0.5);
-		gc.setFill(Color.RED);
-		gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
-		gc.setGlobalAlpha(1);
+		gc.setStroke(Color.RED);
+		gc.setLineWidth(3);
+//		gc.setGlobalAlpha(0.5);
+//		gc.setFill(Color.RED);
+//		gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
+//		gc.setGlobalAlpha(1);
 		gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
 
 	}

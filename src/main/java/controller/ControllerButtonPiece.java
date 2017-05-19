@@ -10,10 +10,6 @@ import javafx.scene.input.MouseEvent;
 import main.java.engine.Core;
 import main.java.view.Highlighter;
 
-/**
- *
- * @author duvernet
- */
 public class ControllerButtonPiece implements EventHandler<MouseEvent> {
     
     private GameScreenController gameController;
