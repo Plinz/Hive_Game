@@ -92,6 +92,16 @@ public class Consts {
     public static final double[] EASY_ADD_TURN_4 = {0, 0.15, 0.15, 0.35, 0.35};
     
     public static final double EASY_TURN_4_CHOOSE_TO_ADD = 0.75;
+    
+    public static final double[] MEDIUM_ADD_TURN_1 = {0.1, 0.4, 0.4, 0.1, 0};
+        public static final double[] MEDIUM_ADD_TURN_2_IF_SPIDER_ON_1 = {0.4, 0.1, 0.4, 0.05, 0.05};
+        public static final double[] MEDIUM_ADD_TURN_2_IF_GRASSHOPPER_ON_1 = {0.4, 0.4, 0.1, 0.05, 0.05};
+        public static final double[] MEDIUM_ADD_TURN_2_IF_QUEEN_ON_1 = {0, 0.45, 0.45, 0.05, 0.05};
+        public static final double[] MEDIUM_ADD_TURN_2_IF_BETTLE_OR_ANT_ON_1 = {0.4, 0.3, 0.3, 0, 0};
+    public static final double[] MEDIUM_ADD_TURN_3 = {0.4, 0.15, 0.15, 0.15, 0.15};
+    public static final double[] MEDIUM_ADD_TURN_4 = {0, 0.1, 0.1, 0.4, 0.4};
+    
+    public static final double MEDIUM_TURN_4_CHOOSE_TO_ADD = 0.5;
 
     //METHODES
     public static final int getType (int id){
