@@ -55,9 +55,9 @@ public class EasyAI extends AI {
         //////////////////////////////////MID GAME
         Random random = new Random();
         Minimax minimax = new Minimax(core, heuristics);
-        int originalHeuristic = minimax.heuristics.getHeuristicsValue();
+        double originalHeuristic = minimax.heuristics.getHeuristicsValue();
 
-        int bestHeuristic = originalHeuristic;
+        double bestHeuristic = originalHeuristic;
         String chosenMove = null;
         String chosenUnplay = null;
         List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();

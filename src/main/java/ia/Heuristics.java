@@ -52,7 +52,7 @@ public class Heuristics {
     /*
      *                  METHODE OVERIDE IN CHILD HEURISTICS
      */
-    public int getHeuristicsValue() {
+    public double getHeuristicsValue() {
         System.err.println("Erreur : getHeuristics value ne doit as être appelée depuis la classe mère");
         return 0;
     }

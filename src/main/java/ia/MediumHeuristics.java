@@ -11,4 +11,9 @@ public class MediumHeuristics extends Heuristics{
         super(core);
     }
     
+    @Override
+    public double getHeuristicsValue(){
+        return 0;
+    }
+    
 }

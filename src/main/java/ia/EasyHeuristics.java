@@ -13,7 +13,7 @@ public class EasyHeuristics extends Heuristics {
         this.maxdepth = Consts.DEPTH_EASY;
     }
 
-    public int getHeuristicsValue() {
+    public double getHeuristicsValue() {
         nbConfigsStudied++;
         if (!core.isQueenOnBoard(AIPlayer) && !core.isQueenOnBoard(1-AIPlayer)){
             return 0;
