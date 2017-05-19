@@ -153,16 +153,16 @@ public class GameScreenController implements Initializable {
                                     pieceToChoose = -1;
                             } else {
                                 if (pieceToChoose != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)){
-                                    if(core.addPiece(pieceToChoose, coord))
-                                        handleEndGame();
-                                    handleResize(coord); 
+                                    startPlacingAnimation(coord);
                                     undo.setDisable(false);
                                     redo.setDisable(true);
                                 }
-                                resetPiece();
-                                initButtonByInventory();
-                                highlighted.setListTohighlight(possibleMovement = null);
-                                highlighted.setHelp(null);
+                                else{
+                                    resetPiece();
+                                    initButtonByInventory();
+                                    highlighted.setListTohighlight(possibleMovement = null);
+                                    highlighted.setHelp(null);
+                                }
                             }
                         } else {
                             resetPiece();
@@ -194,14 +194,11 @@ public class GameScreenController implements Initializable {
                         Tile tileTemp = core.getBoard().getTile(coord);
                         List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
                         for(Tile tile : listTiles){
-                            System.out.print(tile.getPiece().getName()+" "+tile.getPiece().getTeam());
-                            System.out.println("");
                             pieces += tile.getPiece().getName()+" "+tile.getPiece().getTeam()+ "\n";
                         }
                         tool = new Tooltip(pieces);
                         Tooltip.install(gameCanvas, tool);
                     }
-                    
                 }
         });
           
@@ -423,7 +420,55 @@ public class GameScreenController implements Initializable {
             }
         });
         animation.play();
+    }
+    
+    public void startPlacingAnimation(CoordGene<Integer> coordEnd){
+        
+        freeze.setValue(true);
+        highlighted.setListTohighlight(null);
+        highlighted.setHelp(null);
 
+        Piece piece = null;
+        
+        for(int i = 0; i < core.getPlayers()[core.getCurrentPlayer()].getInventory().size();i++){
+            if(core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i).getId() == pieceToChoose){
+                piece = core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i);
+            }
+        }
+        
+        CoordGene<Double> start = new CoordGene<>((double)coordEnd.getX(),(double)0);
+        CoordGene<Double> end = new CoordGene<>((double)coordEnd.getX(),(double)coordEnd.getY());       
+        start = t.axialToPixel(start);
+        end = t.axialToPixel(end);
+                
+        panCanvas.getChildren().add(animation.getPolygon());
+        String name = getClass().getClassLoader().getResource("main/resources/img/tile/"+piece.getName()+piece.getTeam()+".png").toString();
+        Image image = new Image(name);       
+        animation.setImagePolygon(image);
+        animation.setPath(new Path( 
+            new MoveTo(start.getX() + t.getMoveOrigin().getX(), 0), 
+            new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY()+t.getMoveOrigin().getY()))); 
+        animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                
+                panCanvas.getChildren().remove(animation.getPolygon());
+                if(core.addPiece(pieceToChoose, coordEnd))
+                    handleEndGame();
+                else{
+                    if (core.getMode() != Consts.PVP)
+	                while(core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)){
+	                		core.playAI();
+	                }
+                    handleResize(coordEnd);
+                    resetPiece();
+                    freeze.setValue(false);
+                    initButtonByInventory();
+                }
+            }
+        });
+        animation.play();
     }
     
      public void handleNewGame() throws IOException{
