@@ -66,8 +66,10 @@
                   <Label prefHeight="16.0" prefWidth="125.0" text="Résolution :" textAlignment="CENTER" wrapText="true" />
                   <Label fx:id="labelPlayer2" prefHeight="16.0" prefWidth="125.0" text="Plein écran :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                   <Label fx:id="labelPlayer21" prefHeight="16.0" prefWidth="125.0" text="Activer les aides :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                  <Label fx:id="labelPlayer22" prefHeight="16.0" prefWidth="125.0" text="Activer la grille :" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                   <CheckBox fx:id="fullScreen" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                   <CheckBox fx:id="help" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+                  <CheckBox fx:id="grid" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                   <ChoiceBox fx:id="choiceResolution" prefWidth="150.0" GridPane.columnIndex="1" />
                   <Label text="Activer les animations :" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                   <CheckBox fx:id="animations" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />

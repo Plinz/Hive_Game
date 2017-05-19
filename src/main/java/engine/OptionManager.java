@@ -21,17 +21,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-/**
- *
- * @author gontardb
- */
-
 public final class OptionManager {
     
     private static int resolution = 0;
     private static boolean fullscreen = false;
-    private static boolean helpEnable = true;
     private static boolean animationsEnable = false;
+    private static boolean helpEnable = true;
+    private static boolean gridEnable = true;
     
     public static void init() throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException, SAXException{
         File file = new File("init.xml");
@@ -59,14 +55,6 @@ public final class OptionManager {
         fullscreen = fs;
     }
 
-    public static boolean isHelpEnabled() {
-        return helpEnable;
-    }
-
-    public static void setHelp(boolean h) {
-        helpEnable = h;
-    } 
-
     public static boolean isAnimationsEnable() {
         return animationsEnable;
     }
@@ -75,9 +63,23 @@ public final class OptionManager {
         OptionManager.animationsEnable = animationsEnable;
     }
     
-    
-    
-    private static void initByFile(File file) throws ParserConfigurationException, SAXException, IOException{
+    public static boolean isHelpEnable() {
+		return helpEnable;
+	}
+
+	public static void setHelpEnable(boolean helpEnable) {
+		OptionManager.helpEnable = helpEnable;
+	}
+
+	public static boolean isGridEnable() {
+		return gridEnable;
+	}
+
+	public static void setGridEnable(boolean gridEnable) {
+		OptionManager.gridEnable = gridEnable;
+	}
+
+	private static void initByFile(File file) throws ParserConfigurationException, SAXException, IOException{
         final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         final DocumentBuilder builder = factory.newDocumentBuilder();
         final Document document= builder.parse(file);
@@ -94,6 +96,9 @@ public final class OptionManager {
         
         res = (Element) racine.getElementsByTagName("animations").item(0); 
         animationsEnable = Integer.parseInt(res.getTextContent()) != 0;
+        
+        res = (Element) racine.getElementsByTagName("grid").item(0);
+        gridEnable = Integer.parseInt(res.getTextContent()) != 0;
 
     }               
 
@@ -105,7 +110,7 @@ public final class OptionManager {
     
         Document doc = docBuilder.newDocument();
         Element rootElement = doc.createElement("options");
-	doc.appendChild(rootElement);
+        doc.appendChild(rootElement);
         
         Element res = doc.createElement("resolution");
         res.appendChild(doc.createTextNode("0"));
@@ -123,24 +128,29 @@ public final class OptionManager {
         animations.appendChild(doc.createTextNode("0"));
         rootElement.appendChild(animations);
         
+        Element grid = doc.createElement("grid");
+        grid.appendChild(doc.createTextNode("1"));
+        rootElement.appendChild(grid);
+        
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	Transformer transformer = transformerFactory.newTransformer();
-	DOMSource source = new DOMSource(doc);		
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);		
         StreamResult result = new StreamResult(new File("init.xml"));
     
         transformer.transform(source, result);
     }
     
-    public static void modifyOptions(int res, boolean fs, boolean help, boolean anim) throws SAXException, IOException, ParserConfigurationException, TransformerException{
+    public static void modifyOptions(int res, boolean fs, boolean help, boolean anim, boolean grid) throws SAXException, IOException, ParserConfigurationException, TransformerException{
         resolution = res;
         fullscreen = fs;
         helpEnable = help;
         animationsEnable = anim;
+        gridEnable = grid;
         
         String filepath = "init.xml";
-	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	Document doc = docBuilder.parse(filepath);
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(filepath);
         
         Node n = doc.getElementsByTagName("resolution").item(0);
         n.setTextContent(String.valueOf(res));
@@ -163,10 +173,16 @@ public final class OptionManager {
         else
             n.setTextContent("0");
         
+        n = doc.getElementsByTagName("grid").item(0);
+        if(grid)
+            n.setTextContent("1");
+        else
+            n.setTextContent("0");
+        
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	Transformer transformer = transformerFactory.newTransformer();
+        Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
-	StreamResult result = new StreamResult(new File(filepath));
-	transformer.transform(source, result);
+        StreamResult result = new StreamResult(new File(filepath));
+        transformer.transform(source, result);
     }
  }
