@@ -24,12 +24,11 @@ public class Minimax {
     int AIPlayer;
     int depth;
 
-    public Minimax(Core core1) {
+    public Minimax(Core core1, Heuristics heuristics1) {
         this.core = core1;
         this.AIPlayer = core1.getCurrentPlayer();
 
-        HeuristicsFactory heuristicsFactory = new HeuristicsFactory();
-        this.heuristics = heuristicsFactory.buildHeuristics(this.core.getDifficulty(), this.core);
+        this.heuristics = heuristics1;
 
         this.heuristics.AIPlayer = this.AIPlayer;
         this.moveFromParent = null;
@@ -71,6 +70,7 @@ public class Minimax {
     }
 
     private int getHeuristicsValueRecursively(int maxdepth) {
+        heuristics.resetValues();
         if (depth >= maxdepth) {
             return heuristics.getHeuristicsValue();
         }
@@ -78,38 +78,38 @@ public class Minimax {
 
         if (AIPlayer == core.getCurrentPlayer()) {
             int bestHeuristic = Consts.MINIMUM_HEURISTICS;
-            
+
             for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                depth ++;
+                depth++;
                 getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (heuristicValue > bestHeuristic) {
                     bestHeuristic = heuristicValue;
                 }
-                depth --;
+                depth--;
                 core.previousState();
             }
             return bestHeuristic;
         } else {
             int worstHeuristic = Consts.BEST_HEURISTICS;
-            
+
             for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                depth ++;
+                depth++;
                 getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (heuristicValue < worstHeuristic) {
                     worstHeuristic = heuristicValue;
                 }
-                depth --;
+                depth--;
                 core.previousState();
             }
             return worstHeuristic;
         }
     }
 
-    private List<String> getAllPossibleMovesAndUnmoves() {
+    private List<String> getAllPossibleMovesAndUnmoves() { //and calculate some heuristics along
         ArrayList<String> result = new ArrayList<>();
         List<String> possibleMovements = new ArrayList<>();
         List<String> possibleUnplay = new ArrayList<>();
@@ -127,7 +127,7 @@ public class Minimax {
                 possibleUnplay.add(Notation.getInverseMoveNotation(core.getBoard(), queen));
             }
 
-        } else {
+        } else { //normal situation
             core.getPossibleAdd(core.getCurrentPlayer()).stream().forEach((possibleAdd) -> {
                 core.getCurrentPlayerObj().getFirstPieceOfEachType().stream().forEach((piece) -> {
                     possibleMovements.add(Notation.getMoveNotation(core.getBoard(), piece, possibleAdd));
@@ -135,24 +135,49 @@ public class Minimax {
                 });
             });
 
+            heuristics.possiblePlacements = possibleMovements.size();
+
             core.getBoard().getBoard().stream().forEach((Column column) -> {
                 column.stream().forEach((Box box) -> {
-                    box.stream().filter(tile -> 
-                         tile != null && tile.getPiece() != null && !tile.isBlocked() && tile.getPiece().getTeam() == core.getCurrentPlayer()
+                    box.stream().filter(tile
+                            -> tile != null && tile.getPiece() != null && !tile.isBlocked() && tile.getPiece().getTeam() == core.getCurrentPlayer()
                     ).forEach((tile) -> {
                         List<CoordGene<Integer>> PossibleDestinations = core.getPossibleMovement(tile.getCoord());
                         PossibleDestinations.stream().forEach((Destination) -> {
+                            heuristics.incrementMobility(core.getCurrentPlayer());
                             possibleMovements.add(Notation.getMoveNotation(core.getBoard(), tile.getPiece(), Destination));
                             possibleUnplay.add(Notation.getInverseMoveNotation(core.getBoard(), tile.getPiece()));
                         });
                     });
                 });
             });
-        }
 
-        for (int i = 0; i < possibleMovements.size(); i++) {
-            String toAdd = possibleMovements.get(i) + ";" + possibleUnplay.get(i);
-            result.add(toAdd);
+            /*   for (Column column : core.getBoard().getBoard()) {
+                for (Box box : column) {
+                    for (Tile tile : box) {
+                        if (tile != null && tile.getPiece() != null && tile.getPiece().getTeam() == core.getCurrentPlayer()) {
+                            List<CoordGene<Integer>> PossibleDestinations = core.getPossibleMovement(tile.getCoord());
+                            if (!PossibleDestinations.isEmpty()){
+                                heuristics.incrementMobility(AIPlayer);
+                                heuristics.pieces[tile.getPiece().getId()].isPinned = false;
+                                for (CoordGene<Integer> destination : PossibleDestinations){
+                                    possibleMovements.add(Notation.getMoveNotation(core.getBoard(), tile.getPiece(), destination));
+                                    possibleUnplay.add(Notation.getInverseMoveNotation(core.getBoard(), tile.getPiece()));
+                                }
+                            } else {
+                                heuristics.pieces[tile.getPiece().getId()].isPinned = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }*/
+            for (int i = 0;
+                    i < possibleMovements.size();
+                    i++) {
+                String toAdd = possibleMovements.get(i) + ";" + possibleUnplay.get(i);
+                result.add(toAdd);
+            }
         }
         return result;
     }

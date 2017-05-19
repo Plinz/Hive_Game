@@ -35,6 +35,7 @@ public abstract class AI {
 
     public Piece chooseAPiece(double[] proportions) {
         Piece piece = null;
+        int counterAgainstInfiniteLoop = 0;
         do {
             Random random = new Random();
             float rand = random.nextFloat();
@@ -53,7 +54,11 @@ public abstract class AI {
             if (isDuringOpening()) {
                 this.choiceDuringOpening[core.getTurn() / 2] = i;
             }
-        } while (piece == null);
+            counterAgainstInfiniteLoop ++;
+        } while (piece == null && counterAgainstInfiniteLoop < 100);
+        if (counterAgainstInfiniteLoop == 100){
+            System.out.println("Antoine, ça bug");
+        }
 
         return piece;
     }
@@ -92,7 +97,29 @@ public abstract class AI {
             String unMove = Notation.getInverseMoveNotation(core.getBoard(), tile.getPiece());
             return move + ";" + unMove;
         } else {
-            return addPieceWherever(chooseAPiece(Consts.CHOOSE_WHATEVER));
+            return movePieceWherever(chooseWhateverFreeTileOnBoard(core.getCurrentPlayer()));
         }
+    }
+    
+    public String movePieceWherever(Tile tileToMove){
+        List<CoordGene<Integer>> possibleDestinations = tileToMove.getPiece().getPossibleMovement(tileToMove, core.getBoard());
+        if (possibleDestinations.isEmpty()){
+            tileToMove = null;
+            //check if there is a possible move
+            for (Tile tile : core.getBoard().getFreePiecesOnBoard(AIPlayer)){
+                if (!tile.getPiece().getPossibleMovement(tile, core.getBoard()).isEmpty()){
+                    tileToMove = tile; 
+                }
+            }
+            if (tileToMove == null){
+                return addPieceWherever(chooseAPiece(Consts.CHOOSE_WHATEVER));
+            }
+        }
+        possibleDestinations = tileToMove.getPiece().getPossibleMovement(tileToMove, core.getBoard());
+        Random random = new Random();
+        int rand = random.nextInt(possibleDestinations.size());
+        String move = Notation.getMoveNotation(core.getBoard(), tileToMove.getPiece(), possibleDestinations.get(rand));
+        String unMove = Notation.getInverseMoveNotation(core.getBoard(), tileToMove.getPiece());
+        return move + ";" + unMove;
     }
 }

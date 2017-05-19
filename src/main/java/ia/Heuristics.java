@@ -18,7 +18,19 @@ public class Heuristics {
     Core core;
     int AIPlayer;
     int nbConfigsStudied;
-    int mobilityAI, mobilityOpponent;
+    int mobilityAI, mobilityOpponent, possiblePlacements;
+    HeuristicPiece[] pieces;
+
+    /*
+     *                  CONSTUCTOR
+     */
+    public Heuristics(Core core) {
+        this.core = core;
+        this.pieces = new HeuristicPiece[Consts.NB_PIECES_PER_PLAYER];
+        for (int id = 0 ; id <Consts.NB_PIECES_PER_PLAYER ; id++){
+            pieces[id] = new HeuristicPiece(id);
+        }
+    }
 
     /*
      *                  METHODE OVERIDE IN CHILD HEURISTICS
@@ -28,20 +40,14 @@ public class Heuristics {
         return 0;
     }
 
-    public int getValuePieceInHand(int pieceId, int player){
+    public int getValuePieceInHand(int pieceId, int player) {
         System.err.println("Erreur : getHeuristics value ne doit as être appelée depuis la classe mère");
         return 0;
     }
-    
-    public int getValuePieceOnBoard(int pieceId, int player){
+
+    public int getValuePieceOnBoard(int pieceId, int player) {
         System.err.println("Erreur : getHeuristics value ne doit as être appelée depuis la classe mère");
         return 0;
-    }
-    /*
-     *                  CONSTUCTOR
-     */
-    public Heuristics(Core core) {
-        this.core = core;
     }
 
     /*
@@ -119,6 +125,22 @@ public class Heuristics {
         return false;
     }
 
+    public void resetValues(){
+        mobilityAI =0;
+        mobilityOpponent=0;
+        possiblePlacements =0;
+        for (int i=0 ; i<pieces.length ; i++){
+            pieces[i].isPinned = false;
+        }
+    }
+    
+    public void incrementMobility(int player){
+        if (core.getCurrentPlayer() == AIPlayer){
+            mobilityAI ++;
+        } else {
+            mobilityOpponent ++;
+        }
+    }
     /*
     public boolean isPinned(int PieceId){
         if (gameConfig.getPieces()[PieceId].stuck) return true;

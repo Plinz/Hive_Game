@@ -21,6 +21,7 @@ public class EasyAI extends AI {
     @Override
     public String getNextMove() {
         this.AIPlayer = core.getCurrentPlayer();
+        //////////////////////////////////////////OPENING
         if (core.getTurn() <= 7) {
             switch (core.getTurn()) {
                 case 0:
@@ -49,11 +50,14 @@ public class EasyAI extends AI {
                     System.out.println("Erreur : Ne devrait jamais se produire");
             }
         }
+        
+        
+        //////////////////////////////////MID GAME
         Random random = new Random();
-        Minimax minimax = new Minimax(core);
+        Minimax minimax = new Minimax(core, heuristics);
         int originalHeuristic = minimax.heuristics.getHeuristicsValue();
 
-        int nextMoveHeuristic, bestHeuristic = originalHeuristic;
+        int bestHeuristic = originalHeuristic;
         String chosenMove = null;
         String chosenUnplay = null;
         List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
@@ -69,7 +73,7 @@ public class EasyAI extends AI {
 
             if (childWithBetterHeuristics.isEmpty()) {//cannot do better -> add or move a piece
                 double r = random.nextDouble();
-                if (r < Consts.EASY_MID_GAME_CHOOSE_TO_ADD && core.getPlayers()[AIPlayer].getInventory().size() >0) { //add whatever wherever
+                if (r < Consts.EASY_MID_GAME_CHOOSE_TO_ADD && !core.getPlayers()[AIPlayer].getInventory().isEmpty()) { //add whatever wherever
                     return addPieceWherever(chooseAPiece(Consts.CHOOSE_WHATEVER));
                 } else { //move whatever near opponent
                     return movePieceNearOpponent(chooseWhateverFreeTileOnBoard(AIPlayer));
