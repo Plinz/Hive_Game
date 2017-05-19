@@ -22,16 +22,17 @@ public class Spider extends Piece {
 		if (this.possibleMovement != null)
 			return this.possibleMovement;
 		List<CoordGene<Integer>> list = new ArrayList<>();
-		if (!tile.isBlocked() && board.oneHive(tile))
+		if (!tile.isBlocked() && board.oneHive(tile)){
 			list.addAll(path(board, tile.getCoord(), 0, new HashSet<>(), tile.getCoord()));
+		}
 		this.possibleMovement = list;
 		return list;
 
 	}
 
-	private List<CoordGene<Integer>> path(Board board, CoordGene<Integer> origin, int deep,
+	private Set<CoordGene<Integer>> path(Board board, CoordGene<Integer> origin, int deep,
 			Set<CoordGene<Integer>> visited, CoordGene<Integer> from) {
-		List<CoordGene<Integer>> nextBox = new ArrayList<>();
+		Set<CoordGene<Integer>> nextBox = new HashSet<>();
 		if (deep == 3) {
 			if (origin.equals(from) || !visited.contains(from))
 				nextBox.add(from);
@@ -47,7 +48,7 @@ public class Spider extends Piece {
 			if (board.getTile(target) != null && (board.getTile(target).getPiece() == null || (deep == 2 && target.equals(origin)))
 					&& board.freedomToMove(0, left, right, origin)
 					&& board.permanentContact(0, left, right, origin))
-				nextBox.addAll(path(board, origin, deep + 1, visited, target));
+				nextBox.addAll(path(board, origin, deep + 1, new HashSet<>(visited), target));
 		}
 		return nextBox;
 	}
