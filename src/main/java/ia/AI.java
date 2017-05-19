@@ -17,7 +17,8 @@ public abstract class AI {
 
     Core core;
     Heuristics heuristics;
-    
+    int AIPlayer;
+    int[] choiceDuringOpening;
     public AI(Core core) {
         this.core = core;
     }
@@ -37,14 +38,16 @@ public abstract class AI {
                 i++;
                 rand -= proportions[i];
             }
-            
-            for (Piece pieceFromInventory : core.getPlayers()[core.getMode()-1].getFirstPieceOfEachType()){
-                if (piece.getId() == i){
+            System.out.println("Piece choisie : type= "+i+","+core.getTurn());
+            for (Piece pieceFromInventory : core.getPlayers()[AIPlayer].getFirstPieceOfEachType()){
+                if (pieceFromInventory.getId() == i){
                     piece = pieceFromInventory;
                     break;
                 }
             }
+            this.choiceDuringOpening[core.getTurn()/2] = i;
         } while (piece == null);
+        
         return piece;
     }
     

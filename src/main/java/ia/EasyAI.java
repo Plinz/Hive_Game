@@ -13,11 +13,14 @@ public class EasyAI extends AI {
 
     public EasyAI(Core core) {
         super(core);
+        this.heuristics = new EasyHeuristics(core);
+        this.choiceDuringOpening = new int[4];
     }
 
     @Override
     public String getNextMove() {
-        if (core.getTurn() <= 6 && core.getCurrentPlayer() == heuristics.AIPlayer){
+        this.AIPlayer = core.getCurrentPlayer();
+        if (core.getTurn() <=  7){
             switch(core.getTurn()){
                 case 0 :
                 case 1 :

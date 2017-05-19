@@ -13,11 +13,11 @@ public class AIFactory {
             case Consts.EASY :
                 return new EasyAI(core);
             case Consts.MEDIUM :
-                return new EasyAI(core);
+                return new MediumAI(core);
             case Consts.HARD : 
                 return new EasyAI(core);
             default :
-                System.err.println("Not implemented yet");
+                System.err.println("Erreur : niveau de difficulté inconnu");
                 return new EasyAI(core);
         }
     }
