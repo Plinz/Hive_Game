@@ -31,6 +31,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -82,6 +83,8 @@ public class GameScreenController implements Initializable {
     @FXML private Text namePlayer2;
     @FXML private Button undo;
     @FXML private Button redo;
+    @FXML private Button helpButton;
+    @FXML private MenuItem saveMenuItem;
     private Main main;
     private Core core;
     private int pieceToChoose;
@@ -476,7 +479,10 @@ public class GameScreenController implements Initializable {
         ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        if(!endOfGame)
+            popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        else
+            popup.getButtonTypes().addAll(ok,cancel);
        
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
@@ -500,8 +506,10 @@ public class GameScreenController implements Initializable {
         ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-       
+        if(!endOfGame)
+            popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        else
+            popup.getButtonTypes().addAll(ok,cancel);
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
             r.stop();
@@ -517,7 +525,10 @@ public class GameScreenController implements Initializable {
         ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        if(!endOfGame)
+            popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+        else
+            popup.getButtonTypes().addAll(ok,cancel);
        
         Optional<ButtonType> result = popup.showAndWait();
         if(result.get().getButtonData() == ButtonBar.ButtonData.LEFT){
@@ -531,6 +542,8 @@ public class GameScreenController implements Initializable {
     
    
     public void handleEndGame(){
+        helpButton.setDisable(true);
+        saveMenuItem.setDisable(true);
         freeze.setValue(false);
         endOfGame = true;
         highlighted.setListTohighlight(null);
