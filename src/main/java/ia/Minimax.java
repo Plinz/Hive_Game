@@ -20,7 +20,7 @@ public class Minimax {
     Heuristics heuristics;
     String moveFromParent;
     String moveToParent;
-    int heuristicValue;
+    double heuristicValue;
     int AIPlayer;
     int depth;
 
@@ -69,7 +69,7 @@ public class Minimax {
         return children;
     }
 
-    private int getHeuristicsValueRecursively(int maxdepth) {
+    private double getHeuristicsValueRecursively(int maxdepth) {
         heuristics.resetValues();
         if (depth >= maxdepth) {
             return heuristics.getHeuristicsValue();
@@ -77,7 +77,7 @@ public class Minimax {
         List<String> allPossibleMovesAndUnmoves = getAllPossibleMovesAndUnmoves();
 
         if (AIPlayer == core.getCurrentPlayer()) {
-            int bestHeuristic = Consts.MINIMUM_HEURISTICS;
+            double bestHeuristic = Consts.MINIMUM_HEURISTICS;
 
             for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
@@ -90,9 +90,9 @@ public class Minimax {
                 depth--;
                 core.previousState();
             }
-            return bestHeuristic;
+            return heuristics.getHeuristicsValue() + bestHeuristic/2;
         } else {
-            int worstHeuristic = Consts.BEST_HEURISTICS;
+            double worstHeuristic = Consts.BEST_HEURISTICS;
 
             for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
@@ -105,7 +105,7 @@ public class Minimax {
                 depth--;
                 core.previousState();
             }
-            return worstHeuristic;
+            return heuristics.getHeuristicsValue() - worstHeuristic/2;
         }
     }
 
