@@ -1,8 +1,21 @@
 /*
+Heuristic Data : heuristicData[player][insect][typeHeuristique]
+    avec player 0 -> IA
+         player 1 -> opponent
+                insect -> 0 queen, 1 spider, 2 grasshopper, 3 beetle, 4 ant, 5 general
+                        et type ->  0 valid move (deplacement et placement)
+                                    1 valid placement
+                                    2 valid movement (deplacement)
+                                    3 voisins (encerclement)
+                                    4 en main
+                                    5 en jeu
+                                    6 pinned
 
  */
 package main.java.ia;
 
+import java.util.ArrayList;
+import java.util.List;
 import main.java.engine.Core;
 import main.java.model.Board;
 import main.java.model.Box;
@@ -19,16 +32,20 @@ public class Heuristics {
     int AIPlayer;
     int nbConfigsStudied;
     int mobilityAI, mobilityOpponent, possiblePlacements;
-    HeuristicPiece[] pieces;
+    List<List<List<Double>>> heuristicData;
 
     /*
      *                  CONSTUCTOR
      */
     public Heuristics(Core core) {
         this.core = core;
-        this.pieces = new HeuristicPiece[Consts.NB_PIECES_PER_PLAYER];
-        for (int id = 0 ; id <Consts.NB_PIECES_PER_PLAYER ; id++){
-            pieces[id] = new HeuristicPiece(id);
+        
+        heuristicData = new ArrayList<>(2);
+        for (List<List<Double>> listListDouble : heuristicData){
+            listListDouble = new ArrayList<>(6);
+            for (List<Double> listDouble : listListDouble){
+                listDouble = new ArrayList<>(7);
+            }
         }
     }
 
@@ -129,9 +146,7 @@ public class Heuristics {
         mobilityAI =0;
         mobilityOpponent=0;
         possiblePlacements =0;
-        for (int i=0 ; i<pieces.length ; i++){
-            pieces[i].isPinned = false;
-        }
+        
     }
     
     public void incrementMobility(int player){
