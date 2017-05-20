@@ -217,4 +217,7 @@ public class Consts {
     public static final int BLACK_FIRST = 1;
     public static final int RANDOM = 2;
     
+    //MACRO IO
+	public static final int PORT = 16518;
+    
 }

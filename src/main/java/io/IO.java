@@ -9,12 +9,11 @@ public abstract class IO {
 	public IO(Core core){
 		this.core = core;
 	}
-	
-	public String getNextMove(){
-        System.err.println("Erreur : IO abstraite");
-        return null;
-	}
-	
+
+	public abstract void connect(String host);
+	public abstract String getMove();
+	public abstract void updateInfo();
 	public abstract void sendMove(String move);
+	public abstract void sendInfo();
 
 }
