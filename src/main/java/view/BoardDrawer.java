@@ -77,6 +77,7 @@ public class BoardDrawer extends Visitor {
 		} else {
 			if (OptionManager.isGridEnable()) {
 				gc.setStroke(Color.BLACK);
+				gc.setLineWidth(1);
 				gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
 			}
 		}
