@@ -205,17 +205,18 @@ public class GameScreenController implements Initializable {
 
                     Tile tileTemp = core.getBoard().getTile(coord);
                     List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
-
+                    
                     if (!listTiles.isEmpty() && !popup.isShowing()) {
-                        Rectangle fondPopup = new Rectangle(Consts.SIDE_SIZE*2,Consts.SIDE_SIZE*listTiles.size()*4);
+                        //Rectangle fondPopup = new Rectangle();
+                        Rectangle fondPopup = new Rectangle(0,-Consts.SIDE_SIZE,Consts.SIDE_SIZE*2,Consts.SIDE_SIZE*2*(listTiles.size()+1));
                         fondPopup.setArcWidth(20);
                         fondPopup.setArcHeight(20);
                         fondPopup.setFill(Color.IVORY);
                       
                         popup.getContent().add(fondPopup);
                         popupUnderBeetle(listTiles, tileTemp);
-                        popup.show(gameCanvas, m.getScreenX()+50, m.getScreenY()+50);
-                    } else {
+                        popup.show(gameCanvas, m.getScreenX()+fondPopup.getWidth()/2, m.getScreenY() +fondPopup.getHeight()/2);
+                    } else if(listTiles.isEmpty() && popup.isShowing()){
                         popup.hide();
                         popup = new Popup();
                     }
@@ -394,12 +395,12 @@ public class GameScreenController implements Initializable {
         Polygon p = new Polygon();
         p.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + tile.getPiece().getName() + tile.getPiece().getTeam() + ".png").toString())));
         p.getPoints().addAll(new Double[]{
-            x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement +50),
-            x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement + 50,
-            x[2]+placement, y[2] + Consts.SIDE_SIZE * deplacement + 50,
-            x[3]+placement, y[3] + Consts.SIDE_SIZE * deplacement + 50 ,
-            x[4]+placement, y[4] + Consts.SIDE_SIZE * deplacement + 50,
-            x[5]+placement, y[5] + Consts.SIDE_SIZE * deplacement + 50});
+            x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement),
+            x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement,
+            x[2]+placement, y[2] + Consts.SIDE_SIZE * deplacement,
+            x[3]+placement, y[3] + Consts.SIDE_SIZE * deplacement,
+            x[4]+placement, y[4] + Consts.SIDE_SIZE * deplacement,
+            x[5]+placement, y[5] + Consts.SIDE_SIZE * deplacement});
         popup.getContent().add(p);
 
     }
