@@ -56,7 +56,7 @@ public class Consts {
     public static final int PVAI = 1;
     public static final int AIVP = 2;
     public static final int PVEX = 3;
-
+    public static final int EXVP = 4;
     
     //MACRO PLAYER
     public static final int PLAYER1 = 0;

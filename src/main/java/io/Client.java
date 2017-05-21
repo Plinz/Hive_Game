@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Random;
 
 import main.java.engine.Core;
 import main.java.utils.Consts;
@@ -13,6 +12,7 @@ import main.java.utils.Consts;
 public class Client extends IO {
 	private PrintWriter server = null;
 	private String notation = null;
+	private boolean run = true;
 
 	public Client(Core core) {
 		super(core);
@@ -56,11 +56,18 @@ public class Client extends IO {
 			server.flush();
 		}
 	}
+	
+	@Override
+	public void processReceive(String response){
+		synchronized (this) {
+			String[] tokens = response.split(";");
+			core.playEmulate(tokens[0], tokens[1]);
+		}
+	}
 
 	public class ClientThread implements Runnable {
 		private Socket connexion = null;
 		private BufferedInputStream reader = null;
-		private String[] listCommands = { "INFO", "DATE", "HOUR", "NONE" };
 
 		public ClientThread(Socket socket) {
 			this.connexion = socket;
@@ -70,28 +77,18 @@ public class Client extends IO {
 			try {
 				server = new PrintWriter(connexion.getOutputStream(), true);
 				reader = new BufferedInputStream(connexion.getInputStream());
-				// On envoie la commande au serveur
-				String commande = getCommand();
-				server.write(commande);
-				// TOUJOURS UTILISER flush() POUR ENVOYER RÉELLEMENT DES INFOS
-				// AU SERVEUR
-				server.flush();
-				System.out.println("Commande " + commande + " envoyée au serveur");
-				// On attend la réponse
-				String response = read();
-				System.out.println("\t * " + notation + " : Réponse reçue " + response);
+				while(run){
+					String response = read();
+					if (response != null && !response.isEmpty()){
+						processReceive(response);
+					}
+				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 			server.write("CLOSE");
 			server.flush();
 			server.close();
-		}
-
-		// Méthode qui permet d'envoyer des commandeS de façon aléatoire
-		private String getCommand() {
-			Random rand = new Random();
-			return listCommands[rand.nextInt(listCommands.length)];
 		}
 
 		// Méthode pour lire les réponses du serveur

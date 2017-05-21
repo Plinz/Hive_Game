@@ -54,6 +54,13 @@ public class Server extends IO {
 		}
 	}
 
+	@Override
+	public void processReceive(String response) {
+		synchronized (this) {
+			String[] tokens = response.split(";");
+			core.playEmulate(tokens[0], tokens[1]);
+		}
+	}
 //	synchronized public void receiveMove(String notation) {
 //		if (nextMove == null){
 //			nextMove = notation;
@@ -92,10 +99,6 @@ public class Server extends IO {
 			serverSocket = ss;
 		}
 	
-		// ** Methode : exécutée au lancement du thread par t.start() **
-		// ** Elle attend les messages en provenance du serveur et les redirige **
-		// cette méthode doit obligatoirement être implémentée à cause de
-		// l'interface Runnable
 		public void run() {
 			try {
 				socket = serverSocket.accept();
@@ -111,7 +114,7 @@ public class Server extends IO {
 					if (charCur[0] != '\u0000' && charCur[0] != '\n' && charCur[0] != '\r')
 						message += charCur[0];
 					else if (!message.equalsIgnoreCase("")) {
-						notation = message;
+						processReceive(message);
 						message = "";
 					}
 				}
@@ -122,6 +125,7 @@ public class Server extends IO {
 					System.out.println("Le client s'est deconnecte");
 					socket.close();
 				} catch (IOException e) {
+					e.printStackTrace(System.out);
 				}
 			}
 		}

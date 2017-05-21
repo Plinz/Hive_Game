@@ -15,5 +15,6 @@ public abstract class IO {
 	public abstract void updateInfo();
 	public abstract void sendMove(String move);
 	public abstract void sendInfo();
-
+	public abstract void processReceive(String response);
+	
 }

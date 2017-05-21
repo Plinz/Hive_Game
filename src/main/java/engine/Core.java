@@ -13,7 +13,9 @@ import java.util.stream.Collectors;
 
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
+import main.java.io.Client;
 import main.java.io.IO;
+import main.java.io.Server;
 import main.java.model.Board;
 import main.java.model.Box;
 import main.java.model.Column;
@@ -38,7 +40,7 @@ public class Core implements Cloneable {
 	private int turn;
 	private int currentPlayer;
 	private int difficulty;
-        private int state;
+	private int state;
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -49,14 +51,16 @@ public class Core implements Cloneable {
 		this.emulator = new Emulator(this, board, players);
 		if (mode == Consts.PVAI || mode == Consts.AIVP)
 			this.ai = AIFactory.buildAI(difficulty, this);
-//		if (mode == Consts.PVEX)
-//			this.io = new IO();
+		else if (mode == Consts.PVEX)
+			this.io = new Server(this);
+		else if (mode == Consts.EXVP)
+			this.io = new Client(this);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
-                state = Consts.WAIT_FOR_INPUT;
+		this.state = Consts.WAIT_FOR_INPUT;
 		if (this.mode == Consts.AIVP)
 			playAI();
 	}
@@ -96,8 +100,10 @@ public class Core implements Cloneable {
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
-                nextTurn();
-                state = Consts.READY_TO_CHANGE;
+        nextTurn();
+        if (mode == Consts.PVEX || mode == Consts.EXVP)
+        	io.sendMove(notation);
+        state = Consts.READY_TO_CHANGE;
 		return status != Consts.INGAME;
 	}
 
@@ -108,7 +114,9 @@ public class Core implements Cloneable {
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-                state =  Consts.READY_TO_CHANGE;
+        if (mode == Consts.PVEX || mode == Consts.EXVP)
+        	io.sendMove(notation+";"+unplay);
+		state =  Consts.READY_TO_CHANGE;
 		return status != Consts.INGAME;
 	}
 
@@ -316,6 +324,11 @@ public class Core implements Cloneable {
 	public HelpMove help(){
 		AI helpAI = AIFactory.buildAI(Consts.EASY, this);
 		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
+	}
+	
+	public void connect(String host){
+		if (io != null)
+			io.connect(host);
 	}
 	
 	@Override
