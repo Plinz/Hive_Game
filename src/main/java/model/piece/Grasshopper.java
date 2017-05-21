@@ -13,7 +13,11 @@ public class Grasshopper extends Piece {
 
 	public Grasshopper(int id, int team) {
 		super(Consts.GRASSHOPPER_NAME, id, team, "La sauterelle se déplace en sautant en ligne droite par-dessus\nune ou plusieurs autres pièces, jusqu'au premier espace libre");
-	}
+                if (team == 0)
+                    drawingId = 8;
+                else
+                    drawingId = 9;
+        }
 
 	@Override
 	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {

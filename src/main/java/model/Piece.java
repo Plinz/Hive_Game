@@ -7,9 +7,10 @@ import main.java.utils.CoordGene;
 
 public abstract class Piece implements Cloneable{
 
-	protected String name;
+    protected String name;
     protected int id;
     protected int team;
+    protected int drawingId;
     protected String description;
     protected List<CoordGene<Integer>> possibleMovement;
 
@@ -40,6 +41,12 @@ public abstract class Piece implements Cloneable{
     public String getDescription() {
         return description;
     }
+
+    public int getDrawingId() {
+        return drawingId;
+    }
+    
+    
 
     public void clear() {
         this.possibleMovement = null;

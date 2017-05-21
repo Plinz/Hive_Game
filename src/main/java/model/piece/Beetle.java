@@ -13,7 +13,11 @@ public class Beetle extends Piece {
 
 	public Beetle(int id, int team) {
 		super(Consts.BEETLE_NAME, id, team, "Le scarabée se déplace d'un espace à la fois, et a la capacité\nde monter sur les autres pièces pour les bloquer");
-	}
+                if (team == 0)
+                    drawingId = 4;
+                else
+                    drawingId = 5;
+        }
 
 	@Override
 	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
