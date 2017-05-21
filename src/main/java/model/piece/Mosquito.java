@@ -1,6 +1,9 @@
 package main.java.model.piece;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import main.java.model.Board;
 import main.java.model.Piece;
@@ -15,8 +18,15 @@ public class Mosquito extends Piece{
 
 	@Override
 	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<CoordGene<Integer>> set = new HashSet<>();
+		List<CoordGene<Integer>> pos = new ArrayList<>();
+		if (!tile.isBlocked()){
+			List<Tile> neigbors = board.getPieceNeighbors(tile.getCoord());
+			for (Tile t : neigbors)
+				set.addAll(t.getPiece().getPossibleMovement(tile, board));
+			pos.addAll(set);
+		}
+		return pos;
 	}
 
 
