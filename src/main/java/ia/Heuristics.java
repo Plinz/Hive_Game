@@ -162,29 +162,30 @@ public class Heuristics {
     
     public boolean OpponentsQueenSurroundedExceptGates(int player)
     {
+        if (this.core.getBoard().getNbPieceOnTheBoard() < 0)
+            return false;
+            
         //finding northest piece of the hive
         Tile northest = new Tile();
-        if (this.core.getBoard().getNbPieceOnTheBoard() > 0)
+        for (Column col : this.core.getBoard().getBoard())
         {
-            for (Column col : this.core.getBoard().getBoard())
+            for (Box box : col)
             {
-                for (Box box : col)
+                for (Tile tile : box)
                 {
-                    for (Tile tile : box)
+                    if (tile.getPiece() != null)
                     {
-                        if (tile.getPiece() != null)
-                        {
-                            northest = tile;
-                            break;
-                        }
-                    }
-                    if (northest.getPiece() != null)
+                        northest = tile;
                         break;
+                    }
                 }
                 if (northest.getPiece() != null)
                     break;
             }
+            if (northest.getPiece() != null)
+                break;
         }
+
         
         //adding an extra ant at the north of the hive
         Piece extraAnt = new Ant(50, this.core.getPlayers()[player].getTeam());
