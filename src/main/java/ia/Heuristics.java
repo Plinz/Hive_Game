@@ -24,6 +24,7 @@ import main.java.model.Column;
 import main.java.model.Piece;
 import main.java.model.Player;
 import main.java.model.Tile;
+import main.java.model.piece.Ant;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
@@ -159,6 +160,51 @@ public class Heuristics {
         }
     }
     
+    public boolean OpponentsQueenSurroundedExceptGates(int player)
+    {
+        //finding northest piece of the hive
+        Tile northest = new Tile();
+        if (this.core.getBoard().getNbPieceOnTheBoard() > 0)
+        {
+            for (Column col : this.core.getBoard().getBoard())
+            {
+                for (Box box : col)
+                {
+                    for (Tile tile : box)
+                    {
+                        if (tile.getPiece() != null)
+                        {
+                            northest = tile;
+                            break;
+                        }
+                    }
+                    if (northest.getPiece() != null)
+                        break;
+                }
+                if (northest.getPiece() != null)
+                    break;
+            }
+        }
+        
+        //adding an extra ant at the north of the hive
+        Piece extraAnt = new Ant(50, this.core.getPlayers()[player].getTeam());
+        this.core.getBoard().addPiece(extraAnt, northest.getCoord().getNorthWest());
+        
+        List<CoordGene<Integer>> possibleDest = extraAnt.getPossibleMovement(this.core.getBoard().getTile(northest.getCoord().getNorthWest()), this.core.getBoard());
+        for (CoordGene coords : getTile(Consts.QUEEN, 1 - player).getCoord().getNeighbors())
+        {
+            Tile neighbor = this.core.getBoard().getTile(coords);
+            //if the extra ant can reach a neighbor of the queen 
+            if ((neighbor.getPiece() == null) && (possibleDest.contains(neighbor.getCoord())))
+                return false;
+        }
+        //removing extra piece from the board
+        this.core.getBoard().removePiece(northest.getCoord().getNorthWest());
+        
+        return true;
+    }
+    
+    
     public boolean isOpponentsQueenNeighbor(int player, Tile tile)
     {
         for (Tile t : core.getBoard().getNeighbors(getTile(Consts.QUEEN, 1 - player)))
@@ -192,9 +238,10 @@ public class Heuristics {
                         }
                         tileSet.add(this.core.getBoard().getTile(coords));
                     }
-                    if (destFound)
-                        break;
                 }
+                if (destFound)
+                    break;
+                
                 tileSet.remove(tileElem);
             }
         }
