@@ -219,5 +219,14 @@ public class Consts {
     
     //MACRO IO
 	public static final int PORT = 16518;
+        
+    //MACRO STATE BOARD
+        public static final int WAIT_FOR_INPUT = 0;
+        public static final int PROCESSING = 1;
+        public static final int READY_TO_CHANGE = 2;
+        public static final int END_OF_THE_GAME = 3;
+        
+    //MACRO FRAME BETWEEN PLAYS
+        public static final int FRAMES_TO_WAIT = 60;
     
 }

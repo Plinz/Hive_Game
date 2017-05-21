@@ -38,6 +38,7 @@ public class Core implements Cloneable {
 	private int turn;
 	private int currentPlayer;
 	private int difficulty;
+        private int state;
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -55,6 +56,7 @@ public class Core implements Cloneable {
 		this.turn = 0;
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
+                state = Consts.WAIT_FOR_INPUT;
 		if (this.mode == Consts.AIVP)
 			playAI();
 	}
@@ -76,6 +78,15 @@ public class Core implements Cloneable {
 		return isTile(coord) && isPiece(coord)
 				&& getCurrentPlayerObj().getTeam() == board.getTile(coord).getPiece().getTeam();
 	}
+        
+        public void playNextTurn(){
+            state = Consts.WAIT_FOR_INPUT;
+            if((mode == Consts.PVAI && currentPlayer != Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer != Consts.PLAYER2)){
+                state = Consts.PROCESSING;
+                playAI();
+                state = Consts.READY_TO_CHANGE;
+            }
+        }
 
 	public boolean addPiece(int pieceId, CoordGene<Integer> coord) {
 		if (!canAddPiece(pieceId))
@@ -85,10 +96,8 @@ public class Core implements Cloneable {
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
-		nextTurn();
-		if (!isGameFinish() && ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER2)
-				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1)))
-			playAI();
+                nextTurn();
+                state = Consts.READY_TO_CHANGE;
 		return status != Consts.INGAME;
 	}
 
@@ -99,9 +108,7 @@ public class Core implements Cloneable {
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-		if (!isGameFinish() && (mode == Consts.PVAI && currentPlayer == Consts.PLAYER2)
-				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1))
-			playAI();
+                state =  Consts.READY_TO_CHANGE;
 		return status != Consts.INGAME;
 	}
 
@@ -130,7 +137,7 @@ public class Core implements Cloneable {
 		return getCurrentPlayerObj().getInventory().stream().noneMatch(piece -> piece.getId() == Consts.QUEEN);
 	}
 
-	private boolean isGameFinish() {
+	public boolean isGameFinish() {
 		List<Tile> queenStuck = new ArrayList<Tile>();
 		board.getBoard().stream()
 				.forEach(column -> column.stream()
@@ -163,6 +170,7 @@ public class Core implements Cloneable {
 		}
 		return new ArrayList<CoordGene<Integer>>();
 	}
+        
 
 	public List<CoordGene<Integer>> getPossibleAdd(int player) {
 		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
@@ -233,7 +241,7 @@ public class Core implements Cloneable {
 			Path path = Paths.get("Hive_save/" + name);
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
-			if (mode == Consts.PVAI)
+			if (mode == Consts.PVAI || mode == Consts.AIVP)
 				writer.write(difficulty + "\n");
 			else
 				writer.write(players[Consts.PLAYER2].getName() + "\n");
@@ -267,7 +275,7 @@ public class Core implements Cloneable {
 			mode = Integer.parseInt(reader.readLine());
 			currentPlayer = Integer.parseInt(reader.readLine());
 			players[Consts.PLAYER1].setName(reader.readLine());
-			if (mode == Consts.PVAI) {
+			if (mode == Consts.PVAI || mode == Consts.AIVP) {
 				difficulty = Integer.parseInt(reader.readLine());
 				ai = AIFactory.buildAI(difficulty, this);
 			} else
@@ -289,7 +297,7 @@ public class Core implements Cloneable {
 		return players[currentPlayer];
 	}
 
-	private void nextTurn() {
+	public void nextTurn() {
 		currentPlayer = 1 - currentPlayer;
 		board.clearPossibleMovement();
 		if (isPlayerStuck())
@@ -362,4 +370,14 @@ public class Core implements Cloneable {
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+        
+        
 }

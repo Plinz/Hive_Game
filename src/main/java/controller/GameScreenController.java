@@ -132,7 +132,7 @@ public class GameScreenController implements Initializable {
         initButtonByInventory();
         animation = new AnimationTile();
 
-        r = new RefreshJavaFX(core, gameCanvas, highlighted, t);
+        r = new RefreshJavaFX(core, gameCanvas, highlighted, t, this);
         initGameCanvas();
 
         r.start();
@@ -144,7 +144,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                if (!endOfGame && !freeze.getValue()) {
+                if (!endOfGame && !freeze.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) {
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                     CoordGene<Double> origin = t.getMoveOrigin();
@@ -187,7 +187,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent m) {
-                if (!freeze.getValue() /*|| endOfGame*/) {
+                if ((!freeze.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) || endOfGame) {
                     t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
                 }
             }
@@ -486,16 +486,17 @@ public class GameScreenController implements Initializable {
                 if (core.movePiece(pieceToMove, coordEnd)) {
                     handleEndGame();
                 } else {
+                    /*
                     if (core.getMode() != Consts.PVP) {
                         while (core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)) {
                             core.playAI();
                         }
-                    }
+                    }*/
                     handleResize(coordEnd);
                     resetPiece();
                     clearHelp();
                     freeze.setValue(false);
-                    initButtonByInventory();
+                    //initButtonByInventory();
                 }
             }
         });
@@ -537,16 +538,17 @@ public class GameScreenController implements Initializable {
                 if (core.addPiece(pieceToChoose, coordEnd)) {
                     handleEndGame();
                 } else {
+                    /*
                     if (core.getMode() != Consts.PVP) {
                         while (core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)) {
                             core.playAI();
                         }
-                    }
+                    }*/
                     handleResize(coordEnd);
                     resetPiece();
                     clearHelp();
                     freeze.setValue(false);
-                    initButtonByInventory();
+                    //initButtonByInventory();
                 }
             }
         });
@@ -627,32 +629,51 @@ public class GameScreenController implements Initializable {
 
         freeze.setValue(false);
         endOfGame = true;
-        highlighted.setListTohighlight(null);
+        highlighted.setListTohighlight(null);    
         initButtonByInventory();
-        Dialog<?> dialog = new Alert(Alert.AlertType.INFORMATION);
-        dialog.setTitle("Fin de partie !");
-        System.err.println(core.getStatus() + "statut de fin");
+        
+        Dialog<ButtonType> popup = new Dialog<>();
+        popup.setTitle("Fin de partie");
+        ButtonType save = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
+        ButtonType cancel = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().addAll(save, cancel);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        popup.getDialogPane().setContent(grid);
+        Label gameStatus = new Label();
+        grid.add(gameStatus, 0, 0);
+        
         switch (core.getStatus()) {
             case Consts.WIN_TEAM1:
                 namePlayer1.setText(core.getPlayers()[0].getName() + " a perdu !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " a gagné !");
-                dialog.setContentText("Le joueur noir remporte la victoire !");
+               gameStatus.setText("Le joueur noir remporte la victoire !");
                 break;
             case Consts.WIN_TEAM2:
                 namePlayer1.setText(core.getPlayers()[0].getName() + " a gagné !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " a perdu !");
-                dialog.setContentText("Le joueur blanc remporte la victoire");
+                gameStatus.setText("Le joueur blanc remporte la victoire");
                 break;
             case Consts.NUL:
                 namePlayer1.setText(core.getPlayers()[0].getName() + " : match nul !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " : match nul !");
-                dialog.setContentText("Match nul");
+                gameStatus.setText("Match nul");
                 break;
             default:
-                dialog.setContentText("Ne devrait pas arriver !");
+                gameStatus.setText("Ne devrait pas arriver !");
                 break;
         }
-        dialog.show();
+        Optional<ButtonType> result = popup.showAndWait();
+        if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
+            gameScreen();
+        }
+        else{
+            main.showMainMenu();
+        }
     }
 
    

@@ -8,6 +8,7 @@ package main.java.controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import main.java.engine.Core;
+import main.java.utils.Consts;
 import main.java.view.Highlighter;
 
 public class ControllerButtonPiece implements EventHandler<MouseEvent> {
@@ -30,7 +31,7 @@ public class ControllerButtonPiece implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent t) {
-        if(!gameController.isFreeze()){
+        if(!gameController.isFreeze() && c.getState() == Consts.WAIT_FOR_INPUT){
             /* Ajout */
             gameController.resetPiece();
             gameController.getInventoryGroup().getToggles().get(i).setSelected(true);
