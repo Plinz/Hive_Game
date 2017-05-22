@@ -39,8 +39,8 @@
                   <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="namePlayer1" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
-                  <Label prefHeight="16.0" prefWidth="248.0" text="Nom du joueur 1 :" textAlignment="CENTER" wrapText="true">
+                  <TextField fx:id="playerName" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
+                  <Label fx:id="playerLabel" prefHeight="16.0" prefWidth="248.0" text="Nom du joueur  :" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="17.0" />
                      </font>
@@ -68,7 +68,7 @@
                   </Button>
                </children>
             </GridPane>
-            <ToggleButton id="pvpChoice" fx:id="choicePVP" mnemonicParsing="false" prefHeight="111.0" prefWidth="110.0" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ToggleButton id="pvpChoice" fx:id="choiceHost" mnemonicParsing="false" onMouseClicked="#handleHostClick" prefHeight="111.0" prefWidth="110.0" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="gameType" />
                </toggleGroup>
@@ -76,7 +76,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ToggleButton>
-            <ToggleButton id="pvaiChoice" fx:id="choicePVAI" mnemonicParsing="false" prefHeight="110.0" prefWidth="110.0" toggleGroup="$gameType" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ToggleButton id="pvaiChoice" fx:id="choiceClient" mnemonicParsing="false" onMouseClicked="#handleClientClick" prefHeight="110.0" prefWidth="110.0" toggleGroup="$gameType" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -89,14 +89,34 @@
                   <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ToggleButton fx:id="colorPlayer1" mnemonicParsing="false" prefHeight="110.0" prefWidth="110.0">
+                  <ToggleButton fx:id="colorHost" mnemonicParsing="false" onMouseClicked="#handleColorHostClick" prefHeight="110.0" prefWidth="110.0">
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ToggleButton>
                </children>
             </GridPane>
             <ImageView id="menuConfig" fitHeight="177.0" fitWidth="514.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="104.0" prefWidth="366.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.0" minWidth="10.0" prefWidth="147.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="180.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TextField fx:id="hostName" prefHeight="26.0" prefWidth="211.0" text="Anonyme" visible="false" GridPane.columnIndex="1" />
+                  <Label fx:id="hostLabel" prefHeight="16.0" prefWidth="248.0" text="Nom de l'hote :" textAlignment="CENTER" visible="false" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
          </children>
       </GridPane>
    </children>

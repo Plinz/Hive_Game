@@ -548,6 +548,42 @@ and open the template in the editor.
     -fx-background-color: transparent;
 }
 
+/* Network screen */
+#hostButton{
+    -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+    
+}
+
+#hostButton:hover{
+    -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+    
+}
+
+#clientButton{
+    -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+    
+}
+/* ****************/
+
+
 /* Rules screen */
 
 #titleRulesScreen{
@@ -618,4 +654,17 @@ and open the template in the editor.
     -fx-background-insets: 0 0 0 0, 0, 0, 0;
     -fx-background-radius: 0px, 0px, 0px, 0px;
     -fx-background-color: transparent;
+ }
+ 
+ #titleOptionsScreen{
+    -fx-image: url("/main/resources/img/rulesTitle/options.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+     
+ }
+ 
+ #titleLoad{
+    -fx-image: url("/main/resources/img/rulesTitle/chargerpartie.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;   
  }

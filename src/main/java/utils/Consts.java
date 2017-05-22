@@ -213,8 +213,8 @@ public class Consts {
     public static final int GO_TO_LOAD = 2;
     
     //MACRO ETAT NOUVELLE PARTIE
-    public static final int WHITE_FIRST = 0;
-    public static final int BLACK_FIRST = 1;
+    public static final int WHITE = 0;
+    public static final int BLACK = 1;
     public static final int RANDOM = 2;
     
     //MACRO IO

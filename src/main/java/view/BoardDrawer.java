@@ -42,10 +42,10 @@ public class BoardDrawer extends Visitor {
 
 	public boolean visit(Board b) {
 		gc.clearRect(0, 0, can.getWidth(), can.getHeight());
-		String name = getClass().getClassLoader().getResource("main/resources/img/misc/metal.jpg").toString();
+		/*String name = getClass().getClassLoader().getResource("main/resources/img/misc/metal.jpg").toString();
 		gc.setFill(new ImagePattern(new Image(name)));
 		gc.strokeRect(0, 0, can.getWidth(), can.getHeight());
-		gc.fillRect(0, 0, can.getWidth(), can.getHeight());
+		gc.fillRect(0, 0, can.getWidth(), can.getHeight());*/
 		return false;
 	}
 

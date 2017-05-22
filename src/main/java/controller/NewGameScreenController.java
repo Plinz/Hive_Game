@@ -39,7 +39,7 @@ public class NewGameScreenController implements Initializable {
     
     
     private Main main;
-    private int state = Consts.WHITE_FIRST;
+    private int state = Consts.WHITE;
     
     @FXML private Label labelPlayer2;
     @FXML private TextField namePlayer1;
@@ -79,7 +79,7 @@ public class NewGameScreenController implements Initializable {
             	iaName = "IA_Difficile";
                 iaDifficulty = Consts.HARD;
             }
-            if(state == Consts.WHITE_FIRST){
+            if(state == Consts.WHITE){
                 core = new Core(Consts.PVAI, iaDifficulty);
                 core.getPlayers()[0].setName(namePlayer1.getText());
                 core.getPlayers()[1].setName(iaName);
@@ -94,7 +94,7 @@ public class NewGameScreenController implements Initializable {
         //Sinon si on est en mode PVP
         else{
             core = new Core(Consts.PVP, Consts.EASY);
-            if(state == Consts.WHITE_FIRST){
+            if(state == Consts.WHITE){
                 core.getPlayers()[0].setName(namePlayer1.getText());
                 core.getPlayers()[1].setName(namePlayer2.getText());
             }
@@ -134,11 +134,11 @@ public class NewGameScreenController implements Initializable {
     
     public void majColorButton(){
         switch(state){
-            case Consts.WHITE_FIRST:
+            case Consts.WHITE:
                 colorPlayer1.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/whitestart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
                 colorPlayer2.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/blackstart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
                 break;
-            case Consts.BLACK_FIRST:
+            case Consts.BLACK:
                 colorPlayer2.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/whitestart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
                 colorPlayer1.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/blackstart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
                 break;

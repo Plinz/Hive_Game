@@ -115,6 +115,7 @@ public class Main extends Application {
             
             NetworkScreenController controller = loader.getController();
             controller.setMainApp(this);
+            controller.majColorButton();
             
             primaryStage.getScene().setRoot(personOverview);
             
