@@ -38,7 +38,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
@@ -391,9 +390,10 @@ public class GameScreenController implements Initializable {
         double x[] = hex.getListXCoord();
         double y[] = hex.getListYCoord();
         int placement = (int) (Consts.SIDE_SIZE);
+        Piece piece = tile.getPiece();
         
         Polygon p = new Polygon();
-        p.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + tile.getPiece().getName() + tile.getPiece().getTeam() + ".png").toString())));
+        p.setFill(new ImagePattern(piece.getImage()));
         p.getPoints().addAll(new Double[]{
             x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement),
             x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement,
@@ -473,8 +473,7 @@ public class GameScreenController implements Initializable {
         end = t.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
-        String name = getClass().getClassLoader().getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() + ".png").toString();
-        Image image = new Image(name);
+        Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
                 new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
@@ -524,8 +523,7 @@ public class GameScreenController implements Initializable {
         end = t.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
-        String name = getClass().getClassLoader().getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() + ".png").toString();
-        Image image = new Image(name);
+        Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
                 new MoveTo(start.getX() + t.getMoveOrigin().getX(), 0),
