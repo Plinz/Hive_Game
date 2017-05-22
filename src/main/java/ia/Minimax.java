@@ -202,15 +202,15 @@ public class Minimax {
             }
         }
         //calculate heuristics
-        System.out.println("move : " + this.moveFromParent +",currentPlayer" + core.getCurrentPlayer());
+        System.out.println("move : " + this.moveFromParent + ",currentPlayer" + core.getCurrentPlayer());
         heuristicValue = heuristics.getHeuristicsValue();
         System.out.println("heuristique :" + this.heuristicValue);
-        System.out.println("Possible move "+result.toString());
         //concatenate strings for result
         for (int i = 0; i < possibleMovements.size(); i++) {
             String toAdd = possibleMovements.get(i) + ";" + possibleUnplay.get(i);
             result.add(toAdd);
         }
+        System.out.println("Possible move " + result.toString());
         return result;
     }
 
