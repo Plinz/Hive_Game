@@ -372,6 +372,14 @@ public class Core implements Cloneable {
 				;
 		}
 	}
+	
+	public void newMessage(String message){
+		//TODO
+	}
+	
+	public void sendMessage(String message){
+		io.sendMessage(message);
+	}
 
 	@Override
 	protected Core clone() {

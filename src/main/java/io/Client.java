@@ -52,8 +52,18 @@ public class Client extends IO {
 	@Override
 	public void sendMove(String move) {
 		if (server != null) {
-			server.println(move);
+			server.println("MOVE"+move);
 			server.flush();
+		}
+	}
+	
+	@Override
+	public void sendMessage(String message) {
+		synchronized (this) {
+			if (server != null){
+				server.println("MESG"+message);
+				server.flush();
+			}
 		}
 	}
 
@@ -77,7 +87,9 @@ public class Client extends IO {
 			} else if(response.startsWith("MODE")){
 				int m = Integer.parseInt(response.substring(4));
 				mode = m==Consts.PVEX?Consts.EXVP:Consts.PVEX;
-			} else {
+			} else if(response.startsWith("MESG")){
+				core.newMessage(response.substring(4));
+			} else if(response.startsWith("MOVE")){
 				String[] tokens = response.split(";");
 				core.playExtern(tokens[0], tokens[1]);
 			}
