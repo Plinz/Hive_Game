@@ -162,7 +162,7 @@ public class GameScreenController implements Initializable {
                                 pieceToChoose = -1;
                             } else {
                                 if (pieceToChoose != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)) {
-                                    startPlacingAnimation(coord);
+                                    startPlacingAnimation(pieceToChoose,coord);
                                     undo.setDisable(false);
                                     redo.setDisable(true);
                                 } else {
@@ -506,7 +506,7 @@ public class GameScreenController implements Initializable {
         animation.play();
     }
 
-    public void startPlacingAnimation(CoordGene<Integer> coordEnd) {
+    public void startPlacingAnimation(int idPiece, CoordGene<Integer> coordEnd) {
 
         freeze.setValue(true);
         highlighted.setListTohighlight(null);
@@ -515,7 +515,7 @@ public class GameScreenController implements Initializable {
         Piece piece = null;
 
         for (int i = 0; i < core.getPlayers()[core.getCurrentPlayer()].getInventory().size(); i++) {
-            if (core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i).getId() == pieceToChoose) {
+            if (core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i).getId() == idPiece) {
                 piece = core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i);
             }
         }
@@ -537,7 +537,7 @@ public class GameScreenController implements Initializable {
             public void handle(ActionEvent event) {
 
                 panCanvas.getChildren().remove(animation.getPolygon());
-                if (core.addPiece(pieceToChoose, coordEnd)) {
+                if (core.addPiece(idPiece, coordEnd)) {
                     handleEndGame();
                 } else {
                     handleResize(coordEnd);

@@ -127,6 +127,8 @@ public class Core implements Cloneable {
 
 	public void playAI() {
 		String[] moveAndUnplay = ai.getNextMove().split(";");
+                //Là il faudrait une traduction
+                
 		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
                 state = Consts.READY_TO_CHANGE;
 	}
