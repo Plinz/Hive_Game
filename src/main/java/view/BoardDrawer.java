@@ -106,15 +106,6 @@ public class BoardDrawer extends Visitor {
 	@Override
 	protected boolean visit(Piece p) {
 		throw new UnsupportedOperationException("Not supported yet."); // To
-																		// change
-																		// body
-																		// of
-																		// generated
-																		// methods,
-																		// choose
-																		// Tools
-																		// |
-																		// Templates.
 	}
 
 	@Override
