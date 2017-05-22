@@ -505,7 +505,6 @@ public class GameScreenController implements Initializable {
             public void handle(ActionEvent event) {
                 panCanvas.getChildren().remove(animation.getPolygon());
                 core.movePiece(pieceToMove, coordEnd);
-                handleEndGame();
                 handleResize(coordEnd);
                 resetPiece();
                 clearHelp();
@@ -547,7 +546,6 @@ public class GameScreenController implements Initializable {
 
                 panCanvas.getChildren().remove(animation.getPolygon());
                 core.addPiece(idPiece, coordEnd);
-                handleEndGame();
                 handleResize(coordEnd);
                 resetPiece();
                 clearHelp();
