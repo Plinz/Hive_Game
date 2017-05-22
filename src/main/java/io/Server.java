@@ -14,6 +14,7 @@ public class Server extends IO {
 
 	private PrintWriter client;
 	private String notation = null;
+	private String otherName = null;
 
 	public Server(Core core) {
 		super(core);
@@ -30,20 +31,33 @@ public class Server extends IO {
 
 	@Override
 	public String getMove() {
-		return notation;
+		synchronized (this) {
+			return notation;
+		}
 	}
 
 	@Override
-	public void updateInfo() {
-		// TODO Auto-generated method stub
-		
+	public boolean updateInfo() {
+		synchronized (this) {
+			if (otherName != null){
+				(core.getMode()==Consts.PVEX?core.getPlayers()[Consts.PLAYER2]:core.getPlayers()[Consts.PLAYER1]).setName(otherName);
+				return true;
+			}
+			return false;
+		}
 	}
 
 	@Override
 	public void sendInfo() {
-		// TODO Auto-generated method stub
-		
+		synchronized (this) {
+			if (client != null){
+				client.println("MODE"+core.getMode());
+				client.println("NAME"+(core.getMode()==Consts.PVEX?core.getPlayers()[Consts.PLAYER1]:core.getPlayers()[Consts.PLAYER2]).getName());
+				client.flush();
+			}
+		}
 	}
+	
 	@Override
 	public void sendMove(String move) {
 		synchronized (this) {
@@ -57,37 +71,14 @@ public class Server extends IO {
 	@Override
 	public void processReceive(String response) {
 		synchronized (this) {
-			String[] tokens = response.split(";");
-			core.playEmulate(tokens[0], tokens[1]);
+			if (response.startsWith("NAME")){
+				otherName = response.substring(4);
+			} else {
+				String[] tokens = response.split(";");
+				core.playEmulate(tokens[0], tokens[1]);
+			}
 		}
 	}
-//	synchronized public void receiveMove(String notation) {
-//		if (nextMove == null){
-//			nextMove = notation;
-//		}
-//	}
-//
-//	synchronized public void delClient() {
-//		client = null;
-//	}
-//
-//	public void addClient(PrintWriter _out) {
-//		client = _out;
-//	}
-//
-//	public String getNextMove() {
-//		synchronized (this){
-//			String s = nextMove;
-//			nextMove = "";
-//			return s;
-//		}
-//	}
-//
-//	public void setNextMove(String nextMove) {
-//		synchronized (this) {
-//			this.nextMove = nextMove;
-//		}
-//	}
 
 	public class ServerThread implements Runnable {
 	

@@ -12,6 +12,8 @@ import main.java.utils.Consts;
 public class Client extends IO {
 	private PrintWriter server = null;
 	private String notation = null;
+	private String otherName = null;
+	private int mode = -1;
 	private boolean run = true;
 
 	public Client(Core core) {
@@ -22,7 +24,6 @@ public class Client extends IO {
 	public void connect(String host) {
 		try {
 			new Thread(new ClientThread(new Socket(host, Consts.PORT))).start();
-			;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -36,8 +37,15 @@ public class Client extends IO {
 	}
 
 	@Override
-	public void updateInfo() {
-		// TODO
+	public boolean updateInfo() {
+		synchronized (this) {
+			if (otherName != null && mode != -1){
+				core.setMode(mode==Consts.PVEX?Consts.EXVP:Consts.PVEX);
+				(mode==Consts.PVEX?core.getPlayers()[Consts.PLAYER2]:core.getPlayers()[Consts.PLAYER1]).setName(otherName);
+				return true;
+			}
+			return false;
+		}
 	}
 
 	@Override
@@ -50,10 +58,11 @@ public class Client extends IO {
 
 	@Override
 	public void sendInfo() {
-		if (server != null) {
-			server.println("INFO");
-			server.println();
-			server.flush();
+		synchronized (this) {
+			if (server != null){
+				server.println("NAME"+(core.getMode()==Consts.PVEX?core.getPlayers()[Consts.PLAYER1]:core.getPlayers()[Consts.PLAYER2]).getName());
+				server.flush();
+			}
 		}
 	}
 	
@@ -86,8 +95,6 @@ public class Client extends IO {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			server.write("CLOSE");
-			server.flush();
 			server.close();
 		}
 

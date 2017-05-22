@@ -12,7 +12,7 @@ public abstract class IO {
 
 	public abstract void connect(String host);
 	public abstract String getMove();
-	public abstract void updateInfo();
+	public abstract boolean updateInfo();
 	public abstract void sendMove(String move);
 	public abstract void sendInfo();
 	public abstract void processReceive(String response);
