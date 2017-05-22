@@ -36,13 +36,6 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Hive_Game");
         this.primaryStage.setScene(new Scene(new AnchorPane()));
-        if (!Files.isDirectory(Paths.get("Hive_init"))) {
-            try {
-                Files.createDirectories(Paths.get("Hive_init"));
-            } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         showMainMenu();
         this.primaryStage.show();
     }
@@ -217,8 +210,19 @@ public class Main extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+    
+    public static void createInitDirectory(){
+        if (!Files.isDirectory(Paths.get("Hive_init"))) {
+            try {
+                Files.createDirectories(Paths.get("Hive_init"));
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, TransformerConfigurationException, SAXException {
+        createInitDirectory();
         OptionManager.init();
         launch(args);
     }
