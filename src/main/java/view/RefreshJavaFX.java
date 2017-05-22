@@ -55,7 +55,11 @@ public class RefreshJavaFX extends AnimationTimer{
                 });         
             }
             time = 0;
-        }else if(core.getState() == Consts.READY_TO_CHANGE){
+        }else if(core.getState() == Consts.READY_TO_CHANGE && time == 0){
+            g.giveHand();
+            time++;
+        }
+        else if(core.getState() == Consts.READY_TO_CHANGE){
             time++;
         }
         

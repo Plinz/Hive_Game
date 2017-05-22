@@ -86,9 +86,9 @@ public class Core implements Cloneable {
         public void playNextTurn(){
             state = Consts.WAIT_FOR_INPUT;
             if((mode == Consts.PVAI && currentPlayer != Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer != Consts.PLAYER2)){
+                
                 state = Consts.PROCESSING;
                 playAI();
-                state = Consts.READY_TO_CHANGE;
             }
         }
 
@@ -100,11 +100,11 @@ public class Core implements Cloneable {
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
-        nextTurn();
-        if (mode == Consts.PVEX || mode == Consts.EXVP)
-        	io.sendMove(notation);
-        state = Consts.READY_TO_CHANGE;
-		return status != Consts.INGAME;
+                nextTurn();
+                if (mode == Consts.PVEX || mode == Consts.EXVP)
+                        io.sendMove(notation);
+                state = Consts.READY_TO_CHANGE;
+                return status != Consts.INGAME;
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
@@ -114,8 +114,8 @@ public class Core implements Cloneable {
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-        if (mode == Consts.PVEX || mode == Consts.EXVP)
-        	io.sendMove(notation+";"+unplay);
+                 if (mode == Consts.PVEX || mode == Consts.EXVP)
+                    io.sendMove(notation+";"+unplay);
 		state =  Consts.READY_TO_CHANGE;
 		return status != Consts.INGAME;
 	}
@@ -128,6 +128,7 @@ public class Core implements Cloneable {
 	public void playAI() {
 		String[] moveAndUnplay = ai.getNextMove().split(";");
 		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
+                state = Consts.READY_TO_CHANGE;
 	}
 
 	public void playEmulate(String play, String unplay) {

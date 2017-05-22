@@ -324,13 +324,13 @@ public class GameScreenController implements Initializable {
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
         if (core.getCurrentPlayer() == 0) {
-            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
             namePlayer1.setText(core.getPlayers()[0].getName() + " à vous de jouer !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " attend !");
         } else {
-            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
 
             namePlayer1.setText(core.getPlayers()[0].getName() + " attend !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " à vous de jouer !");
@@ -345,11 +345,10 @@ public class GameScreenController implements Initializable {
         int line = 0;
         int col = 0;
         for (int i = 0; i < inventory.size(); i++) {
-            String name = inventory.get(i).getName();
-            int team = inventory.get(i).getTeam();
+            Piece piece = inventory.get(i);
             ToggleButton b = new ToggleButton();
             b.setMinSize(65, 65);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
@@ -406,6 +405,18 @@ public class GameScreenController implements Initializable {
         popup.getContent().add(p);
 
     }
+    
+    public void giveHand(){
+        inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
+        inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+        inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+        namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
+        namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !");
+        
+        initPlayer1Button();
+        initPlayer2Button();
+        
+    }
 
     public void initPlayer2Button() {
         inventoryPlayer2.getChildren().remove(0, inventoryPlayer2.getChildren().size());
@@ -413,11 +424,10 @@ public class GameScreenController implements Initializable {
         int line = 0;
         int col = 0;
         for (int i = 0; i < inventory.size(); i++) {
-            String name = inventory.get(i).getName();
-            int team = inventory.get(i).getTeam();
+            Piece piece = inventory.get(i);
             ToggleButton b = new ToggleButton();
             b.setMinSize(65, 65);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if (core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
