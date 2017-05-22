@@ -76,6 +76,7 @@ public class NetworkScreenController implements Initializable {
     @FXML
     public void handleColorHostClick(){
         state = (state+1)%3;
+        majColorButton();
     }
     
     public void majColorButton(){
