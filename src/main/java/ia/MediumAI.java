@@ -65,14 +65,23 @@ public class MediumAI extends AI {
 
             List<Minimax> possibleMovements = minimax.getChildren();
             Minimax chosenOne = possibleMovements.get(0);
-            double bestHeuristic = Consts.BEST_HEURISTICS;
+            double bestHeuristic = Consts.MINIMUM_HEURISTICS;
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             for (Minimax child : possibleMovements) {
-                if (child.heuristicValue<bestHeuristic){
+                System.out.println("child : move = "+child.moveFromParent + " with h= "+child.heuristicValue);
+                if (child.heuristicValue>bestHeuristic){
                     bestHeuristic = child.heuristicValue;
                     chosenOne = child;
                 }
             }
-
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+            System.out.println("Chosen One : "+chosenOne.moveFromParent + " with heuristic = "+chosenOne.heuristicValue);
             return chosenOne.moveFromParent+";"+chosenOne.moveToParent;
         }
     }

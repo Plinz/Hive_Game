@@ -82,7 +82,7 @@ public class Consts {
     public static final int BEST_HEURISTICS = 5000;
     
     public static final int DEPTH_EASY = 1;
-    public static final int DEPTH_MEDIUM = 1;
+    public static final int DEPTH_MEDIUM = 2;
     public static final int DEPTH_HARD = 3;
         //MACRO HEURISTIQUE -> OPENINGS   
         //  /!\ la somme des doubles DOIT faire 1 et la taille du tableau = 5

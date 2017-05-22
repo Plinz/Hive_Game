@@ -40,7 +40,7 @@ public class MediumHeuristics extends Heuristics{
                 //System.out.println("Value ajout player"+player+", piece"+pieceId+",value"+getPieceValue(player, pieceId));
             }
         }
-        System.out.println("heuristic value : "+value);
+        //System.out.println("heuristic value : "+value);
         return value;
     }
     

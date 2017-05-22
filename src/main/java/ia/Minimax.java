@@ -67,16 +67,22 @@ public class Minimax {
             core.previousState();
 
         }
-        System.out.println("NbConfigStudied = " + heuristics.nbConfigsStudied);
+        //System.out.println("NbConfigStudied = " + heuristics.nbConfigsStudied);
         return children;
     }
 
     private double getHeuristicsValueRecursively(int maxdepth) {
-        System.out.println("/*/*/*/*/*/*/GetHeurRec Move =" + moveFromParent + " and depth :" + depth + " and currentpl :" + core.getCurrentPlayer());
+        double currentHeuristic;
+        
+        printIndented("GetHeurRec depth :" + depth + " and currentpl :" + core.getCurrentPlayer());
         heuristics.resetValues();
         if (depth >= maxdepth) {
-            getAllPossibleMovesWithHeuristics();
-            return heuristicValue;
+            double result = calculateHeuristics();
+            printIndented("heuristique :" + result);
+            if (core.getCurrentPlayer() == AIPlayer){
+                result *= -1;
+            }
+            return result;
         }
 
         //Case Ai just played -> we keep the best heuristic
@@ -86,14 +92,15 @@ public class Minimax {
             for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                System.out.println("play " + splitted[0]);
+                printIndented("play " + splitted[0]);
                 depth++;
-                getHeuristicsValueRecursively(heuristics.maxdepth);
-                if (heuristicValue > bestHeuristic) {
-                    bestHeuristic = heuristicValue;
+                currentHeuristic = getHeuristicsValueRecursively(heuristics.maxdepth);
+                if (currentHeuristic > bestHeuristic) {
+                    printIndented("We get the max");
+                    bestHeuristic = currentHeuristic;
                 }
                 depth--;
-                System.out.println("unplay " + splitted[1]);
+                printIndented("unplay " + splitted[1]);
                 core.previousState();
             }
             return bestHeuristic;
@@ -103,14 +110,15 @@ public class Minimax {
             for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                System.out.println("play " + splitted[0]);
+                printIndented("play " + splitted[0]);
                 depth++;
-                getHeuristicsValueRecursively(heuristics.maxdepth);
-                if (heuristicValue < worstHeuristic) {
-                    worstHeuristic = heuristicValue;
+                currentHeuristic = getHeuristicsValueRecursively(heuristics.maxdepth);
+                if (currentHeuristic < worstHeuristic) {
+                    printIndented("We get the min");
+                    worstHeuristic = currentHeuristic;
                 }
                 depth--;
-                System.out.println("unplay " + splitted[1]);
+                printIndented("unplay " + splitted[1]);
                 core.previousState();
             }
             return worstHeuristic;
@@ -224,13 +232,64 @@ public class Minimax {
         for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
             String[] splitted = moveAndUnmove.split(";");   //  move;unmove
             core.playEmulate(splitted[0], splitted[1]);
-            System.out.println("$$$-----Move :" + Notation.getHumanDescription(splitted[0], false)  + " profondeur " + depth);
+            System.out.println("Move :" + Notation.getHumanDescription(splitted[0], false) + " profondeur " + depth);
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
-            child.getHeuristicsValueRecursively(heuristics.maxdepth);
+            child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
+            printIndented("__________________________________________________");
+            printIndented("___________For move : " + child.moveFromParent + "heuristic is finally " + child.heuristicValue);
+            printIndented("__________________________________________________");
             children.add(child);
             core.previousState();
         }
         //System.out.println("NbConfigStudied = " + children.size());
         return children;
+    }
+
+    public double calculateHeuristics() {
+
+        //heuristics for pieces in hand of current player
+        List<CoordGene<Integer>> possibleAddCurrentPlayer = core.getPossibleAdd(core.getCurrentPlayer());
+        int possibleAddSizeCurrentPlayer = possibleAddCurrentPlayer.size();
+        for (Piece piece : core.getCurrentPlayerObj().getInventory()) {
+            heuristics.pieces[0][piece.getId()].getValuesInHand(possibleAddSizeCurrentPlayer);
+        }
+
+        //heuristics for pieces in hand of other player
+        List<CoordGene<Integer>> possibleAddOtherPlayer = core.getPossibleAdd(1 - core.getCurrentPlayer());
+        int possibleAddSizeOtherPlayer = possibleAddOtherPlayer.size();
+        for (Piece piece : core.getPlayers()[1 - core.getCurrentPlayer()].getInventory()) {
+            heuristics.pieces[0][piece.getId()].getValuesInHand(possibleAddSizeOtherPlayer);
+        }
+
+        //getting all possible moves + heuristics of both players and add possible moves for current player
+        for (Column column : core.getBoard().getBoard()) {
+            for (Box box : column) {
+                for (Tile tile : box) {
+                    if (tile != null && tile.getPiece() != null && !tile.isBlocked()) {
+
+                        List<CoordGene<Integer>> PossibleDestinations = core.getPossibleMovement(tile.getCoord());
+                        int nbNeighbors = core.getBoard().getPieceNeighbors(tile).size();
+                        int possibleMoveSize = PossibleDestinations.size();
+
+                        if (tile.getPiece().getTeam() == core.getCurrentPlayer()) {
+                            heuristics.pieces[0][tile.getPiece().getId()].getValuesOnBoard(nbNeighbors, possibleMoveSize);
+                        } else {
+                            heuristics.pieces[1][tile.getPiece().getId()].getValuesOnBoard(nbNeighbors, possibleMoveSize);
+                        }
+                    }
+                }
+            }
+        }
+        //calculate heuristics
+        //System.out.println("move : " + this.moveFromParent + ",currentPlayer" + core.getCurrentPlayer());
+        return heuristics.getHeuristicsValue();
+
+    }
+    
+    public void printIndented(String string){
+        for (int i=0 ; i<depth ; i++){
+            System.out.print("   ");
+        }
+        System.out.print(string + "\n");
     }
 }
