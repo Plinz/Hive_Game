@@ -876,11 +876,11 @@ public class GameScreenController implements Initializable {
     public void takeSnapshot(String name) throws IOException {
         WritableImage screenshot = new WritableImage((int) main.getPrimaryStage().getScene().getWidth(), (int) main.getPrimaryStage().getScene().getHeight());
         main.getPrimaryStage().getScene().snapshot(screenshot);
-        if (!Files.isDirectory(Paths.get("Hive_save_images"))) {
-            Files.createDirectories(Paths.get("Hive_save_images"));
+        if (!Files.isDirectory(Paths.get("Hive_init/Hive_save_images"))) {
+            Files.createDirectories(Paths.get("Hive_init/Hive_save_images"));
         }
 
-        File file = new File("Hive_save_images/" + name + ".png");
+        File file = new File("Hive_init/Hive_save_images/" + name + ".png");
         ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);
     }
 
