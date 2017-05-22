@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import main.java.engine.Core;
+import main.java.engine.Notation;
 import main.java.utils.Consts;
 
 public class MediumAI extends AI {
@@ -71,7 +72,7 @@ public class MediumAI extends AI {
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             for (Minimax child : possibleMovements) {
-                System.out.println("child : move = "+child.moveFromParent + " with h= "+child.heuristicValue);
+                System.out.println("child : move = "+ Notation.getHumanDescription( child.moveFromParent, false)  + " with h= "+child.heuristicValue);
                 if (child.heuristicValue>bestHeuristic){
                     bestHeuristic = child.heuristicValue;
                     chosenOne = child;

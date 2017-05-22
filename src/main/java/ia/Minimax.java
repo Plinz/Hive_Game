@@ -92,7 +92,7 @@ public class Minimax {
             for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                printIndented("play " + splitted[0]);
+                printIndented("play " + Notation.getHumanDescription( splitted[0], false));
                 depth++;
                 currentHeuristic = getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (currentHeuristic > bestHeuristic) {
@@ -110,7 +110,7 @@ public class Minimax {
             for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                printIndented("play " + splitted[0]);
+                printIndented("play " + Notation.getHumanDescription( splitted[0], false));
                 depth++;
                 currentHeuristic = getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (currentHeuristic < worstHeuristic) {
@@ -236,7 +236,7 @@ public class Minimax {
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
             printIndented("__________________________________________________");
-            printIndented("___________For move : " + child.moveFromParent + "heuristic is finally " + child.heuristicValue);
+            printIndented("___________For move : " +Notation.getHumanDescription( child.moveFromParent, false)  + "heuristic is finally " + child.heuristicValue);
             printIndented("__________________________________________________");
             children.add(child);
             core.previousState();
