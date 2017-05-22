@@ -53,10 +53,6 @@ public class Core implements Cloneable {
 		this.emulator = new Emulator(this, board, players);
 		if (mode == Consts.PVAI || mode == Consts.AIVP)
 			this.ai = AIFactory.buildAI(difficulty, this);
-		else if (mode == Consts.PVEX)
-			this.io = new Server(this);
-		else if (mode == Consts.EXVP)
-			this.io = new Client(this);
 		this.mode = mode;
 		this.status = Consts.INGAME;
 		this.turn = 0;
@@ -332,9 +328,21 @@ public class Core implements Cloneable {
 		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
 	}
 	
-	public void connect(String host){
-		if (io != null)
+	public void connect(String host, int mode, String playerName){
+		if (mode == -1){
+			io = new Client(this);
 			io.connect(host);
+			while(!io.updateInfo());
+			(this.mode==Consts.PVEX?players[Consts.PLAYER1]:players[Consts.PLAYER2]).setName(playerName);
+			io.sendInfo();
+		} else {
+			this.mode = mode;
+			(mode==Consts.PVEX?players[Consts.PLAYER1]:players[Consts.PLAYER2]).setName(playerName);
+			io = new Server(this);
+			io.connect(null);
+			io.sendInfo();
+			while (!io.updateInfo());
+		}
 	}
 	
 	@Override
