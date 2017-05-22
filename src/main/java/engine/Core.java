@@ -45,6 +45,7 @@ public class Core implements Cloneable {
 	private int difficulty;
 	private int state;
 	private GameScreenController gameScreen;
+	private String lastMsg;
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -61,6 +62,7 @@ public class Core implements Cloneable {
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
 		this.state = Consts.WAIT_FOR_INPUT;
+		this.lastMsg = null;
 	}
 
 	public boolean accept(BoardDrawer b) {
@@ -373,10 +375,6 @@ public class Core implements Cloneable {
 		}
 	}
 	
-	public void newMessage(String message){
-		//TODO
-	}
-	
 	public void sendMessage(String message){
 		io.sendMessage(message);
 	}
@@ -448,6 +446,16 @@ public class Core implements Cloneable {
 
 	public void setGameScreen(GameScreenController gameScreen) {
 		this.gameScreen = gameScreen;
+	}
+	
+	public String getLastMsg() {
+		String last = lastMsg;
+		lastMsg = null;
+		return last;
+	}
+
+	public void setLastMsg(String lastMsg) {
+		this.lastMsg = lastMsg;
 	}
 
 }
