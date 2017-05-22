@@ -162,13 +162,7 @@ public class GameScreenController implements Initializable {
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null && possibleMovement.contains(coord)) {
-                                //startMovingAnimation(pieceToMove, coord);
-                                core.movePiece(pieceToMove, coord);
-                                panCanvas.getChildren().remove(animation.getPolygon());
-                                animationPlaying.setValue(false);
-                                handleResize(coord);
-                                resetPiece();
-                                clearHelp();
+                                startMovingAnimation(pieceToMove, coord);
                                 undo.setDisable(false);
                                 redo.setDisable(true);
                             } else if (core.isPieceOfCurrentPlayer(coord)) {
@@ -536,7 +530,20 @@ public class GameScreenController implements Initializable {
         animation.setPath(new Path(
                 new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
                 new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
-
+        
+        animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
+ 
+            @Override
+            public void handle(ActionEvent event) {
+                panCanvas.getChildren().remove(animation.getPolygon());
+                core.movePiece(pieceToMove, coordEnd);
+                handleResize(coordEnd);
+                resetPiece();
+                clearHelp();
+                animationPlaying.setValue(false);
+            }
+        });
+ 
         animation.play();
     }
 
