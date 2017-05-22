@@ -196,7 +196,7 @@
                            </padding>
                         </Separator>
                         <ScrollPane prefHeight="94.0" prefWidth="412.0" GridPane.rowIndex="3" />
-                        <TextField GridPane.rowIndex="4" />
+                        <TextField fx:id="inputChat" onKeyPressed="#handleInputChat" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                   <Separator prefWidth="200.0" GridPane.rowIndex="1" />

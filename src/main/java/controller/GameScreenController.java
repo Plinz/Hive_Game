@@ -44,6 +44,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -97,6 +98,7 @@ public class GameScreenController implements Initializable {
     @FXML private Button redo;
     @FXML private Button helpButton;
     @FXML private MenuItem saveMenuItem;
+    @FXML private TextField inputChat;
     
     private Main main;
     private Core core;
@@ -320,6 +322,13 @@ public class GameScreenController implements Initializable {
         	n.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));;
         }
 
+    }
+    
+    public void handleInputChat(KeyEvent e){
+        if(e.getCode().toString().equals("ENTER")){
+            //core.sendMessage(inputChat.getText());
+            System.err.println(inputChat.getText());
+        }
     }
 
     public void handleUpButton() {
