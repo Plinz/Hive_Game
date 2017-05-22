@@ -6,11 +6,18 @@
 package main.java.controller;
 
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import main.java.engine.Core;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.ImagePattern;
 import main.java.implement.Main;
 import main.java.utils.Consts;
 
@@ -23,6 +30,14 @@ public class NetworkScreenController implements Initializable {
     
     
     private Main main;
+    private int state = Consts.WHITE_FIRST;
+    @FXML private Label hostLabel;
+    @FXML private TextField hostName;
+    @FXML private ToggleButton choiceHost;
+    @FXML private ToggleButton choiceClient;
+    @FXML private ToggleButton colorHost;
+    
+    
     
     
     public void setMainApp(Main mainApp) {
@@ -37,13 +52,48 @@ public class NetworkScreenController implements Initializable {
         // TODO
     }    
     
-     @FXML
+    @FXML
     public void handleLaunchGameClick(){
          System.out.println("click");
         
     }
     
+    @FXML
+    public void handleHostClick(){
+        choiceHost.setSelected(true);
+        hostLabel.setVisible(false);
+        hostName.setVisible(false);
+        
+    }
     
+    @FXML
+    public void handleClientClick(){
+        choiceClient.setSelected(true);
+        hostLabel.setVisible(true);
+        hostName.setVisible(true);
+    }
+    
+    @FXML
+    public void handleColorHostClick(){
+        state = (state+1)%3;
+    }
+    
+    public void majColorButton(){
+        switch(state){
+            case Consts.WHITE_FIRST:
+                colorHost.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/whitestart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                break;
+            case Consts.BLACK_FIRST:
+                colorHost.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/blackstart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                break;
+            case Consts.RANDOM:
+                colorHost.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/misc/rngstart.png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+                break;
+            default:
+                break;
+        }
+    }
+     
     @FXML 
     public void handleMenuClick(){
         main.showMainMenu();

@@ -66,6 +66,9 @@
                      <GridPane.margin>
                         <Insets left="20.0" top="17.0" />
                      </GridPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ToggleButton>
                </children>
             </GridPane>
@@ -121,6 +124,9 @@
                      <GridPane.margin>
                         <Insets left="20.0" />
                      </GridPane.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </ToggleButton>
                </children>
             </GridPane>
