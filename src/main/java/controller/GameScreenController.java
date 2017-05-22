@@ -133,9 +133,11 @@ public class GameScreenController implements Initializable {
 
         r = new RefreshJavaFX(core, gameCanvas, highlighted, t, this);
         initGameCanvas();
-
+        core.setGameScreen(this);
+        if (core.getMode() == Consts.AIVP && core.getTurn() == 0){
+            core.playAI();
+        }
         r.start();
-
     }
 
     public void initGameCanvas() {
@@ -502,15 +504,11 @@ public class GameScreenController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 panCanvas.getChildren().remove(animation.getPolygon());
-                if (core.movePiece(pieceToMove, coordEnd)) {
-                    handleEndGame();
-                } else {
-                    handleResize(coordEnd);
-                    resetPiece();
-                    clearHelp();
-                    freeze.setValue(false);
-                    //initButtonByInventory();
-                }
+                core.movePiece(pieceToMove, coordEnd);
+                handleResize(coordEnd);
+                resetPiece();
+                clearHelp();
+                freeze.setValue(false);
             }
         });
         animation.play();
@@ -547,18 +545,94 @@ public class GameScreenController implements Initializable {
             public void handle(ActionEvent event) {
 
                 panCanvas.getChildren().remove(animation.getPolygon());
-                if (core.addPiece(idPiece, coordEnd)) {
-                    handleEndGame();
-                } else {
-                    handleResize(coordEnd);
-                    resetPiece();
-                    clearHelp();
-                    freeze.setValue(false);
-                }
+                core.addPiece(idPiece, coordEnd);
+                handleResize(coordEnd);
+                resetPiece();
+                clearHelp();
+                freeze.setValue(false);
+                
             }
         });
         animation.play();
     }
+    
+    public void startMovingAIAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd, String move, String unmove){
+        
+        freeze.setValue(true);
+        highlighted.setListTohighlight(null);
+        highlighted.setHelp(null);
+
+        Piece piece = core.getBoard().getTile(coordStart).getPiece();
+
+        CoordGene<Double> start = new CoordGene<>((double) coordStart.getX(), (double) coordStart.getY());
+        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
+        start = t.axialToPixel(start);
+        end = t.axialToPixel(end);
+
+        panCanvas.getChildren().add(animation.getPolygon());
+        Image image = piece.getImage();
+        animation.setImagePolygon(image);
+        animation.setPath(new Path(
+                new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
+                new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
+        animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                panCanvas.getChildren().remove(animation.getPolygon());
+                core.playEmulate(move,unmove);
+                core.setState(Consts.READY_TO_CHANGE);
+                handleResize(coordEnd);
+                resetPiece();
+                clearHelp();
+                freeze.setValue(false);
+            }
+        });
+        animation.play();
+    }
+    
+    public void startPlacingAIAnimation(int idPiece, CoordGene<Integer> coordEnd,String move, String unmove) {
+
+        freeze.setValue(true);
+        highlighted.setListTohighlight(null);
+        highlighted.setHelp(null);
+
+        Piece piece = null;
+
+        for (int i = 0; i < core.getPlayers()[core.getCurrentPlayer()].getInventory().size(); i++) {
+            if (core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i).getId() == idPiece) {
+                piece = core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i);
+            }
+        }
+
+        CoordGene<Double> start = new CoordGene<>((double) coordEnd.getX(), (double) 0);
+        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
+        start = t.axialToPixel(start);
+        end = t.axialToPixel(end);
+
+        panCanvas.getChildren().add(animation.getPolygon());
+        Image image = piece.getImage();
+        animation.setImagePolygon(image);
+        animation.setPath(new Path(
+                new MoveTo(start.getX() + t.getMoveOrigin().getX(), 0),
+                new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
+        animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                panCanvas.getChildren().remove(animation.getPolygon());
+                core.playEmulate(move,unmove);
+                core.setState(Consts.READY_TO_CHANGE);
+                handleResize(coordEnd);
+                resetPiece();
+                clearHelp();
+                freeze.setValue(false);
+            }
+            
+        });
+        animation.play();
+    }
+
 
     public void handleNewGame() throws IOException {
         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);

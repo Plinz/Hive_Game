@@ -10,7 +10,7 @@ and open the template in the editor.
 /* Main Menu */
 
 .imageBackground{
-    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-image: url("/main/resources/img/misc/under_tiles.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
 }
@@ -303,6 +303,12 @@ and open the template in the editor.
     -fx-background-radius: 0px, 0px, 0px, 0px;
     -fx-background-color: transparent
 }
+#menuConfig{
+    -fx-image: url("/main/resources/img/rulesTitle/ConfigPartie.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center; 
+}
+
 /* Load Game screen */
 
 .buttonLaunchLoadGame{

@@ -72,7 +72,7 @@ public class MediumAI extends AI {
                     chosenOne = child;
                 }
             }
-            System.out.println("$$$$$$$$$$$$\n$$$$$$$$$$\n$$$$$$$$$$\nChosenOne : "+chosenOne.moveFromParent+"\n$$$$$$$$$$$$\n_____________________________________________________________");
+
             return chosenOne.moveFromParent+";"+chosenOne.moveToParent;
         }
     }

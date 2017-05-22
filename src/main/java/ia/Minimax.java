@@ -228,8 +228,7 @@ public class Minimax {
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             child.getHeuristicsValueRecursively(heuristics.maxdepth);
             children.add(child);
-            //System.out.println("Move" + splitted[1]);
-            core.previousState();
+
         }
         System.out.println("NbConfigStudied = " + children.size());
         return children;
