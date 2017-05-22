@@ -10,7 +10,7 @@ and open the template in the editor.
 /* Main Menu */
 
 .imageBackground{
-    -fx-background-image: url("/main/resources/img/misc/background.png");
+    -fx-background-image: url("/main/resources/img/misc/under_tiles.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
 }
