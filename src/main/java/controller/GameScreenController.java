@@ -486,12 +486,6 @@ public class GameScreenController implements Initializable {
                 if (core.movePiece(pieceToMove, coordEnd)) {
                     handleEndGame();
                 } else {
-                    /*
-                    if (core.getMode() != Consts.PVP) {
-                        while (core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)) {
-                            core.playAI();
-                        }
-                    }*/
                     handleResize(coordEnd);
                     resetPiece();
                     clearHelp();
@@ -537,17 +531,10 @@ public class GameScreenController implements Initializable {
                 if (core.addPiece(pieceToChoose, coordEnd)) {
                     handleEndGame();
                 } else {
-                    /*
-                    if (core.getMode() != Consts.PVP) {
-                        while (core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)) {
-                            core.playAI();
-                        }
-                    }*/
                     handleResize(coordEnd);
                     resetPiece();
                     clearHelp();
                     freeze.setValue(false);
-                    //initButtonByInventory();
                 }
             }
         });

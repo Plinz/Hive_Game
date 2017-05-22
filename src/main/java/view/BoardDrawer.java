@@ -129,10 +129,6 @@ public class BoardDrawer extends Visitor {
 
 		gc.setStroke(Color.RED);
 		gc.setLineWidth(3);
-//		gc.setGlobalAlpha(0.5);
-//		gc.setFill(Color.RED);
-//		gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
-//		gc.setGlobalAlpha(1);
 		gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
 
 	}
