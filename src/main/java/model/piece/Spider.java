@@ -34,7 +34,7 @@ public class Spider extends Piece {
 			Set<CoordGene<Integer>> visited, CoordGene<Integer> from) {
 		Set<CoordGene<Integer>> nextBox = new HashSet<>();
 		if (deep == 3) {
-			if (origin.equals(from) || !visited.contains(from))
+			if (!visited.contains(from))
 				nextBox.add(from);
 			return nextBox;
 		}

@@ -361,6 +361,10 @@ public class Core implements Cloneable {
 	public int getMode() {
 		return mode;
 	}
+	
+	public void setMode(int mode) {
+		this.mode = mode;
+	}
 
 	public int getStatus() {
 		return status;

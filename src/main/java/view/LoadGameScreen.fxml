@@ -3,22 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoadGameScreenController">
    <children>
       <GridPane alignment="TOP_CENTER" layoutX="16.0" layoutY="8.0" prefHeight="708.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="499.0" minWidth="10.0" prefWidth="484.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.0" minWidth="10.0" prefWidth="339.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="0.0" prefWidth="457.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="555.0" minWidth="10.0" prefWidth="513.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.0" minWidth="10.0" prefWidth="267.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="0.0" prefWidth="500.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints maxHeight="165.0" minHeight="10.0" prefHeight="165.0" vgrow="SOMETIMES" />
@@ -26,11 +25,6 @@
             <RowConstraints maxHeight="321.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label alignment="CENTER" prefHeight="25.0" prefWidth="401.0" text="Charger partie" GridPane.columnIndex="1">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
             <GridPane prefHeight="321.0" prefWidth="455.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,11 +44,29 @@
                      </cursor></Button>
                </children>
             </GridPane>
-            <ListView fx:id="saveList" prefHeight="183.0" prefWidth="330.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ListView fx:id="saveList" prefHeight="404.0" prefWidth="478.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets left="50.0" />
                </GridPane.margin></ListView>
-            <ImageView fx:id="saveImage" fitHeight="399.0" fitWidth="453.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Pane fx:id="paneSaveImage" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="50.0" />
+               </GridPane.margin>
+               <children>
+                  <ImageView fx:id="saveImage" fitHeight="402.0" fitWidth="406.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </Pane>
+            <GridPane GridPane.columnIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView id="titleLoad" fitHeight="159.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </GridPane>
          </children>
       </GridPane>
    </children>

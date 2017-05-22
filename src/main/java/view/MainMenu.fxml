@@ -34,11 +34,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" prefHeight="64.0" prefWidth="249.0" styleClass="buttonRules" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleTutorialClick" prefHeight="65.0" prefWidth="251.0" styleClass="buttonTutorial" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleNetworkClick" prefHeight="65.0" prefWidth="251.0" styleClass="buttonNetwork" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -51,6 +47,11 @@
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
             <ImageView fx:id="imageMenu" fitHeight="221.0" fitWidth="366.0" pickOnBounds="true" preserveRatio="true" styleClass="imageMenu" GridPane.halignment="CENTER" />
+            <Button minWidth="140.0" mnemonicParsing="false" onMouseClicked="#handleDisplayRulesClick" prefHeight="64.0" prefWidth="249.0" styleClass="buttonRules" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
          <opaqueInsets>
             <Insets />

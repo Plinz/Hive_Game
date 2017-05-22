@@ -14,6 +14,7 @@ import javax.xml.transform.TransformerException;
 import main.java.controller.GameScreenController;
 import main.java.controller.LoadGameScreenController;
 import main.java.controller.MainMenuController;
+import main.java.controller.NetworkScreenController;
 import main.java.controller.NewGameScreenController;
 import main.java.controller.OptionsScreenController;
 import main.java.controller.RulesScreenController;
@@ -105,6 +106,30 @@ public class Main extends Application {
         }
         
     }
+    public void showNetworkMenu() {
+        try {
+            // Load person overview.
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("/main/java/view/NetworkScreen.fxml"));
+            AnchorPane personOverview = (AnchorPane) loader.load();
+            
+            NetworkScreenController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.majColorButton();
+            
+            primaryStage.getScene().setRoot(personOverview);
+            
+            if(OptionManager.isFullscreen())
+                primaryStage.setFullScreen(true);
+            else
+                primaryStage.setFullScreen(false);
+
+            // Set person overview into the center of root layout.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     
     public void showRulesScreen(){
         try {
