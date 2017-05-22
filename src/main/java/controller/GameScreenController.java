@@ -325,6 +325,16 @@ public class GameScreenController implements Initializable {
     public void handleLeftButton() {
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() - 10, t.getMoveOrigin().getY()));
     }
+    
+    public void handlePlusButton() {    
+        if(Consts.SIDE_SIZE <=120)
+            Consts.SIDE_SIZE *= 1.1;              
+    }
+        
+    public void handleMinusButton() {
+        if(Consts.SIDE_SIZE >= 20)
+            Consts.SIDE_SIZE *= 0.9;
+    }
 
     public void handleUndoButton() {
         core.previousState();

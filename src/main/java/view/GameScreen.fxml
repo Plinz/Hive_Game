@@ -226,12 +226,12 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="minusButton" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+            <Button fx:id="minusButton" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleMinusButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="10.0" right="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="plusButton" ellipsisString="" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="40.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+            <Button fx:id="plusButton" ellipsisString="" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handlePlusButton" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="50.0" right="10.0" />
                </GridPane.margin>
