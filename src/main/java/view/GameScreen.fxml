@@ -6,7 +6,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -33,11 +35,11 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="282.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="370.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="87.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="329.0" minHeight="6.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="281.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="384.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <GridPane prefHeight="39.0" prefWidth="357.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
@@ -106,8 +108,8 @@
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="232.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="254.0" minHeight="10.0" prefHeight="236.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <GridPane fx:id="inventoryPlayer1" gridLinesVisible="true" prefHeight="246.0" prefWidth="413.0" GridPane.rowIndex="1">
@@ -149,10 +151,11 @@
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="96.0" minHeight="8.0" prefHeight="13.0" />
-                      <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="227.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="96.0" minHeight="0.0" prefHeight="5.0" />
+                      <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="226.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <GridPane fx:id="inventoryPlayer2" prefHeight="243.0" prefWidth="413.0" GridPane.rowIndex="2">
@@ -187,11 +190,13 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Text>
-                        <Separator prefHeight="13.0" prefWidth="413.0">
+                        <Separator prefHeight="16.0" prefWidth="412.0">
                            <padding>
                               <Insets top="20.0" />
                            </padding>
                         </Separator>
+                        <ScrollPane prefHeight="94.0" prefWidth="412.0" GridPane.rowIndex="3" />
+                        <TextField GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                   <Separator prefWidth="200.0" GridPane.rowIndex="1" />
