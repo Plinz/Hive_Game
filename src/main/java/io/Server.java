@@ -41,6 +41,7 @@ public class Server extends IO {
 		synchronized (this) {
 			if (otherName != null){
 				(core.getMode()==Consts.PVEX?core.getPlayers()[Consts.PLAYER2]:core.getPlayers()[Consts.PLAYER1]).setName(otherName);
+				core.setState(core.getMode()==Consts.PVEX?Consts.WAIT_FOR_INPUT:Consts.PROCESSING);
 				return true;
 			}
 			return false;
@@ -48,13 +49,15 @@ public class Server extends IO {
 	}
 
 	@Override
-	public void sendInfo() {
+	public boolean sendInfo(String playerName) {
 		synchronized (this) {
 			if (client != null){
 				client.println("MODE"+core.getMode());
-				client.println("NAME"+(core.getMode()==Consts.PVEX?core.getPlayers()[Consts.PLAYER1]:core.getPlayers()[Consts.PLAYER2]).getName());
+				client.println("NAME"+playerName);
 				client.flush();
+				return true;
 			}
+			return false;
 		}
 	}
 	
@@ -62,7 +65,17 @@ public class Server extends IO {
 	public void sendMove(String move) {
 		synchronized (this) {
 			if (client != null){
-				client.println(move);
+				client.println("MOVE"+move);
+				client.flush();
+			}
+		}
+	}
+	
+	@Override
+	public void sendMessage(String message) {
+		synchronized (this) {
+			if (client != null){
+				client.println("MESG"+message);
 				client.flush();
 			}
 		}
@@ -73,9 +86,11 @@ public class Server extends IO {
 		synchronized (this) {
 			if (response.startsWith("NAME")){
 				otherName = response.substring(4);
-			} else {
-				String[] tokens = response.split(";");
-				core.playEmulate(tokens[0], tokens[1]);
+			} else if (response.startsWith("MESG")) {
+				core.newMessage(response.substring(4));
+			} else if (response.startsWith("MOVE")) {
+				String[] tokens = response.substring(4).split(";");
+				core.playExtern(tokens[0], tokens[1]);
 			}
 		}
 	}

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
+
+import javafx.application.Platform;
 import main.java.controller.GameScreenController;
 
 import main.java.ia.AI;
@@ -42,7 +44,7 @@ public class Core implements Cloneable {
 	private int currentPlayer;
 	private int difficulty;
 	private int state;
-        private GameScreenController gameScreen;
+	private GameScreenController gameScreen;
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -59,7 +61,6 @@ public class Core implements Cloneable {
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
 		this.state = Consts.WAIT_FOR_INPUT;
-		
 	}
 
 	public boolean accept(BoardDrawer b) {
@@ -79,16 +80,20 @@ public class Core implements Cloneable {
 		return isTile(coord) && isPiece(coord)
 				&& getCurrentPlayerObj().getTeam() == board.getTile(coord).getPiece().getTeam();
 	}
-        
-        public void playNextTurn(){
-            state = Consts.WAIT_FOR_INPUT;
-            if((mode == Consts.PVAI && currentPlayer != Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer != Consts.PLAYER2)){
-                state = Consts.PROCESSING;
-                playAI();
-            }
-        }
+
+	public void playNextTurn() {
+		state = Consts.WAIT_FOR_INPUT;
+		if ((mode == Consts.PVAI && currentPlayer == Consts.PLAYER2)
+				|| (mode == Consts.AIVP && currentPlayer == Consts.PLAYER1)) {
+			state = Consts.PROCESSING;
+			playAI();
+		} else if ((mode == Consts.PVEX && currentPlayer == Consts.PLAYER2)
+				|| (mode == Consts.EXVP && currentPlayer == Consts.PLAYER1))
+			state = Consts.PROCESSING;
+	}
 
 	public boolean addPiece(int pieceId, CoordGene<Integer> coord) {
+		state = Consts.PROCESSING;
 		if (!canAddPiece(pieceId))
 			return isGameFinish();
 		Piece piece = getCurrentPlayerObj().removePiece(pieceId);
@@ -96,23 +101,24 @@ public class Core implements Cloneable {
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		board.addPiece(piece, coord);
 		history.save(notation, unplay);
-                nextTurn();
-                if (mode == Consts.PVEX || mode == Consts.EXVP)
-                        io.sendMove(notation);
-                state = Consts.READY_TO_CHANGE;
-                return status != Consts.INGAME;
+		nextTurn();
+		if (mode == Consts.PVEX || mode == Consts.EXVP)
+			io.sendMove(notation+";"+unplay);
+		state = Consts.READY_TO_CHANGE;
+		return status != Consts.INGAME;
 	}
 
 	public boolean movePiece(CoordGene<Integer> source, CoordGene<Integer> target) {
+		state = Consts.PROCESSING;
 		Piece piece = board.getTile(source).getPiece();
 		String notation = Notation.getMoveNotation(board, piece, target);
 		String unplay = Notation.getInverseMoveNotation(board, piece);
 		history.save(notation, unplay);
 		board.movePiece(source, target);
 		nextTurn();
-                 if (mode == Consts.PVEX || mode == Consts.EXVP)
-                    io.sendMove(notation+";"+unplay);
-		state =  Consts.READY_TO_CHANGE;
+		if (mode == Consts.PVEX || mode == Consts.EXVP)
+			io.sendMove(notation + ";" + unplay);
+		state = Consts.READY_TO_CHANGE;
 		return status != Consts.INGAME;
 	}
 
@@ -123,13 +129,32 @@ public class Core implements Cloneable {
 
 	public void playAI() {
 		String[] moveAndUnplay = ai.getNextMove().split(";");
-                HelpMove iaMove = emulator.getMove(moveAndUnplay[0]);
-                if(iaMove.isAdd()){
-                    gameScreen.startPlacingAIAnimation(iaMove.getPieceId(), iaMove.getTarget(),moveAndUnplay[0],moveAndUnplay[1]);
-                }
-                else{
-                    gameScreen.startMovingAIAnimation(iaMove.getFrom(), iaMove.getTarget(),moveAndUnplay[0],moveAndUnplay[1]);
-                }
+		HelpMove iaMove = emulator.getMove(moveAndUnplay[0]);
+		if (iaMove.isAdd()) {
+			gameScreen.startPlacingAIAnimation(iaMove.getPieceId(), iaMove.getTarget(), moveAndUnplay[0],
+					moveAndUnplay[1]);
+		} else {
+			gameScreen.startMovingAIAnimation(iaMove.getFrom(), iaMove.getTarget(), moveAndUnplay[0], moveAndUnplay[1]);
+		}
+	}
+
+	public void playExtern(String play, String unplay) {
+		HelpMove externMove = emulator.getMove(play);
+		if (externMove.isAdd()){
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					gameScreen.startPlacingAIAnimation(externMove.getPieceId(), externMove.getTarget(), play, unplay);
+				}
+			});
+		} else{
+			Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+					gameScreen.startMovingAIAnimation(externMove.getFrom(), externMove.getTarget(), play, unplay);
+				}
+			});
+		}
 	}
 
 	public void playEmulate(String play, String unplay) {
@@ -180,7 +205,6 @@ public class Core implements Cloneable {
 		}
 		return new ArrayList<CoordGene<Integer>>();
 	}
-        
 
 	public List<CoordGene<Integer>> getPossibleAdd(int player) {
 		List<CoordGene<Integer>> pos = new ArrayList<CoordGene<Integer>>();
@@ -204,14 +228,14 @@ public class Core implements Cloneable {
 		return pos;
 	}
 
-	public boolean hasPreviousState(){
+	public boolean hasPreviousState() {
 		return history.hasPrevious();
 	}
-	
-	public boolean hasNextState(){
+
+	public boolean hasNextState() {
 		return history.hasNext();
 	}
-	
+
 	public boolean previousState() {
 		if (history.hasPrevious()) {
 			String notation = history.getPrevious();
@@ -323,28 +347,40 @@ public class Core implements Cloneable {
 		turn--;
 	}
 
-	public HelpMove help(){
+	public HelpMove help() {
 		AI helpAI = AIFactory.buildAI(Consts.EASY, this);
 		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
 	}
-	
-	public void connect(String host, int mode, String playerName){
-		if (mode == -1){
+
+	public void connect(String host, int mode, String playerName) {
+		if (mode == -1) {
 			io = new Client(this);
 			io.connect(host);
-			while(!io.updateInfo());
-			(this.mode==Consts.PVEX?players[Consts.PLAYER1]:players[Consts.PLAYER2]).setName(playerName);
-			io.sendInfo();
+			while (!io.sendInfo(playerName))
+				;
+			while (!io.updateInfo())
+				;
+			(this.mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 		} else {
 			this.mode = mode;
-			(mode==Consts.PVEX?players[Consts.PLAYER1]:players[Consts.PLAYER2]).setName(playerName);
+			(mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 			io = new Server(this);
 			io.connect(null);
-			io.sendInfo();
-			while (!io.updateInfo());
+			while (!io.sendInfo(playerName))
+				;
+			while (!io.updateInfo())
+				;
 		}
 	}
 	
+	public void newMessage(String message){
+		//TODO
+	}
+	
+	public void sendMessage(String message){
+		io.sendMessage(message);
+	}
+
 	@Override
 	protected Core clone() {
 		Core core = null;
@@ -369,7 +405,7 @@ public class Core implements Cloneable {
 	public int getMode() {
 		return mode;
 	}
-	
+
 	public void setMode(int mode) {
 		this.mode = mode;
 	}
@@ -402,18 +438,16 @@ public class Core implements Cloneable {
 		this.difficulty = difficulty;
 	}
 
-    public int getState() {
-        return state;
-    }
+	public int getState() {
+		return state;
+	}
 
-    public void setState(int state) {
-        this.state = state;
-    }
+	public void setState(int state) {
+		this.state = state;
+	}
 
-    public void setGameScreen(GameScreenController gameScreen) {
-        this.gameScreen = gameScreen;
-    }
+	public void setGameScreen(GameScreenController gameScreen) {
+		this.gameScreen = gameScreen;
+	}
 
-    
-        
 }

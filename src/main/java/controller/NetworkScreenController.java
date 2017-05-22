@@ -71,7 +71,7 @@ public class NetworkScreenController implements Initializable {
         choiceHost.setSelected(true);
         hostLabel.setVisible(false);
         hostName.setVisible(false);
-        
+        colorHost.setVisible(true);
     }
     
     @FXML
@@ -79,6 +79,7 @@ public class NetworkScreenController implements Initializable {
         choiceClient.setSelected(true);
         hostLabel.setVisible(true);
         hostName.setVisible(true);
+        colorHost.setVisible(false);
     }
     
     @FXML
