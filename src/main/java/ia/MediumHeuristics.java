@@ -35,6 +35,7 @@ public class MediumHeuristics extends Heuristics{
         value += heuristicData[1][5][6] * nbPinnedOpponent;
         //System.out.println("Value apres ajout général human :"+value);
         for (int player = 0 ; player <2 ; player ++){
+            value += Math.pow(HeuristicConst.QUEEN_NEIGHBOR_FACTOR, heuristicData[player][Consts.QUEEN_TYPE][3]) * heuristicData[player][Consts.QUEEN_TYPE][3];
             for (int pieceId = 0 ; pieceId < Consts.NB_PIECES_PER_PLAYER ; pieceId++){
                 value += getPieceValue(player, pieceId);
                 //System.out.println("Value ajout player"+player+", piece"+pieceId+",value"+getPieceValue(player, pieceId));

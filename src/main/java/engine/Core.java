@@ -270,9 +270,9 @@ public class Core implements Cloneable {
 		}
 
 		try {
-			if (!Files.isDirectory(Paths.get("Hive_save")))
-				Files.createDirectories(Paths.get("Hive_save"));
-			Path path = Paths.get("Hive_save/" + name);
+			if (!Files.isDirectory(Paths.get("Hive_init/Hive_save")))
+				Files.createDirectories(Paths.get("Hive_init/Hive_save"));
+			Path path = Paths.get("Hive_init/Hive_save/" + name);
 			BufferedWriter writer = Files.newBufferedWriter(path);
 			writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
 			if (mode == Consts.PVAI || mode == Consts.AIVP)
@@ -292,9 +292,9 @@ public class Core implements Cloneable {
 
 	public List<String> load() {
 		try {
-			if (!Files.isDirectory(Paths.get("Hive_save")))
-				Files.createDirectories(Paths.get("Hive_save"));
-			return Files.list(Paths.get("Hive_save")).map(p -> p.getFileName().toFile().getName())
+			if (!Files.isDirectory(Paths.get("Hive_init/Hive_save")))
+				Files.createDirectories(Paths.get("Hive_init/Hive_save"));
+			return Files.list(Paths.get("Hive_init/Hive_save")).map(p -> p.getFileName().toFile().getName())
 					.collect(Collectors.toList());
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -304,7 +304,7 @@ public class Core implements Cloneable {
 
 	public void load(String saveFile) {
 		try {
-			Path path = Paths.get("Hive_save/" + saveFile);
+			Path path = Paths.get("Hive_init/Hive_save/" + saveFile);
 			BufferedReader reader = Files.newBufferedReader(path);
 			mode = Integer.parseInt(reader.readLine());
 			currentPlayer = Integer.parseInt(reader.readLine());

@@ -15,6 +15,7 @@ Heuristic Data : heuristicData[player][insect][typeHeuristique]
 package main.java.ia;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import main.java.engine.Core;
@@ -245,42 +246,83 @@ public class Heuristics {
         return false;
     }
     
-    public int grassHopperToOpponentsQueensFreeNeighbor(int player, Tile tile)
+//    public int grassHopperToOpponentsQueensFreeNeighbor(int player, Tile tile)
+//    {
+//        int turn = 0;
+//        HashSet<Tile> tileSet = new HashSet();
+//        HashSet<Tile> markedTiles = new HashSet();
+//        boolean destFound = false;
+//        tileSet.add(tile);
+//        markedTiles.add(tile);
+//        do
+//        {
+//            turn++;
+//            for (Tile tileElem : tileSet)
+//            {
+//                for (CoordGene coords : tileElem.getPiece().getPossibleMovement(tileElem, this.core.getBoard()))
+//                {
+//                    if (!(markedTiles.contains(this.core.getBoard().getTile(coords))))
+//                    {
+//                        if (this.isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(coords)))
+//                        {
+//                            destFound = true;
+//                            break;
+//                        }
+//                        tileSet.add(this.core.getBoard().getTile(coords));
+//                        markedTiles.add(this.core.getBoard().getTile(coords));
+//                    }
+//                }
+//                if (destFound)
+//                    break;
+//                
+//                tileSet.remove(tileElem);
+//            }
+//        }
+//        while((!(tileSet.isEmpty())) && (!(destFound)));
+//        
+//        if (destFound)
+//            return turn;
+//        return -1;
+//    }
+    
+    public ArrayList<CoordGene<Integer>> grassHopperToOpponentsQueensFreeNeighbor(int player, Tile tile)
     {
-        int turn = 0;
-        HashSet<Tile> tileSet = new HashSet();
-        HashSet<Tile> markedTiles = new HashSet();
-        boolean destFound = false;
-        tileSet.add(tile);
-        markedTiles.add(tile);
+        ArrayList<ArrayList<CoordGene<Integer>>> mainList = new ArrayList<>();
+        mainList.add(new ArrayList<>(Arrays.asList(tile.getCoord())));
+        HashSet markedCoords = new HashSet(Arrays.asList(tile.getCoord()));
         do
         {
-            turn++;
-            for (Tile tileElem : tileSet)
+            for (ArrayList<CoordGene<Integer>> subList : mainList)
             {
-                for (CoordGene coords : tileElem.getPiece().getPossibleMovement(tileElem, this.core.getBoard()))
+                List<CoordGene<Integer>> newDests = new ArrayList<>();
+                for (CoordGene<Integer> coord : this.core.getBoard().getTile(subList.get(subList.size()-1)).getPiece().getPossibleMovement(this.core.getBoard().getTile(subList.get(subList.size()-1)), this.core.getBoard()))
                 {
-                    if (!(markedTiles.contains(this.core.getBoard().getTile(coords))))
+                    if (!(markedCoords.contains(coord)))
                     {
-                        if (this.isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(coords)))
-                        {
-                            destFound = true;
-                            break;
-                        }
-                        tileSet.add(this.core.getBoard().getTile(coords));
-                        markedTiles.add(this.core.getBoard().getTile(coords));
+                        newDests.add(coord);
+                        markedCoords.add(coord);
                     }
                 }
-                if (destFound)
-                    break;
-                
-                tileSet.remove(tileElem);
+                if (newDests.isEmpty())
+                    mainList.remove(subList);
+                else
+                {
+                    for (int i = 0; i < newDests.size()-1; i++)
+                    {
+                        ArrayList<CoordGene<Integer>> newList = (ArrayList<CoordGene<Integer>>)subList.clone();
+                        newList.add(newDests.get(i));
+                        mainList.add(newList);
+                        if (isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(newDests.get(i))))
+                            return newList;
+                    }
+                    subList.add(newDests.get(newDests.size()-1));
+                    if (isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(subList.get(subList.size()-1))))
+                        return subList;
+                }  
             }
         }
-        while((!(tileSet.isEmpty())) && (!(destFound)));
-        
-        if (destFound)
-            return turn;
-        return -1;
+        while(!(mainList.isEmpty()));   
+        //reached only when all possible paths have been visited unsuccessfully
+        return null;
     }
 }

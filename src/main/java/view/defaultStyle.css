@@ -15,6 +15,12 @@ and open the template in the editor.
     -fx-background-alignement:center center;
 }
 
+#imageBackgroundGameScreen{
+    -fx-background-image: url("/main/resources/img/misc/metal.jpg");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;   
+}
+
 .imageMenu{
     -fx-image: url("/main/resources/img/misc/logo.png");
     -fx-background-size:stretch;
@@ -634,7 +640,7 @@ and open the template in the editor.
 }
 
 #gridMenuRules{  
-  -fx-border-color : #e1ab0a;
+  -fx-border-color-right : #e1ab0a;
   -fx-border-width: 3 ; 
 }
   
@@ -667,4 +673,17 @@ and open the template in the editor.
     -fx-image: url("/main/resources/img/rulesTitle/chargerpartie.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;   
+ }
+ 
+ #titlePositionPieces{
+     -fx-image: url("/main/resources/img/rulesTitle/PiecePositionings.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;  
+     
+ }
+ #titleMovePiece{
+     -fx-image: url("/main/resources/img/rulesTitle/déplacement.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;  
+     
  }

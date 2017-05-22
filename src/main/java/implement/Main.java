@@ -1,6 +1,10 @@
 package main.java.implement;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -41,12 +45,12 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/MainMenu.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             MainMenuController controller = loader.getController();
             controller.setMainApp(this);
             
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
@@ -64,13 +68,13 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/NewGameScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             NewGameScreenController controller = loader.getController();
             controller.setMainApp(this);
             controller.majColorButton();
             
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
             else
@@ -88,13 +92,13 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/LoadGameScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             LoadGameScreenController controller = loader.getController();
             controller.setMainApp(this);
             controller.initGameList();
             
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
             else
@@ -111,13 +115,13 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/NetworkScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             NetworkScreenController controller = loader.getController();
             controller.setMainApp(this);
             controller.majColorButton();
             
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
@@ -136,12 +140,12 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/RulesScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             RulesScreenController controller = loader.getController();
             controller.setMainApp(this);
             
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
             else
@@ -158,12 +162,12 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/GameScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             GameScreenController controller = loader.getController();
             controller.initGame(this, c);
             
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
             else
@@ -180,13 +184,13 @@ public class Main extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("/main/java/view/OptionsScreen.fxml"));
-            AnchorPane personOverview = (AnchorPane) loader.load();
+            AnchorPane mainAnchor = (AnchorPane) loader.load();
             
             OptionsScreenController controller = loader.getController();
             controller.setMainApp(this);
                 
             controller.init();
-            primaryStage.getScene().setRoot(personOverview);
+            primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())
                 primaryStage.setFullScreen(true);
             else
@@ -206,8 +210,19 @@ public class Main extends Application {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+    
+    public static void createInitDirectory(){
+        if (!Files.isDirectory(Paths.get("Hive_init"))) {
+            try {
+                Files.createDirectories(Paths.get("Hive_init"));
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public static void main(String[] args) throws IOException, ParserConfigurationException, TransformerException, TransformerConfigurationException, SAXException {
+        createInitDirectory();
         OptionManager.init();
         launch(args);
     }

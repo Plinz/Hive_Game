@@ -69,7 +69,7 @@ public class LoadGameScreenController implements Initializable {
                
                 String imageName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
                 try {
-                    saveImage.setImage(new Image(new FileInputStream(new File("Hive_save_images/"+imageName+".png"))));
+                    saveImage.setImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(LoadGameScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }

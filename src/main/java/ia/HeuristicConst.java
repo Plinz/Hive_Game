@@ -29,6 +29,17 @@ public class HeuristicConst {
     public static final double[] MINIMISE_ANT = {-0.5, -0.5, -0.5, 0, -1, -1.1, 1};
     public static final double[] MINIMISE_GENERAL = {-0, -0, -0, 0, 0, 0, 1};
 
+    
+    public static final double QUEEN_NEIGHBOR_FACTOR = 1.3;
+    
+    public static final int NB_MOVE = 0;
+    public static final int NB_ADD = 1;
+    public static final int NB_MOVEMENT = 2;
+    public static final int NB_NEIGHBOR = 3;
+    public static final int IN_HAND = 4;
+    public static final int ON_BOARD = 5;
+    public static final int IS_PINNED = 6;
+    
     public static final double[][][] getHeuristicDataFromConsts() {
         double[][][] heuristicData = new double[2][6][7];
 
