@@ -202,15 +202,15 @@ public class Minimax {
             }
         }
         //calculate heuristics
-        System.out.println("move : " + this.moveFromParent + ",currentPlayer" + core.getCurrentPlayer());
+        //System.out.println("move : " + this.moveFromParent + ",currentPlayer" + core.getCurrentPlayer());
         heuristicValue = heuristics.getHeuristicsValue();
-        System.out.println("heuristique :" + this.heuristicValue);
+        //System.out.println("heuristique :" + this.heuristicValue);
         //concatenate strings for result
         for (int i = 0; i < possibleMovements.size(); i++) {
             String toAdd = possibleMovements.get(i) + ";" + possibleUnplay.get(i);
             result.add(toAdd);
         }
-        System.out.println("Possible move " + result.toString());
+        //System.out.println("Possible move " + result.toString());
         return result;
     }
 
@@ -224,13 +224,13 @@ public class Minimax {
         for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
             String[] splitted = moveAndUnmove.split(";");   //  move;unmove
             core.playEmulate(splitted[0], splitted[1]);
-            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$-----Move :" + splitted[0] + " profondeur " + depth);
+            System.out.println("$$$-----Move :" + Notation.getHumanDescription(splitted[0], false)  + " profondeur " + depth);
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             child.getHeuristicsValueRecursively(heuristics.maxdepth);
             children.add(child);
-
+            core.previousState();
         }
-        System.out.println("NbConfigStudied = " + children.size());
+        //System.out.println("NbConfigStudied = " + children.size());
         return children;
     }
 }
