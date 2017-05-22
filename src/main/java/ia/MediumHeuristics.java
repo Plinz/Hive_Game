@@ -25,7 +25,7 @@ public class MediumHeuristics extends Heuristics{
         value += heuristicData[0][5][4] * nbPieceOnBoardAI;
         value += heuristicData[0][5][5] * nbPlacementAI;
         value += heuristicData[0][5][6] * nbPinnedAI;
-        System.out.println("Value apres ajout général IA :"+value);
+        //System.out.println("Value apres ajout général IA :"+value);
         value += heuristicData[1][5][0] * (nbMovesOpponent + nbPlacementOpponent);
         value += heuristicData[1][5][1] * nbPlacementOpponent;
         value += heuristicData[1][5][2] * nbMovesOpponent;
@@ -33,11 +33,11 @@ public class MediumHeuristics extends Heuristics{
         value += heuristicData[1][5][4] * nbPieceOnBoardOpponent;
         value += heuristicData[1][5][5] * nbPlacementOpponent;
         value += heuristicData[1][5][6] * nbPinnedOpponent;
-        System.out.println("Value apres ajout général human :"+value);
+        //System.out.println("Value apres ajout général human :"+value);
         for (int player = 0 ; player <2 ; player ++){
             for (int pieceId = 0 ; pieceId < Consts.NB_PIECES_PER_PLAYER ; pieceId++){
                 value += getPieceValue(player, pieceId);
-                System.out.println("Value ajout player"+player+", piece"+pieceId+",value"+getPieceValue(player, pieceId));
+                //System.out.println("Value ajout player"+player+", piece"+pieceId+",value"+getPieceValue(player, pieceId));
             }
         }
         System.out.println("heuristic value : "+value);
