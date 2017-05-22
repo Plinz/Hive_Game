@@ -30,7 +30,7 @@ public final class OptionManager {
     private static boolean gridEnable = true;
     
     public static void init() throws IOException, ParserConfigurationException, TransformerConfigurationException, TransformerException, SAXException{
-        File file = new File("init.xml");
+        File file = new File("Hive_init/init.xml");
         if(file.exists()){
             initByFile(file);
         }
@@ -135,7 +135,7 @@ public final class OptionManager {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);		
-        StreamResult result = new StreamResult(new File("init.xml"));
+        StreamResult result = new StreamResult(new File("Hive_init/init.xml"));
     
         transformer.transform(source, result);
     }
@@ -147,7 +147,7 @@ public final class OptionManager {
         animationsEnable = anim;
         gridEnable = grid;
         
-        String filepath = "init.xml";
+        String filepath = "Hive_init/init.xml";
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(filepath);

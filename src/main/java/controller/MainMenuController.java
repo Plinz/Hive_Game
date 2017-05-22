@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import main.java.implement.Main;
 
 /**
