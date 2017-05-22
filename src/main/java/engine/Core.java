@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
+import main.java.controller.GameScreenController;
 
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
@@ -41,6 +42,7 @@ public class Core implements Cloneable {
 	private int currentPlayer;
 	private int difficulty;
 	private int state;
+        private GameScreenController gameScreen;
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -61,8 +63,7 @@ public class Core implements Cloneable {
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
 		this.state = Consts.WAIT_FOR_INPUT;
-		if (this.mode == Consts.AIVP)
-			playAI();
+		
 	}
 
 	public boolean accept(BoardDrawer b) {
@@ -86,7 +87,6 @@ public class Core implements Cloneable {
         public void playNextTurn(){
             state = Consts.WAIT_FOR_INPUT;
             if((mode == Consts.PVAI && currentPlayer != Consts.PLAYER1) || (mode == Consts.AIVP && currentPlayer != Consts.PLAYER2)){
-                
                 state = Consts.PROCESSING;
                 playAI();
             }
@@ -127,10 +127,13 @@ public class Core implements Cloneable {
 
 	public void playAI() {
 		String[] moveAndUnplay = ai.getNextMove().split(";");
-                //Là il faudrait une traduction
-                
-		playEmulate(moveAndUnplay[0],moveAndUnplay[1]);
-                state = Consts.READY_TO_CHANGE;
+                HelpMove iaMove = emulator.getMove(moveAndUnplay[0]);
+                if(iaMove.isAdd()){
+                    gameScreen.startPlacingAIAnimation(iaMove.getPieceId(), iaMove.getTarget(),moveAndUnplay[0],moveAndUnplay[1]);
+                }
+                else{
+                    gameScreen.startMovingAIAnimation(iaMove.getFrom(), iaMove.getTarget(),moveAndUnplay[0],moveAndUnplay[1]);
+                }
 	}
 
 	public void playEmulate(String play, String unplay) {
@@ -394,6 +397,11 @@ public class Core implements Cloneable {
     public void setState(int state) {
         this.state = state;
     }
-        
+
+    public void setGameScreen(GameScreenController gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    
         
 }
