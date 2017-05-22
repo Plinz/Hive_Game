@@ -260,8 +260,41 @@ public class GameScreenController implements Initializable {
         gameCanvas.widthProperty().bind(panCanvas.widthProperty());
         gameCanvas.heightProperty().bind(panCanvas.heightProperty());
     }
+    
+        private void popupUnderBeetle(List<Tile> listTiles, Tile tileTemp) {
 
+        drawPolygonPopUp(0, tileTemp);
+        int deplacement = 2;
+        Collections.reverse(listTiles); // A CHANGER UN PEU LOURD PEUT ETRE 
+        for (Tile tile : listTiles) {
+            drawPolygonPopUp(deplacement, tile);
+            deplacement += 2;
+        }
 
+    }
+
+    private void drawPolygonPopUp(int deplacement, Tile tile) {
+        Hexagon hex = new Hexagon();
+        hex.setxPixel(0.0);
+        hex.setyPixel(0.0);
+        hex.calculHex();
+        double x[] = hex.getListXCoord();
+        double y[] = hex.getListYCoord();
+        int placement = (int) (Consts.SIDE_SIZE);
+        Piece piece = tile.getPiece();
+        
+        Polygon p = new Polygon();
+        p.setFill(new ImagePattern(piece.getImage()));
+        p.getPoints().addAll(new Double[]{
+            x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement),
+            x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement,
+            x[2]+placement, y[2] + Consts.SIDE_SIZE * deplacement,
+            x[3]+placement, y[3] + Consts.SIDE_SIZE * deplacement,
+            x[4]+placement, y[4] + Consts.SIDE_SIZE * deplacement,
+            x[5]+placement, y[5] + Consts.SIDE_SIZE * deplacement});
+        popup.getContent().add(p);
+
+    }
     
     public void handleHelp(){
     	clearHelp();
@@ -321,6 +354,17 @@ public class GameScreenController implements Initializable {
     /*Fin des handlers */
 
     /*Méthodes d'initialisation */
+    public void giveHand(){
+        inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
+        inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+        inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+        namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
+        namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !");  
+        initPlayer1Button();
+        initPlayer2Button();
+        
+    }
+    
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
         if (core.getCurrentPlayer() == 0) {
@@ -355,9 +399,9 @@ public class GameScreenController implements Initializable {
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
-                b.disableProperty().bind(freeze);
                 inventoryGroup.getToggles().add(b);
             }
+            b.disableProperty().bind(freeze);
             if (i != 0 && i % 4 == 0) {
                 col = 0;
                 line++;
@@ -369,53 +413,6 @@ public class GameScreenController implements Initializable {
             col++;
 
         }
-    }
-
-    private void popupUnderBeetle(List<Tile> listTiles, Tile tileTemp) {
-
-        drawPolygonPopUp(0, tileTemp);
-        int deplacement = 2;
-        Collections.reverse(listTiles); // A CHANGER UN PEU LOURD PEUT ETRE 
-        for (Tile tile : listTiles) {
-            drawPolygonPopUp(deplacement, tile);
-            deplacement += 2;
-        }
-
-    }
-
-    private void drawPolygonPopUp(int deplacement, Tile tile) {
-        Hexagon hex = new Hexagon();
-        hex.setxPixel(0.0);
-        hex.setyPixel(0.0);
-        hex.calculHex();
-        double x[] = hex.getListXCoord();
-        double y[] = hex.getListYCoord();
-        int placement = (int) (Consts.SIDE_SIZE);
-        Piece piece = tile.getPiece();
-        
-        Polygon p = new Polygon();
-        p.setFill(new ImagePattern(piece.getImage()));
-        p.getPoints().addAll(new Double[]{
-            x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement),
-            x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement,
-            x[2]+placement, y[2] + Consts.SIDE_SIZE * deplacement,
-            x[3]+placement, y[3] + Consts.SIDE_SIZE * deplacement,
-            x[4]+placement, y[4] + Consts.SIDE_SIZE * deplacement,
-            x[5]+placement, y[5] + Consts.SIDE_SIZE * deplacement});
-        popup.getContent().add(p);
-
-    }
-    
-    public void giveHand(){
-        inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
-        inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
-        inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
-        namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
-        namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !");
-        
-        initPlayer1Button();
-        initPlayer2Button();
-        
     }
 
     public void initPlayer2Button() {
@@ -434,9 +431,9 @@ public class GameScreenController implements Initializable {
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
-                b.disableProperty().bind(freeze);
                 inventoryGroup.getToggles().add(b);
             }
+            b.disableProperty().bind(freeze);
 
             if (i != 0 && i % 4 == 0) {
                 col = 0;
