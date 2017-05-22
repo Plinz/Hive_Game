@@ -225,6 +225,7 @@ public class Consts {
         public static final int PROCESSING = 1;
         public static final int READY_TO_CHANGE = 2;
         public static final int END_OF_THE_GAME = 3;
+        public static final int ANIMATING = 4;
         
     //MACRO FRAME BETWEEN PLAYS
         public static final int FRAMES_TO_WAIT = 60;

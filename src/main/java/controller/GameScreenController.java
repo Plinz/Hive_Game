@@ -149,7 +149,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                if (/*!endOfGame && */!animationPlaying.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) {
+                if (!animationPlaying.getValue() && core.getState() != Consts.ANIMATING) {
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                     CoordGene<Double> origin = t.getMoveOrigin();
@@ -192,7 +192,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent m) {
-                if ((!animationPlaying.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) || endOfGame) {
+                if ((!animationPlaying.getValue() && core.getState() != Consts.ANIMATING) || endOfGame) {
                     t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
                 }
             }
@@ -378,7 +378,7 @@ public class GameScreenController implements Initializable {
        // inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
        // inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
         namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
-        namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !");  
+        namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !"); 
         initPlayer1Button();
         initPlayer2Button();
         
@@ -418,7 +418,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(65, 65);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame) {
+            if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -450,7 +450,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(65, 65);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if (core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame) {
+            if (core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -494,6 +494,8 @@ public class GameScreenController implements Initializable {
     
     public void startMovingAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
         
+        core.setState(Consts.ANIMATING);
+        
         animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
@@ -527,6 +529,7 @@ public class GameScreenController implements Initializable {
     }
 
     public void startPlacingAnimation(int idPiece, CoordGene<Integer> coordEnd) {
+        core.setState(Consts.ANIMATING);
 
         animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
@@ -569,6 +572,7 @@ public class GameScreenController implements Initializable {
     }
     
     public void startMovingAIAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd, String move, String unmove){
+        core.setState(Consts.ANIMATING);
         
         animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
@@ -604,6 +608,7 @@ public class GameScreenController implements Initializable {
     }
     
     public void startPlacingAIAnimation(int idPiece, CoordGene<Integer> coordEnd,String move, String unmove) {
+        core.setState(Consts.ANIMATING);
 
         animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
