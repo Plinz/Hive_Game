@@ -113,22 +113,6 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label graphicTextGap="0.0" prefHeight="83.0" prefWidth="329.0" text="Principe général" GridPane.halignment="CENTER">
-                           <font>
-                              <Font name="DejaVu Sans Bold" size="20.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label text="Déplacement des pièces" GridPane.rowIndex="4">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="DejaVu Sans Bold" size="20.0" />
-                           </font>
-                        </Label>
                         <Label onMouseClicked="#handleGoalGame" prefHeight="65.0" prefWidth="329.0" styleClass="panelItemTitle" text="But du jeu" GridPane.rowIndex="1">
                            <padding>
                               <Insets left="50.0" />
@@ -162,6 +146,8 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
+                        <ImageView id="titlePositionPieces" fitHeight="90.0" fitWidth="330.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" />
+                        <ImageView id="titleMovePiece" fitHeight="90.0" fitWidth="331.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
                      </children>
                      <opaqueInsets>
                         <Insets />

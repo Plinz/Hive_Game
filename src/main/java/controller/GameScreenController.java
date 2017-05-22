@@ -38,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
@@ -373,8 +374,9 @@ public class GameScreenController implements Initializable {
     /*Méthodes d'initialisation */
     public void giveHand(){
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
-        inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
-        inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+         
+       // inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
+       // inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
         namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
         namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !");  
         initPlayer1Button();
@@ -385,13 +387,18 @@ public class GameScreenController implements Initializable {
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
         if (core.getCurrentPlayer() == 0) {
-            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
+            inventoryPlayer2.setBorder(Border.EMPTY);
+            inventoryPlayer1.setStyle("-fx-effect: none");
+            inventoryPlayer2.setStyle("-fx-effect: innershadow(one-pass-box, lightblue, 100, 0.1, 1, 1);");
             namePlayer1.setText(core.getPlayers()[0].getName() + " à vous de jouer !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " attend !");
         } else {
-            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+            
+            inventoryPlayer1.setBorder(Border.EMPTY);
+            inventoryPlayer2.setStyle("-fx-effect: none");
+            inventoryPlayer1.setStyle("-fx-effect: innershadow(one-pass-box, lightgrey, 100, 0.1, 1, 1);");
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
 
             namePlayer1.setText(core.getPlayers()[0].getName() + " attend !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " à vous de jouer !");
