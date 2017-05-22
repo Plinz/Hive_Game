@@ -92,15 +92,17 @@ public class GameScreenController implements Initializable {
     @FXML private Button redo;
     @FXML private Button helpButton;
     @FXML private MenuItem saveMenuItem;
+    
     private Main main;
     private Core core;
-    private int pieceToChoose;
+    
+    private int pieceChosenInInventory;
     private CoordGene<Double> lastCoord;
     private CoordGene<Integer> pieceToMove, lastCoordBeetle;
     private List<CoordGene<Integer>> possibleMovement;
     private Highlighter highlighted;
     private TraducteurBoard t;
-    private BooleanProperty freeze;
+    private BooleanProperty animationPlaying;
     private boolean endOfGame;
     
     private ToggleGroup inventoryGroup;
@@ -115,12 +117,12 @@ public class GameScreenController implements Initializable {
     public void initGame(Main mainApp, Core c) {
         setMainApp(mainApp);
         setCore(c);
-        pieceToChoose = -1;
+        pieceChosenInInventory = -1;
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         lastCoordBeetle = new CoordGene<Integer>(0,0);
-        freeze = new SimpleBooleanProperty();
-        freeze.setValue(false);
+        animationPlaying = new SimpleBooleanProperty();
+        animationPlaying.setValue(false);
         endOfGame = false;
         inventoryGroup = new ToggleGroup();
         if (!core.hasPreviousState()) {
@@ -146,7 +148,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                if (!endOfGame && !freeze.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) {
+                if (/*!endOfGame && */!animationPlaying.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) {
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                     CoordGene<Double> origin = t.getMoveOrigin();
@@ -162,10 +164,10 @@ public class GameScreenController implements Initializable {
                                 pieceToMove = coord;
                                 possibleMovement = core.getPossibleMovement(coord);
                                 highlighted.setListTohighlight(possibleMovement);
-                                pieceToChoose = -1;
+                                pieceChosenInInventory = -1;
                             } else {
-                                if (pieceToChoose != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)) {
-                                    startPlacingAnimation(pieceToChoose,coord);
+                                if (pieceChosenInInventory != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)) {
+                                    startPlacingAnimation(pieceChosenInInventory,coord);
                                     undo.setDisable(false);
                                     redo.setDisable(true);
                                 } else {
@@ -189,7 +191,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent m) {
-                if ((!freeze.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) || endOfGame) {
+                if ((!animationPlaying.getValue() && core.getState() == Consts.WAIT_FOR_INPUT) || endOfGame) {
                     t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
                 }
             }
@@ -416,7 +418,7 @@ public class GameScreenController implements Initializable {
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
                 inventoryGroup.getToggles().add(b);
             }
-            b.disableProperty().bind(freeze);
+            b.disableProperty().bind(animationPlaying);
             if (i != 0 && i % 4 == 0) {
                 col = 0;
                 line++;
@@ -448,7 +450,7 @@ public class GameScreenController implements Initializable {
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
                 inventoryGroup.getToggles().add(b);
             }
-            b.disableProperty().bind(freeze);
+            b.disableProperty().bind(animationPlaying);
 
             if (i != 0 && i % 4 == 0) {
                 col = 0;
@@ -472,7 +474,7 @@ public class GameScreenController implements Initializable {
             inventoryGroup.getSelectedToggle().setSelected(false);
         }
         pieceToMove = null;
-        pieceToChoose = -1;
+        pieceChosenInInventory = -1;
     }
 
     
@@ -485,7 +487,7 @@ public class GameScreenController implements Initializable {
     
     public void startMovingAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
         
-        freeze.setValue(true);
+        animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
 
@@ -511,7 +513,7 @@ public class GameScreenController implements Initializable {
                 handleResize(coordEnd);
                 resetPiece();
                 clearHelp();
-                freeze.setValue(false);
+                animationPlaying.setValue(false);
             }
         });
         animation.play();
@@ -519,7 +521,7 @@ public class GameScreenController implements Initializable {
 
     public void startPlacingAnimation(int idPiece, CoordGene<Integer> coordEnd) {
 
-        freeze.setValue(true);
+        animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
 
@@ -552,7 +554,7 @@ public class GameScreenController implements Initializable {
                 handleResize(coordEnd);
                 resetPiece();
                 clearHelp();
-                freeze.setValue(false);
+                animationPlaying.setValue(false);
                 
             }
         });
@@ -561,7 +563,7 @@ public class GameScreenController implements Initializable {
     
     public void startMovingAIAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd, String move, String unmove){
         
-        freeze.setValue(true);
+        animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
 
@@ -588,7 +590,7 @@ public class GameScreenController implements Initializable {
                 handleResize(coordEnd);
                 resetPiece();
                 clearHelp();
-                freeze.setValue(false);
+                animationPlaying.setValue(false);
             }
         });
         animation.play();
@@ -596,7 +598,7 @@ public class GameScreenController implements Initializable {
     
     public void startPlacingAIAnimation(int idPiece, CoordGene<Integer> coordEnd,String move, String unmove) {
 
-        freeze.setValue(true);
+        animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
         highlighted.setHelp(null);
 
@@ -629,7 +631,7 @@ public class GameScreenController implements Initializable {
                 handleResize(coordEnd);
                 resetPiece();
                 clearHelp();
-                freeze.setValue(false);
+                animationPlaying.setValue(false);
             }
             
         });
@@ -709,7 +711,7 @@ public class GameScreenController implements Initializable {
         helpButton.setDisable(true);
         saveMenuItem.setDisable(true);
 
-        freeze.setValue(false);
+        animationPlaying.setValue(false);
         endOfGame = true;
         highlighted.setListTohighlight(null);    
         initButtonByInventory();
@@ -884,8 +886,8 @@ public class GameScreenController implements Initializable {
         this.core = c;
     }
 
-    public void setPieceToChoose(int pieceToChoose) {
-        this.pieceToChoose = pieceToChoose;
+    public void setPieceToChoose(int pieceChosenInInventory) {
+        this.pieceChosenInInventory = pieceChosenInInventory;
     }
 
     public void setPieceToMove(CoordGene<Integer> pieceToMove) {
@@ -897,7 +899,7 @@ public class GameScreenController implements Initializable {
     }
 
     public boolean isFreeze() {
-        return freeze.getValue();
+        return animationPlaying.getValue();
     }
 
     private void checkHistory() {
