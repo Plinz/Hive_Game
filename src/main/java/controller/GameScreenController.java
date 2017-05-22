@@ -248,9 +248,11 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(ScrollEvent event) {
-                if (event.getDeltaY() > 0) {
-                    Consts.SIDE_SIZE *= 1.1;
-                } else {
+                
+                if (event.getDeltaY() > 0){ 
+                    if(Consts.SIDE_SIZE <=120)
+                        Consts.SIDE_SIZE *= 1.1;
+                }else if(Consts.SIDE_SIZE >= 20){
                     Consts.SIDE_SIZE *= 0.9;
                 }
             }
