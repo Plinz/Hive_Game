@@ -95,6 +95,24 @@ and open the template in the editor.
     -fx-background-color: transparent;
 }
 
+.buttonNetwork{
+    -fx-background-image: url("/main/resources/img/misc/network.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonNetwork:hover{
+    -fx-background-image: url("/main/resources/img/misc/network_Hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
 .buttonOptions{
     -fx-background-image: url("/main/resources/img/misc/options.png");
     -fx-background-size:stretch;
