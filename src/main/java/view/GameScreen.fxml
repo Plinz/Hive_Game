@@ -35,9 +35,9 @@
               <rowConstraints>
                 <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="278.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="13.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="389.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="282.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="370.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <GridPane prefHeight="39.0" prefWidth="357.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
@@ -110,7 +110,7 @@
                       <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="232.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <GridPane fx:id="inventoryPlayer1" gridLinesVisible="true" prefHeight="267.0" prefWidth="420.0" GridPane.rowIndex="1">
+                        <GridPane fx:id="inventoryPlayer1" gridLinesVisible="true" prefHeight="246.0" prefWidth="413.0" GridPane.rowIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -139,20 +139,20 @@
                         </GridPane>
                         <Text fx:id="namePlayer1" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 1" wrappingWidth="410.01220703125">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Text>
                      </children>
                   </GridPane>
-                  <GridPane prefHeight="411.0" prefWidth="413.0" GridPane.rowIndex="4">
+                  <GridPane prefHeight="378.0" prefWidth="413.0" GridPane.rowIndex="4">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="96.0" minHeight="9.0" prefHeight="13.0" />
-                      <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="235.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="96.0" minHeight="8.0" prefHeight="13.0" />
+                      <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="227.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <GridPane fx:id="inventoryPlayer2" prefHeight="243.0" prefWidth="413.0" GridPane.rowIndex="2">
@@ -184,10 +184,10 @@
                         </GridPane>
                         <Text fx:id="namePlayer2" strokeType="OUTSIDE" strokeWidth="0.0" text="Joueur 2 " wrappingWidth="408.5078125" GridPane.rowIndex="1">
                            <font>
-                              <Font size="18.0" />
+                              <Font name="System Bold" size="18.0" />
                            </font>
                         </Text>
-                        <Separator prefHeight="0.0" prefWidth="446.0">
+                        <Separator prefHeight="13.0" prefWidth="413.0">
                            <padding>
                               <Insets top="20.0" />
                            </padding>
