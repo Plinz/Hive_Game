@@ -788,10 +788,13 @@ public class GameScreenController implements Initializable {
             if (saveString.equals("")) {
                 if (core.getMode() == Consts.PVP) {
                     saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
-                } else {
+                } else if (core.getMode() == Consts.PVAI) {
                     saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
                             + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
                             + "-turn" + core.getTurn();
+                }
+                else{
+                    saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
                 }
             }
             core.save(saveString);
@@ -827,10 +830,13 @@ public class GameScreenController implements Initializable {
             if (saveString.equals("")) {
                 if (core.getMode() == Consts.PVP) {
                     saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
-                } else {
+                } else if (core.getMode() == Consts.PVAI) {
                     saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
                             + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
                             + "-turn" + core.getTurn();
+                }
+                else{
+                    saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
                 }
             }
             core.save(saveString);
