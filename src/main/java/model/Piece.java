@@ -2,6 +2,7 @@ package main.java.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.image.Image;
 
 import main.java.utils.CoordGene;
 
@@ -10,7 +11,7 @@ public abstract class Piece implements Cloneable{
     protected String name;
     protected int id;
     protected int team;
-    protected int drawingId;
+    protected Image image;
     protected String description;
     protected List<CoordGene<Integer>> possibleMovement;
 
@@ -27,6 +28,7 @@ public abstract class Piece implements Cloneable{
         this.team = team;
         this.description = description;
         this.possibleMovement = null;
+        this.image = new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + name + team + ".png").toString());
     }
 
     public String getName() {
@@ -42,12 +44,10 @@ public abstract class Piece implements Cloneable{
         return description;
     }
 
-    public int getDrawingId() {
-        return drawingId;
+    public Image getImage() {
+        return image;
     }
-    
-    
-
+   
     public void clear() {
         this.possibleMovement = null;
     }
