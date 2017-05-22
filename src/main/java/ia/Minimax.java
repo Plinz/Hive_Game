@@ -258,7 +258,7 @@ public class Minimax {
         List<CoordGene<Integer>> possibleAddOtherPlayer = core.getPossibleAdd(1 - core.getCurrentPlayer());
         int possibleAddSizeOtherPlayer = possibleAddOtherPlayer.size();
         for (Piece piece : core.getPlayers()[1 - core.getCurrentPlayer()].getInventory()) {
-            heuristics.pieces[0][piece.getId()].getValuesInHand(possibleAddSizeOtherPlayer);
+            heuristics.pieces[1][piece.getId()].getValuesInHand(possibleAddSizeOtherPlayer);
         }
 
         //getting all possible moves + heuristics of both players and add possible moves for current player
