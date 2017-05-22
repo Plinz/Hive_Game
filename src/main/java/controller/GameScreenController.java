@@ -41,9 +41,13 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -158,7 +162,13 @@ public class GameScreenController implements Initializable {
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null && possibleMovement.contains(coord)) {
-                                startMovingAnimation(pieceToMove, coord);
+                                //startMovingAnimation(pieceToMove, coord);
+                                core.movePiece(pieceToMove, coord);
+                                panCanvas.getChildren().remove(animation.getPolygon());
+                                animationPlaying.setValue(false);
+                                handleResize(coord);
+                                resetPiece();
+                                clearHelp();
                                 undo.setDisable(false);
                                 redo.setDisable(true);
                             } else if (core.isPieceOfCurrentPlayer(coord)) {
@@ -375,14 +385,13 @@ public class GameScreenController implements Initializable {
     public void giveHand(){
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
          
-       // inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
-       // inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
         namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
         namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !"); 
         initPlayer1Button();
         initPlayer2Button();
         
     }
+    
     
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
@@ -398,7 +407,7 @@ public class GameScreenController implements Initializable {
             inventoryPlayer1.setBorder(Border.EMPTY);
             inventoryPlayer2.setStyle("-fx-effect: none");
             inventoryPlayer1.setStyle("-fx-effect: innershadow(one-pass-box, lightgrey, 100, 0.1, 1, 1);");
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
 
             namePlayer1.setText(core.getPlayers()[0].getName() + " attend !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " à vous de jouer !");
@@ -420,6 +429,20 @@ public class GameScreenController implements Initializable {
 
             if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
+                b.setOnDragOver(new EventHandler <DragEvent>(){
+                    @Override
+                    public void handle(DragEvent event){
+                        System.out.print("pouet");
+                    }
+                });
+                
+                b.setOnDragDetected(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent event) {
+                        System.out.print("lolilolafa");
+
+                    }
+                });
+                
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
@@ -513,18 +536,7 @@ public class GameScreenController implements Initializable {
         animation.setPath(new Path(
                 new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
                 new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
-        animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-                panCanvas.getChildren().remove(animation.getPolygon());
-                core.movePiece(pieceToMove, coordEnd);
-                handleResize(coordEnd);
-                resetPiece();
-                clearHelp();
-                animationPlaying.setValue(false);
-            }
-        });
         animation.play();
     }
 
@@ -895,6 +907,12 @@ public class GameScreenController implements Initializable {
         File file = new File("Hive_init/Hive_save_images/" + name + ".png");
         ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);
     }
+
+    public Main getMain() {
+        return main;
+    }
+    
+    
 
     public void setMainApp(Main mainApp) {
         this.main = mainApp;

@@ -5,8 +5,14 @@
  */
 package main.java.controller;
 
+import com.sun.javafx.cursor.CursorFrame;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
+import javafx.scene.image.Image;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import main.java.engine.Core;
 import main.java.utils.Consts;
 import main.java.view.Highlighter;
@@ -38,6 +44,6 @@ public class ControllerButtonPiece implements EventHandler<MouseEvent> {
             /**/
             gameController.setPieceToChoose(indexPiece);
             highlighted.setListTohighlight(c.getPossibleAdd(c.getCurrentPlayer()));
-        }
+    }
     }
 }
