@@ -38,7 +38,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseButton;
@@ -163,7 +162,7 @@ public class GameScreenController implements Initializable {
                                 pieceToChoose = -1;
                             } else {
                                 if (pieceToChoose != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)) {
-                                    startPlacingAnimation(coord);
+                                    startPlacingAnimation(pieceToChoose,coord);
                                     undo.setDisable(false);
                                     redo.setDisable(true);
                                 } else {
@@ -249,9 +248,11 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(ScrollEvent event) {
-                if (event.getDeltaY() > 0) {
-                    Consts.SIDE_SIZE *= 1.1;
-                } else {
+                
+                if (event.getDeltaY() > 0){ 
+                    if(Consts.SIDE_SIZE <=120)
+                        Consts.SIDE_SIZE *= 1.1;
+                }else if(Consts.SIDE_SIZE >= 20){
                     Consts.SIDE_SIZE *= 0.9;
                 }
             }
@@ -259,8 +260,41 @@ public class GameScreenController implements Initializable {
         gameCanvas.widthProperty().bind(panCanvas.widthProperty());
         gameCanvas.heightProperty().bind(panCanvas.heightProperty());
     }
+    
+        private void popupUnderBeetle(List<Tile> listTiles, Tile tileTemp) {
 
+        drawPolygonPopUp(0, tileTemp);
+        int deplacement = 2;
+        Collections.reverse(listTiles); // A CHANGER UN PEU LOURD PEUT ETRE 
+        for (Tile tile : listTiles) {
+            drawPolygonPopUp(deplacement, tile);
+            deplacement += 2;
+        }
 
+    }
+
+    private void drawPolygonPopUp(int deplacement, Tile tile) {
+        Hexagon hex = new Hexagon();
+        hex.setxPixel(0.0);
+        hex.setyPixel(0.0);
+        hex.calculHex();
+        double x[] = hex.getListXCoord();
+        double y[] = hex.getListYCoord();
+        int placement = (int) (Consts.SIDE_SIZE);
+        Piece piece = tile.getPiece();
+        
+        Polygon p = new Polygon();
+        p.setFill(new ImagePattern(piece.getImage()));
+        p.getPoints().addAll(new Double[]{
+            x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement),
+            x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement,
+            x[2]+placement, y[2] + Consts.SIDE_SIZE * deplacement,
+            x[3]+placement, y[3] + Consts.SIDE_SIZE * deplacement,
+            x[4]+placement, y[4] + Consts.SIDE_SIZE * deplacement,
+            x[5]+placement, y[5] + Consts.SIDE_SIZE * deplacement});
+        popup.getContent().add(p);
+
+    }
     
     public void handleHelp(){
     	clearHelp();
@@ -291,6 +325,16 @@ public class GameScreenController implements Initializable {
     public void handleLeftButton() {
         t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() - 10, t.getMoveOrigin().getY()));
     }
+    
+    public void handlePlusButton() {    
+        if(Consts.SIDE_SIZE <=120)
+            Consts.SIDE_SIZE *= 1.1;              
+    }
+        
+    public void handleMinusButton() {
+        if(Consts.SIDE_SIZE >= 20)
+            Consts.SIDE_SIZE *= 0.9;
+    }
 
     public void handleUndoButton() {
         core.previousState();
@@ -320,16 +364,27 @@ public class GameScreenController implements Initializable {
     /*Fin des handlers */
 
     /*Méthodes d'initialisation */
+    public void giveHand(){
+        inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
+        inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+        inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+        namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
+        namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !");  
+        initPlayer1Button();
+        initPlayer2Button();
+        
+    }
+    
     public void initButtonByInventory() {
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
         if (core.getCurrentPlayer() == 0) {
-            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
             namePlayer1.setText(core.getPlayers()[0].getName() + " à vous de jouer !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " attend !");
         } else {
-            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
-            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(5))));
+            inventoryPlayer1.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
+            inventoryPlayer2.setBorder(new Border(new BorderStroke(Color.LIGHTGREEN, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(5))));
 
             namePlayer1.setText(core.getPlayers()[0].getName() + " attend !");
             namePlayer2.setText(core.getPlayers()[1].getName() + " à vous de jouer !");
@@ -344,20 +399,19 @@ public class GameScreenController implements Initializable {
         int line = 0;
         int col = 0;
         for (int i = 0; i < inventory.size(); i++) {
-            String name = inventory.get(i).getName();
-            int team = inventory.get(i).getTeam();
+            Piece piece = inventory.get(i);
             ToggleButton b = new ToggleButton();
             b.setMinSize(65, 65);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
-                b.disableProperty().bind(freeze);
                 inventoryGroup.getToggles().add(b);
             }
+            b.disableProperty().bind(freeze);
             if (i != 0 && i % 4 == 0) {
                 col = 0;
                 line++;
@@ -371,60 +425,25 @@ public class GameScreenController implements Initializable {
         }
     }
 
-    private void popupUnderBeetle(List<Tile> listTiles, Tile tileTemp) {
-
-        drawPolygonPopUp(0, tileTemp);
-        int deplacement = 2;
-        Collections.reverse(listTiles); // A CHANGER UN PEU LOURD PEUT ETRE 
-        for (Tile tile : listTiles) {
-            drawPolygonPopUp(deplacement, tile);
-            deplacement += 2;
-        }
-
-    }
-
-    private void drawPolygonPopUp(int deplacement, Tile tile) {
-        Hexagon hex = new Hexagon();
-        hex.setxPixel(0.0);
-        hex.setyPixel(0.0);
-        hex.calculHex();
-        double x[] = hex.getListXCoord();
-        double y[] = hex.getListYCoord();
-        int placement = (int) (Consts.SIDE_SIZE);
-        
-        Polygon p = new Polygon();
-        p.setFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + tile.getPiece().getName() + tile.getPiece().getTeam() + ".png").toString())));
-        p.getPoints().addAll(new Double[]{
-            x[0]+placement, y[0] + (Consts.SIDE_SIZE * deplacement),
-            x[1]+placement, y[1] + Consts.SIDE_SIZE * deplacement,
-            x[2]+placement, y[2] + Consts.SIDE_SIZE * deplacement,
-            x[3]+placement, y[3] + Consts.SIDE_SIZE * deplacement,
-            x[4]+placement, y[4] + Consts.SIDE_SIZE * deplacement,
-            x[5]+placement, y[5] + Consts.SIDE_SIZE * deplacement});
-        popup.getContent().add(p);
-
-    }
-
     public void initPlayer2Button() {
         inventoryPlayer2.getChildren().remove(0, inventoryPlayer2.getChildren().size());
         List<Piece> inventory = core.getPlayers()[1].getInventory();
         int line = 0;
         int col = 0;
         for (int i = 0; i < inventory.size(); i++) {
-            String name = inventory.get(i).getName();
-            int team = inventory.get(i).getTeam();
+            Piece piece = inventory.get(i);
             ToggleButton b = new ToggleButton();
             b.setMinSize(65, 65);
-            b.setBackground(new Background(new BackgroundFill(new ImagePattern(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/" + name + team + ".png").toString())), CornerRadii.EMPTY, Insets.EMPTY)));
+            b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if (core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
-                b.disableProperty().bind(freeze);
                 inventoryGroup.getToggles().add(b);
             }
+            b.disableProperty().bind(freeze);
 
             if (i != 0 && i % 4 == 0) {
                 col = 0;
@@ -473,8 +492,7 @@ public class GameScreenController implements Initializable {
         end = t.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
-        String name = getClass().getClassLoader().getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() + ".png").toString();
-        Image image = new Image(name);
+        Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
                 new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
@@ -487,12 +505,6 @@ public class GameScreenController implements Initializable {
                 if (core.movePiece(pieceToMove, coordEnd)) {
                     handleEndGame();
                 } else {
-                    /*
-                    if (core.getMode() != Consts.PVP) {
-                        while (core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)) {
-                            core.playAI();
-                        }
-                    }*/
                     handleResize(coordEnd);
                     resetPiece();
                     clearHelp();
@@ -504,7 +516,7 @@ public class GameScreenController implements Initializable {
         animation.play();
     }
 
-    public void startPlacingAnimation(CoordGene<Integer> coordEnd) {
+    public void startPlacingAnimation(int idPiece, CoordGene<Integer> coordEnd) {
 
         freeze.setValue(true);
         highlighted.setListTohighlight(null);
@@ -513,7 +525,7 @@ public class GameScreenController implements Initializable {
         Piece piece = null;
 
         for (int i = 0; i < core.getPlayers()[core.getCurrentPlayer()].getInventory().size(); i++) {
-            if (core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i).getId() == pieceToChoose) {
+            if (core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i).getId() == idPiece) {
                 piece = core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i);
             }
         }
@@ -524,8 +536,7 @@ public class GameScreenController implements Initializable {
         end = t.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
-        String name = getClass().getClassLoader().getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() + ".png").toString();
-        Image image = new Image(name);
+        Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
                 new MoveTo(start.getX() + t.getMoveOrigin().getX(), 0),
@@ -536,20 +547,13 @@ public class GameScreenController implements Initializable {
             public void handle(ActionEvent event) {
 
                 panCanvas.getChildren().remove(animation.getPolygon());
-                if (core.addPiece(pieceToChoose, coordEnd)) {
+                if (core.addPiece(idPiece, coordEnd)) {
                     handleEndGame();
                 } else {
-                    /*
-                    if (core.getMode() != Consts.PVP) {
-                        while (core.getCurrentPlayer() != (core.getMode() == Consts.PVAI ? Consts.PLAYER1 : Consts.PLAYER2)) {
-                            core.playAI();
-                        }
-                    }*/
                     handleResize(coordEnd);
                     resetPiece();
                     clearHelp();
                     freeze.setValue(false);
-                    //initButtonByInventory();
                 }
             }
         });

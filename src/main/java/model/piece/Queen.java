@@ -13,10 +13,6 @@ public class Queen extends Piece {
 
 	public Queen(int id, int team) {
 		super(Consts.QUEEN_NAME, id, team, "La reine abeille se déplace d'un espace à la fois");
-                if (team == 0)
-                    drawingId = 0;
-                else
-                    drawingId = 1;
                         
 	}
 

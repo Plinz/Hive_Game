@@ -25,7 +25,6 @@ public class BoardDrawer extends Visitor {
 	GraphicsContext gc;
 	TraducteurBoard traducteur;
 	Hexagon hex;
-        ArrayList<Image> images;
 
 	public BoardDrawer(Canvas c) {
 		this.can = c;
@@ -39,20 +38,6 @@ public class BoardDrawer extends Visitor {
 		hex = new Hexagon();
 		traducteur = t;
 		traducteur.setMoveOrigin(new CoordGene<Double>(can.getWidth() / 2, (can.getHeight() / 2) - Consts.SIDE_SIZE));
-                initImages();
-        }
-        public void initImages(){
-            images = new ArrayList<>();
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Queen0.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Queen1.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Ant0.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Ant1.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Beetle0.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Beetle1.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Spider0.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Spider1.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Grasshopper0.png").toString()));
-            images.add(new Image(getClass().getClassLoader().getResource("main/resources/img/tile/Grasshopper1.png").toString()));
         }
 
 	public boolean visit(Board b) {
@@ -76,7 +61,7 @@ public class BoardDrawer extends Visitor {
 		if (piece != null) {
 			String name;
 			if (t.getZ() == 0) {
-                               gc.setFill(new ImagePattern(images.get(piece.getDrawingId())));
+                               gc.setFill(new ImagePattern(piece.getImage()));
 			} else {
                             name = getClass().getClassLoader()
 						.getResource("main/resources/img/tile/" + piece.getName() + piece.getTeam() +t.getZ() +".png")
@@ -121,15 +106,6 @@ public class BoardDrawer extends Visitor {
 	@Override
 	protected boolean visit(Piece p) {
 		throw new UnsupportedOperationException("Not supported yet."); // To
-																		// change
-																		// body
-																		// of
-																		// generated
-																		// methods,
-																		// choose
-																		// Tools
-																		// |
-																		// Templates.
 	}
 
 	@Override
@@ -153,10 +129,6 @@ public class BoardDrawer extends Visitor {
 
 		gc.setStroke(Color.RED);
 		gc.setLineWidth(3);
-//		gc.setGlobalAlpha(0.5);
-//		gc.setFill(Color.RED);
-//		gc.fillPolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
-//		gc.setGlobalAlpha(1);
 		gc.strokePolygon(hex.getListXCoord(), hex.getListYCoord(), 6);
 
 	}

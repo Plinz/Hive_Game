@@ -252,14 +252,15 @@ public class Heuristics {
         HashSet<Tile> markedTiles = new HashSet();
         boolean destFound = false;
         tileSet.add(tile);
+        markedTiles.add(tile);
         do
         {
             turn++;
             for (Tile tileElem : tileSet)
             {
-                for (CoordGene coords : tileElem.getCoord().getNeighbors())
+                for (CoordGene coords : tileElem.getPiece().getPossibleMovement(tileElem, this.core.getBoard()))
                 {
-                    if (!(tileSet.contains(this.core.getBoard().getTile(coords))))
+                    if (!(markedTiles.contains(this.core.getBoard().getTile(coords))))
                     {
                         if (this.isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(coords)))
                         {
@@ -267,6 +268,7 @@ public class Heuristics {
                             break;
                         }
                         tileSet.add(this.core.getBoard().getTile(coords));
+                        markedTiles.add(this.core.getBoard().getTile(coords));
                     }
                 }
                 if (destFound)

@@ -15,10 +15,6 @@ public class Ant extends Piece {
 
 	public Ant(int id, int team) {
 		super(Consts.ANT_NAME, id, team, "La fourmi peut se déplacer d'autant d'espaces que le joueur le désire");
-                if (team == 0)
-                    drawingId = 2;
-                else
-                    drawingId = 3;
         }
 
 	@Override

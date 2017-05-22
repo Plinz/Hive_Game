@@ -35,24 +35,24 @@
               <rowConstraints>
                 <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="219.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="444.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="278.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="496.0" minHeight="10.0" prefHeight="13.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="532.0" minHeight="10.0" prefHeight="389.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <GridPane prefHeight="39.0" prefWidth="357.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="80.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="89.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="84.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="82.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="73.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="74.0" prefWidth="85.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="undo" mnemonicParsing="false" onMousePressed="#handleUndoButton" prefHeight="80.0" prefWidth="90.0" styleClass="buttonUndo" GridPane.halignment="CENTER">
+                        <Button fx:id="undo" mnemonicParsing="false" onMousePressed="#handleUndoButton" prefHeight="79.0" prefWidth="91.0" styleClass="buttonUndo" GridPane.halignment="CENTER">
                            <GridPane.margin>
                               <Insets top="5.0" />
                            </GridPane.margin>
@@ -106,8 +106,8 @@
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="228.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="232.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <GridPane fx:id="inventoryPlayer1" gridLinesVisible="true" prefHeight="267.0" prefWidth="420.0" GridPane.rowIndex="1">
@@ -144,18 +144,18 @@
                         </Text>
                      </children>
                   </GridPane>
-                  <GridPane prefHeight="408.0" prefWidth="446.0" GridPane.rowIndex="4">
+                  <GridPane prefHeight="411.0" prefWidth="413.0" GridPane.rowIndex="4">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="40.0" minHeight="29.0" prefHeight="40.0" />
-                      <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="182.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="168.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="96.0" minHeight="9.0" prefHeight="13.0" />
+                      <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="235.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="367.0" minHeight="10.0" prefHeight="104.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <GridPane fx:id="inventoryPlayer2" prefHeight="325.0" prefWidth="420.0" GridPane.rowIndex="2">
+                        <GridPane fx:id="inventoryPlayer2" prefHeight="243.0" prefWidth="413.0" GridPane.rowIndex="2">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -200,8 +200,8 @@
             <Separator minHeight="-Infinity" orientation="VERTICAL" prefHeight="20.0" prefWidth="7.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="667.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="0.0" prefWidth="1.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="866.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
               </columnConstraints>
               <rowConstraints>
@@ -213,17 +213,27 @@
                   <Pane fx:id="panCanvas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myBG" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Path fx:id="path" fill="DODGERBLUE" stroke="BLACK" strokeType="INSIDE" />
-                        <Canvas fx:id="gameCanvas" height="761.0" width="847.0" />
+                        <Canvas fx:id="gameCanvas" height="761.0" layoutX="-1.0" width="847.0" />
                      </children>
                   </Pane>
-                  <Button id="westArrow" mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                  <Button id="northArrow" mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button id="southArrow" mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <Button id="westArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                  <Button id="northArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button id="southArrow" ellipsisString="." mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                </children>
             </GridPane>
-            <Button id="eastArrow" mnemonicParsing="false" onMouseClicked="#handleRightButton" onMousePressed="#handleRightButton" prefHeight="30.0" prefWidth="30.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button id="eastArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleRightButton" onMousePressed="#handleRightButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="minusButton" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleMinusButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets bottom="10.0" right="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="plusButton" ellipsisString="" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handlePlusButton" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets bottom="50.0" right="10.0" />
                </GridPane.margin>
             </Button>
          </children>
