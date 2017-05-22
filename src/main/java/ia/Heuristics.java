@@ -34,20 +34,23 @@ public class Heuristics {
     Core core;
     int AIPlayer;
     int nbConfigsStudied;
-    int mobilityAI, mobilityOpponent, possiblePlacements;
-    List<List<List<Double>>> heuristicData;
+    int difficulty;
+    int nbPieceInHandAI, nbPieceInHandOpponent, nbPieceOnBoardAI, nbPieceOnBoardOpponent;
+    int nbMovesAI, nbMovesOpponent, nbPlacementAI, nbPlacementOpponent;
+    int nbPinnedAI, nbPinnedOpponent;
+    double[][][] heuristicData;
+    HeuristicPiece[][] pieces;
 
     /*
      *                  CONSTUCTOR
      */
     public Heuristics(Core core) {
         this.core = core;
-        
-        heuristicData = new ArrayList<>(2);
-        for (List<List<Double>> listListDouble : heuristicData){
-            listListDouble = new ArrayList<>(6);
-            for (List<Double> listDouble : listListDouble){
-                listDouble = new ArrayList<>(7);
+        heuristicData = HeuristicConst.getHeuristicDataFromConsts();
+        pieces = new HeuristicPiece[2][Consts.NB_PIECES_PER_PLAYER];
+        for (int i = 0 ; i<2 ; i++){
+            for (int j=0 ; j < Consts.NB_PIECES_PER_PLAYER ; j++){
+                pieces[i][j] = new HeuristicPiece(j);
             }
         }
     }
@@ -73,6 +76,24 @@ public class Heuristics {
     /*
      *                  GETTERS
      */
+    
+    public void getGeneralValues(){
+        resetGeneralValues();
+        for (int pieceId = 0 ; pieceId < Consts.NB_PIECES_PER_PLAYER ; pieceId++){
+            nbMovesAI += pieces[0][pieceId].nbMoves * pieces[0][pieceId].isInGame;
+            nbPlacementAI +=  pieces[0][pieceId].nbMoves * (1-pieces[0][pieceId].isInGame);
+            nbPieceInHandAI += 1-pieces[0][pieceId].isInGame;
+            nbPieceOnBoardAI += pieces[0][pieceId].isInGame;
+            nbPinnedAI += pieces[0][pieceId].isPinned;
+            
+            nbMovesOpponent += pieces[1][pieceId].nbMoves * pieces[1][pieceId].isInGame;
+            nbPlacementOpponent +=  pieces[1][pieceId].nbMoves * (1-pieces[1][pieceId].isInGame);
+            nbPieceInHandOpponent += 1-pieces[1][pieceId].isInGame;
+            nbPieceOnBoardOpponent += pieces[1][pieceId].isInGame;
+            nbPinnedOpponent += pieces[1][pieceId].isPinned;
+        }
+    }
+    
     public int getNbPiecesAroundQueen(int player) {
         if (core.getPlayers()[player].getInventory().stream().noneMatch(piece -> piece.getId() == Consts.QUEEN)) {
             return core.getBoard().getPieceNeighbors(getTile(Consts.QUEEN, player)).size();
@@ -146,20 +167,28 @@ public class Heuristics {
     }
 
     public void resetValues(){
-        mobilityAI =0;
-        mobilityOpponent=0;
-        possiblePlacements =0;
-        
-    }
-    
-    public void incrementMobility(int player){
-        if (core.getCurrentPlayer() == AIPlayer){
-            mobilityAI ++;
-        } else {
-            mobilityOpponent ++;
+        resetGeneralValues();
+        for (int player = 0; player < 2 ; player ++){
+            for (int pieceId = 0 ; pieceId < Consts.NB_PIECES_PER_PLAYER ; pieceId++){
+                pieces[player][pieceId].resetValues();
+            }
         }
     }
     
+    public void resetGeneralValues(){
+    nbPieceInHandAI = 0;
+    nbPieceInHandOpponent = 0;
+    nbPieceOnBoardAI = 0;
+    nbPieceOnBoardOpponent =0;
+    nbMovesAI = 0;
+    nbMovesOpponent = 0;
+    nbPlacementAI = 0;
+    nbPlacementOpponent = 0;
+    nbPinnedAI = 0;
+    nbPinnedOpponent = 0;
+    }
+    
+
     public boolean OpponentsQueenSurroundedExceptGates(int player)
     {
         if (this.core.getBoard().getNbPieceOnTheBoard() < 0)
