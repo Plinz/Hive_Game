@@ -14,7 +14,7 @@ public abstract class IO {
 	public abstract String getMove();
 	public abstract boolean updateInfo();
 	public abstract void sendMove(String move);
-	public abstract void sendInfo();
+	public abstract boolean sendInfo(String playerName);
 	public abstract void processReceive(String response);
 	
 }

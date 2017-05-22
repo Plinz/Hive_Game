@@ -1,7 +1,8 @@
 package main.java.io;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -14,7 +15,6 @@ public class Client extends IO {
 	private String notation = null;
 	private String otherName = null;
 	private int mode = -1;
-	private boolean run = true;
 
 	public Client(Core core) {
 		super(core);
@@ -40,8 +40,9 @@ public class Client extends IO {
 	public boolean updateInfo() {
 		synchronized (this) {
 			if (otherName != null && mode != -1){
-				core.setMode(mode==Consts.PVEX?Consts.EXVP:Consts.PVEX);
+				core.setMode(mode);
 				(mode==Consts.PVEX?core.getPlayers()[Consts.PLAYER2]:core.getPlayers()[Consts.PLAYER1]).setName(otherName);
+				core.setState(core.getMode()==Consts.PVEX?Consts.WAIT_FOR_INPUT:Consts.PROCESSING);
 				return true;
 			}
 			return false;
@@ -57,26 +58,35 @@ public class Client extends IO {
 	}
 
 	@Override
-	public void sendInfo() {
+	public boolean sendInfo(String playerName) {
 		synchronized (this) {
 			if (server != null){
-				server.println("NAME"+(core.getMode()==Consts.PVEX?core.getPlayers()[Consts.PLAYER1]:core.getPlayers()[Consts.PLAYER2]).getName());
+				server.println("NAME"+playerName);
 				server.flush();
+				return true;
 			}
+			return false;
 		}
 	}
 	
 	@Override
 	public void processReceive(String response){
 		synchronized (this) {
-			String[] tokens = response.split(";");
-			core.playEmulate(tokens[0], tokens[1]);
+			if (response.startsWith("NAME")){
+				otherName = response.substring(4);
+			} else if(response.startsWith("MODE")){
+				int m = Integer.parseInt(response.substring(4));
+				mode = m==Consts.PVEX?Consts.EXVP:Consts.PVEX;
+			} else {
+				String[] tokens = response.split(";");
+				core.playExtern(tokens[0], tokens[1]);
+			}
 		}
 	}
 
 	public class ClientThread implements Runnable {
 		private Socket connexion = null;
-		private BufferedInputStream reader = null;
+		private BufferedReader reader = null;
 
 		public ClientThread(Socket socket) {
 			this.connexion = socket;
@@ -85,27 +95,57 @@ public class Client extends IO {
 		public void run() {
 			try {
 				server = new PrintWriter(connexion.getOutputStream(), true);
-				reader = new BufferedInputStream(connexion.getInputStream());
-				while(run){
-					String response = read();
-					if (response != null && !response.isEmpty()){
-						processReceive(response);
+				reader = new BufferedReader(new InputStreamReader(connexion.getInputStream()));
+			} catch (IOException e) {
+				e.printStackTrace(System.out);
+			}
+			String message = "";
+			try {
+				char charCur[] = new char[1];
+				while (reader.read(charCur, 0, 1) != -1) {
+					if (charCur[0] != '\u0000' && charCur[0] != '\n' && charCur[0] != '\r')
+						message += charCur[0];
+					else if (!message.equalsIgnoreCase("")) {
+						processReceive(message);
+						message = "";
 					}
 				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace(System.out);
+			} finally {
+				System.out.println("Le server s'est deconnecte");
+				server.close();
 			}
-			server.close();
 		}
-
-		// Méthode pour lire les réponses du serveur
-		private String read() throws IOException {
-			String response = "";
-			int stream;
-			byte[] b = new byte[4096];
-			stream = reader.read(b);
-			response = new String(b, 0, stream);
-			return response;
-		}
+		
+		
+//		public void run() {
+//			try {
+//				System.out.println("Client1");
+//				server = new PrintWriter(connexion.getOutputStream(), true);
+//				reader = new BufferedInputStream(connexion.getInputStream());
+//				while(run){
+//					String response = read();
+//					if (response != null && !response.isEmpty()){
+//						processReceive(response);
+//					}
+//				}
+//			} catch (IOException e1) {
+//				e1.printStackTrace();
+//			}
+//			server.close();
+//		}
+//
+//		// Méthode pour lire les réponses du serveur
+//		private String read() throws IOException {
+//			System.out.println("Cleint read");
+//			String response = "";
+//			int stream;
+//			byte[] b = new byte[4096];
+//			stream = reader.read(b);
+//			response = new String(b, 0, stream);
+//			System.out.println("responseCleint"+response);
+//			return response;
+//		}
 	}
 }
