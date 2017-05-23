@@ -63,18 +63,26 @@ public class MediumAI extends AI {
             }
         } else {
             Minimax minimax = new Minimax(core, heuristics);
-
+            
+            int sign;
+            if (AIPlayer == 0) 
+                sign = 1;
+            else 
+                sign = -1;
+            
+            
             List<Minimax> possibleMovements = minimax.getChildren();
             Minimax chosenOne = possibleMovements.get(0);
-            double bestHeuristic = chosenOne.heuristicValue;
+            double bestHeuristic = sign * chosenOne.heuristicValue;
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
+
             for (Minimax child : possibleMovements) {
-                System.out.println("child : move = "+ Notation.getHumanDescription( child.moveFromParent, false)  + " with h= "+child.heuristicValue);
-                if (child.heuristicValue < bestHeuristic){
-                    bestHeuristic = child.heuristicValue;
+                System.out.println("child : move = " + Notation.getHumanDescription(child.moveFromParent, false) + " with h= " + child.heuristicValue);
+                if (sign * child.heuristicValue > bestHeuristic) {
+                    bestHeuristic = sign * child.heuristicValue;
                     chosenOne = child;
                 }
             }
@@ -82,8 +90,8 @@ public class MediumAI extends AI {
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-            System.out.println("Chosen One : "+chosenOne.moveFromParent + " with heuristic = "+chosenOne.heuristicValue);
-            return chosenOne.moveFromParent+";"+chosenOne.moveToParent;
+            System.out.println("Chosen One : " + chosenOne.moveFromParent + " with heuristic = " + chosenOne.heuristicValue);
+            return chosenOne.moveFromParent + ";" + chosenOne.moveToParent;
         }
     }
 }

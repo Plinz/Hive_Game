@@ -198,8 +198,7 @@ public class Heuristics {
     nbPinnedAI = 0;
     nbPinnedOpponent = 0;
     }
-    
-
+        
     public boolean OpponentsQueenSurroundedExceptGates(int player)
     {
         if (this.core.getBoard().getNbPieceOnTheBoard() < 0)
