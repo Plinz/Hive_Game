@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 import main.java.engine.Core;
 import main.java.engine.Notation;
+import main.java.model.Box;
+import main.java.model.Column;
 import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
@@ -19,9 +21,13 @@ public abstract class AI {
     Heuristics heuristics;
     int AIPlayer;
     int[] choiceDuringOpening;
+    ArrayList<CoordGene<Integer>> foreseenMoves;
+    Tile foreseenTileToMove;
 
     public AI(Core core) {
         this.core = core;
+        this.foreseenMoves = new ArrayList<>();
+        this.foreseenTileToMove = null;
     }
 
     public boolean isDuringOpening() {
@@ -121,5 +127,73 @@ public abstract class AI {
         String move = Notation.getMoveNotation(core.getBoard(), tileToMove.getPiece(), possibleDestinations.get(rand));
         String unMove = Notation.getInverseMoveNotation(core.getBoard(), tileToMove.getPiece());
         return move + ";" + unMove;
+    }
+    
+    public String moveForGates()
+    {
+        //if no list of moves ready to be played
+        if ((this.foreseenMoves.isEmpty()) || (!(this.core.getPossibleMovement(this.foreseenTileToMove.getCoord()).contains(this.foreseenMoves.get(0)))))
+        {
+            //check if there is an "inactive" grassHopper that could help to circle the queen
+            for (Column col : this.core.getBoard().getBoard())
+            {
+                for (Box b : col)
+                {
+                    for (Tile t : b)
+                    {
+                        if (Consts.getType(t.getPiece().getId()) == Consts.GRASSHOPPER_TYPE)
+                        {
+                            if (!(this.core.getBoard().getNeighbors(heuristics.getTile(Consts.QUEEN, 1 - AIPlayer)).contains(t))
+                                && (heuristics.grassHopperToOpponentsQueensFreeNeighbor(AIPlayer, t) != null))
+                            {
+                                this.foreseenMoves = heuristics.grassHopperToOpponentsQueensFreeNeighbor(AIPlayer, t);
+                                this.foreseenTileToMove = t;
+                                return Notation.getMoveNotation(this.core.getBoard(), t.getPiece(), this.foreseenMoves.remove(0))
+                                        + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), t.getPiece());  
+                            }
+                        }
+                    }
+                }
+            }
+            //if no inactive grassHopper can circle the opponent's queen, check inventory to find some others
+            Piece grassHopperFound = null;
+            for (Piece p : this.core.getPlayers()[AIPlayer].getInventory())
+            {
+                if (Consts.getType(p.getId()) == Consts.GRASSHOPPER_TYPE)
+                {
+                    grassHopperFound = p;
+                    break;
+                }
+            }
+            
+            //if IA has grasshoppers left to be played
+            if (grassHopperFound != null)
+            {
+                //search for the tile where a new piece can be placed and from which a queen's neighbor is the most rapidly reached
+                for (CoordGene<Integer> c : this.core.getPossibleAdd(AIPlayer))
+                {
+                    ArrayList tileToQueen = heuristics.grassHopperToOpponentsQueensFreeNeighbor(AIPlayer, this.core.getBoard().getTile(c));
+                    if (tileToQueen != null)
+                    {
+                        if ((this.foreseenMoves.isEmpty()) || (tileToQueen.size() < this.foreseenMoves.size()))
+                        {
+                            this.foreseenMoves = tileToQueen;
+                            this.foreseenTileToMove = new Tile(grassHopperFound, false, c.getX(), c.getY(), 0);
+                            return Notation.getMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece(), this.foreseenMoves.remove(0))
+                                + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece());
+                        }
+                    }
+                }
+                // no tile where a piece can be added allows to reached to queen
+                return null;
+            }
+            else 
+                return null;
+        }
+        else
+            //play the next foreseen move
+            return Notation.getMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece(), this.foreseenMoves.remove(0))
+                + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece());
+            
     }
 }
