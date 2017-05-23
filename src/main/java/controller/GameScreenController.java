@@ -798,7 +798,10 @@ public class GameScreenController implements Initializable {
         ButtonType restart = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
         ButtonType mainMenu = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Fermer", ButtonBar.ButtonData.RIGHT);
-        popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
+        if(core.getMode() != Consts.PVEX || core.getMode() != Consts.EXVP)
+            popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
+        else
+            popup.getDialogPane().getButtonTypes().addAll(mainMenu);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
