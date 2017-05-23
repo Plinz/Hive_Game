@@ -45,7 +45,7 @@ public class Core implements Cloneable {
 	private int difficulty;
 	private int state;
 	private GameScreenController gameScreen;
-	private String lastMsg;
+	private List<String> lastMsg;
 
 	public Core(int mode, int difficulty) {
 		this.history = new History();
@@ -378,6 +378,10 @@ public class Core implements Cloneable {
 	public void sendMessage(String message){
 		io.sendMessage(message);
 	}
+	
+	public void newMessage(String message){
+		lastMsg.add(0, message);
+	}
 
 	@Override
 	protected Core clone() {
@@ -448,13 +452,11 @@ public class Core implements Cloneable {
 		this.gameScreen = gameScreen;
 	}
 	
-	public String getLastMsg() {
-		String last = lastMsg;
-		lastMsg = null;
-		return last;
+	public List<String> getLastMsg() {
+		return lastMsg;
 	}
 
-	public void setLastMsg(String lastMsg) {
+	public void setLastMsg(List<String> lastMsg) {
 		this.lastMsg = lastMsg;
 	}
 
