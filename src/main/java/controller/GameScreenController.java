@@ -73,6 +73,7 @@ import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.utils.Tuple;
 import main.java.view.AnimationTile;
 import main.java.view.Hexagon;
 import main.java.view.Highlighter;
@@ -117,7 +118,8 @@ public class GameScreenController implements Initializable {
     private RefreshJavaFX r;
     private AnimationTile animation;
     private Popup popup = popup = new Popup();
-
+    private int nbMessage, nbChatRow;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
@@ -132,6 +134,8 @@ public class GameScreenController implements Initializable {
         animationPlaying = new SimpleBooleanProperty();
         animationPlaying.setValue(false);
         endOfGame = false;
+        nbMessage = 0;
+        nbChatRow = 2;
         inventoryGroup = new ToggleGroup();
         if (!core.hasPreviousState()) {
             undo.setDisable(true);
@@ -149,9 +153,9 @@ public class GameScreenController implements Initializable {
             core.playAI();
         }
         
-        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){
-            //inputChat.setVisible(false);
-           // scrollChat.setVisible(false);
+        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){         
+            inputChat.setVisible(false);
+            scrollChat.setVisible(false);
         }
         
         r.start();
@@ -335,10 +339,7 @@ public class GameScreenController implements Initializable {
     
     public void handleInputChat(KeyEvent e){
         if(e.getCode().toString().equals("ENTER")){
-            System.err.println();
-            Label me = new Label(inputChat.getText());
-            textChat.add(me,1, 1);
-            textChat.setHalignment(me,HPos.RIGHT);
+            core.sendMessage(inputChat.getText());
             inputChat.clear();
         }
     }
@@ -991,5 +992,32 @@ public class GameScreenController implements Initializable {
     
     public void hideButtonsForNetwork(){
         
+    }
+
+    /**
+     * @return the textChat
+     */
+    public GridPane getTextChat() {
+        return textChat;
+    }
+    
+    public void updateChat(){
+        if(core.getLastMsg().size() != nbMessage){
+            nbMessage = core.getLastMsg().size() - nbMessage;
+            for(int i = 0; i < nbMessage;i++ ){ 
+                getTextChat().addRow(nbChatRow + i, new Label(""));
+                if(core.getLastMsg().get(i).y == 1){
+                    Label msg = new Label(core.getLastMsg().get(i).x);          
+                    getTextChat().add(msg,1, nbChatRow +i);                  
+                    getTextChat().setHalignment(msg,HPos.RIGHT);                
+                }else{
+                    Label msg = new Label(core.getLastMsg().get(i).x);
+                    getTextChat().add(msg,0, nbChatRow +i);
+                    getTextChat().setHalignment(msg,HPos.LEFT); 
+                }
+            }
+            nbChatRow = nbChatRow + nbMessage;
+            nbMessage = core.getLastMsg().size(); 
+        }
     }
 }

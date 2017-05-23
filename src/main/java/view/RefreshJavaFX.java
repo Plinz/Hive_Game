@@ -8,6 +8,7 @@ package main.java.view;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.GridPane;
 import main.java.controller.GameScreenController;
 import main.java.engine.Core;
 import main.java.engine.OptionManager;
@@ -24,6 +25,7 @@ public class RefreshJavaFX extends AnimationTimer{
     Highlighter h;
     GameScreenController g;
     int time;
+    
     public RefreshJavaFX(Core core, Canvas c, Highlighter h) {
         this.core = core;
         drawer = new BoardDrawer(c);
@@ -62,7 +64,7 @@ public class RefreshJavaFX extends AnimationTimer{
         else if(core.getState() == Consts.READY_TO_CHANGE){
             time++;
         }
-        
+       g.updateChat();
        core.accept(drawer);
        if (OptionManager.isHelpEnable() || (core.getTurn() == 0 && !OptionManager.isGridEnable()))
     	   h.accept(drawer);

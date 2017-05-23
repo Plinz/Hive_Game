@@ -195,9 +195,9 @@
                               <Insets top="20.0" />
                            </padding>
                         </Separator>
-                        <ScrollPane fx:id="scrollChat" prefHeight="94.0" prefWidth="412.0" GridPane.rowIndex="3">
+                        <ScrollPane fx:id="scrollChat" prefHeight="94.0" prefWidth="412.0" styleClass="imageBackgroundGameScreen" GridPane.rowIndex="3">
                            <content>
-                              <GridPane fx:id="textChat" prefHeight="72.0" prefWidth="392.0">
+                              <GridPane fx:id="textChat" prefHeight="72.0" prefWidth="392.0" styleClass="imageBackgroundGameScreen">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
