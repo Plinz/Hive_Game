@@ -90,7 +90,7 @@ public class Client extends IO {
 			} else if(response.startsWith("MESG")){
 				core.newMessage(response.substring(4));
 			} else if(response.startsWith("MOVE")){
-				String[] tokens = response.split(";");
+				String[] tokens = response.substring(4).split(";");
 				core.playExtern(tokens[0], tokens[1]);
 			}
 		}
