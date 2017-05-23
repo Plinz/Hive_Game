@@ -17,13 +17,13 @@ public class Mosquito extends Piece{
 	}
 
 	@Override
-	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
+	public List<CoordGene<Integer>> updatePossibleMovement(Tile tile, Board board) {
 		Set<CoordGene<Integer>> set = new HashSet<>();
 		List<CoordGene<Integer>> pos = new ArrayList<>();
 		if (!tile.isBlocked()){
 			List<Tile> neigbors = board.getPieceNeighbors(tile.getCoord());
 			for (Tile t : neigbors)
-				set.addAll(t.getPiece().getPossibleMovement(tile, board));
+				set.addAll(t.getPiece().updatePossibleMovement(tile, board));
 			pos.addAll(set);
 		}
 		return pos;
