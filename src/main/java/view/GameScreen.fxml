@@ -195,7 +195,7 @@
                               <Insets top="20.0" />
                            </padding>
                         </Separator>
-                        <ScrollPane prefHeight="94.0" prefWidth="412.0" GridPane.rowIndex="3" />
+                        <ScrollPane fx:id="textChat" prefHeight="94.0" prefWidth="412.0" GridPane.rowIndex="3" />
                         <TextField fx:id="inputChat" onKeyPressed="#handleInputChat" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
@@ -221,12 +221,12 @@
                         <Canvas fx:id="gameCanvas" height="761.0" layoutX="-1.0" width="847.0" />
                      </children>
                   </Pane>
-                  <Button id="westArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleLeftButton" onMousePressed="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                  <Button id="northArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleUpButton" onMousePressed="#handleUpButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button id="southArrow" ellipsisString="." mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" onMousePressed="#handleDownButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <Button id="westArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                  <Button id="northArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleUpButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button id="southArrow" ellipsisString="." mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
                </children>
             </GridPane>
-            <Button id="eastArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleRightButton" onMousePressed="#handleRightButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button id="eastArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleRightButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>

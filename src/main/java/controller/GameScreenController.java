@@ -34,21 +34,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -99,10 +96,12 @@ public class GameScreenController implements Initializable {
     @FXML private Button helpButton;
     @FXML private MenuItem saveMenuItem;
     @FXML private TextField inputChat;
+    @FXML private ScrollPane textChat;
     
     private Main main;
     private Core core;
     
+    //The piece the player clicked on his inventory
     private int pieceChosenInInventory;
     private CoordGene<Double> lastCoord;
     private CoordGene<Integer> pieceToMove, lastCoordBeetle;
@@ -147,6 +146,12 @@ public class GameScreenController implements Initializable {
         if (core.getMode() == Consts.AIVP && core.getTurn() == 0){
             core.playAI();
         }
+        
+        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){
+            inputChat.setVisible(false);
+            textChat.setVisible(false);
+        }
+        
         r.start();
     }
 
@@ -155,7 +160,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                if (!animationPlaying.getValue() && core.getState() != Consts.ANIMATING) {
+                if (core.getState() == Consts.WAIT_FOR_INPUT) {
                     CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                     CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                     CoordGene<Double> origin = t.getMoveOrigin();
@@ -198,7 +203,7 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent m) {
-                if ((!animationPlaying.getValue() && core.getState() != Consts.ANIMATING) || endOfGame) {
+                if (core.getState() != Consts.ANIMATING || endOfGame) {
                     t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
                 }
             }
@@ -262,12 +267,13 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(ScrollEvent event) {
-                
-                if (event.getDeltaY() > 0){ 
-                    if(Consts.SIDE_SIZE <=120)
-                        Consts.SIDE_SIZE *= 1.1;
-                }else if(Consts.SIDE_SIZE >= 20){
-                    Consts.SIDE_SIZE *= 0.9;
+                if(core.getState() == Consts.WAIT_FOR_INPUT){
+                    if (event.getDeltaY() > 0){ 
+                        if(Consts.SIDE_SIZE <=120)
+                            Consts.SIDE_SIZE *= 1.1;
+                    }else if(Consts.SIDE_SIZE >= 20){
+                        Consts.SIDE_SIZE *= 0.9;
+                    }
                 }
             }
         });
@@ -311,17 +317,18 @@ public class GameScreenController implements Initializable {
     }
     
     public void handleHelp(){
-    	clearHelp();
-    	HelpMove helpMove = core.help();
-        highlighted.setHelp(helpMove);
-        if (helpMove.isAdd()){
-        	int index;
-        	List<Piece> list = core.getCurrentPlayerObj().getInventory();
-        	for (index = 0; index<list.size() && list.get(index).getId() != helpMove.getPieceId(); index++);
-        	ToggleButton n = (ToggleButton)((core.getCurrentPlayer() == 0)?inventoryPlayer1:inventoryPlayer2).getChildren().get(index);
-        	n.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));;
+        if(core.getState() == Consts.WAIT_FOR_INPUT){
+            clearHelp();
+            HelpMove helpMove = core.help();
+            highlighted.setHelp(helpMove);
+            if (helpMove.isAdd()){
+                    int index;
+                    List<Piece> list = core.getCurrentPlayerObj().getInventory();
+                    for (index = 0; index<list.size() && list.get(index).getId() != helpMove.getPieceId(); index++);
+                    ToggleButton n = (ToggleButton)((core.getCurrentPlayer() == 0)?inventoryPlayer1:inventoryPlayer2).getChildren().get(index);
+                    n.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));;
+            }
         }
-
     }
     
     public void handleInputChat(KeyEvent e){
@@ -332,55 +339,63 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleUpButton() {
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(), t.getMoveOrigin().getY() - 10));
+        if(core.getState() != Consts.ANIMATING)
+            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(), t.getMoveOrigin().getY() - 10));
     }
 
     public void handleRightButton() {
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() + 10, t.getMoveOrigin().getY()));
+        if(core.getState() != Consts.ANIMATING)
+            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() + 10, t.getMoveOrigin().getY()));
     }
 
     public void handleDownButton() {
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(), t.getMoveOrigin().getY() + 10));
+        if(core.getState() != Consts.ANIMATING)
+            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(), t.getMoveOrigin().getY() + 10));
     }
 
     public void handleLeftButton() {
-        t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() - 10, t.getMoveOrigin().getY()));
+        if(core.getState() != Consts.ANIMATING)
+            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() - 10, t.getMoveOrigin().getY()));
     }
     
     public void handlePlusButton() {    
-        if(Consts.SIDE_SIZE <=120)
+        if(core.getState() != Consts.ANIMATING && Consts.SIDE_SIZE <=120)
             Consts.SIDE_SIZE *= 1.1;              
     }
         
     public void handleMinusButton() {
-        if(Consts.SIDE_SIZE >= 20)
+        if(core.getState() != Consts.ANIMATING && Consts.SIDE_SIZE >= 20)
             Consts.SIDE_SIZE *= 0.9;
     }
 
     public void handleUndoButton() {
-        core.previousState();
-        while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+        if(core.getState() == Consts.WAIT_FOR_INPUT){
             core.previousState();
+            while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+                core.previousState();
+            }
+            checkHistory();
+            resetPiece();
+            clearHelp();
+            highlighted.setListTohighlight(null);
+            highlighted.setHelp(null);
+            initButtonByInventory();
         }
-        checkHistory();
-        resetPiece();
-        clearHelp();
-        highlighted.setListTohighlight(null);
-        highlighted.setHelp(null);
-        initButtonByInventory();
     }
 
     public void handleRedoButton() {
-        core.nextState();
-        while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+        if(core.getState() == Consts.WAIT_FOR_INPUT){
             core.nextState();
+            while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+                core.nextState();
+            }
+            checkHistory();
+            resetPiece();
+            clearHelp();
+            highlighted.setListTohighlight(null);
+            highlighted.setHelp(null);
+            initButtonByInventory();
         }
-        checkHistory();
-        resetPiece();
-        clearHelp();
-        highlighted.setListTohighlight(null);
-        highlighted.setHelp(null);
-        initButtonByInventory();
     }
     /*Fin des handlers */
 
@@ -758,9 +773,10 @@ public class GameScreenController implements Initializable {
         
         Dialog<ButtonType> popup = new Dialog<>();
         popup.setTitle("Fin de partie");
-        ButtonType save = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
-        ButtonType cancel = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.RIGHT);
-        popup.getDialogPane().getButtonTypes().addAll(save, cancel);
+        ButtonType restart = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
+        ButtonType mainMenu = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.OTHER);
+        ButtonType cancel = new ButtonType("Fermer", ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -795,7 +811,7 @@ public class GameScreenController implements Initializable {
         if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
             gameScreen();
         }
-        else{
+        else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
             main.showMainMenu();
         }
     }
@@ -965,5 +981,9 @@ public class GameScreenController implements Initializable {
         } else {
             undo.setDisable(true);
         }
+    }
+    
+    public void hideButtonsForNetwork(){
+        
     }
 }
