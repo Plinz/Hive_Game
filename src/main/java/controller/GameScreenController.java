@@ -160,6 +160,7 @@ public class GameScreenController implements Initializable {
         if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){
             inputChat.setVisible(false);
             textChat.setVisible(false);
+            scrollChat.setVisible(false);
         }else{
             hideButtonsForNetwork();
         }
