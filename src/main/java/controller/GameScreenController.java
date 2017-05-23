@@ -95,6 +95,9 @@ public class GameScreenController implements Initializable {
     @FXML private Button redo;
     @FXML private Button helpButton;
     @FXML private MenuItem saveMenuItem;
+    @FXML private MenuItem lanchNewGame;
+    @FXML private MenuItem loadGame;
+    
     @FXML private TextField inputChat;
     @FXML private ScrollPane textChat;
     
@@ -127,6 +130,7 @@ public class GameScreenController implements Initializable {
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         lastCoordBeetle = new CoordGene<Integer>(0,0);
+        lastCoord = new CoordGene<Double>(0.0,0.0);
         animationPlaying = new SimpleBooleanProperty();
         animationPlaying.setValue(false);
         endOfGame = false;
@@ -146,10 +150,11 @@ public class GameScreenController implements Initializable {
         if (core.getMode() == Consts.AIVP && core.getTurn() == 0){
             core.playAI();
         }
-        
         if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){
             inputChat.setVisible(false);
             textChat.setVisible(false);
+        }else{
+            hideButtonsForNetwork();
         }
         
         r.start();
@@ -371,9 +376,11 @@ public class GameScreenController implements Initializable {
     public void handleUndoButton() {
         if(core.getState() == Consts.WAIT_FOR_INPUT){
             core.previousState();
-            while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+            while (core.getMode() != Consts.PVP && core.hasPreviousState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.previousState();
             }
+            if (core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
+                core.playAI();
             checkHistory();
             resetPiece();
             clearHelp();
@@ -984,6 +991,11 @@ public class GameScreenController implements Initializable {
     }
     
     public void hideButtonsForNetwork(){
-        
+        undo.setVisible(false);
+        redo.setVisible(false);
+        helpButton.setVisible(false);
+        saveMenuItem.setVisible(false);
+        lanchNewGame.setVisible(false);
+        loadGame.setVisible(false);
     }
 }
