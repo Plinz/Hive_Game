@@ -66,6 +66,9 @@ public class Consts {
     public static final int EASY = 0;
     public static final int MEDIUM = 1;    
     public static final int HARD = 2;
+    
+    //MACRO NAME IA
+    public static final String[] IA_NAME = {"IA_FACILE","IA_NORMALE","IA_DIFFICILE"};
 
     //MACRO TEXTE MENU
     public static final String PVP_STRING = "Joueur contre joueur";

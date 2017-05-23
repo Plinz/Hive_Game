@@ -275,11 +275,19 @@ public class Core implements Cloneable {
 				Files.createDirectories(Paths.get("Hive_init/Hive_save"));
 			Path path = Paths.get("Hive_init/Hive_save/" + name);
 			BufferedWriter writer = Files.newBufferedWriter(path);
-			writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
-			if (mode == Consts.PVAI || mode == Consts.AIVP)
+			
+			if (mode == Consts.PVAI){
+                                writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
 				writer.write(difficulty + "\n");
-			else
+                        }
+                        else if(mode == Consts.AIVP){
+                                writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER2].getName() + "\n");
+				writer.write(difficulty + "\n");
+                        }
+                        else{
+                                writer.write(mode + "\n" + currentPlayer + "\n" + players[Consts.PLAYER1].getName() + "\n");
 				writer.write(players[Consts.PLAYER2].getName() + "\n");
+                        }
 			Stack<String> prevPlay = history.getPrevPlay();
 			Stack<String> prevUnplay = history.getPrevUnplay();
 			if (prevPlay.size() == prevUnplay.size())
@@ -309,12 +317,22 @@ public class Core implements Cloneable {
 			BufferedReader reader = Files.newBufferedReader(path);
 			mode = Integer.parseInt(reader.readLine());
 			currentPlayer = Integer.parseInt(reader.readLine());
-			players[Consts.PLAYER1].setName(reader.readLine());
-			if (mode == Consts.PVAI || mode == Consts.AIVP) {
+			if (mode == Consts.PVAI) {
+                                players[Consts.PLAYER1].setName(reader.readLine());
 				difficulty = Integer.parseInt(reader.readLine());
 				ai = AIFactory.buildAI(difficulty, this);
-			} else
+                                players[Consts.PLAYER2].setName(Consts.IA_NAME[difficulty]);
+                        }
+                        else if(mode == Consts.AIVP){
+                                players[Consts.PLAYER2].setName(reader.readLine());
+                                difficulty = Integer.parseInt(reader.readLine());
+				ai = AIFactory.buildAI(difficulty, this);
+                                players[Consts.PLAYER1].setName(Consts.IA_NAME[difficulty]);
+                        
+			} else{
+                                players[Consts.PLAYER1].setName(reader.readLine());
 				players[Consts.PLAYER2].setName(reader.readLine());
+                        }
 			String tmp = reader.readLine();
 			while (tmp != null && !tmp.isEmpty()) {
 				String[] token = tmp.split(";");
