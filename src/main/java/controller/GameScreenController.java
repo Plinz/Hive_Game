@@ -280,7 +280,7 @@ public class GameScreenController implements Initializable {
 
             @Override
             public void handle(ScrollEvent event) {
-                if(core.getState() == Consts.WAIT_FOR_INPUT){
+                if(core.getState() != Consts.ANIMATING){
                     if (event.getDeltaY() > 0){ 
                         if(Consts.SIDE_SIZE <=120)
                             Consts.SIDE_SIZE *= 1.1;
