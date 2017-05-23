@@ -50,8 +50,7 @@ public class EasyAI extends AI {
                     System.out.println("Erreur : Ne devrait jamais se produire");
             }
         }
-        
-        
+
         //////////////////////////////////MID GAME
         Random random = new Random();
         Minimax minimax = new Minimax(core, heuristics);
@@ -62,7 +61,27 @@ public class EasyAI extends AI {
         String chosenUnplay = null;
         List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
 
-        //case -> less than 5 pieces around opposing queen -> try to get a move which ups heuristics
+        List<Minimax> possibleMovesWithBestHeuristics = new ArrayList<>();
+        possibleMovesWithBestHeuristics.add(possibleMovements.get(0));
+        for (Minimax child : possibleMovements) {
+            if (child.heuristicValue > possibleMovesWithBestHeuristics.get(0).heuristicValue) {
+                possibleMovesWithBestHeuristics = new ArrayList<>();
+                possibleMovesWithBestHeuristics.add(child);
+            } else if (child.heuristicValue == possibleMovesWithBestHeuristics.get(0).heuristicValue) {
+                possibleMovesWithBestHeuristics.add(child);
+            }
+        }
+
+        int rand = random.nextInt(possibleMovesWithBestHeuristics.size());
+        chosenMove = possibleMovements.get(rand).moveFromParent;
+        chosenUnplay = possibleMovements.get(rand).moveToParent;
+        String moveAndUnplay = chosenMove + ";" + chosenUnplay;
+        return moveAndUnplay;
+    }
+}
+
+
+/*//case -> less than 5 pieces around opposing queen -> try to get a move which ups heuristics
         ArrayList<Minimax> childWithBetterHeuristics = new ArrayList<>();
         if (minimax.heuristics.getNbPiecesAroundQueen(1 - AIPlayer) < 5) {
             for (Minimax child : possibleMovements) {
@@ -90,5 +109,4 @@ public class EasyAI extends AI {
         }
         String moveAndUnplay = chosenMove + ";" + chosenUnplay;
         return moveAndUnplay;
-    }
-}
+    }*/
