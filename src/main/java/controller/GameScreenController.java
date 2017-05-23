@@ -383,7 +383,7 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleUndoButton() {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.previousState();
             while (core.getMode() != Consts.PVP && core.hasPreviousState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.previousState();
@@ -400,7 +400,7 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleRedoButton() {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.nextState();
             while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.nextState();
