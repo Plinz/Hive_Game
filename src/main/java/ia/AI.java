@@ -129,6 +129,15 @@ public abstract class AI {
         return move + ";" + unMove;
     }
     
+    public boolean whiteCanMoveAnt(){
+        int nbAntInInventory = 0;
+        for (Piece piece : core.getPlayers()[0].getInventory()){
+            if (Consts.getType(piece.getId())== Consts.ANT_TYPE)
+                nbAntInInventory++;
+        }
+        return (nbAntInInventory < 3);
+    }
+    
     public String moveForGates()
     {
         //if no list of moves ready to be played
