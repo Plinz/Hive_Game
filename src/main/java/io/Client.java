@@ -88,7 +88,7 @@ public class Client extends IO {
 				int m = Integer.parseInt(response.substring(4));
 				mode = m==Consts.PVEX?Consts.EXVP:Consts.PVEX;
 			} else if(response.startsWith("MESG")){
-				core.setLastMsg(response.substring(4));
+				core.newMessage(response.substring(4));
 			} else if(response.startsWith("MOVE")){
 				String[] tokens = response.split(";");
 				core.playExtern(tokens[0], tokens[1]);

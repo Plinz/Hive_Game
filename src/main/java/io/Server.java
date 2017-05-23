@@ -87,7 +87,7 @@ public class Server extends IO {
 			if (response.startsWith("NAME")){
 				otherName = response.substring(4);
 			} else if (response.startsWith("MESG")) {
-				core.setLastMsg(response.substring(4));
+				core.newMessage(response.substring(4));
 			} else if (response.startsWith("MOVE")) {
 				String[] tokens = response.substring(4).split(";");
 				core.playExtern(tokens[0], tokens[1]);
