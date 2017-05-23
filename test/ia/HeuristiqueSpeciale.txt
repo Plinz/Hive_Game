@@ -1,4 +1,4 @@
-Beetle débile ne pense pas à se mettre au dessus de la reine.
+Beetle dÃ©bile ne pense pas Ã  se mettre au dessus de la reine.
 
 
 Faire une heuristique Mid Game, une heuristique Late Game. 
@@ -6,18 +6,23 @@ Faire une heuristique Mid Game, une heuristique Late Game.
 [0] : Placement beaucoup plus rapide
 
 
-Si on change le valide movement ça influe le valid placement.
+Si on change le valide movement Ã§a influe le valid placement.
 
 Pin bien : BIEN
 Entourage de la reine : PAS BIEN
 Defense : PAS OUF
 
 
+Fin : Pour entourer la reine ennemie on place dans l'ordre :
+-> Spider
+-> Beetle
+-> GH 
+
 _______________
 
 Special Heuristic :
 
-Certains trucs existent peut etre déjà implicitement avec une bonne heuristique
+Certains trucs existent peut etre dÃ©jÃ  implicitement avec une bonne heuristique
 
 Queen :
 	-> Defensif :
@@ -25,43 +30,43 @@ Queen :
 			Deplacer la reine vers un endroit avec moins de voisins. 
 Spider :
 	-> Early :
-		Si drop possible où après il peut bloquer un moustique / beetle / queen :
+		Si drop possible oÃ¹ aprÃ¨s il peut bloquer un moustique / beetle / queen :
 			Poser la spider
-			Next Turn : Se souvenir qu'il faut pin avec la spider si une nouvelle opportunité meilleure ne s'est pas présentée
+			Next Turn : Se souvenir qu'il faut pin avec la spider si une nouvelle opportunitÃ© meilleure ne s'est pas prÃ©sentÃ©e
 Grasshopper :
 	-> Depin :
 		
 		Si Late Game
-			Si drop possible à coté d'une fourmis qui pin une pièce / qui est pinné, et qu'il peut la libérer
+			Si drop possible Ã  cotÃ© d'une fourmis qui pin une piÃ¨ce / qui est pinnÃ©, et qu'il peut la libÃ©rer
 				Poser la grasshopper
 				Next Turn : Se souvenir qu'il faut depin !
 	-> Late Move :
-		Si il y a une zone autour de la Queen ennemie qui est à l'intérieur de la Ruche :
-			Si une sauterelle peut y arriver à partir d'une zone de drop
+		Si il y a une zone autour de la Queen ennemie qui est Ã  l'intÃ©rieur de la Ruche :
+			Si une sauterelle peut y arriver Ã  partir d'une zone de drop
 				Poser la grasshoper 
-				Next Turn : Se souvenir qu'il faut se déplacer.
+				Next Turn : Se souvenir qu'il faut se dÃ©placer.
 Beetle :
 	-> Offensif : 
-		-> Une de nos pièces pin la queen ennemie, poser le Beetle pour qu'il s'approche de la Queen Enemie (2 ou 3 de distance)
-		-> Le faire avancer si la distance est proche en passant par dessus nos pièces
-		-> Le faire avancer jusqu'à la Reine ennemi sur lequel il va rester pour Direct Drop  
+		-> Une de nos piÃ¨ces pin la queen ennemie, poser le Beetle pour qu'il s'approche de la Queen Enemie (2 ou 3 de distance)
+		-> Le faire avancer si la distance est proche en passant par dessus nos piÃ¨ces
+		-> Le faire avancer jusqu'Ã  la Reine ennemi sur lequel il va rester pour Direct Drop  
 	-> Defensif : 
-		-> Un scarabé s'approche de notre Queen 
-			-> Je le pose le plus prêt possible ( eviter de bloquer la queen quand même)
-			-> Si je peux bloquer le scarabé avant qu'il arrive sur ma reine je le fais
+		-> Un scarabÃ© s'approche de notre Queen 
+			-> Je le pose le plus prÃªt possible ( eviter de bloquer la queen quand mÃªme)
+			-> Si je peux bloquer le scarabÃ© avant qu'il arrive sur ma reine je le fais
 			-> Sinon je mets le mien en couverture par dessus ma reine pour eviter le direct drop
 	-> Grosse distance : Eviter de le placer/deplacer sauf en late game
 Ant : 
-	-> Pin (déjà implem) 
+	-> Pin (dÃ©jÃ  implem) 
 
 Special Case :
 	-> Do not suicide :
-		Si Pièces autour de la reine > 3 : On ne déplace rien qui se mette à coté de la reine.
+		Si PiÃ¨ces autour de la reine > 3 : On ne dÃ©place rien qui se mette Ã  cotÃ© de la reine.
 	-> Direct Drop : 
 		-> Counter Defensif :
 			Voir avec le Beetle
 		-> Placement Offensif : 
-			Si on pose des pièces dans le but d'encercler la reine, on le fait de préférence en Direct Drop
+			Si on pose des piÃ¨ces dans le but d'encercler la reine, on le fait de prÃ©fÃ©rence en Direct Drop
 
 
 
@@ -97,7 +102,7 @@ MODIFLO
 
 
 Petit probleme peut pin ses propres fourmis :/ 
-Il faut voir ça au moment ou on choisit l'endroit ou drop.
+Il faut voir Ã§a au moment ou on choisit l'endroit ou drop.
     public static final double[] MEDIUM_ADD_TURN_1 = {0, 0.5, 0.5, 0, 0};
         public static final double[] MEDIUM_ADD_TURN_2_IF_SPIDER_ON_1 = {0.5,0,0,0,0.5};
         public static final double[] MEDIUM_ADD_TURN_2_IF_GRASSHOPPER_ON_1 = {0.5,0,0,0,0.5};
