@@ -229,15 +229,14 @@ public class GameScreenController implements Initializable {
 
                 CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
 
-                CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());              
-                
+                CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                 if (core.isTile(coord)) {
 
                     Tile tileTemp = core.getBoard().getTile(coord);
                     List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
                     
                     if (!listTiles.isEmpty() && !popup.isShowing()) {
-                    
+
                         Rectangle fondPopup = new Rectangle(0,-Consts.SIDE_SIZE,Consts.SIDE_SIZE*2,Consts.SIDE_SIZE*2*(listTiles.size()+1));
                         fondPopup.setArcWidth(20);
                         fondPopup.setArcHeight(20);
@@ -246,7 +245,6 @@ public class GameScreenController implements Initializable {
                         popup.getContent().add(fondPopup);
                         popupUnderBeetle(listTiles, tileTemp);
                         popup.show(gameCanvas, m.getScreenX()+fondPopup.getWidth()/2, m.getScreenY() +fondPopup.getHeight()/2);
-                        lastCoordBeetle = coord;
                     } else if(listTiles.isEmpty() && popup.isShowing()){
                         popup.hide();
                         popup = new Popup();
@@ -383,12 +381,12 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleUndoButton() {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.previousState();
             while (core.getMode() != Consts.PVP && core.hasPreviousState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.previousState();
             }
-            if (core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
+            if (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
                 core.playAI();
             checkHistory();
             resetPiece();
@@ -400,7 +398,7 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleRedoButton() {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.nextState();
             while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.nextState();
@@ -798,7 +796,10 @@ public class GameScreenController implements Initializable {
         ButtonType restart = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
         ButtonType mainMenu = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Fermer", ButtonBar.ButtonData.RIGHT);
-        popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
+        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP)
+            popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
+        else
+            popup.getDialogPane().getButtonTypes().addAll(mainMenu);
 
         GridPane grid = new GridPane();
         grid.setHgap(10);

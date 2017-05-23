@@ -15,7 +15,7 @@ public abstract class Piece implements Cloneable{
     protected String description;
     protected List<CoordGene<Integer>> possibleMovement;
 
-    public abstract List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board);
+    public abstract List<CoordGene<Integer>> updatePossibleMovement(Tile tile, Board board);
 
     public Piece(){
     	this.id = -1;
@@ -46,8 +46,14 @@ public abstract class Piece implements Cloneable{
 
     public Image getImage() {
         return image;
+    } 
+    
+    public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board){
+		if (this.possibleMovement == null)
+			updatePossibleMovement(tile, board);
+		return this.possibleMovement;
     }
-   
+    
     public void clear() {
         this.possibleMovement = null;
     }

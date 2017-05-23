@@ -18,9 +18,7 @@ public class Ant extends Piece {
         }
 
 	@Override
-	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
-		if (this.possibleMovement != null)
-			return this.possibleMovement;
+	public List<CoordGene<Integer>> updatePossibleMovement(Tile tile, Board board) {
 		List<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile))
 			list.addAll(path(board, tile.getCoord(), new HashSet<>(), tile.getCoord()));

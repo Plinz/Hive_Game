@@ -17,10 +17,7 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
-		if (this.possibleMovement != null)
-			return this.possibleMovement;
-
+	public List<CoordGene<Integer>> updatePossibleMovement(Tile tile, Board board) {
 		List<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile)) {
 			List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();

@@ -58,6 +58,7 @@ public class EasyAI extends AI {
 
         String chosenMove = null;
         String chosenUnplay = null;
+        
         List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
 
         List<Minimax> possibleMovesWithBestHeuristics = new ArrayList<>();

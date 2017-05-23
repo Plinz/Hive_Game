@@ -16,10 +16,7 @@ public class Grasshopper extends Piece {
         }
 
 	@Override
-	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
-		if (this.possibleMovement != null)
-			return this.possibleMovement;
-		
+	public List<CoordGene<Integer>> updatePossibleMovement(Tile tile, Board board) {
 		ArrayList<CoordGene<Integer>> list = new ArrayList<>();
 		if (!tile.isBlocked() && board.oneHive(tile)) {
 			CoordGene<Integer> coord = tile.getCoord();
