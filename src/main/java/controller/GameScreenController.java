@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
@@ -96,7 +97,8 @@ public class GameScreenController implements Initializable {
     @FXML private Button helpButton;
     @FXML private MenuItem saveMenuItem;
     @FXML private TextField inputChat;
-    @FXML private ScrollPane textChat;
+    @FXML private GridPane textChat;
+    @FXML private ScrollPane scrollChat; 
     
     private Main main;
     private Core core;
@@ -148,8 +150,8 @@ public class GameScreenController implements Initializable {
         }
         
         if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){
-            inputChat.setVisible(false);
-            textChat.setVisible(false);
+            //inputChat.setVisible(false);
+           // scrollChat.setVisible(false);
         }
         
         r.start();
@@ -333,10 +335,14 @@ public class GameScreenController implements Initializable {
     
     public void handleInputChat(KeyEvent e){
         if(e.getCode().toString().equals("ENTER")){
-            //core.sendMessage(inputChat.getText());
-            System.err.println(inputChat.getText());
+            System.err.println();
+            Label me = new Label(inputChat.getText());
+            textChat.add(me,1, 1);
+            textChat.setHalignment(me,HPos.RIGHT);
+            inputChat.clear();
         }
     }
+    
 
     public void handleUpButton() {
         if(core.getState() != Consts.ANIMATING)
