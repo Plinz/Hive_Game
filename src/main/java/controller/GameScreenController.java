@@ -236,7 +236,7 @@ public class GameScreenController implements Initializable {
                     Tile tileTemp = core.getBoard().getTile(coord);
                     List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
                     
-                    if (!listTiles.isEmpty() && !popup.isShowing() && !lastCoordBeetle.equals(coord)) {
+                    if (!listTiles.isEmpty() && !popup.isShowing()) {
                     
                         Rectangle fondPopup = new Rectangle(0,-Consts.SIDE_SIZE,Consts.SIDE_SIZE*2,Consts.SIDE_SIZE*2*(listTiles.size()+1));
                         fondPopup.setArcWidth(20);

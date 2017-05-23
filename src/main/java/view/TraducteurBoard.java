@@ -55,7 +55,7 @@ public class TraducteurBoard {
         CoordGene<Double> hex = new CoordGene<>(q,r); 
         hex = hexRound(hex);
             
-       // System.out.println("RX :"+(hex.getX() )+ " RY " + (hex.getY()));
+        //System.out.println("RX :"+(hex.getX() )+ " RY " + (hex.getY()));
             
         return hex;
     }
