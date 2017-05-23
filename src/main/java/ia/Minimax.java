@@ -42,6 +42,7 @@ public class Minimax {
         this.depth = parent.depth + 1;
         HeuristicsFactory heuristicsFactory = new HeuristicsFactory();
         this.heuristics = heuristicsFactory.buildHeuristics(parent.heuristics.difficulty, core);
+        this.heuristics.AIPlayer = parent.heuristics.AIPlayer;
         this.moveFromParent = moveFromParent;
         this.moveToParent = moveToParent;
     }
@@ -73,26 +74,28 @@ public class Minimax {
 
     private double getHeuristicsValueRecursively(int maxdepth) {
         double currentHeuristic;
-        
+
         printIndented("GetHeurRec depth :" + depth + " and currentpl :" + core.getCurrentPlayer());
         heuristics.resetValues();
         if (depth >= maxdepth) {
             double result = calculateHeuristics();
             printIndented("heuristique :" + result);
-            if (core.getCurrentPlayer() == AIPlayer){
+            if (core.getCurrentPlayer() == AIPlayer) {
                 result *= -1;
             }
             return result;
         }
-
+        List<String> nextMovesAndUnmoves = getAllPossibleMovesWithHeuristics();
+        printIndented("heuristique :" + calculateHeuristics()+"{");
         //Case Ai just played -> we keep the best heuristic
         if (AIPlayer != core.getCurrentPlayer()) {
             double bestHeuristic = Consts.MINIMUM_HEURISTICS;
-
-            for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
+            
+            
+            for (String moveAndUnmove : nextMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                printIndented("play " + Notation.getHumanDescription( splitted[0], false));
+                printIndented("play " + core.getCurrentPlayer() + "," + Notation.getHumanDescription(splitted[0], false));
                 depth++;
                 currentHeuristic = getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (currentHeuristic > bestHeuristic) {
@@ -103,14 +106,16 @@ public class Minimax {
                 printIndented("unplay " + splitted[1]);
                 core.previousState();
             }
+            System.out.println("}");
             return bestHeuristic;
         } else {
             double worstHeuristic = Consts.BEST_HEURISTICS;
 
-            for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
+            for (String moveAndUnmove : nextMovesAndUnmoves) {
                 String[] splitted = moveAndUnmove.split(";");
                 core.playEmulate(splitted[0], splitted[1]);
-                printIndented("play " + Notation.getHumanDescription( splitted[0], false));
+
+                printIndented("player " + core.getCurrentPlayer() + "," + Notation.getHumanDescription(splitted[0], false));
                 depth++;
                 currentHeuristic = getHeuristicsValueRecursively(heuristics.maxdepth);
                 if (currentHeuristic < worstHeuristic) {
@@ -121,6 +126,7 @@ public class Minimax {
                 printIndented("unplay " + splitted[1]);
                 core.previousState();
             }
+            System.out.println("}");
             return worstHeuristic;
         }
     }
@@ -236,7 +242,7 @@ public class Minimax {
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
             printIndented("__________________________________________________");
-            printIndented("___________For move : " +Notation.getHumanDescription( child.moveFromParent, false)  + "heuristic is finally " + child.heuristicValue);
+            printIndented("___________For move : " + Notation.getHumanDescription(child.moveFromParent, false) + "heuristic is finally " + child.heuristicValue);
             printIndented("__________________________________________________");
             children.add(child);
             core.previousState();
@@ -282,13 +288,15 @@ public class Minimax {
         }
         //calculate heuristics
         //System.out.println("move : " + this.moveFromParent + ",currentPlayer" + core.getCurrentPlayer());
-        return heuristics.getHeuristicsValue();
+        double result = heuristics.getHeuristicsValue();
+        printIndented("heuristique -> " + result);
+        return result;
 
     }
-    
-    public void printIndented(String string){
-        for (int i=0 ; i<depth ; i++){
-            System.out.print("   ");
+
+    public void printIndented(String string) {
+        for (int i = 0; i < depth; i++) {
+            System.out.print("    ");
         }
         System.out.print(string + "\n");
     }

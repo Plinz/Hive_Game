@@ -97,6 +97,9 @@ public class GameScreenController implements Initializable {
     @FXML private Button redo;
     @FXML private Button helpButton;
     @FXML private MenuItem saveMenuItem;
+    @FXML private MenuItem lanchNewGame;
+    @FXML private MenuItem loadGame;
+    
     @FXML private TextField inputChat;
     @FXML private GridPane textChat;
     @FXML private ScrollPane scrollChat; 
@@ -131,6 +134,7 @@ public class GameScreenController implements Initializable {
         highlighted = new Highlighter();
         t = new TraducteurBoard();
         lastCoordBeetle = new CoordGene<Integer>(0,0);
+        lastCoord = new CoordGene<Double>(0.0,0.0);
         animationPlaying = new SimpleBooleanProperty();
         animationPlaying.setValue(false);
         endOfGame = false;
@@ -152,10 +156,12 @@ public class GameScreenController implements Initializable {
         if (core.getMode() == Consts.AIVP && core.getTurn() == 0){
             core.playAI();
         }
-        
-        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){         
+
+        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP){
             inputChat.setVisible(false);
-            scrollChat.setVisible(false);
+            textChat.setVisible(false);
+        }else{
+            hideButtonsForNetwork();
         }
         
         r.start();
@@ -166,12 +172,12 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
+                CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
+                CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
+                CoordGene<Double> origin = t.getMoveOrigin();
+                lastCoord = new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY());
+                
                 if (core.getState() == Consts.WAIT_FOR_INPUT) {
-                    CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
-                    CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
-                    CoordGene<Double> origin = t.getMoveOrigin();
-                    lastCoord = new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY());
-
                     if (m.getButton() == MouseButton.PRIMARY) {
                         if (core.isTile(coord)) {
                             if (pieceToMove != null && possibleMovement.contains(coord)) {
@@ -378,9 +384,11 @@ public class GameScreenController implements Initializable {
     public void handleUndoButton() {
         if(core.getState() == Consts.WAIT_FOR_INPUT){
             core.previousState();
-            while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+            while (core.getMode() != Consts.PVP && core.hasPreviousState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.previousState();
             }
+            if (core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
+                core.playAI();
             checkHistory();
             resetPiece();
             clearHelp();
@@ -702,21 +710,23 @@ public class GameScreenController implements Initializable {
 
 
     public void handleNewGame() throws IOException {
-        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
+        if(core.getState() == Consts.WAIT_FOR_INPUT){
+            Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
 
-        ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
-        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
-        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        if(!endOfGame)
-            popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-        else
-            popup.getButtonTypes().addAll(ok,cancel);
+            ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
+            ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+            ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+            if(!endOfGame)
+                popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+            else
+                popup.getButtonTypes().addAll(ok,cancel);
 
-        Optional<ButtonType> result = popup.showAndWait();
-        if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            gameScreen();
-        } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
-            handleSaveAndQuitGame(Consts.GO_TO_GAME);
+            Optional<ButtonType> result = popup.showAndWait();
+            if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
+                gameScreen();
+            } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
+                handleSaveAndQuitGame(Consts.GO_TO_GAME);
+            }
         }
     }
 
@@ -729,12 +739,13 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleLeaveGame() throws IOException {
+        
         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
 
         ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        if(!endOfGame)
+        if(!endOfGame && core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP)
             popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
         else
             popup.getButtonTypes().addAll(ok,cancel);
@@ -746,25 +757,28 @@ public class GameScreenController implements Initializable {
         } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
             handleSaveAndQuitGame(Consts.GO_TO_MAIN);
         }
+        
     }
 
     public void handleLoadGame() throws IOException {
-        Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
+        if(core.getState() == Consts.WAIT_FOR_INPUT){
+            Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
 
-        ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
-        ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
-        ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        if(!endOfGame)
-            popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
-        else
-            popup.getButtonTypes().addAll(ok,cancel);
+            ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
+            ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
+            ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
+            if(!endOfGame)
+                popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
+            else
+                popup.getButtonTypes().addAll(ok,cancel);
 
-        Optional<ButtonType> result = popup.showAndWait();
-        if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            r.stop();
-            main.showLoadGameScreen();
-        } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
-            handleSaveAndQuitGame(Consts.GO_TO_LOAD);
+            Optional<ButtonType> result = popup.showAndWait();
+            if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
+                r.stop();
+                main.showLoadGameScreen();
+            } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
+                handleSaveAndQuitGame(Consts.GO_TO_LOAD);
+            }
         }
     }
 
@@ -827,43 +841,44 @@ public class GameScreenController implements Initializable {
     /*******************/
     
     public void handleSaveGame() throws IOException{
-       
-        Dialog<ButtonType> popup = new Dialog<>();
-        popup.setTitle("Sauvegarder la partie");
-        ButtonType save = new ButtonType("Sauvegarder", ButtonBar.ButtonData.LEFT);
-        ButtonType cancel = new ButtonType("Annuler", ButtonBar.ButtonData.RIGHT);
-        popup.getDialogPane().getButtonTypes().addAll(save, cancel);
+       if(core.getState() == Consts.WAIT_FOR_INPUT){
+            Dialog<ButtonType> popup = new Dialog<>();
+            popup.setTitle("Sauvegarder la partie");
+            ButtonType save = new ButtonType("Sauvegarder", ButtonBar.ButtonData.LEFT);
+            ButtonType cancel = new ButtonType("Annuler", ButtonBar.ButtonData.RIGHT);
+            popup.getDialogPane().getButtonTypes().addAll(save, cancel);
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-        TextField saveName = new TextField();
-        saveName.setPromptText("Sauvegarde");
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+            TextField saveName = new TextField();
+            saveName.setPromptText("Sauvegarde");
 
-        popup.getDialogPane().setContent(grid);
-        grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
-        grid.add(saveName, 1, 0);
+            popup.getDialogPane().setContent(grid);
+            grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
+            grid.add(saveName, 1, 0);
 
-        Optional<ButtonType> result = popup.showAndWait();
-        if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            String saveString = saveName.getText();
-            if (saveString.equals("")) {
-                if (core.getMode() == Consts.PVP) {
-                    saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
-                } else if (core.getMode() == Consts.PVAI) {
-                    saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
-                            + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
-                            + "-turn" + core.getTurn();
+            Optional<ButtonType> result = popup.showAndWait();
+            if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
+                String saveString = saveName.getText();
+                if (saveString.equals("")) {
+                    if (core.getMode() == Consts.PVP) {
+                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+                    } else if (core.getMode() == Consts.PVAI) {
+                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+                                + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+                                + "-turn" + core.getTurn();
+                    }
+                    else{
+                        saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
+                    }
                 }
-                else{
-                    saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
-                }
+                core.save(saveString);
+                takeSnapshot(saveString);
             }
-            core.save(saveString);
-            takeSnapshot(saveString);
-        }
-        main.getPrimaryStage().requestFocus();
+            main.getPrimaryStage().requestFocus();
+       }
     }
     
    
@@ -991,7 +1006,12 @@ public class GameScreenController implements Initializable {
     }
     
     public void hideButtonsForNetwork(){
-        
+        undo.setVisible(false);
+        redo.setVisible(false);
+        helpButton.setVisible(false);
+        saveMenuItem.setVisible(false);
+        lanchNewGame.setVisible(false);
+        loadGame.setVisible(false);
     }
 
     /**

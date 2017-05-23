@@ -54,6 +54,7 @@ public class Heuristics {
                 pieces[i][j] = new HeuristicPiece(j);
             }
         }
+        this.AIPlayer = core.getCurrentPlayer();
     }
 
     /*

@@ -78,9 +78,9 @@
                            </cursor></Button>
                         <MenuButton mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" styleClass="buttonGear" GridPane.columnIndex="4" GridPane.halignment="CENTER">
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#handleNewGame" text="Lancer nouvelle partie" />
+                            <MenuItem fx:id="lanchNewGame" mnemonicParsing="false" onAction="#handleNewGame" text="Lancer nouvelle partie" />
                             <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#handleSaveGame" text="Sauvegarder" />
-                              <MenuItem mnemonicParsing="false" onAction="#handleLoadGame" text="Charger partie" />
+                              <MenuItem fx:id="loadGame" mnemonicParsing="false" onAction="#handleLoadGame" text="Charger partie" />
                               <MenuItem mnemonicParsing="false" text="Afficher historique" />
                               <MenuItem mnemonicParsing="false" onAction="#handleLeaveGame" text="Quitter partie" />
                           </items>

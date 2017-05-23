@@ -73,7 +73,7 @@ public class MediumAI extends AI {
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             for (Minimax child : possibleMovements) {
                 System.out.println("child : move = "+ Notation.getHumanDescription( child.moveFromParent, false)  + " with h= "+child.heuristicValue);
-                if (child.heuristicValue>bestHeuristic){
+                if (child.heuristicValue > bestHeuristic){
                     bestHeuristic = child.heuristicValue;
                     chosenOne = child;
                 }

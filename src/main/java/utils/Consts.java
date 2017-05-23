@@ -228,6 +228,6 @@ public class Consts {
         public static final int ANIMATING = 4;
         
     //MACRO FRAME BETWEEN PLAYS
-        public static final int FRAMES_TO_WAIT = 60;
+        public static final int FRAMES_TO_WAIT = 0;
     
 }
