@@ -383,12 +383,12 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleUndoButton() {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.previousState();
             while (core.getMode() != Consts.PVP && core.hasPreviousState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.previousState();
             }
-            if (core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
+            if (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
                 core.playAI();
             checkHistory();
             resetPiece();
@@ -400,7 +400,7 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleRedoButton() {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.nextState();
             while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.nextState();
@@ -798,7 +798,7 @@ public class GameScreenController implements Initializable {
         ButtonType restart = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
         ButtonType mainMenu = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Fermer", ButtonBar.ButtonData.RIGHT);
-        if(core.getMode() != Consts.PVEX || core.getMode() != Consts.EXVP)
+        if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP)
             popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
         else
             popup.getDialogPane().getButtonTypes().addAll(mainMenu);
