@@ -388,7 +388,7 @@ public class GameScreenController implements Initializable {
             while (core.getMode() != Consts.PVP && core.hasPreviousState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.previousState();
             }
-            if (core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
+            if (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1))
                 core.playAI();
             checkHistory();
             resetPiece();
