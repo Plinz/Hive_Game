@@ -45,6 +45,8 @@ public class MediumHeuristics extends Heuristics{
         return value;
     }
     
+    
+    
     public double getPieceValue(int player, int pieceId){
         if (player == AIPlayer){
             player = 0;
