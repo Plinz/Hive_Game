@@ -96,8 +96,8 @@ public class Core implements Cloneable {
 
 	public boolean addPiece(int pieceId, CoordGene<Integer> coord) {
 		state = Consts.PROCESSING;
-		if (!canAddPiece(pieceId))
-			return isGameFinish();
+		//if (!canAddPiece(pieceId))
+		//	return isGameFinish();
 		Piece piece = getCurrentPlayerObj().removePiece(pieceId);
 		String notation = Notation.getMoveNotation(board, piece, coord);
 		String unplay = Notation.getInverseMoveNotation(board, piece);
@@ -166,7 +166,7 @@ public class Core implements Cloneable {
 		isGameFinish();
 	}
 
-	private boolean canAddPiece(int pieceId) {
+	public boolean canAddPiece(int pieceId) {
 		return (turn != 6 && turn != 7) || isQueenOnBoard(currentPlayer) || pieceId == Consts.QUEEN;
 	}
 

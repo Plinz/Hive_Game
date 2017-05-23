@@ -173,7 +173,7 @@ public class GameScreenController implements Initializable {
                                 highlighted.setListTohighlight(possibleMovement);
                                 pieceChosenInInventory = -1;
                             } else {
-                                if (pieceChosenInInventory != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)) {
+                                if (pieceChosenInInventory != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord) && core.canAddPiece(pieceChosenInInventory)) {
                                     startPlacingAnimation(pieceChosenInInventory,coord);
                                     undo.setDisable(false);
                                     redo.setDisable(true);
