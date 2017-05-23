@@ -229,15 +229,14 @@ public class GameScreenController implements Initializable {
 
                 CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
 
-                CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());              
-                
+                CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                 if (core.isTile(coord)) {
 
                     Tile tileTemp = core.getBoard().getTile(coord);
                     List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
                     
-                    if (!listTiles.isEmpty() && !popup.isShowing() && !lastCoordBeetle.equals(coord)) {
-                    
+                    if (!listTiles.isEmpty() && !popup.isShowing()) {
+                        //Rectangle fondPopup = new Rectangle();
                         Rectangle fondPopup = new Rectangle(0,-Consts.SIDE_SIZE,Consts.SIDE_SIZE*2,Consts.SIDE_SIZE*2*(listTiles.size()+1));
                         fondPopup.setArcWidth(20);
                         fondPopup.setArcHeight(20);
@@ -246,7 +245,6 @@ public class GameScreenController implements Initializable {
                         popup.getContent().add(fondPopup);
                         popupUnderBeetle(listTiles, tileTemp);
                         popup.show(gameCanvas, m.getScreenX()+fondPopup.getWidth()/2, m.getScreenY() +fondPopup.getHeight()/2);
-                        lastCoordBeetle = coord;
                     } else if(listTiles.isEmpty() && popup.isShowing()){
                         popup.hide();
                         popup = new Popup();
