@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import main.java.engine.Core;
 import main.java.model.Board;
 import main.java.model.Box;
@@ -231,7 +233,7 @@ public class Heuristics {
         this.core.getBoard().addPiece(extraAnt, northest.getCoord().getNorthWest());
         
         List<CoordGene<Integer>> possibleDest = extraAnt.getPossibleMovement(this.core.getBoard().getTile(northest.getCoord().getNorthWest()), this.core.getBoard());
-        for (CoordGene coords : getTile(Consts.QUEEN, 1 - player).getCoord().getNeighbors())
+        for (CoordGene<Integer> coords : getTile(Consts.QUEEN, 1 - player).getCoord().getNeighbors())
         {
             Tile neighbor = this.core.getBoard().getTile(coords);
             //if the extra ant can reach a neighbor of the queen 
@@ -298,7 +300,7 @@ public class Heuristics {
     {
         ArrayList<ArrayList<CoordGene<Integer>>> mainList = new ArrayList<>();
         mainList.add(new ArrayList<>(Arrays.asList(tile.getCoord())));
-        HashSet markedCoords = new HashSet(Arrays.asList(tile.getCoord()));
+        HashSet<CoordGene<Integer>> markedCoords = new HashSet<>(Arrays.asList(tile.getCoord()));
         do
         {
             for (ArrayList<CoordGene<Integer>> subList : mainList)
@@ -318,7 +320,8 @@ public class Heuristics {
                 {
                     for (int i = 0; i < newDests.size()-1; i++)
                     {
-                        ArrayList<CoordGene<Integer>> newList = (ArrayList<CoordGene<Integer>>)subList.clone();
+                        @SuppressWarnings("unchecked")
+						ArrayList<CoordGene<Integer>> newList = (ArrayList<CoordGene<Integer>>)subList.clone();
                         newList.add(newDests.get(i));
                         mainList.add(newList);
                         if (isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(newDests.get(i))))
@@ -334,4 +337,36 @@ public class Heuristics {
         //reached only when all possible paths have been visited unsuccessfully
         return null;
     }
+
+	public int distanceToOpposingQueen(Tile tile) {
+		if (tile == null || tile.getPiece() == null
+				|| (tile.getPiece().getId() != Consts.BEETLE1 && tile.getPiece().getId() != Consts.BEETLE2))
+			return -1;
+		Board board = core.getBoard();
+		int distance = 0;
+		List<Tile> neighbors = board.getAboveAndBelow(tile);
+		List<Tile> neighbTmp = new ArrayList<>();
+		HashSet<CoordGene<Integer>> visited = new HashSet<>();
+		List<CoordGene<Integer>> possibleDest = new ArrayList<>();
+		List<CoordGene<Integer>> posDestTmp = new ArrayList<>();
+
+		possibleDest.add(tile.getCoord());
+		visited.add(tile.getCoord());
+		while (neighbors.stream().noneMatch(t -> t != null && t.getPiece() != null
+				&& t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam())) {
+			neighbors.clear();
+			possibleDest.forEach(c -> {
+				posDestTmp.addAll(tile.getPiece().updatePossibleMovement(board.getTile(c), board).stream()
+						.filter(co -> !visited.contains(co)).collect(Collectors.toList()));
+				neighbors.addAll(board.getPieceNeighbors(c));
+			});
+			neighbors.forEach(t -> neighbTmp.addAll(board.getAboveAndBelow(t)));
+			neighbors.addAll(neighbTmp);
+			possibleDest = posDestTmp;
+			posDestTmp.clear();
+			visited.addAll(possibleDest);
+			distance++;
+		}
+		return distance;
+	}
 }

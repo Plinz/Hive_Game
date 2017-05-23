@@ -14,7 +14,7 @@ public class Ladybug extends Piece{
 	}
 
 	@Override
-	public List<CoordGene<Integer>> getPossibleMovement(Tile tile, Board board) {
+	public List<CoordGene<Integer>> updatePossibleMovement(Tile tile, Board board) {
 		// TODO Auto-generated method stub
 		return null;
 	}
