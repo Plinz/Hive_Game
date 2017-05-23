@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import main.java.controller.GameScreenController;
-
 import main.java.ia.AI;
 import main.java.ia.AIFactory;
 import main.java.io.Client;
@@ -28,6 +27,7 @@ import main.java.model.Player;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.utils.Tuple;
 import main.java.view.BoardDrawer;
 
 public class Core implements Cloneable {
@@ -45,8 +45,7 @@ public class Core implements Cloneable {
 	private int difficulty;
 	private int state;
 	private GameScreenController gameScreen;
-	private List<String> lastMsg;
-
+	private List<Tuple<String, Integer>> lastMsg;
 	public Core(int mode, int difficulty) {
 		this.history = new History();
 		this.board = new Board();
@@ -62,7 +61,7 @@ public class Core implements Cloneable {
 		this.currentPlayer = Consts.PLAYER1;
 		this.difficulty = difficulty;
 		this.state = Consts.WAIT_FOR_INPUT;
-		this.lastMsg = null;
+		this.lastMsg = new ArrayList<>();
 	}
 
 	public boolean accept(BoardDrawer b) {
@@ -376,11 +375,12 @@ public class Core implements Cloneable {
 	}
 	
 	public void sendMessage(String message){
+		lastMsg.add(0, new Tuple<String, Integer>(message, (mode==Consts.PVEX?Consts.PLAYER1:Consts.PLAYER2)));
 		io.sendMessage(message);
 	}
 	
 	public void newMessage(String message){
-		lastMsg.add(0, message);
+		lastMsg.add(0, new Tuple<String, Integer>(message, (mode==Consts.PVEX?Consts.PLAYER2:Consts.PLAYER1)));
 	}
 
 	@Override
@@ -452,11 +452,11 @@ public class Core implements Cloneable {
 		this.gameScreen = gameScreen;
 	}
 	
-	public List<String> getLastMsg() {
+	public List<Tuple<String, Integer>> getLastMsg() {
 		return lastMsg;
 	}
 
-	public void setLastMsg(List<String> lastMsg) {
+	public void setLastMsg(List<Tuple<String, Integer>> lastMsg) {
 		this.lastMsg = lastMsg;
 	}
 
