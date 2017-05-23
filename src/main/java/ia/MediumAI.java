@@ -66,14 +66,14 @@ public class MediumAI extends AI {
 
             List<Minimax> possibleMovements = minimax.getChildren();
             Minimax chosenOne = possibleMovements.get(0);
-            double bestHeuristic = Consts.MINIMUM_HEURISTICS;
+            double bestHeuristic = chosenOne.heuristicValue;
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
             for (Minimax child : possibleMovements) {
                 System.out.println("child : move = "+ Notation.getHumanDescription( child.moveFromParent, false)  + " with h= "+child.heuristicValue);
-                if (child.heuristicValue > bestHeuristic){
+                if (child.heuristicValue < bestHeuristic){
                     bestHeuristic = child.heuristicValue;
                     chosenOne = child;
                 }

@@ -39,6 +39,7 @@ public class Heuristics {
     int nbPieceInHandAI, nbPieceInHandOpponent, nbPieceOnBoardAI, nbPieceOnBoardOpponent;
     int nbMovesAI, nbMovesOpponent, nbPlacementAI, nbPlacementOpponent;
     int nbPinnedAI, nbPinnedOpponent;
+    boolean isVictory;
     double[][][] heuristicData;
     HeuristicPiece[][] pieces;
 
@@ -103,7 +104,15 @@ public class Heuristics {
             return 0;
         }
     }
-
+    
+    public boolean isVictory(){
+        return isVictory;
+    }
+    
+    public void resetVictory(){
+        isVictory = false;
+    }
+    
     public Tile getTile(int pieceId, int player) {
         Board board = core.getBoard();
         for (Column column : board.getBoard()) {

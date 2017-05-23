@@ -4,7 +4,7 @@ Heuristic Data : heuristicData[player][insect][typeHeuristique]
     avec player 0 -> IA
          player 1 -> opponent
                 insect -> 0 queen, 1 spider, 2 grasshopper, 3 beetle, 4 ant, 5 general
-                        et type ->  0 valid move (deplacement et placement)
+                        et type ->  0 Extra -> position beetle
                                     1 valid placement
                                     2 valid movement (deplacement)
                                     3 voisins (encerclement)
@@ -16,18 +16,18 @@ package main.java.ia;
 
 public class HeuristicConst {
 
-    public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -30, 0, 0, -18};
-    public static final double[] MAXIMISE_SPIDER = {0.5, -4.7, 0.5, -8.4, 1, -2.7, -0.5};
-    public static final double[] MAXIMISE_GH = {0.5, 0.5, 3.5, 0, 1.5, 0.5, 1.9};
-    public static final double[] MAXIMISE_BEETLE = {0.5, -1.7, 0.5, 2, 1, 1.1, -3};
-    public static final double[] MAXIMISE_ANT = {0.5, 1.5, 0.5, 0, 1, 1.2, 4.19};
+    public static final double[] MAXIMISE_QUEEN = {0, 0, 1, -85, 0, 0, -18};
+    public static final double[] MAXIMISE_SPIDER = {0, -4.7, 0.5, -8.4, 1, -2.7, -0.5};
+    public static final double[] MAXIMISE_GH = {0, 0.5, 3.5, 0, 1.5, 0.5, -1};
+    public static final double[] MAXIMISE_BEETLE = {10, -1.7, 0.5, 2, 1, 1.1, -3};
+    public static final double[] MAXIMISE_ANT = {0, 1, 0.1, 0, 1, 2, -7};
     public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0, -1};
-    public static final double[] MINIMISE_QUEEN = {-0.5, 1.1, -0.5, 30, -1, -0.5, 18};
-    public static final double[] MINIMISE_SPIDER = {-0.5, -0.5, -1.7, 0, -1, -1.1, 0.5};
-    public static final double[] MINIMISE_GH = {-11, -0.5, -0.5, 0, -1.5, -0.5, 1};
-    public static final double[] MINIMISE_BEETLE = {-0.5, -0.5, -2.3, 1, -1, -1.1, 3};
-    public static final double[] MINIMISE_ANT = {-0.5, -2.8, -0.5, 0, -1, -1.5, -1.6};
-    public static final double[] MINIMISE_GENERAL = {-1.8, 4, -0, 0, 0, 2.8, 1.1};
+    public static final double[] MINIMISE_QUEEN = {0, 1.1, -0.5, 125, -1, -0.5, 18};
+    public static final double[] MINIMISE_SPIDER = {0, -0.5, -1.7, 0, -1, -1.1, 0.5};
+    public static final double[] MINIMISE_GH = {0, -0.5, -0.5, 0, -1.5, -0.5, 1};
+    public static final double[] MINIMISE_BEETLE = {-10, -0.5, -2.3, 1, -1, -1.1, 3};
+    public static final double[] MINIMISE_ANT = {0, -1, -0.1, 0, -1, -1.5, 7};
+    public static final double[] MINIMISE_GENERAL = {0, 4, -0, 0, 0, -2.8, 1.1};
 
     
     public static final double QUEEN_NEIGHBOR_FACTOR = 1.3;

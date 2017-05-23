@@ -40,7 +40,13 @@ public class MediumHeuristics extends Heuristics{
                 value += getPieceValue(player, pieceId);
                 //System.out.println("Value ajout player"+player+", piece"+pieceId+",value"+getPieceValue(player, pieceId));
             }
+            if (pieces[player][Consts.QUEEN].neighbors == 6){
+                value += heuristicData[player][Consts.QUEEN_TYPE][3]*10;
+                System.out.println("Victoire");
+                isVictory = true;
+            }
         }
+       
         //System.out.println("heuristic value : "+value);
         return value;
     }
@@ -48,12 +54,11 @@ public class MediumHeuristics extends Heuristics{
     
     
     public double getPieceValue(int player, int pieceId){
-        if (player == AIPlayer){
-            player = 0;
-        } else {
-            player = 1;
-        }
+
         int pieceType = Consts.getType(pieceId);
+        if (Consts.getType(pieceId) == Consts.BEETLE_TYPE){
+            
+        }
         double value = heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
         value += heuristicData[player][pieceType][1] * pieces[player][pieceId].nbMoves * (1-pieces[player][pieceId].isInGame);
         value += heuristicData[player][pieceType][2] * pieces[player][pieceId].nbMoves * pieces[player][pieceId].isInGame;
