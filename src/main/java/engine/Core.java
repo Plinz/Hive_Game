@@ -236,6 +236,10 @@ public class Core implements Cloneable {
 	public boolean hasNextState() {
 		return history.hasNext();
 	}
+	
+	public Tuple<Stack<String>, Stack<String>> getHistoryStack(){
+		return new Tuple<Stack<String>, Stack<String>>(history.getPrevPlay(), history.getPrevUnplay());
+	}
 
 	public boolean previousState() {
 		if (history.hasPrevious()) {
@@ -375,21 +379,19 @@ public class Core implements Cloneable {
 		if (mode == -1) {
 			io = new Client(this);
 			io.connect(host);
-			while (!io.sendInfo(playerName))
-				;
-			while (!io.updateInfo())
-				;
+			while (!io.sendInfo(playerName));
+			while (!io.updateInfo());
 			(this.mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 		} else {
 			this.mode = mode;
 			(mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 			io = new Server(this);
 			io.connect(null);
-			while (!io.sendInfo(playerName))
-				;
-			while (!io.updateInfo())
-				;
 		}
+	}
+	
+	public void disconnect(){
+		io.disconnect();
 	}
 	
 	public void sendMessage(String message){

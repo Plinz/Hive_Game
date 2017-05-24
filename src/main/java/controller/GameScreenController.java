@@ -751,6 +751,7 @@ public class GameScreenController implements Initializable {
 
         Optional<ButtonType> result = popup.showAndWait();
         if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
+        	core.disconnect();
             r.stop();
             main.showMainMenu();
         } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {

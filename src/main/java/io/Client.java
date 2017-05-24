@@ -15,6 +15,7 @@ public class Client extends IO {
 	private String notation = null;
 	private String otherName = null;
 	private int mode = -1;
+	private Thread t;
 
 	public Client(Core core) {
 		super(core);
@@ -23,7 +24,9 @@ public class Client extends IO {
 	@Override
 	public void connect(String host) {
 		try {
-			new Thread(new ClientThread(new Socket(host, Consts.PORT))).start();
+			t = new Thread(new ClientThread(new Socket(host, Consts.PORT)));
+			t.start();
+			System.out.println("ok");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -31,6 +34,15 @@ public class Client extends IO {
 		}
 	}
 
+	
+	@Override
+	public void disconnect() {
+		server.println("DECO");
+		server.flush();
+		core.setState(Consts.DISCONNECTED);
+		t.interrupt();
+	}	
+	
 	@Override
 	public String getMove() {
 		return notation;
@@ -92,6 +104,12 @@ public class Client extends IO {
 			} else if(response.startsWith("MOVE")){
 				String[] tokens = response.substring(4).split(";");
 				core.playExtern(tokens[0], tokens[1]);
+			} else if (response.startsWith("RECO")) {
+				String[] tokens = response.substring(4).split(";");
+				core.playEmulate(tokens[0], tokens[1]);
+			} else if (response.startsWith("DECO")) {
+				core.setState(Consts.DISCONNECTED);
+				t.interrupt();
 			}
 		}
 	}
@@ -125,39 +143,9 @@ public class Client extends IO {
 			} catch (Exception e) {
 				e.printStackTrace(System.out);
 			} finally {
-				System.out.println("Le server s'est deconnecte");
+				core.setState(Consts.DISCONNECTED);;
 				server.close();
 			}
 		}
-		
-		
-//		public void run() {
-//			try {
-//				System.out.println("Client1");
-//				server = new PrintWriter(connexion.getOutputStream(), true);
-//				reader = new BufferedInputStream(connexion.getInputStream());
-//				while(run){
-//					String response = read();
-//					if (response != null && !response.isEmpty()){
-//						processReceive(response);
-//					}
-//				}
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//			server.close();
-//		}
-//
-//		// Méthode pour lire les réponses du serveur
-//		private String read() throws IOException {
-//			System.out.println("Cleint read");
-//			String response = "";
-//			int stream;
-//			byte[] b = new byte[4096];
-//			stream = reader.read(b);
-//			response = new String(b, 0, stream);
-//			System.out.println("responseCleint"+response);
-//			return response;
-//		}
 	}
 }
