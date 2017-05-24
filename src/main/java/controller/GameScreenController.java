@@ -961,8 +961,6 @@ public class GameScreenController implements Initializable {
         return main;
     }
     
-    
-
     public void setMainApp(Main mainApp) {
         this.main = mainApp;
     }
@@ -1017,9 +1015,6 @@ public class GameScreenController implements Initializable {
         loadGame.setVisible(false);
     }
 
-    /**
-     * @return the textChat
-     */
     public GridPane getTextChat() {
         return textChat;
     }
@@ -1028,19 +1023,20 @@ public class GameScreenController implements Initializable {
         if(core.getLastMsg().size() != nbMessage){
             nbMessage = core.getLastMsg().size() - nbMessage;
             for(int i = 0; i < nbMessage;i++ ){ 
-                getTextChat().addRow(nbChatRow + i, new Label(""));
+            	textChat.addRow(nbChatRow + i, new Label(""));
                 if(core.getLastMsg().get(i).y == 1){
                     Label msg = new Label(core.getLastMsg().get(i).x);          
-                    getTextChat().add(msg,1, nbChatRow +i);                  
-                    getTextChat().setHalignment(msg,HPos.RIGHT);                
+                    textChat.add(msg,1, nbChatRow +i);                  
+                    textChat.setHalignment(msg,HPos.RIGHT);                
                 }else{
                     Label msg = new Label(core.getLastMsg().get(i).x);
-                    getTextChat().add(msg,0, nbChatRow +i);
-                    getTextChat().setHalignment(msg,HPos.LEFT); 
+                    textChat.add(msg,0, nbChatRow +i);
+                    textChat.setHalignment(msg,HPos.LEFT); 
                 }
             }
             nbChatRow = nbChatRow + nbMessage;
-            nbMessage = core.getLastMsg().size(); 
+            nbMessage = core.getLastMsg().size();
+            scrollChat.setVvalue(scrollChat.getVmax());
         }
     }
 

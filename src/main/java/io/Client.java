@@ -38,8 +38,10 @@ public class Client extends IO {
 	
 	@Override
 	public void disconnect() {
-		server.println("DECO");
-		server.flush();
+		if (server != null){
+			server.println("DECO");
+			server.flush();
+		}
 		t.interrupt();
 		try {
 			socket.close();
