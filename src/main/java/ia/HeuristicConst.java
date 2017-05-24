@@ -19,16 +19,16 @@ public class HeuristicConst {
     public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -150, 0, 0, -250};
     public static final double[] MAXIMISE_SPIDER = {0.5, -4.7, 0.5, -8.4, 1, -1.7, -0.5};
     public static final double[] MAXIMISE_GH = {0.5, 0.5, 3.5, 0, 1.5, 0.5, -1};
-    public static final double[] MAXIMISE_BEETLE = {0.5, -1.7, 0.5, 2, 1, 1.1, -3};
+    public static final double[] MAXIMISE_BEETLE = {150, -1.7, 0.5, 2, 1, 1.1, -3};
     public static final double[] MAXIMISE_ANT = {0.3, 1, 0.1, 0, 1, 3, -7};
-    public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0, -1};
+    public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0.2, -1};
     
     
     
     public static final double[] MINIMISE_QUEEN = {-0.5, -1.1, -0.5, 150, -1, -0.5, 250};
     public static final double[] MINIMISE_SPIDER = {-0.5, -0.5, -1.7, 0, -1, -1.1, 0.5};
     public static final double[] MINIMISE_GH = {-11, -0.5, -0.5, 0, -1.5, -0.5, 1};
-    public static final double[] MINIMISE_BEETLE = {-0.5, -0.5, -2.3, 1, -1, -1.1, 3};
+    public static final double[] MINIMISE_BEETLE = {-151, -0.5, -2.3, 1, -1, -1.1, 3};
     public static final double[] MINIMISE_ANT = {-0.1, -1, -0.1, 0, -1, -3, 7};
     public static final double[] MINIMISE_GENERAL = {-1.8, 4, -0, 0, 0, -2.8, 1.1};
 
@@ -51,8 +51,10 @@ public class HeuristicConst {
     public static final double[] EASY_ADD_TURN_3 = {0.2, 0.2, 0.2, 0.2, 0.2};
     public static final double[] EASY_ADD_TURN_4 = {0, 0.15, 0.15, 0.35, 0.35};
     
-    public static final double EASY_TURN_4_CHOOSE_TO_ADD = 0.75;
+    public static final double EASY_T4_CHOOSE_TO_ADD = 0.75;
     public static final double EASY_MID_GAME_CHOOSE_TO_ADD = 0.55;
+    
+    
     //OPENING MEDIUM WHITE
     public static final double[] W_MEDIUM_ADD_T1 = {0, 0.5, 0.5, 0, 0};
         public static final double[] W_MEDIUM_ADD_T2_IF_BQ_T1 = {1, 0, 0, 0, 0};
@@ -61,8 +63,8 @@ public class HeuristicConst {
             public static final double[] W_MEDIUM_ADD_T3_ELSE = {0, 0.25, 0, 0, 0.75};
             
     //OPENING MEDIUM BLACK      
-    public static final double[] B_MEDIUM_ADD_TURN_1_IF_WQ_T1 = {1, 0, 0, 0, 0};
-    public static final double[] B_MEDIUM_ADD_TURN_1_ELSE = {0, 0.5, 0.5, 0, 0};
+    public static final double[] B_MEDIUM_ADD_T1_IF_WQ_T1 = {1, 0, 0, 0, 0};
+    public static final double[] B_MEDIUM_ADD_T1_ELSE = {0, 0.5, 0.5, 0, 0};
         public static final double[] B_MEDIUM_ADD_T2 = {1, 0, 0, 0, 0};
             public static final double[] B_MEDIUM_ADD_T3_IF_W_HAS_MOBILE_ANT = {0, 1, 0, 0, 0};
             public static final double[] B_MEDIUM_ADD_T3_ELSE = {0, 0, 0, 0, 1};

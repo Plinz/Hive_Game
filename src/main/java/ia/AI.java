@@ -14,6 +14,7 @@ import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.utils.Tuple;
 
 public abstract class AI {
 
@@ -192,5 +193,122 @@ public abstract class AI {
                     + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece());
         }
 
+    }
+
+    public boolean isNeighborOfOpponentQueen(Tile tile) {
+        List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
+        for (CoordGene<Integer> neighbor : neighbors) {
+            Tile neighborTile = core.getBoard().getTile(neighbor, 0);
+            if (neighborTile != null && neighborTile.getPiece() != null
+                    && neighborTile.getPiece().getTeam() != AIPlayer
+                    && neighborTile.getPiece().getId() == Consts.QUEEN) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isTimeToFinishOpponent() {
+        return (heuristics.getNbPiecesAroundQueen(1 - AIPlayer) == 5);
+    }
+
+    public String tryGetFinishMove() {
+        List<Piece> availablePieces = getAvailablepiecesForAttack();
+        int nbMovesMin = 500;
+        Piece chosenOne = null;
+        CoordGene<Integer> chosenFirstMove = null;
+        CoordGene<Integer> destination = getFreeSpaceAroundEnemyQueen();
+        for (Piece piece : availablePieces){
+            Tuple <Integer, CoordGene<Integer>> temp = getNbMovesTillDest(piece, destination);
+            int nbMoves = temp.getX();
+            if (nbMoves > 0 && nbMoves < nbMovesMin){
+                nbMovesMin = nbMoves;
+                chosenOne = piece;
+                chosenFirstMove = temp.getY();
+            }
+        }
+        
+        if (chosenOne != null){
+            String move = Notation.getMoveNotation(core.getBoard(), chosenOne, chosenFirstMove);
+            String unMove = Notation.getInverseMoveNotation(core.getBoard(), chosenOne);
+            return move+";"+unMove;
+        }
+        return null;    
+    }
+
+    public List<Piece> getAvailablepiecesForAttack() {
+        ArrayList<Piece> result = new ArrayList<>();
+        core.getCurrentPlayerObj().getInventory().stream().forEach((piece) -> {
+            result.add(piece);
+        });
+
+        core.getBoard().getBoard().stream().forEach((column) -> {
+            column.stream().forEach((box) -> {
+                box.stream().filter((tile) -> (tile.getPiece().getTeam() == core.getCurrentPlayer()
+                        && !isNeighborOfOpponentQueen(tile)
+                        && !tile.getPiece().getPossibleMovement(tile, core.getBoard()).isEmpty())).forEach((tile) -> {
+                    result.add(tile.getPiece());
+                });
+            });
+        });
+        return result;
+    }
+
+    public CoordGene<Integer> getFreeSpaceAroundEnemyQueen() {
+        CoordGene<Integer> queenCoord = null;
+
+        for (Column column : core.getBoard().getBoard()) {
+            for (Box box : column) {
+                for (Tile tile : box) {
+                    if (tile != null
+                            && tile.getPiece() != null
+                            && tile.getPiece().getId() == Consts.QUEEN
+                            && tile.getPiece().getTeam() == 1 - AIPlayer) {
+                        queenCoord = tile.getCoord();
+                    }
+                }
+            }
+        }
+        if (queenCoord == null)
+            return null;
+        
+        for (Tile queenNeighbor : core.getBoard().getNeighbors(queenCoord)){
+            if (queenNeighbor.getPiece() == null){
+                return queenNeighbor.getCoord();
+            }
+        }
+        return null;
+    }
+
+    public Tuple<Integer, CoordGene<Integer>> getNbMovesTillDest(Piece piece, CoordGene<Integer> destination) {
+        if (isOnBoard(piece)){
+            
+        } else {
+            
+        }
+        
+        
+        switch (Consts.getType(piece.getId())){
+            case Consts.ANT_TYPE:
+                if (piece.getPossibleMovement(foreseenTileToMove, core.getBoard()).contains(destination)){
+                    
+                }
+                break;
+            case Consts.BEETLE_TYPE:
+                break;
+            case Consts.SPIDER_TYPE:
+                break;
+            case Consts.GRASSHOPPER_TYPE:
+                break;
+        }
+        return null;
+    }
+    
+    public boolean isOnBoard(Piece piece){
+        for (Piece pieceInInventory : core.getPlayers()[piece.getTeam()].getInventory()){
+            if (pieceInInventory == piece)
+                return false;
+        }
+        return true;
     }
 }
