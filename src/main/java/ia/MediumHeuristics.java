@@ -65,7 +65,7 @@ public class MediumHeuristics extends Heuristics {
             } else {
                 value += heuristicData[player][pieceType][0] / dist_to_queen;
             }
-        } else {
+        } else if (pieceType != Consts.BEETLE_TYPE){
             value += heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
         }
 
