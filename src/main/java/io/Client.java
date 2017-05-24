@@ -14,6 +14,7 @@ public class Client extends IO {
 	private PrintWriter server = null;
 	private String notation = null;
 	private String otherName = null;
+	private Socket socket;
 	private int mode = -1;
 	private Thread t;
 
@@ -24,9 +25,9 @@ public class Client extends IO {
 	@Override
 	public void connect(String host) {
 		try {
-			t = new Thread(new ClientThread(new Socket(host, Consts.PORT)));
+			socket = new Socket(host, Consts.PORT);
+			t = new Thread(new ClientThread(socket));
 			t.start();
-			System.out.println("ok");
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -39,8 +40,13 @@ public class Client extends IO {
 	public void disconnect() {
 		server.println("DECO");
 		server.flush();
-		core.setState(Consts.DISCONNECTED);
 		t.interrupt();
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		core.setState(Consts.DISCONNECTED);
 	}	
 	
 	@Override
@@ -107,9 +113,15 @@ public class Client extends IO {
 			} else if (response.startsWith("RECO")) {
 				String[] tokens = response.substring(4).split(";");
 				core.playEmulate(tokens[0], tokens[1]);
+				core.setState(core.getMode()==Consts.PVEX?core.getCurrentPlayer()==Consts.PLAYER1?Consts.WAIT_FOR_INPUT:Consts.PROCESSING:core.getCurrentPlayer()==Consts.PLAYER1?Consts.PROCESSING:Consts.WAIT_FOR_INPUT);
 			} else if (response.startsWith("DECO")) {
-				core.setState(Consts.DISCONNECTED);
 				t.interrupt();
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				core.setState(Consts.DISCONNECTED);
 			}
 		}
 	}
@@ -141,10 +153,8 @@ public class Client extends IO {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(System.out);
 			} finally {
-				core.setState(Consts.DISCONNECTED);;
-				server.close();
+				disconnect();
 			}
 		}
 	}

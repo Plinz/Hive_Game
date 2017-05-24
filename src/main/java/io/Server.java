@@ -17,6 +17,7 @@ public class Server extends IO {
 	private PrintWriter client;
 	private String notation = null;
 	private String otherName = null;
+	private ServerSocket serverSocket;
 	private Thread t;
 
 	public Server(Core core) {
@@ -26,7 +27,8 @@ public class Server extends IO {
 	@Override
 	public void connect(String host) {
 		try {
-			t = new Thread(new ServerThread(new ServerSocket(Consts.PORT)));
+			serverSocket = new ServerSocket(Consts.PORT);
+			t = new Thread(new ServerThread(serverSocket));
 			t.start();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -37,8 +39,13 @@ public class Server extends IO {
 	public void disconnect() {
 		client.println("DECO");
 		client.flush();
-		core.setState(Consts.DISCONNECTED);
 		t.interrupt();
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		core.setState(Consts.DISCONNECTED);
 	}	
 	
 	@Override
@@ -113,8 +120,13 @@ public class Server extends IO {
 				String[] tokens = response.substring(4).split(";");
 				core.playExtern(tokens[0], tokens[1]);
 			} else if (response.startsWith("DECO")) {
-				core.setState(Consts.DISCONNECTED);
 				t.interrupt();
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				core.setState(Consts.DISCONNECTED);
 			}
 		}
 	}
@@ -149,14 +161,8 @@ public class Server extends IO {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(System.out);
 			} finally {
-				try {
-					core.setState(Consts.DISCONNECTED);;
-					socket.close();
-				} catch (IOException e) {
-					e.printStackTrace(System.out);
-				}
+				disconnect();
 			}
 		}
 	}

@@ -540,7 +540,6 @@ public class GameScreenController implements Initializable {
     }
     
     public void startMovingAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
-        
         core.setState(Consts.ANIMATING);
         
         animationPlaying.setValue(true);
@@ -621,7 +620,7 @@ public class GameScreenController implements Initializable {
     }
     
     public void startMovingEmulatorAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd, String move, String unmove){
-        core.setState(Consts.ANIMATING);
+    	core.setState(Consts.ANIMATING);
         
         animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
@@ -657,7 +656,7 @@ public class GameScreenController implements Initializable {
     }
     
     public void startPlacingEmulatorAnimation(int idPiece, CoordGene<Integer> coordEnd,String move, String unmove) {
-        core.setState(Consts.ANIMATING);
+    	core.setState(Consts.ANIMATING);
 
         animationPlaying.setValue(true);
         highlighted.setListTohighlight(null);
