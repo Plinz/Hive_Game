@@ -1,6 +1,5 @@
 package main.java.controller;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -42,11 +41,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -459,22 +461,9 @@ public class GameScreenController implements Initializable {
             b.setMinSize(65, 65);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
+            if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {    
                 b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
-                b.setOnDragOver(new EventHandler <DragEvent>(){
-                    @Override
-                    public void handle(DragEvent event){
-                        System.out.print("pouet");
-                    }
-                });
-                
-                b.setOnDragDetected(new EventHandler<MouseEvent>() {
-                    public void handle(MouseEvent event) {
-                        System.out.print("lolilolafa");
-
-                    }
-                });
-                
+                eventDragAndDropPiece(b,inventory.get(i).getId());
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
@@ -1041,5 +1030,42 @@ public class GameScreenController implements Initializable {
             nbChatRow = nbChatRow + nbMessage;
             nbMessage = core.getLastMsg().size(); 
         }
+    }
+    
+    private void eventDragAndDropPiece(ToggleButton b, int indexPiece){
+        
+           b.setOnDragOver(new EventHandler <DragEvent>(){
+               @Override
+               public void handle(DragEvent event){
+                   System.out.print("pouet");
+               }
+           });
+
+           b.setOnDragDetected(new EventHandler<MouseEvent>() {
+               public void handle(MouseEvent event) {
+                    if(core.canAddPiece(pieceChosenInInventory)){
+                        setPieceToChoose(indexPiece);
+                        highlighted.setListTohighlight(core.getPossibleAdd(core.getCurrentPlayer()));
+                        b.setVisible(false);
+                        
+                                                // Initiate a drag-and-drop gesture
+                        Dragboard dragboard = b.startDragAndDrop(TransferMode.ANY);
+/*
+                        // Add the source text to the Dragboard
+                        ClipboardContent content = new ClipboardContent();		
+                        content.putImage(null)
+                        dragboard.setContent(content);		
+                        event.consume();*/
+                    }
+               }
+           });
+           
+           b.setOnMouseDragReleased(new EventHandler<MouseEvent>() {
+               public void handle(MouseEvent event) {
+                    b.setVisible(true);
+                    highlighted.setListTohighlight(null);
+               }
+           });
+
     }
 }
