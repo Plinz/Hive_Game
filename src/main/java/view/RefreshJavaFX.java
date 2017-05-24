@@ -60,13 +60,14 @@ public class RefreshJavaFX extends AnimationTimer{
             time++;
         } 
         else if(core.getState() == Consts.DISCONNECTED){
+                core.setState(Consts.WAIT_FOR_INPUT);
         	Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
 		            g.disconnected();
 				}
 			});
-        	core.setState(Consts.WAIT_FOR_INPUT);
+        	
         }
        g.updateChat();
        core.accept(drawer);

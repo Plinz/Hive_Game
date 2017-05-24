@@ -1072,9 +1072,8 @@ public class GameScreenController implements Initializable {
            });
 
     }
-
-
-	public void disconnected() {
+    
+    public void disconnected() {
         Dialog<ButtonType> popup = new Dialog<>();
         popup.setTitle("Deconnexion");
         ButtonType menu = new ButtonType("Menu Principal", ButtonBar.ButtonData.RIGHT);
@@ -1093,5 +1092,5 @@ public class GameScreenController implements Initializable {
         	refreshor.stop();
         	main.showMainMenu();
         }
-	}
+    }
 }

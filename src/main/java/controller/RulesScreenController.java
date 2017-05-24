@@ -88,7 +88,7 @@ public class RulesScreenController implements Initializable {
       resetClickColor();
       queenTitle.setBackground(new Background(new BackgroundFill(Color.web("#e1ab0a"),CornerRadii.EMPTY, Insets.EMPTY)));
       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/queen.png"));
-      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/queen.png"));
       textRule.setText(Consts.QUEEN_MOVEMENT);
    }
    
@@ -97,7 +97,7 @@ public class RulesScreenController implements Initializable {
       resetClickColor();
       grassHopperTitle.setBackground(new Background(new BackgroundFill(Color.web("#e1ab0a"),CornerRadii.EMPTY, Insets.EMPTY)));
       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/grassHopper.png"));
-      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/grasshopper.png"));
       textRule.setText(Consts.GRASSHOPPER_MOVEMENT);
    }
    
@@ -106,7 +106,7 @@ public class RulesScreenController implements Initializable {
      resetClickColor();
      beetleTitle.setBackground(new Background(new BackgroundFill(Color.web("#e1ab0a"),CornerRadii.EMPTY, Insets.EMPTY)));
      imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/beetle.png"));
-     imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+     imageRule.setImage(new Image("/main/resources/img/rules/beetle.png"));
      textRule.setText(Consts.BEETLE_MOVEMENT);
    }
    
@@ -115,7 +115,7 @@ public class RulesScreenController implements Initializable {
       resetClickColor();
       spiderTitle.setBackground(new Background(new BackgroundFill(Color.web("#e1ab0a"),CornerRadii.EMPTY, Insets.EMPTY)));
       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/spider.png"));
-      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/spider.png"));
       textRule.setText(Consts.SPIDER_MOVEMENT);
    }
    
@@ -124,7 +124,7 @@ public class RulesScreenController implements Initializable {
       resetClickColor();
       antTitle.setBackground(new Background(new BackgroundFill(Color.web("#e1ab0a"),CornerRadii.EMPTY, Insets.EMPTY)));
       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/ant.png"));
-      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/ant.png"));
       textRule.setText(Consts.ANT_MOVEMENT);
    }
    
