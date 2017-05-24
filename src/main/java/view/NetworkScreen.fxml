@@ -38,7 +38,7 @@
                   <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="playerName" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
+                  <TextField fx:id="playerName" onMouseClicked="#handleClickInputPlayer" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
                   <Label fx:id="playerLabel" prefHeight="16.0" prefWidth="248.0" text="Nom du joueur  :" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="17.0" />

@@ -144,6 +144,7 @@ public class Main extends Application {
             
             RulesScreenController controller = loader.getController();
             controller.setMainApp(this);
+            controller.handleGoalGame();
             
             primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())
