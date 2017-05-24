@@ -14,7 +14,7 @@ import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
-import main.java.utils.Triplet;
+import main.java.utils.Quintet;
 import main.java.utils.Tuple;
 
 public abstract class AI {
@@ -307,7 +307,7 @@ public abstract class AI {
                     }
                     break;
                 case Consts.BEETLE_TYPE:
-                    temp = getMoveAndDistance(tile, destination);
+                    //temp = getMoveAndDistance(tile, destination);
                     break;
                 case Consts.SPIDER_TYPE:
 
@@ -342,24 +342,27 @@ public abstract class AI {
         return true;
     }
 
-    public Tuple<Integer, CoordGene<Integer>> getMoveAndDistance(Tile tile, CoordGene<Integer> destination) {
+    /*public Tuple<Integer, String> getMoveAndDistance(Tile tile, CoordGene<Integer> destination) {
         if (tile.getCoord().equals(destination)) {
-            return new Tuple<>(0, destination);
+            return new Tuple<>(0, null);
         }
         Piece piece = tile.getPiece();
 
-        ArrayList<Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>>> movesAndDistance = new ArrayList<>();
-        Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>> origin = new Triplet<>(0, tile.getCoord(), null);
+        ArrayList<Quintet<Integer, String, String, String, String>> movesAndDistance = new ArrayList<>();
+
+        String root = Notation.getMoveNotation(core.getBoard(), tile.getPiece(), tile.getCoord());
+
+        Quintet<Integer, String, String, String, String> origin = new Quintet<>(0, root, "root", root, "root");
         movesAndDistance.add(origin);
 
-        ArrayList<CoordGene<Integer>> coordsVisited = new ArrayList<>();
-        coordsVisited.add(tile.getCoord());
+        ArrayList<String> MovesDone = new ArrayList<>();
+        MovesDone.add(root);
 
         int actualSize = 0;
         int actualDistance = 0;
         while (movesAndDistance.size() != actualSize) {
             actualSize = movesAndDistance.size();
-            for (Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>> move : movesAndDistance) {
+            for (Quintet<Integer, String, String, String, String> move : movesAndDistance) {
                 if (move.getX() == actualDistance) {
                     String play = Notation.getMoveNotation(core.getBoard(), piece, move.getY());
                     String unplay = Notation.getInverseMoveNotation(core.getBoard(), piece);
@@ -375,12 +378,12 @@ public abstract class AI {
                             }
                         }
                         if (!coordsVisited.contains(newCoord)) {
-                            Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>> toAdd;
+                            Quintet<Integer, CoordGene<Integer>, CoordGene<Integer>> toAdd;
                             coordsVisited.add(newCoord);
                             if (actualDistance == 0) {
-                                toAdd = new Triplet<>(actualDistance + 1, newCoord, newCoord);
+                                toAdd = new Quintet<>(actualDistance + 1, newCoord, newCoord);
                             } else {
-                                toAdd = new Triplet<>(actualDistance + 1, newCoord, move.getZ());
+                                toAdd = new Quintet<>(actualDistance + 1, newCoord, move.getZ());
                             }
                             movesAndDistance.add(toAdd);
                         }
@@ -391,6 +394,6 @@ public abstract class AI {
             }
             actualDistance++;
         }
-        return new Tuple<>(-1,null);
-    }
+        return new Tuple<>(-1, null);
+    }*/
 }
