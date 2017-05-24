@@ -67,19 +67,19 @@ public class RulesScreenController implements Initializable {
    public void handleGoalGame(){
        
        imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/goalGame.png"));
-       imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+       imageRule.setImage(new Image("/main/resources/img/rules/butdujeu.png"));
        textRule.setText(Consts.GOAL);
    }
    
    public void handleGamePlay(){
       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/gamePlay.png"));
-      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/deroulement.png"));
       textRule.setText(Consts.DURING_THE_GAME);
    }
    
    public void handlePiecePositionings(){
       imageTitleRule.setImage(new Image("/main/resources/img/rulesTitle/PiecePositionings.png"));
-      imageRule.setImage(new Image("/main/resources/img/rules/game.png"));
+      imageRule.setImage(new Image("/main/resources/img/rules/placement.png"));
       textRule.setText(Consts.PIECE_POSITIONNING);
    }
    

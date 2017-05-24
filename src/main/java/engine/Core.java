@@ -132,10 +132,10 @@ public class Core implements Cloneable {
 		String[] moveAndUnplay = ai.getNextMove().split(";");
 		HelpMove iaMove = emulator.getMove(moveAndUnplay[0]);
 		if (iaMove.isAdd()) {
-			gameScreen.startPlacingAIAnimation(iaMove.getPieceId(), iaMove.getTarget(), moveAndUnplay[0],
+			gameScreen.startPlacingEmulatorAnimation(iaMove.getPieceId(), iaMove.getTarget(), moveAndUnplay[0],
 					moveAndUnplay[1]);
 		} else {
-			gameScreen.startMovingAIAnimation(iaMove.getFrom(), iaMove.getTarget(), moveAndUnplay[0], moveAndUnplay[1]);
+			gameScreen.startMovingEmulatorAnimation(iaMove.getFrom(), iaMove.getTarget(), moveAndUnplay[0], moveAndUnplay[1]);
 		}
 	}
 
@@ -145,14 +145,14 @@ public class Core implements Cloneable {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					gameScreen.startPlacingAIAnimation(externMove.getPieceId(), externMove.getTarget(), play, unplay);
+					gameScreen.startPlacingEmulatorAnimation(externMove.getPieceId(), externMove.getTarget(), play, unplay);
 				}
 			});
 		} else{
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					gameScreen.startMovingAIAnimation(externMove.getFrom(), externMove.getTarget(), play, unplay);
+					gameScreen.startMovingEmulatorAnimation(externMove.getFrom(), externMove.getTarget(), play, unplay);
 				}
 			});
 		}
@@ -235,6 +235,10 @@ public class Core implements Cloneable {
 
 	public boolean hasNextState() {
 		return history.hasNext();
+	}
+	
+	public Tuple<Stack<String>, Stack<String>> getHistoryStack(){
+		return new Tuple<Stack<String>, Stack<String>>(history.getPrevPlay(), history.getPrevUnplay());
 	}
 
 	public boolean previousState() {
@@ -375,21 +379,20 @@ public class Core implements Cloneable {
 		if (mode == -1) {
 			io = new Client(this);
 			io.connect(host);
-			while (!io.sendInfo(playerName))
-				;
-			while (!io.updateInfo())
-				;
+			while (!io.sendInfo(playerName));
+			while (!io.updateInfo());
 			(this.mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 		} else {
 			this.mode = mode;
 			(mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 			io = new Server(this);
 			io.connect(null);
-			while (!io.sendInfo(playerName))
-				;
-			while (!io.updateInfo())
-				;
 		}
+	}
+	
+	public void disconnect(){
+		if (io != null)
+			io.disconnect();
 	}
 	
 	public void sendMessage(String message){

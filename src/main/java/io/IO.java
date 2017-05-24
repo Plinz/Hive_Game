@@ -11,6 +11,7 @@ public abstract class IO {
 	}
 
 	public abstract void connect(String host);
+	public abstract void disconnect();
 	public abstract String getMove();
 	public abstract boolean updateInfo();
 	public abstract void sendMove(String move);

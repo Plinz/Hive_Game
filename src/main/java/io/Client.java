@@ -14,7 +14,9 @@ public class Client extends IO {
 	private PrintWriter server = null;
 	private String notation = null;
 	private String otherName = null;
+	private Socket socket;
 	private int mode = -1;
+	private Thread t;
 
 	public Client(Core core) {
 		super(core);
@@ -23,7 +25,9 @@ public class Client extends IO {
 	@Override
 	public void connect(String host) {
 		try {
-			new Thread(new ClientThread(new Socket(host, Consts.PORT))).start();
+			socket = new Socket(host, Consts.PORT);
+			t = new Thread(new ClientThread(socket));
+			t.start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -31,6 +35,22 @@ public class Client extends IO {
 		}
 	}
 
+	
+	@Override
+	public void disconnect() {
+		if (server != null){
+			server.println("DECO");
+			server.flush();
+		}
+		t.interrupt();
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		core.setState(Consts.DISCONNECTED);
+	}	
+	
 	@Override
 	public String getMove() {
 		return notation;
@@ -92,6 +112,18 @@ public class Client extends IO {
 			} else if(response.startsWith("MOVE")){
 				String[] tokens = response.substring(4).split(";");
 				core.playExtern(tokens[0], tokens[1]);
+			} else if (response.startsWith("RECO")) {
+				String[] tokens = response.substring(4).split(";");
+				core.playEmulate(tokens[0], tokens[1]);
+				core.setState(core.getMode()==Consts.PVEX?core.getCurrentPlayer()==Consts.PLAYER1?Consts.WAIT_FOR_INPUT:Consts.PROCESSING:core.getCurrentPlayer()==Consts.PLAYER1?Consts.PROCESSING:Consts.WAIT_FOR_INPUT);
+			} else if (response.startsWith("DECO")) {
+				t.interrupt();
+				try {
+					socket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				core.setState(Consts.DISCONNECTED);
 			}
 		}
 	}
@@ -108,11 +140,8 @@ public class Client extends IO {
 			try {
 				server = new PrintWriter(connexion.getOutputStream(), true);
 				reader = new BufferedReader(new InputStreamReader(connexion.getInputStream()));
-			} catch (IOException e) {
-				e.printStackTrace(System.out);
-			}
-			String message = "";
-			try {
+				String message = "";
+
 				char charCur[] = new char[1];
 				while (reader.read(charCur, 0, 1) != -1) {
 					if (charCur[0] != '\u0000' && charCur[0] != '\n' && charCur[0] != '\r')
@@ -123,41 +152,9 @@ public class Client extends IO {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(System.out);
 			} finally {
-				System.out.println("Le server s'est deconnecte");
-				server.close();
+				disconnect();
 			}
 		}
-		
-		
-//		public void run() {
-//			try {
-//				System.out.println("Client1");
-//				server = new PrintWriter(connexion.getOutputStream(), true);
-//				reader = new BufferedInputStream(connexion.getInputStream());
-//				while(run){
-//					String response = read();
-//					if (response != null && !response.isEmpty()){
-//						processReceive(response);
-//					}
-//				}
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//			}
-//			server.close();
-//		}
-//
-//		// Méthode pour lire les réponses du serveur
-//		private String read() throws IOException {
-//			System.out.println("Cleint read");
-//			String response = "";
-//			int stream;
-//			byte[] b = new byte[4096];
-//			stream = reader.read(b);
-//			response = new String(b, 0, stream);
-//			System.out.println("responseCleint"+response);
-//			return response;
-//		}
 	}
 }

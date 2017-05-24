@@ -3,9 +3,7 @@
  */
 package main.java.ia;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import main.java.engine.Core;
 import main.java.engine.Notation;
 import main.java.utils.Consts;
@@ -27,9 +25,9 @@ public class MediumAI extends AI {
                     return addPieceWherever(chooseAPiece(HeuristicConst.W_MEDIUM_ADD_T1));
                 case 1://TURN 1 BLACK
                     if (core.isQueenOnBoard(0)) {
-                        return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_TURN_1_IF_WQ_T1));
+                        return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_T1_IF_WQ_T1));
                     } else {
-                        return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_TURN_1_ELSE));
+                        return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_T1_ELSE));
                     }
                 case 2://turn 2 WHITE
                     if (core.isQueenOnBoard(1)) {
@@ -58,6 +56,9 @@ public class MediumAI extends AI {
                     }
             }
         }
+        
+        
+        
         Minimax minimax = new Minimax(core, heuristics);
 
         int sign;
@@ -82,6 +83,13 @@ public class MediumAI extends AI {
                 chosenOne = child;
             }
         }
+        
+       /* if (isTimeToFinishOpponent() && Math.floor(chosenOne.heuristicValue) < 1200){
+            String moveAndUnmove = tryGetFinishMove();
+            if (moveAndUnmove != null){
+                return moveAndUnmove;
+            }
+        }*/
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");

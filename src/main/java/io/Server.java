@@ -6,15 +6,19 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Stack;
 
 import main.java.engine.Core;
 import main.java.utils.Consts;
+import main.java.utils.Tuple;
 
 public class Server extends IO {
 
 	private PrintWriter client;
 	private String notation = null;
 	private String otherName = null;
+	private ServerSocket serverSocket;
+	private Thread t;
 
 	public Server(Core core) {
 		super(core);
@@ -23,12 +27,29 @@ public class Server extends IO {
 	@Override
 	public void connect(String host) {
 		try {
-			new Thread(new ServerThread(new ServerSocket(Consts.PORT))).start();;
+			serverSocket = new ServerSocket(Consts.PORT);
+			t = new Thread(new ServerThread(serverSocket));
+			t.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	@Override
+	public void disconnect() {
+		if (client != null){
+			client.println("DECO");
+			client.flush();
+		}
+		t.interrupt();
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		core.setState(Consts.DISCONNECTED);
+	}	
+	
 	@Override
 	public String getMove() {
 		synchronized (this) {
@@ -86,11 +107,28 @@ public class Server extends IO {
 		synchronized (this) {
 			if (response.startsWith("NAME")){
 				otherName = response.substring(4);
+				sendInfo((core.getMode() == Consts.PVEX ? core.getPlayers()[Consts.PLAYER1] : core.getPlayers()[Consts.PLAYER2]).getName());
+				Tuple<Stack<String>, Stack<String>> history = core.getHistoryStack();
+				Stack<String> play = history.x;
+				Stack<String> unplay = history.y;
+				for (int i=0; i<play.size(); i++){
+					client.println("RECO"+play.get(i)+";"+unplay.get(i));
+					client.flush();
+				}
+				while(!updateInfo());
 			} else if (response.startsWith("MESG")) {
 				core.newMessage(response.substring(4));
 			} else if (response.startsWith("MOVE")) {
 				String[] tokens = response.substring(4).split(";");
 				core.playExtern(tokens[0], tokens[1]);
+			} else if (response.startsWith("DECO")) {
+				t.interrupt();
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				core.setState(Consts.DISCONNECTED);
 			}
 		}
 	}
@@ -110,11 +148,7 @@ public class Server extends IO {
 				socket = serverSocket.accept();
 				client = new PrintWriter(socket.getOutputStream());
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			} catch (IOException e) {
-				e.printStackTrace(System.out);
-			}
-			String message = "";
-			try {
+				String message = "";
 				char charCur[] = new char[1];
 				while (in.read(charCur, 0, 1) != -1) {
 					if (charCur[0] != '\u0000' && charCur[0] != '\n' && charCur[0] != '\r')
@@ -125,14 +159,8 @@ public class Server extends IO {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(System.out);
 			} finally {
-				try {
-					System.out.println("Le client s'est deconnecte");
-					socket.close();
-				} catch (IOException e) {
-					e.printStackTrace(System.out);
-				}
+				disconnect();
 			}
 		}
 	}

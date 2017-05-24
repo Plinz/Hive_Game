@@ -35,7 +35,6 @@ public class NetworkScreenController implements Initializable {
     private int state = Consts.WHITE;
     @FXML private Label hostLabel;
     @FXML private TextField hostName;
-    @FXML private Label playerLabel;
     @FXML private TextField playerName;
     @FXML private ToggleButton choiceHost;
     @FXML private ToggleButton choiceClient;
@@ -55,6 +54,12 @@ public class NetworkScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    
+    @FXML 
+    public void handleClickInputPlayer(){
+        playerName.clear();
+    }
     
     @FXML
     public void handleLaunchGameClick(){

@@ -8,16 +8,11 @@ package main.java.view;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.layout.GridPane;
 import main.java.controller.GameScreenController;
 import main.java.engine.Core;
 import main.java.engine.OptionManager;
 import main.java.utils.Consts;
 
-/**
- *
- * @author gontardb
- */
 public class RefreshJavaFX extends AnimationTimer{
 
     Core core;
@@ -63,6 +58,15 @@ public class RefreshJavaFX extends AnimationTimer{
         }
         else if(core.getState() == Consts.READY_TO_CHANGE){
             time++;
+        } 
+        else if(core.getState() == Consts.DISCONNECTED){
+        	Platform.runLater(new Runnable() {
+				@Override
+				public void run() {
+		            g.disconnected();
+				}
+			});
+        	core.setState(Consts.WAIT_FOR_INPUT);
         }
        g.updateChat();
        core.accept(drawer);
