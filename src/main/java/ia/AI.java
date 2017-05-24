@@ -14,6 +14,7 @@ import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
+import main.java.utils.Triplet;
 import main.java.utils.Tuple;
 
 public abstract class AI {
@@ -213,30 +214,30 @@ public abstract class AI {
     }
 
     public String tryGetFinishMove() {
-        List<Piece> availablePieces = getAvailablepiecesForAttack();
+        List<Piece> availablePieces = getAvailablePiecesForAttack();
         int nbMovesMin = 500;
         Piece chosenOne = null;
         CoordGene<Integer> chosenFirstMove = null;
         CoordGene<Integer> destination = getFreeSpaceAroundEnemyQueen();
-        for (Piece piece : availablePieces){
-            Tuple <Integer, CoordGene<Integer>> temp = getNbMovesTillDest(piece, destination);
+        for (Piece piece : availablePieces) {
+            Tuple<Integer, CoordGene<Integer>> temp = getNbMovesTillDest(piece, destination);
             int nbMoves = temp.getX();
-            if (nbMoves > 0 && nbMoves < nbMovesMin){
+            if (nbMoves > 0 && nbMoves < nbMovesMin) {
                 nbMovesMin = nbMoves;
                 chosenOne = piece;
                 chosenFirstMove = temp.getY();
             }
         }
-        
-        if (chosenOne != null){
+
+        if (chosenOne != null) {
             String move = Notation.getMoveNotation(core.getBoard(), chosenOne, chosenFirstMove);
             String unMove = Notation.getInverseMoveNotation(core.getBoard(), chosenOne);
-            return move+";"+unMove;
+            return move + ";" + unMove;
         }
-        return null;    
+        return null;
     }
 
-    public List<Piece> getAvailablepiecesForAttack() {
+    public List<Piece> getAvailablePiecesForAttack() {
         ArrayList<Piece> result = new ArrayList<>();
         core.getCurrentPlayerObj().getInventory().stream().forEach((piece) -> {
             result.add(piece);
@@ -269,11 +270,12 @@ public abstract class AI {
                 }
             }
         }
-        if (queenCoord == null)
+        if (queenCoord == null) {
             return null;
-        
-        for (Tile queenNeighbor : core.getBoard().getNeighbors(queenCoord)){
-            if (queenNeighbor.getPiece() == null){
+        }
+
+        for (Tile queenNeighbor : core.getBoard().getNeighbors(queenCoord)) {
+            if (queenNeighbor.getPiece() == null) {
                 return queenNeighbor.getCoord();
             }
         }
@@ -281,34 +283,114 @@ public abstract class AI {
     }
 
     public Tuple<Integer, CoordGene<Integer>> getNbMovesTillDest(Piece piece, CoordGene<Integer> destination) {
-        if (isOnBoard(piece)){
-            
-        } else {
-            
-        }
-        
-        
-        switch (Consts.getType(piece.getId())){
-            case Consts.ANT_TYPE:
-                if (piece.getPossibleMovement(foreseenTileToMove, core.getBoard()).contains(destination)){
-                    
+        int bestDistanceSoFar = 500;
+        Tuple<Integer, CoordGene<Integer>> temp;
+        if (isOnBoard(piece)) {
+            Tile tile = null;
+            for (Column column : core.getBoard().getBoard()) {
+                for (Box box : column) {
+                    for (Tile currentTile : box) {
+                        if (currentTile.getPiece() == piece) {
+                            tile = currentTile;
+                        }
+                    }
                 }
-                break;
-            case Consts.BEETLE_TYPE:
-                break;
-            case Consts.SPIDER_TYPE:
-                break;
-            case Consts.GRASSHOPPER_TYPE:
-                break;
+            }
+            if (tile == null) {
+                return null;//should never happen
+            }
+
+            switch (Consts.getType(piece.getId())) {
+                case Consts.ANT_TYPE:
+                    if (piece.getPossibleMovement(tile, core.getBoard()).contains(destination)) {
+                        return new Tuple<>(1, destination); //should not be useful -> victory always in one turn
+                    }
+                    break;
+                case Consts.BEETLE_TYPE:
+                    temp = getMoveAndDistance(tile, destination);
+                    break;
+                case Consts.SPIDER_TYPE:
+
+                    break;
+                case Consts.GRASSHOPPER_TYPE:
+                    break;
+            }
+        } else {
+            List<CoordGene<Integer>> possibleAddCoords = core.getPossibleAdd(AIPlayer);
+            switch (Consts.getType(piece.getId())) {
+                case Consts.ANT_TYPE:
+
+                    break;
+                case Consts.BEETLE_TYPE:
+                    break;
+                case Consts.SPIDER_TYPE:
+                    break;
+                case Consts.GRASSHOPPER_TYPE:
+                    break;
+            }
         }
+
         return null;
     }
-    
-    public boolean isOnBoard(Piece piece){
-        for (Piece pieceInInventory : core.getPlayers()[piece.getTeam()].getInventory()){
-            if (pieceInInventory == piece)
+
+    public boolean isOnBoard(Piece piece) {
+        for (Piece pieceInInventory : core.getPlayers()[piece.getTeam()].getInventory()) {
+            if (pieceInInventory == piece) {
                 return false;
+            }
         }
         return true;
+    }
+
+    public Tuple<Integer, CoordGene<Integer>> getMoveAndDistance(Tile tile, CoordGene<Integer> destination) {
+        if (tile.getCoord().equals(destination)) {
+            return new Tuple<>(0, destination);
+        }
+        Piece piece = tile.getPiece();
+
+        ArrayList<Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>>> movesAndDistance = new ArrayList<>();
+        Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>> origin = new Triplet<>(0, tile.getCoord(), null);
+        movesAndDistance.add(origin);
+
+        ArrayList<CoordGene<Integer>> coordsVisited = new ArrayList<>();
+        coordsVisited.add(tile.getCoord());
+
+        int actualSize = 0;
+        int actualDistance = 0;
+        while (movesAndDistance.size() != actualSize) {
+            actualSize = movesAndDistance.size();
+            for (Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>> move : movesAndDistance) {
+                if (move.getX() == actualDistance) {
+                    String play = Notation.getMoveNotation(core.getBoard(), piece, move.getY());
+                    String unplay = Notation.getInverseMoveNotation(core.getBoard(), piece);
+                    core.playEmulate(play, unplay);
+
+                    List<CoordGene<Integer>> temp = piece.getPossibleMovement(core.getBoard().getTile(move.getY()), core.getBoard());
+                    for (CoordGene<Integer> newCoord : temp) {
+                        if (newCoord.equals(destination)) {
+                            if (actualDistance == 0) {
+                                return new Tuple<>(actualDistance + 1, newCoord);
+                            } else {
+                                return new Tuple<>(actualDistance + 1, move.getZ());
+                            }
+                        }
+                        if (!coordsVisited.contains(newCoord)) {
+                            Triplet<Integer, CoordGene<Integer>, CoordGene<Integer>> toAdd;
+                            coordsVisited.add(newCoord);
+                            if (actualDistance == 0) {
+                                toAdd = new Triplet<>(actualDistance + 1, newCoord, newCoord);
+                            } else {
+                                toAdd = new Triplet<>(actualDistance + 1, newCoord, move.getZ());
+                            }
+                            movesAndDistance.add(toAdd);
+                        }
+                    }
+
+                    core.previousState();
+                }
+            }
+            actualDistance++;
+        }
+        return new Tuple<>(-1,null);
     }
 }
