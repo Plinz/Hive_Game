@@ -8,6 +8,14 @@ public class Tuple<X, Y> {
         this.y = y; 
     }
 
+    public X getX(){
+        return this.x;
+    }
+    
+    public Y getY(){
+        return this.y;
+    }
+    
     @Override
     public String toString() {
         return "(" + x + "," + y + ")";
