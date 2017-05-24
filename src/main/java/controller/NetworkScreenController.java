@@ -68,6 +68,7 @@ public class NetworkScreenController implements Initializable {
     	String host = choiceClient.isSelected()?hostName.getText():null;
     	int mode = choiceHost.isSelected()?(state==Consts.WHITE?Consts.PVEX:Consts.EXVP):-1;
     	core.connect(host, mode, playerName.getText());
+        core.playNextTurn();
     	main.showGameScreen(core);
     }
     
