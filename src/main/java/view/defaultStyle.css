@@ -556,7 +556,7 @@ and open the template in the editor.
 
 /* Network screen */
 #hostButton{
-    -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-image: url("/main/resources/img/misc/server.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 
@@ -567,7 +567,18 @@ and open the template in the editor.
 }
 
 #hostButton:hover{
-    -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-image: url("/main/resources/img/misc/server-hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+    
+}
+
+#hostButton:selected{
+    -fx-background-image: url("/main/resources/img/misc/server-selected.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 
@@ -578,7 +589,29 @@ and open the template in the editor.
 }
 
 #clientButton{
-    -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-image: url("/main/resources/img/misc/client.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+    
+}
+
+#clientButton:hover{
+    -fx-background-image: url("/main/resources/img/misc/client-hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+    
+}
+
+#clientButton:selected{
+    -fx-background-image: url("/main/resources/img/misc/client-selected.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 

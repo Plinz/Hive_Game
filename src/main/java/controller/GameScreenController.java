@@ -709,7 +709,7 @@ public class GameScreenController implements Initializable {
 
 
     public void handleNewGame() throws IOException {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
 
             ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
@@ -760,7 +760,7 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleLoadGame() throws IOException {
-        if(core.getState() == Consts.WAIT_FOR_INPUT){
+        if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
 
             ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
@@ -938,17 +938,16 @@ public class GameScreenController implements Initializable {
 
     public void handleResize(CoordGene<Integer> coordEnd) {
         CoordGene<Double> newOrigin = t.getMoveOrigin();
-        if (coordEnd.getX() == 0) {
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE * 2.25);
-        }
-        if (coordEnd.getY() == 0) {
+        if (coordEnd.getX() == 0 && coordEnd.getY() == 0) {
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE * 2.5);
             newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
-        if (coordEnd.getX() == core.getBoard().getBoard().size() - 1) {
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE / 2.25);
+        else if (coordEnd.getX() == 0) {
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*1.75);
         }
-        if (coordEnd.getY() == core.getBoard().getBoard().get(coordEnd.getX()).size() - 1) {
-            newOrigin.setY(newOrigin.getX() - Consts.SIDE_SIZE / 1.5);
+        else if(coordEnd.getY() == 0){
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE);
+            newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
         t.setMoveOrigin(newOrigin);
     }

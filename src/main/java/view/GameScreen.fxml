@@ -81,7 +81,6 @@
                             <MenuItem fx:id="lanchNewGame" mnemonicParsing="false" onAction="#handleNewGame" text="Lancer nouvelle partie" />
                             <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#handleSaveGame" text="Sauvegarder" />
                               <MenuItem fx:id="loadGame" mnemonicParsing="false" onAction="#handleLoadGame" text="Charger partie" />
-                              <MenuItem mnemonicParsing="false" text="Afficher historique" />
                               <MenuItem mnemonicParsing="false" onAction="#handleLeaveGame" text="Quitter partie" />
                           </items>
                            <cursor>

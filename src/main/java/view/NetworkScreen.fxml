@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="main.java.controller.NetworkScreenController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.NetworkScreenController">
    <children>
       <GridPane fx:id="gameTypeChoice" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1280.0">
          <columnConstraints>
@@ -68,7 +67,7 @@
                   </Button>
                </children>
             </GridPane>
-            <ToggleButton id="pvpChoice" fx:id="choiceHost" mnemonicParsing="false" onMouseClicked="#handleHostClick" prefHeight="111.0" prefWidth="110.0" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ToggleButton id="hostButton" fx:id="choiceHost" mnemonicParsing="false" onMouseClicked="#handleHostClick" prefHeight="111.0" prefWidth="110.0" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <toggleGroup>
                   <ToggleGroup fx:id="gameType" />
                </toggleGroup>
@@ -76,7 +75,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ToggleButton>
-            <ToggleButton id="pvaiChoice" fx:id="choiceClient" mnemonicParsing="false" onMouseClicked="#handleClientClick" prefHeight="110.0" prefWidth="110.0" toggleGroup="$gameType" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <ToggleButton id="clientButton" fx:id="choiceClient" mnemonicParsing="false" onMouseClicked="#handleClientClick" prefHeight="110.0" prefWidth="110.0" toggleGroup="$gameType" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -109,7 +108,7 @@
                   <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="hostName" prefHeight="26.0" prefWidth="211.0" text="Anonyme" visible="false" GridPane.columnIndex="1" />
+                  <TextField fx:id="hostName" prefHeight="26.0" prefWidth="211.0" text="localhost" visible="false" GridPane.columnIndex="1" />
                   <Label fx:id="hostLabel" prefHeight="16.0" prefWidth="248.0" text="Nom de l'hote :" textAlignment="CENTER" visible="false" wrapText="true">
                      <font>
                         <Font name="System Bold" size="17.0" />
