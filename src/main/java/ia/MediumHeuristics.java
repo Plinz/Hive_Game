@@ -56,7 +56,7 @@ public class MediumHeuristics extends Heuristics {
 
         int pieceType = Consts.getType(pieceId);
         double value = 0;
-        /*if (pieceType == Consts.BEETLE_TYPE && pieces[player][pieceId].isInGame == 1) {
+        if (pieceType == Consts.BEETLE_TYPE && pieces[player][pieceId].isInGame == 1) {
             Tile beetleTile = getTile(pieceId, player);
             int dist_to_queen = distanceToOpposingQueen(beetleTile) + 1;
             System.out.println("Distance to queen : "+dist_to_queen);
@@ -68,7 +68,7 @@ public class MediumHeuristics extends Heuristics {
         } else {
             value += heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
         }
-*/
+
         value += heuristicData[player][pieceType][1] * pieces[player][pieceId].nbMoves * (1 - pieces[player][pieceId].isInGame);
         value += heuristicData[player][pieceType][2] * pieces[player][pieceId].nbMoves * pieces[player][pieceId].isInGame;
         value += heuristicData[player][pieceType][3] * pieces[player][pieceId].neighbors;
