@@ -22,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
@@ -73,17 +72,12 @@ import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
-import main.java.utils.Tuple;
 import main.java.view.AnimationTile;
 import main.java.view.Hexagon;
 import main.java.view.Highlighter;
 import main.java.view.RefreshJavaFX;
 import main.java.view.TraducteurBoard;
 
-/**
- *
- * @author duvernet
- */
 public class GameScreenController implements Initializable {
     @FXML private AnchorPane mainAnchor;
     @FXML private Canvas gameCanvas;
@@ -110,17 +104,16 @@ public class GameScreenController implements Initializable {
     //The piece the player clicked on his inventory
     private int pieceChosenInInventory;
     private CoordGene<Double> lastCoord;
-    private CoordGene<Integer> pieceToMove, lastCoordBeetle;
+    private CoordGene<Integer> pieceToMove;
     private List<CoordGene<Integer>> possibleMovement;
     private Highlighter highlighted;
     private TraducteurBoard traductor;
     private BooleanProperty animationPlaying;
     private boolean endOfGame;
-    
     private ToggleGroup inventoryGroup;
     private RefreshJavaFX refreshor;
     private AnimationTile animation;
-    private Popup popup = popup = new Popup();
+    private Popup popup = new Popup();
     private int nbMessage, nbChatRow;
     
     @Override
@@ -133,7 +126,6 @@ public class GameScreenController implements Initializable {
         pieceChosenInInventory = -1;
         highlighted = new Highlighter();
         traductor = new TraducteurBoard();
-        lastCoordBeetle = new CoordGene<Integer>(0,0);
         lastCoord = new CoordGene<Double>(0.0,0.0);
         animationPlaying = new SimpleBooleanProperty();
         animationPlaying.setValue(false);
@@ -1052,4 +1044,25 @@ public class GameScreenController implements Initializable {
             nbMessage = core.getLastMsg().size(); 
         }
     }
+
+	public void disconnected() {
+        Dialog<ButtonType> popup = new Dialog<>();
+        popup.setTitle("Deconnexion");
+        ButtonType menu = new ButtonType("Menu Principal", ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().add(menu);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        popup.getDialogPane().setContent(grid);
+        grid.add(new Label("Votre adversaire s'est déconnecté"), 0, 0);
+
+        Optional<ButtonType> result = popup.showAndWait();
+        if (result.get().getButtonData() == ButtonBar.ButtonData.RIGHT) {
+        	refreshor.stop();
+        	main.showMainMenu();
+        }
+	}
 }
