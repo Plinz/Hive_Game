@@ -34,7 +34,7 @@
                 <RowConstraints maxHeight="630.0" minHeight="10.0" prefHeight="623.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <GridPane prefHeight="596.0" prefWidth="334.0" GridPane.rowIndex="1">
+                  <GridPane fx:id="gridMenu" prefHeight="596.0" prefWidth="334.0" GridPane.rowIndex="1">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" />
                      </columnConstraints>
@@ -51,7 +51,7 @@
                         <RowConstraints maxHeight="386.0" prefHeight="65.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label contentDisplay="CENTER" onMouseClicked="#handleMoveAnt" prefHeight="72.0" prefWidth="329.0" styleClass="panelItemTitle" text="La fourmi" wrapText="true" GridPane.rowIndex="9">
+                        <Label fx:id="antTitle" contentDisplay="CENTER" onMouseClicked="#handleMoveAnt" prefHeight="69.0" prefWidth="336.0" styleClass="panelItemTitle" text="La fourmi" wrapText="true" GridPane.rowIndex="9">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
@@ -62,7 +62,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label onMouseClicked="#handleMoveSpider" prefHeight="61.0" prefWidth="329.0" styleClass="panelItemTitle" text="L'araignée" wrapText="true" GridPane.rowIndex="8">
+                        <Label fx:id="spiderTitle" onMouseClicked="#handleMoveSpider" prefHeight="61.0" prefWidth="344.0" styleClass="panelItemTitle" text="L'araignée" wrapText="true" GridPane.rowIndex="8">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
@@ -73,7 +73,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label onMouseClicked="#handleMoveGrassHopper" prefHeight="59.0" prefWidth="335.0" styleClass="panelItemTitle" text="La sauterelle" GridPane.rowIndex="6">
+                        <Label fx:id="grassHopperTitle" onMouseClicked="#handleMoveGrassHopper" prefHeight="59.0" prefWidth="335.0" styleClass="panelItemTitle" text="La sauterelle" GridPane.rowIndex="6">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -87,7 +87,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label onMouseClicked="#handleMoveBeetle" prefHeight="60.0" prefWidth="329.0" text="Le scarabée" GridPane.rowIndex="7">
+                        <Label fx:id="beetleTitle" onMouseClicked="#handleMoveBeetle" prefHeight="60.0" prefWidth="335.0" text="Le scarabée" GridPane.rowIndex="7">
                            <padding>
                               <Insets left="50.0" />
                            </padding>
@@ -102,7 +102,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Label>
-                        <Label onMouseClicked="#handleMoveQueen" prefHeight="54.0" prefWidth="329.0" styleClass="panelItemTitle" text="La reine" GridPane.rowIndex="5">
+                        <Label fx:id="queenTitle" onMouseClicked="#handleMoveQueen" prefHeight="54.0" prefWidth="338.0" styleClass="panelItemTitle" text="La reine" GridPane.rowIndex="5">
                            <padding>
                               <Insets left="50.0" />
                            </padding>

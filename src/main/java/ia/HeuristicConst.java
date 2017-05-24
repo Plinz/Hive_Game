@@ -19,16 +19,16 @@ public class HeuristicConst {
     public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -150, 0, 0, -250};
     public static final double[] MAXIMISE_SPIDER = {0.5, -4.7, 0.5, -8.4, 1, -1.7, -0.5};
     public static final double[] MAXIMISE_GH = {0.5, 0.5, 3.5, 0, 1.5, 0.5, -1};
-    public static final double[] MAXIMISE_BEETLE = {0.5, -1.7, 0.5, 2, 1, 1.1, -3};
+    public static final double[] MAXIMISE_BEETLE = {150, -1.7, 0.5, 2, 1, 1.1, -3};
     public static final double[] MAXIMISE_ANT = {0.3, 1, 0.1, 0, 1, 3, -7};
-    public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0, -1};
+    public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0.2, -1};
     
     
     
     public static final double[] MINIMISE_QUEEN = {-0.5, -1.1, -0.5, 150, -1, -0.5, 250};
     public static final double[] MINIMISE_SPIDER = {-0.5, -0.5, -1.7, 0, -1, -1.1, 0.5};
     public static final double[] MINIMISE_GH = {-11, -0.5, -0.5, 0, -1.5, -0.5, 1};
-    public static final double[] MINIMISE_BEETLE = {-0.5, -0.5, -2.3, 1, -1, -1.1, 3};
+    public static final double[] MINIMISE_BEETLE = {-151, -0.5, -2.3, 1, -1, -1.1, 3};
     public static final double[] MINIMISE_ANT = {-0.1, -1, -0.1, 0, -1, -3, 7};
     public static final double[] MINIMISE_GENERAL = {-1.8, 4, -0, 0, 0, -2.8, 1.1};
 
@@ -42,6 +42,34 @@ public class HeuristicConst {
     public static final int IN_HAND = 4;
     public static final int ON_BOARD = 5;
     public static final int IS_PINNED = 6;
+    
+        public static final double[] CHOOSE_QUEEN = {1, 0, 0, 0, 0};
+    public static final double[] CHOOSE_WHATEVER = {0.2, 0.2, 0.2, 0.2, 0.2};
+
+    public static final double[] EASY_ADD_TURN_1 = {0.2, 0.3, 0.3, 0.1, 0.1};
+    public static final double[] EASY_ADD_TURN_2 = {0.2, 0.3, 0.3, 0.1, 0.1};
+    public static final double[] EASY_ADD_TURN_3 = {0.2, 0.2, 0.2, 0.2, 0.2};
+    public static final double[] EASY_ADD_TURN_4 = {0, 0.15, 0.15, 0.35, 0.35};
+    
+    public static final double EASY_T4_CHOOSE_TO_ADD = 0.75;
+    public static final double EASY_MID_GAME_CHOOSE_TO_ADD = 0.55;
+    
+    
+    //OPENING MEDIUM WHITE
+    public static final double[] W_MEDIUM_ADD_T1 = {0, 0.5, 0.5, 0, 0};
+        public static final double[] W_MEDIUM_ADD_T2_IF_BQ_T1 = {1, 0, 0, 0, 0};
+        public static final double[] W_MEDIUM_ADD_T2_ELSE = {0.5, 0, 0, 0., 0.5};
+            public static final double[] W_MEDIUM_ADD_T3_IF_NO_WQ = {1, 0, 0, 0, 0};
+            public static final double[] W_MEDIUM_ADD_T3_ELSE = {0, 0.25, 0, 0, 0.75};
+            
+    //OPENING MEDIUM BLACK      
+    public static final double[] B_MEDIUM_ADD_T1_IF_WQ_T1 = {1, 0, 0, 0, 0};
+    public static final double[] B_MEDIUM_ADD_T1_ELSE = {0, 0.5, 0.5, 0, 0};
+        public static final double[] B_MEDIUM_ADD_T2 = {1, 0, 0, 0, 0};
+            public static final double[] B_MEDIUM_ADD_T3_IF_W_HAS_MOBILE_ANT = {0, 1, 0, 0, 0};
+            public static final double[] B_MEDIUM_ADD_T3_ELSE = {0, 0, 0, 0, 1};
+    
+    
     
     public static final double[][][] getHeuristicDataFromConsts() {
         double[][][] heuristicData = new double[2][6][7];
@@ -78,4 +106,55 @@ public static final double[] MINIMISE_GH = {0.18812298228619015, -0.004141899510
 public static final double[] MINIMISE_BEETLE = {0.003765849523447537, -1.7489242310263748, -0.024355097980445779, 4.3652927041450535, 0.021555515298245325, -0.99360217388415517, -0.56276142856439137};
 public static final double[] MINIMISE_ANT = {0.92583343413758135, 0.31100406658912494, 1.4088853720734798, -0.30667695965706354, 1.2758077144197426, 0.0470243463776905, 4.194908848724535};
 public static final double[] MINIMISE_GENERAL = {-0.075498979525094087, -0.14202093136339761, -0.34601947869445787, 0.0, 0.0090537986784408053, -0.20045479052286633, -0.049414635353429777};
+*/
+/*
+
+T1 W :
+{0, 0.5, 0.5, 0, 0}
+
+T1 B :
+
+Si T1W : Queen
+{1, 0, 0, 0, 0}
+Sinon :
+{0, 0.5, 0.5, 0, 0}
+
+T2 W :
+Si T1B : Queen
+{1, 0, 0, 0, 0}
+
+Sinon :
+{0.5,0,0,0,0.5}
+
+T2B :
+{1, 0, 0, 0, 0}
+
+
+T3W :
+Si Q pas jouée par W :
+{1, 0, 0, 0, 0}
+
+Sinon :
+{0, 0.25, 0, 0, 0.75}
+
+T3B :
+Si W a une fourmis qu'il peut bouger : 
+{0,1,0,0,0}
+
+Sinon
+{0,0,0,0,1}
+
+T4W : 
+Pin intéressant :
+Bouger la Spider/Ant (pin ant ou queen)
+
+Sinon :
+{0,0,0,0,1}
+
+T4B :
+Pin intéressant :
+Bouger la Spider/Ant (bloquer ant ennemie)
+
+Sinon :
+{0,0,0,0,1}
 */

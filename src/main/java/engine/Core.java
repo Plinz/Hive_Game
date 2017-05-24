@@ -132,10 +132,10 @@ public class Core implements Cloneable {
 		String[] moveAndUnplay = ai.getNextMove().split(";");
 		HelpMove iaMove = emulator.getMove(moveAndUnplay[0]);
 		if (iaMove.isAdd()) {
-			gameScreen.startPlacingAIAnimation(iaMove.getPieceId(), iaMove.getTarget(), moveAndUnplay[0],
+			gameScreen.startPlacingEmulatorAnimation(iaMove.getPieceId(), iaMove.getTarget(), moveAndUnplay[0],
 					moveAndUnplay[1]);
 		} else {
-			gameScreen.startMovingAIAnimation(iaMove.getFrom(), iaMove.getTarget(), moveAndUnplay[0], moveAndUnplay[1]);
+			gameScreen.startMovingEmulatorAnimation(iaMove.getFrom(), iaMove.getTarget(), moveAndUnplay[0], moveAndUnplay[1]);
 		}
 	}
 
@@ -145,14 +145,14 @@ public class Core implements Cloneable {
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					gameScreen.startPlacingAIAnimation(externMove.getPieceId(), externMove.getTarget(), play, unplay);
+					gameScreen.startPlacingEmulatorAnimation(externMove.getPieceId(), externMove.getTarget(), play, unplay);
 				}
 			});
 		} else{
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					gameScreen.startMovingAIAnimation(externMove.getFrom(), externMove.getTarget(), play, unplay);
+					gameScreen.startMovingEmulatorAnimation(externMove.getFrom(), externMove.getTarget(), play, unplay);
 				}
 			});
 		}

@@ -177,6 +177,15 @@ public class NewGameScreenController implements Initializable {
         main.showMainMenu();
     }
     
+    @FXML 
+    public void handleClickInputPlayer1(){
+        namePlayer1.clear();
+    }
+    @FXML 
+    public void handleClickInputPlayer2(){
+        namePlayer2.clear();
+    }
+    
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         

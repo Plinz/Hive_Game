@@ -4,20 +4,21 @@
 package main.java.ia;
 
 import main.java.engine.Core;
+import main.java.model.Tile;
 import main.java.utils.Consts;
 
-public class MediumHeuristics extends Heuristics{
-    
+public class MediumHeuristics extends Heuristics {
+
     public MediumHeuristics(Core core) {
         super(core);
         this.difficulty = Consts.MEDIUM;
         this.maxdepth = Consts.DEPTH_MEDIUM;
     }
-    
+
     @Override
-    public double getHeuristicsValue(){
+    public double getHeuristicsValue() {
         getGeneralValues();
-        double value =0;
+        double value = 0;
         value += heuristicData[0][5][0] * (nbMovesAI + nbPlacementAI);
         value += heuristicData[0][5][1] * nbPlacementAI;
         value += heuristicData[0][5][2] * nbMovesAI;
@@ -34,39 +35,47 @@ public class MediumHeuristics extends Heuristics{
         value += heuristicData[1][5][5] * nbPlacementOpponent;
         value += heuristicData[1][5][6] * nbPinnedOpponent;
         //System.out.println("Value apres ajout général human :"+value);
-        for (int player = 0 ; player <2 ; player ++){
+        for (int player = 0; player < 2; player++) {
             //value += Math.pow(HeuristicConst.QUEEN_NEIGHBOR_FACTOR, heuristicData[player][Consts.QUEEN_TYPE][3]) * heuristicData[player][Consts.QUEEN_TYPE][3];
-            for (int pieceId = 0 ; pieceId < Consts.NB_PIECES_PER_PLAYER ; pieceId++){
+            for (int pieceId = 0; pieceId < Consts.NB_PIECES_PER_PLAYER; pieceId++) {
                 value += getPieceValue(player, pieceId);
                 //System.out.println("Value ajout player"+player+", piece"+pieceId+",value"+getPieceValue(player, pieceId));
             }
-            if (pieces[player][Consts.QUEEN].neighbors == 6){
-                value += heuristicData[player][Consts.QUEEN_TYPE][3]*10;
+            if (pieces[player][Consts.QUEEN].neighbors == 6) {
+                value += heuristicData[player][Consts.QUEEN_TYPE][3] * 10;
                 System.out.println("Victoire");
                 isVictory = true;
             }
         }
-       
+
         //System.out.println("heuristic value : "+value);
         return value;
     }
-    
-    
-    
-    public double getPieceValue(int player, int pieceId){
+
+    public double getPieceValue(int player, int pieceId) {
 
         int pieceType = Consts.getType(pieceId);
-        if (Consts.getType(pieceId) == Consts.BEETLE_TYPE){
-            
+        double value = 0;
+        /*if (pieceType == Consts.BEETLE_TYPE && pieces[player][pieceId].isInGame == 1) {
+            Tile beetleTile = getTile(pieceId, player);
+            int dist_to_queen = distanceToOpposingQueen(beetleTile) + 1;
+            System.out.println("Distance to queen : "+dist_to_queen);
+            if (dist_to_queen == -1) {
+                System.out.println("Probleme appel distance to opp queen");
+            } else {
+                value += heuristicData[player][pieceType][0] / dist_to_queen;
+            }
+        } else {
+            value += heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
         }
-        double value = heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
-        value += heuristicData[player][pieceType][1] * pieces[player][pieceId].nbMoves * (1-pieces[player][pieceId].isInGame);
+*/
+        value += heuristicData[player][pieceType][1] * pieces[player][pieceId].nbMoves * (1 - pieces[player][pieceId].isInGame);
         value += heuristicData[player][pieceType][2] * pieces[player][pieceId].nbMoves * pieces[player][pieceId].isInGame;
         value += heuristicData[player][pieceType][3] * pieces[player][pieceId].neighbors;
-        value += heuristicData[player][pieceType][4] * (1-pieces[player][pieceId].isInGame);
+        value += heuristicData[player][pieceType][4] * (1 - pieces[player][pieceId].isInGame);
         value += heuristicData[player][pieceType][5] * pieces[player][pieceId].isInGame;
         value += heuristicData[player][pieceType][6] * pieces[player][pieceId].isPinned;
         return value;
     }
-    
+
 }
