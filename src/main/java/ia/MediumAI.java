@@ -84,12 +84,12 @@ public class MediumAI extends AI {
             }
         }
         
-        if (isTimeToFinishOpponent() && Math.floor(chosenOne.heuristicValue) < 1200){
+       /* if (isTimeToFinishOpponent() && Math.floor(chosenOne.heuristicValue) < 1200){
             String moveAndUnmove = tryGetFinishMove();
             if (moveAndUnmove != null){
                 return moveAndUnmove;
             }
-        }
+        }*/
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
