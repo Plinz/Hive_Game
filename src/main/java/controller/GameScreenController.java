@@ -352,7 +352,7 @@ public class GameScreenController implements Initializable {
 
     public void handleUpButton() {
         if(core.getState() != Consts.ANIMATING)
-            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX(), traductor.getMoveOrigin().getY() - 10));
+            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX(), traductor.getMoveOrigin().getY() + 10));
     }
 
     public void handleRightButton() {
@@ -362,7 +362,7 @@ public class GameScreenController implements Initializable {
 
     public void handleDownButton() {
         if(core.getState() != Consts.ANIMATING)
-            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX(), traductor.getMoveOrigin().getY() + 10));
+            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX(), traductor.getMoveOrigin().getY() - 10));
     }
 
     public void handleLeftButton() {
@@ -794,7 +794,7 @@ public class GameScreenController implements Initializable {
         Dialog<ButtonType> popup = new Dialog<>();
         popup.setTitle("Fin de partie");
         ButtonType restart = new ButtonType("Relancer la partie", ButtonBar.ButtonData.LEFT);
-        ButtonType mainMenu = new ButtonType("Retourner au menu principal", ButtonBar.ButtonData.OTHER);
+        ButtonType mainMenu = new ButtonType("Menu principal", ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Fermer", ButtonBar.ButtonData.RIGHT);
         if(core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP)
             popup.getDialogPane().getButtonTypes().addAll(restart, mainMenu,cancel);
@@ -814,12 +814,12 @@ public class GameScreenController implements Initializable {
             case Consts.WIN_TEAM1:
                 namePlayer1.setText(core.getPlayers()[0].getName() + " a perdu !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " a gagné !");
-               gameStatus.setText("Le joueur noir remporte la victoire !");
+                gameStatus.setText("Le joueur " + core.getPlayers()[1].getName() + " remporte la victoire !");
                 break;
             case Consts.WIN_TEAM2:
                 namePlayer1.setText(core.getPlayers()[0].getName() + " a gagné !");
                 namePlayer2.setText(core.getPlayers()[1].getName() + " a perdu !");
-                gameStatus.setText("Le joueur blanc remporte la victoire");
+                gameStatus.setText("Le joueur " + core.getPlayers()[0].getName() + " remporte la victoire");
                 break;
             case Consts.NUL:
                 namePlayer1.setText(core.getPlayers()[0].getName() + " : match nul !");
