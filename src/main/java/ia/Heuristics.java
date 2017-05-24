@@ -288,16 +288,19 @@ public class Heuristics {
     }
 
     public int distanceToOpposingQueen(Tile tile) {
-        System.out.println("TOTO"+tile);
         if (tile == null || tile.getPiece() == null
                 || (tile.getPiece().getId() != Consts.BEETLE1 && tile.getPiece().getId() != Consts.BEETLE2)) {
             return -1;
         }
         Board board = core.getBoard();
         int distance = 0;
-		if (board.getAboveAndBelow(tile).stream()
-				.anyMatch(t -> t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam()))
-			return distance;
+        List<Tile> ab = board.getAboveAndBelow(tile);
+        for (Tile t : ab){
+        	System.out.println(t.getPiece());
+        	if (t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam()){
+        		return distance;
+        	}
+        }
 
         HashSet<CoordGene<Integer>> visited = new HashSet<>();
         List<CoordGene<Integer>> possibleDest = new ArrayList<>();
@@ -307,7 +310,7 @@ public class Heuristics {
 		while (!possibleDest.isEmpty()) {
 
 			for (CoordGene<Integer> coord : possibleDest){
-				List<Tile> ab = board.getAboveAndBelow(board.getTile(coord));
+				ab = board.getAboveAndBelow(board.getTile(coord));
 				ab.add(board.getTile(coord));
 				for (Tile t : ab){
 					if (t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam())
@@ -328,7 +331,6 @@ public class Heuristics {
 			tmp.clear();
 			distance++;
 		}        
-        System.out.println("Distance="+distance);
         return distance;
     }
 
