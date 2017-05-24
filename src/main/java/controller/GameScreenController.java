@@ -113,12 +113,12 @@ public class GameScreenController implements Initializable {
     private CoordGene<Integer> pieceToMove, lastCoordBeetle;
     private List<CoordGene<Integer>> possibleMovement;
     private Highlighter highlighted;
-    private TraducteurBoard t;
+    private TraducteurBoard traductor;
     private BooleanProperty animationPlaying;
     private boolean endOfGame;
     
     private ToggleGroup inventoryGroup;
-    private RefreshJavaFX r;
+    private RefreshJavaFX refreshor;
     private AnimationTile animation;
     private Popup popup = popup = new Popup();
     private int nbMessage, nbChatRow;
@@ -132,7 +132,7 @@ public class GameScreenController implements Initializable {
         setCore(c);
         pieceChosenInInventory = -1;
         highlighted = new Highlighter();
-        t = new TraducteurBoard();
+        traductor = new TraducteurBoard();
         lastCoordBeetle = new CoordGene<Integer>(0,0);
         lastCoord = new CoordGene<Double>(0.0,0.0);
         animationPlaying = new SimpleBooleanProperty();
@@ -150,7 +150,7 @@ public class GameScreenController implements Initializable {
         initButtonByInventory();
         animation = new AnimationTile();
 
-        r = new RefreshJavaFX(core, gameCanvas, highlighted, t, this);
+        refreshor = new RefreshJavaFX(core, gameCanvas, highlighted, traductor, this);
         initGameCanvas();
         core.setGameScreen(this);
         if (core.getMode() == Consts.AIVP && core.getTurn() == 0){
@@ -165,7 +165,7 @@ public class GameScreenController implements Initializable {
             hideButtonsForNetwork();
         }
         
-        r.start();
+        refreshor.start();
     }
 
     public void initGameCanvas() {
@@ -173,9 +173,9 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent m) {
-                CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
+                CoordGene<Double> coordAx = traductor.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
                 CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
-                CoordGene<Double> origin = t.getMoveOrigin();
+                CoordGene<Double> origin = traductor.getMoveOrigin();
                 lastCoord = new CoordGene<Double>(m.getX() - origin.getX(), m.getY() - origin.getY());
                 
                 if (core.getState() == Consts.WAIT_FOR_INPUT) {
@@ -217,7 +217,7 @@ public class GameScreenController implements Initializable {
 
             public void handle(MouseEvent m) {
                 if (core.getState() != Consts.ANIMATING || endOfGame) {
-                    t.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
+                    traductor.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
                 }
             }
 
@@ -227,7 +227,7 @@ public class GameScreenController implements Initializable {
 
             public void handle(MouseEvent m) {
 
-                CoordGene<Double> coordAx = t.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
+                CoordGene<Double> coordAx = traductor.pixelToAxial(new CoordGene<Double>(m.getX(), m.getY()));
 
                 CoordGene<Integer> coord = new CoordGene<Integer>(coordAx.getX().intValue(), coordAx.getY().intValue());
                 if (core.isTile(coord)) {
@@ -352,22 +352,22 @@ public class GameScreenController implements Initializable {
 
     public void handleUpButton() {
         if(core.getState() != Consts.ANIMATING)
-            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(), t.getMoveOrigin().getY() - 10));
+            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX(), traductor.getMoveOrigin().getY() - 10));
     }
 
     public void handleRightButton() {
         if(core.getState() != Consts.ANIMATING)
-            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() + 10, t.getMoveOrigin().getY()));
+            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX() + 10, traductor.getMoveOrigin().getY()));
     }
 
     public void handleDownButton() {
         if(core.getState() != Consts.ANIMATING)
-            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX(), t.getMoveOrigin().getY() + 10));
+            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX(), traductor.getMoveOrigin().getY() + 10));
     }
 
     public void handleLeftButton() {
         if(core.getState() != Consts.ANIMATING)
-            t.setMoveOrigin(new CoordGene<>(t.getMoveOrigin().getX() - 10, t.getMoveOrigin().getY()));
+            traductor.setMoveOrigin(new CoordGene<>(traductor.getMoveOrigin().getX() - 10, traductor.getMoveOrigin().getY()));
     }
     
     public void handlePlusButton() {    
@@ -400,7 +400,7 @@ public class GameScreenController implements Initializable {
     public void handleRedoButton() {
         if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             core.nextState();
-            while (core.getMode() != Consts.PVP && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
+            while (core.getMode() != Consts.PVP && core.hasNextState() && core.getCurrentPlayer() == (core.getMode() == Consts.PVAI ? Consts.PLAYER2 : Consts.PLAYER1)) {
                 core.nextState();
             }
             checkHistory();
@@ -460,7 +460,7 @@ public class GameScreenController implements Initializable {
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
-                b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
+                b.setOnMouseClicked(new ControllerButtonPiece(this,inventory.get(i).getId(), i));
                 b.setOnDragOver(new EventHandler <DragEvent>(){
                     @Override
                     public void handle(DragEvent event){
@@ -506,7 +506,7 @@ public class GameScreenController implements Initializable {
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
             if (core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
-                b.setOnMouseClicked(new ControllerButtonPiece(this, highlighted, core, inventory.get(i).getId(), i));
+                b.setOnMouseClicked(new ControllerButtonPiece(this,inventory.get(i).getId(), i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
@@ -559,15 +559,15 @@ public class GameScreenController implements Initializable {
 
         CoordGene<Double> start = new CoordGene<>((double) coordStart.getX(), (double) coordStart.getY());
         CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = t.axialToPixel(start);
-        end = t.axialToPixel(end);
+        start = traductor.axialToPixel(start);
+        end = traductor.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
         Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
-                new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
-                new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
+                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), start.getY() + traductor.getMoveOrigin().getY()),
+                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
         
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
  
@@ -602,15 +602,15 @@ public class GameScreenController implements Initializable {
 
         CoordGene<Double> start = new CoordGene<>((double) coordEnd.getX(), (double) 0);
         CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = t.axialToPixel(start);
-        end = t.axialToPixel(end);
+        start = traductor.axialToPixel(start);
+        end = traductor.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
         Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
-                new MoveTo(start.getX() + t.getMoveOrigin().getX(), 0),
-                new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
+                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), 0),
+                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
             @Override
@@ -628,7 +628,7 @@ public class GameScreenController implements Initializable {
         animation.play();
     }
     
-    public void startMovingAIAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd, String move, String unmove){
+    public void startMovingEmulatorAnimation(CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd, String move, String unmove){
         core.setState(Consts.ANIMATING);
         
         animationPlaying.setValue(true);
@@ -639,15 +639,15 @@ public class GameScreenController implements Initializable {
 
         CoordGene<Double> start = new CoordGene<>((double) coordStart.getX(), (double) coordStart.getY());
         CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = t.axialToPixel(start);
-        end = t.axialToPixel(end);
+        start = traductor.axialToPixel(start);
+        end = traductor.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
         Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
-                new MoveTo(start.getX() + t.getMoveOrigin().getX(), start.getY() + t.getMoveOrigin().getY()),
-                new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
+                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), start.getY() + traductor.getMoveOrigin().getY()),
+                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
             @Override
@@ -664,7 +664,7 @@ public class GameScreenController implements Initializable {
         animation.play();
     }
     
-    public void startPlacingAIAnimation(int idPiece, CoordGene<Integer> coordEnd,String move, String unmove) {
+    public void startPlacingEmulatorAnimation(int idPiece, CoordGene<Integer> coordEnd,String move, String unmove) {
         core.setState(Consts.ANIMATING);
 
         animationPlaying.setValue(true);
@@ -681,15 +681,15 @@ public class GameScreenController implements Initializable {
 
         CoordGene<Double> start = new CoordGene<>((double) coordEnd.getX(), (double) 0);
         CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = t.axialToPixel(start);
-        end = t.axialToPixel(end);
+        start = traductor.axialToPixel(start);
+        end = traductor.axialToPixel(end);
 
         panCanvas.getChildren().add(animation.getPolygon());
         Image image = piece.getImage();
         animation.setImagePolygon(image);
         animation.setPath(new Path(
-                new MoveTo(start.getX() + t.getMoveOrigin().getX(), 0),
-                new LineTo(end.getX() + t.getMoveOrigin().getX(), end.getY() + t.getMoveOrigin().getY())));
+                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), 0),
+                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
             @Override
@@ -722,18 +722,18 @@ public class GameScreenController implements Initializable {
 
             Optional<ButtonType> result = popup.showAndWait();
             if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-                gameScreen();
+                relaunchGameScreen();
             } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
                 handleSaveAndQuitGame(Consts.GO_TO_GAME);
             }
         }
     }
 
-    public void gameScreen() {
+    public void relaunchGameScreen() {
         Core c = new Core(core.getMode(), core.getDifficulty());
         c.getPlayers()[0].setName(core.getPlayers()[0].getName());
         c.getPlayers()[1].setName(core.getPlayers()[1].getName());
-        r.stop();
+        refreshor.stop();
         main.showGameScreen(c);
     }
 
@@ -751,7 +751,7 @@ public class GameScreenController implements Initializable {
 
         Optional<ButtonType> result = popup.showAndWait();
         if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            r.stop();
+            refreshor.stop();
             main.showMainMenu();
         } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
             handleSaveAndQuitGame(Consts.GO_TO_MAIN);
@@ -773,7 +773,7 @@ public class GameScreenController implements Initializable {
 
             Optional<ButtonType> result = popup.showAndWait();
             if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-                r.stop();
+                refreshor.stop();
                 main.showLoadGameScreen();
             } else if (result.get().getButtonData() == ButtonBar.ButtonData.OTHER) {
                 handleSaveAndQuitGame(Consts.GO_TO_LOAD);
@@ -832,9 +832,10 @@ public class GameScreenController implements Initializable {
         }
         Optional<ButtonType> result = popup.showAndWait();
         if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            gameScreen();
+            relaunchGameScreen();
         }
         else if(result.get().getButtonData() == ButtonBar.ButtonData.OTHER){
+            refreshor.stop();
             main.showMainMenu();
         }
     }
@@ -905,7 +906,6 @@ public class GameScreenController implements Initializable {
 
         Optional<ButtonType> result = popup.showAndWait();
         if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            r.stop();
             String saveString = saveName.getText();
             if (saveString.equals("")) {
                 if (core.getMode() == Consts.PVP) {
@@ -923,13 +923,15 @@ public class GameScreenController implements Initializable {
             takeSnapshot(saveString);
             switch (status) {
                 case (Consts.GO_TO_MAIN):
+                    refreshor.stop();
                     main.showMainMenu();
                     break;
                 case (Consts.GO_TO_LOAD):
+                    refreshor.stop();
                     main.showLoadGameScreen();
                     break;
                 case (Consts.GO_TO_GAME):
-                    gameScreen();
+                    relaunchGameScreen();
                     break;
             }
         }
@@ -937,19 +939,19 @@ public class GameScreenController implements Initializable {
     }
 
     public void handleResize(CoordGene<Integer> coordEnd) {
-        CoordGene<Double> newOrigin = t.getMoveOrigin();
+        CoordGene<Double> newOrigin = traductor.getMoveOrigin();
         if (coordEnd.getX() == 0 && coordEnd.getY() == 0) {
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE * 2.5);
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE * 2.6);
             newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
         else if (coordEnd.getX() == 0) {
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*1.75);
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*1.7);
         }
         else if(coordEnd.getY() == 0){
             newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE);
             newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
-        t.setMoveOrigin(newOrigin);
+        traductor.setMoveOrigin(newOrigin);
     }
 
     public void takeSnapshot(String name) throws IOException {
@@ -1004,6 +1006,14 @@ public class GameScreenController implements Initializable {
         } else {
             undo.setDisable(true);
         }
+    }
+
+    public Core getCore() {
+        return core;
+    }
+
+    public Highlighter getHighlighted() {
+        return highlighted;
     }
     
     public void hideButtonsForNetwork(){
