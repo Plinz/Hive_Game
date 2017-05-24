@@ -148,11 +148,7 @@ public class Server extends IO {
 				socket = serverSocket.accept();
 				client = new PrintWriter(socket.getOutputStream());
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			} catch (IOException e) {
-				e.printStackTrace(System.out);
-			}
-			String message = "";
-			try {
+				String message = "";
 				char charCur[] = new char[1];
 				while (in.read(charCur, 0, 1) != -1) {
 					if (charCur[0] != '\u0000' && charCur[0] != '\n' && charCur[0] != '\r')

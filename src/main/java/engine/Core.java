@@ -391,7 +391,8 @@ public class Core implements Cloneable {
 	}
 	
 	public void disconnect(){
-		io.disconnect();
+		if (io != null)
+			io.disconnect();
 	}
 	
 	public void sendMessage(String message){

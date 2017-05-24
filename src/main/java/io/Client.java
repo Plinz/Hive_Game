@@ -140,11 +140,8 @@ public class Client extends IO {
 			try {
 				server = new PrintWriter(connexion.getOutputStream(), true);
 				reader = new BufferedReader(new InputStreamReader(connexion.getInputStream()));
-			} catch (IOException e) {
-				e.printStackTrace(System.out);
-			}
-			String message = "";
-			try {
+				String message = "";
+
 				char charCur[] = new char[1];
 				while (reader.read(charCur, 0, 1) != -1) {
 					if (charCur[0] != '\u0000' && charCur[0] != '\n' && charCur[0] != '\r')

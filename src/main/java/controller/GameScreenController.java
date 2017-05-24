@@ -13,6 +13,8 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import com.sun.javafx.scene.control.MultiplePropertyChangeListenerHandler;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.embed.swing.SwingFXUtils;
@@ -1022,14 +1024,17 @@ public class GameScreenController implements Initializable {
     public void updateChat(){
         if(core.getLastMsg().size() != nbMessage){
             nbMessage = core.getLastMsg().size() - nbMessage;
+            int me = core.getMode()==Consts.PVEX?Consts.PLAYER1:Consts.PLAYER2;
             for(int i = 0; i < nbMessage;i++ ){ 
             	textChat.addRow(nbChatRow + i, new Label(""));
-                if(core.getLastMsg().get(i).y == 1){
-                    Label msg = new Label(core.getLastMsg().get(i).x);          
-                    textChat.add(msg,1, nbChatRow +i);                  
+                if(core.getLastMsg().get(i).y == me){
+                    Label msg = new Label(core.getLastMsg().get(i).x);
+                    msg.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(0), new Insets(0))));
+                    textChat.add(msg,1, nbChatRow +i);
                     textChat.setHalignment(msg,HPos.RIGHT);                
                 }else{
                     Label msg = new Label(core.getLastMsg().get(i).x);
+                    msg.setBackground(new Background(new BackgroundFill(Color.LIGHTCORAL, new CornerRadii(0), new Insets(0))));
                     textChat.add(msg,0, nbChatRow +i);
                     textChat.setHalignment(msg,HPos.LEFT); 
                 }
