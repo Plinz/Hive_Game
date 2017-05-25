@@ -56,9 +56,7 @@ public class MediumAI extends AI {
                     }
             }
         }
-        
-        
-        
+
         Minimax minimax = new Minimax(core, heuristics);
 
         int sign;
@@ -83,13 +81,15 @@ public class MediumAI extends AI {
                 chosenOne = child;
             }
         }
-        
-       /* if (isTimeToFinishOpponent() && Math.floor(chosenOne.heuristicValue) < 1200){
+
+        if (isTimeToFinishOpponent()) {
+            System.out.println("Time to finish !!!");
             String moveAndUnmove = tryGetFinishMove();
-            if (moveAndUnmove != null){
+            System.out.println("Time to finish : choice ->"+moveAndUnmove);
+            if (moveAndUnmove != null) {
                 return moveAndUnmove;
             }
-        }*/
+        }
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
         System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");

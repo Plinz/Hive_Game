@@ -14,7 +14,7 @@ import main.java.model.Piece;
 import main.java.model.Tile;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
-import main.java.utils.Quintet;
+import main.java.utils.Quartet;
 import main.java.utils.Tuple;
 
 public abstract class AI {
@@ -32,18 +32,18 @@ public abstract class AI {
         this.foreseenTileToMove = null;
     }
 
-    public boolean isDuringOpening() {
-        return (core.getTurn() <= 7);
-    }
-
     public String getNextMove() {
         System.err.println("Erreur : AI abstraite");
         return null;
     }
 
+//////////////              EARLY GAME METHODS
+    public boolean isEarlyGame() {
+        return (core.getTurn() <= 7);
+    }
+
     public Piece chooseAPiece(double[] proportions) {
         Piece piece = null;
-        int counterAgainstInfiniteLoop = 0;
         do {
             Random random = new Random();
             float rand = random.nextFloat();
@@ -52,21 +52,16 @@ public abstract class AI {
                 i++;
                 rand -= proportions[i];
             }
-            System.out.println("Piece choisie : type= " + i + "," + core.getTurn());
             for (Piece pieceFromInventory : core.getPlayers()[AIPlayer].getFirstPieceOfEachType()) {
                 if (Consts.getType(pieceFromInventory.getId()) == i) {
                     piece = pieceFromInventory;
                     break;
                 }
             }
-            if (isDuringOpening()) {
+            if (isEarlyGame()) {
                 this.choiceDuringOpening[core.getTurn() / 2] = i;
             }
-            counterAgainstInfiniteLoop++;
-        } while (piece == null && counterAgainstInfiniteLoop < 100);
-        if (counterAgainstInfiniteLoop == 100) {
-            System.out.println("Antoine, ça bug");
-        }
+        } while (piece == null);
 
         return piece;
     }
@@ -140,70 +135,24 @@ public abstract class AI {
         }
         return (nbAntInInventory < 3);
     }
-
-    public String moveForGates() {
-        //if no list of moves ready to be played
-        if ((this.foreseenMoves.isEmpty()) || (!(this.core.getPossibleMovement(this.foreseenTileToMove.getCoord()).contains(this.foreseenMoves.get(0))))) {
-            //check if there is an "inactive" grassHopper that could help to circle the queen
-            for (Column col : this.core.getBoard().getBoard()) {
-                for (Box b : col) {
-                    for (Tile t : b) {
-                        if (Consts.getType(t.getPiece().getId()) == Consts.GRASSHOPPER_TYPE) {
-                            if (!(this.core.getBoard().getNeighbors(heuristics.getTile(Consts.QUEEN, 1 - AIPlayer)).contains(t))
-                                    && (heuristics.grassHopperToOpponentsQueensFreeNeighbor(AIPlayer, t) != null)) {
-                                this.foreseenMoves = heuristics.grassHopperToOpponentsQueensFreeNeighbor(AIPlayer, t);
-                                this.foreseenTileToMove = t;
-                                return Notation.getMoveNotation(this.core.getBoard(), t.getPiece(), this.foreseenMoves.remove(0))
-                                        + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), t.getPiece());
-                            }
-                        }
-                    }
-                }
-            }
-            //if no inactive grassHopper can circle the opponent's queen, check inventory to find some others
-            Piece grassHopperFound = null;
-            for (Piece p : this.core.getPlayers()[AIPlayer].getInventory()) {
-                if (Consts.getType(p.getId()) == Consts.GRASSHOPPER_TYPE) {
-                    grassHopperFound = p;
-                    break;
-                }
-            }
-
-            //if IA has grasshoppers left to be played
-            if (grassHopperFound != null) {
-                //search for the tile where a new piece can be placed and from which a queen's neighbor is the most rapidly reached
-                for (CoordGene<Integer> c : this.core.getPossibleAdd(AIPlayer)) {
-                    ArrayList tileToQueen = heuristics.grassHopperToOpponentsQueensFreeNeighbor(AIPlayer, this.core.getBoard().getTile(c));
-                    if (tileToQueen != null) {
-                        if ((this.foreseenMoves.isEmpty()) || (tileToQueen.size() < this.foreseenMoves.size())) {
-                            this.foreseenMoves = tileToQueen;
-                            this.foreseenTileToMove = new Tile(grassHopperFound, false, c.getX(), c.getY(), 0);
-                            return Notation.getMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece(), this.foreseenMoves.remove(0))
-                                    + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece());
-                        }
-                    }
-                }
-                // no tile where a piece can be added allows to reached to queen
-                return null;
-            } else {
-                return null;
-            }
-        } else //play the next foreseen move
-        {
-            return Notation.getMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece(), this.foreseenMoves.remove(0))
-                    + ";" + Notation.getInverseMoveNotation(this.core.getBoard(), this.foreseenTileToMove.getPiece());
-        }
-
-    }
+//////////////             LATE GAME METHODS
 
     public boolean isNeighborOfOpponentQueen(Tile tile) {
+        if (tile.getZ() != 0) {
+            return false;
+        }
+
         List<CoordGene<Integer>> neighbors = tile.getCoord().getNeighbors();
         for (CoordGene<Integer> neighbor : neighbors) {
-            Tile neighborTile = core.getBoard().getTile(neighbor, 0);
-            if (neighborTile != null && neighborTile.getPiece() != null
-                    && neighborTile.getPiece().getTeam() != AIPlayer
-                    && neighborTile.getPiece().getId() == Consts.QUEEN) {
-                return true;
+            if (core.getBoard().getTile(neighbor) != null) {
+                Tile neighborTile = core.getBoard().getTile(neighbor, 0);
+                if (neighborTile != null && neighborTile.getPiece() != null) {
+                }
+                if (neighborTile != null && neighborTile.getPiece() != null
+                        && neighborTile.getPiece().getTeam() != AIPlayer
+                        && neighborTile.getPiece().getId() == Consts.QUEEN) {
+                    return true;
+                }
             }
         }
         return false;
@@ -217,10 +166,9 @@ public abstract class AI {
         List<Piece> availablePieces = getAvailablePiecesForAttack();
         int nbMovesMin = 500;
         Piece chosenOne = null;
-        CoordGene<Integer> chosenFirstMove = null;
-        CoordGene<Integer> destination = getFreeSpaceAroundEnemyQueen();
+        String chosenFirstMove = null;
         for (Piece piece : availablePieces) {
-            Tuple<Integer, CoordGene<Integer>> temp = getNbMovesTillDest(piece, destination);
+            Tuple<Integer, String> temp = getMoveAndDistanceToOpponentQueen(piece);
             int nbMoves = temp.getX();
             if (nbMoves > 0 && nbMoves < nbMovesMin) {
                 nbMovesMin = nbMoves;
@@ -229,23 +177,40 @@ public abstract class AI {
             }
         }
 
-        if (chosenOne != null) {
-            String move = Notation.getMoveNotation(core.getBoard(), chosenOne, chosenFirstMove);
-            String unMove = Notation.getInverseMoveNotation(core.getBoard(), chosenOne);
-            return move + ";" + unMove;
+        //here we try adding one piece
+        List<CoordGene<Integer>> possibleAdds = core.getPossibleAdd(AIPlayer);
+        Tuple<Integer, String> temp;
+        for (Piece piece : core.getPlayers()[AIPlayer].getFirstPieceOfEachType()) {
+            for (CoordGene<Integer> addCoord : possibleAdds) {
+                String move = Notation.getMoveNotation(core.getBoard(), piece, addCoord);
+                String unmove = Notation.getInverseMoveNotation(core.getBoard(), piece);
+
+                core.playEmulate(move, unmove);
+                temp = getMoveAndDistanceToOpponentQueen(piece);
+                int nbMoves = temp.getX();
+                if (nbMoves > 0 && nbMoves < nbMovesMin) {
+                    nbMovesMin = nbMoves;
+                    chosenOne = piece;
+                    chosenFirstMove = move + ";" + unmove;
+                }
+
+                core.previousState();
+            }
+        }
+
+        if (chosenFirstMove != null) {
+            return chosenFirstMove;
         }
         return null;
     }
 
     public List<Piece> getAvailablePiecesForAttack() {
         ArrayList<Piece> result = new ArrayList<>();
-        core.getCurrentPlayerObj().getInventory().stream().forEach((piece) -> {
-            result.add(piece);
-        });
 
         core.getBoard().getBoard().stream().forEach((column) -> {
             column.stream().forEach((box) -> {
-                box.stream().filter((tile) -> (tile.getPiece().getTeam() == core.getCurrentPlayer()
+                box.stream().filter((tile) -> (tile.getPiece() != null
+                        && tile.getPiece().getTeam() == core.getCurrentPlayer()
                         && !isNeighborOfOpponentQueen(tile)
                         && !tile.getPiece().getPossibleMovement(tile, core.getBoard()).isEmpty())).forEach((tile) -> {
                     result.add(tile.getPiece());
@@ -253,33 +218,6 @@ public abstract class AI {
             });
         });
         return result;
-    }
-
-    public CoordGene<Integer> getFreeSpaceAroundEnemyQueen() {
-        CoordGene<Integer> queenCoord = null;
-
-        for (Column column : core.getBoard().getBoard()) {
-            for (Box box : column) {
-                for (Tile tile : box) {
-                    if (tile != null
-                            && tile.getPiece() != null
-                            && tile.getPiece().getId() == Consts.QUEEN
-                            && tile.getPiece().getTeam() == 1 - AIPlayer) {
-                        queenCoord = tile.getCoord();
-                    }
-                }
-            }
-        }
-        if (queenCoord == null) {
-            return null;
-        }
-
-        for (Tile queenNeighbor : core.getBoard().getNeighbors(queenCoord)) {
-            if (queenNeighbor.getPiece() == null) {
-                return queenNeighbor.getCoord();
-            }
-        }
-        return null;
     }
 
     public Tuple<Integer, CoordGene<Integer>> getNbMovesTillDest(Piece piece, CoordGene<Integer> destination) {
@@ -342,58 +280,89 @@ public abstract class AI {
         return true;
     }
 
-    /*public Tuple<Integer, String> getMoveAndDistance(Tile tile, CoordGene<Integer> destination) {
-        if (tile.getCoord().equals(destination)) {
-            return new Tuple<>(0, null);
+    public Tuple<Integer, String> getMoveAndDistanceToOpponentQueen(Piece piece) {
+        //Using Quartet (distance, move, unmove, firstMove)
+        //Use only for pieces already on board
+
+        //if piece is already a neighbor
+        if (!isOnBoard(piece)) {
+            return new Tuple<>(-1, null);
         }
-        Piece piece = tile.getPiece();
 
-        ArrayList<Quintet<Integer, String, String, String, String>> movesAndDistance = new ArrayList<>();
+        if (isNeighborOfOpponentQueen(getTile(piece))) {
+            return new Tuple<Integer, String>(0, null);
+        }
+        Tile tile = getTile(piece);
+        ArrayList<Quartet<Integer, String, String, String>> movesAndDistance = new ArrayList<>();
 
-        String root = Notation.getMoveNotation(core.getBoard(), tile.getPiece(), tile.getCoord());
+        String root = Notation.getMoveNotation(core.getBoard(), piece, tile.getCoord());
+        String unroot = Notation.getInverseMoveNotation(core.getBoard(), piece);
 
-        Quintet<Integer, String, String, String, String> origin = new Quintet<>(0, root, "root", root, "root");
+        Quartet<Integer, String, String, String> origin = new Quartet<>(0, root, unroot, root);
         movesAndDistance.add(origin);
 
         ArrayList<String> MovesDone = new ArrayList<>();
         MovesDone.add(root);
 
-        int actualSize = 0;
+        int actualSize;
         int actualDistance = 0;
-        while (movesAndDistance.size() != actualSize) {
+        do {
+            ArrayList<Quartet<Integer, String, String, String>> newlyAdded = new ArrayList<>();
             actualSize = movesAndDistance.size();
-            for (Quintet<Integer, String, String, String, String> move : movesAndDistance) {
-                if (move.getX() == actualDistance) {
-                    String play = Notation.getMoveNotation(core.getBoard(), piece, move.getY());
-                    String unplay = Notation.getInverseMoveNotation(core.getBoard(), piece);
-                    core.playEmulate(play, unplay);
+            for (Quartet<Integer, String, String, String> move : movesAndDistance) {
+                if (move.getA().equals(actualDistance)) {
+                    core.playEmulate(move.getB(), move.getC());
+                    //terminaison case -> the piece arrived near opponent queen
+                    Tile currentTile = getTile(piece);
+                    if (isNeighborOfOpponentQueen(currentTile)) {
+                        core.previousState();
+                        return new Tuple<>(move.getA(), move.getD() + ";" + move.getC());
+                    }
 
-                    List<CoordGene<Integer>> temp = piece.getPossibleMovement(core.getBoard().getTile(move.getY()), core.getBoard());
+                    List<CoordGene<Integer>> temp = piece.getPossibleMovement(currentTile, core.getBoard());
                     for (CoordGene<Integer> newCoord : temp) {
-                        if (newCoord.equals(destination)) {
+
+                        String currentMove = Notation.getMoveNotation(core.getBoard(), piece, newCoord);
+                        if (!MovesDone.contains(currentMove)) {
+                            MovesDone.add(currentMove);
+                            Quartet<Integer, String, String, String> toAdd;
                             if (actualDistance == 0) {
-                                return new Tuple<>(actualDistance + 1, newCoord);
+                                toAdd = new Quartet<>(1, currentMove, unroot, currentMove);
                             } else {
-                                return new Tuple<>(actualDistance + 1, move.getZ());
+                                toAdd = new Quartet<>(actualDistance + 1, currentMove, unroot, move.getD());
                             }
-                        }
-                        if (!coordsVisited.contains(newCoord)) {
-                            Quintet<Integer, CoordGene<Integer>, CoordGene<Integer>> toAdd;
-                            coordsVisited.add(newCoord);
-                            if (actualDistance == 0) {
-                                toAdd = new Quintet<>(actualDistance + 1, newCoord, newCoord);
-                            } else {
-                                toAdd = new Quintet<>(actualDistance + 1, newCoord, move.getZ());
-                            }
-                            movesAndDistance.add(toAdd);
+                            newlyAdded.add(toAdd);
                         }
                     }
 
                     core.previousState();
                 }
             }
+            if (!newlyAdded.isEmpty()) {
+                for (Quartet<Integer, String, String, String> newElement : newlyAdded) {
+                    movesAndDistance.add(newElement);
+                }
+            }
             actualDistance++;
-        }
+        } while (movesAndDistance.size() != actualSize);
         return new Tuple<>(-1, null);
-    }*/
+    }
+
+    public Tile getTile(Piece piece) {
+        for (Piece pieceInventory : core.getPlayers()[piece.getTeam()].getInventory()) {
+            if (piece == pieceInventory) {
+                return null;
+            }
+        }
+        for (Column column : core.getBoard().getBoard()) {
+            for (Box box : column) {
+                for (Tile tile : box) {
+                    if (tile.getPiece() == piece) {
+                        return tile;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
