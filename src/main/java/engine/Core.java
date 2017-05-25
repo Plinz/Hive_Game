@@ -371,7 +371,7 @@ public class Core implements Cloneable {
 	}
 
 	public HelpMove help() {
-		AI helpAI = AIFactory.buildAI(Consts.EASY, this);
+		AI helpAI = AIFactory.buildAI(Consts.MEDIUM, this);
 		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
 	}
 
