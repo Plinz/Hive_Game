@@ -15,11 +15,17 @@ public class Notation {
 		String notation = (piece.getTeam() == 0 ? "w" : "b") + Consts.getNotation(piece.getId());
 		List<Tile> neighbors = board.getPieceNeighbors(coord);
 		Tile t = board.getTile(coord);
-		if (t != null && t.getPiece() != null) {
+		if (t != null && t.getPiece() != null && t.getPiece().getId() != piece.getId() && t.getPiece().getTeam() != piece.getTeam()) {
 			char team = t.getPiece().getTeam() == 0 ? 'w' : 'b';
 			notation += " " + team + Consts.getNotation(t.getPiece().getId());
 		} else if (!neighbors.isEmpty()) {
-			while((t = neighbors.get(0)).isBlocked()) System.out.println(t);;
+			while((t = neighbors.get(0)).isBlocked()) System.out.println(t);
+                        
+                        if (t.getPiece().getId() == piece.getId() && t.getPiece().getTeam() == piece.getTeam() && neighbors.size()>1){
+                            t=neighbors.get(1);
+                        }
+                        
+                        
 			char team = t.getPiece().getTeam() == 0 ? 'w' : 'b';
 			CoordGene<Integer> offset = new CoordGene<Integer>(coord.getX() - t.getX(), coord.getY() - t.getY());
 			if (offset.getX() == 1 && offset.getY() == 0)
