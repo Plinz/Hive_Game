@@ -24,7 +24,8 @@ public class HeuristicConst {
     public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0.2, -1};
     
     
-    
+    ///devenu inutile -> modifier les heurisitiques uniquement pour la partie maximise du tableau
+    //la partie minimise vaut -1 * maximise
     public static final double[] MINIMISE_QUEEN = {-0.5, -1.1, -0.5, 150, -1, -0.5, 250};
     public static final double[] MINIMISE_SPIDER = {-0.5, -0.5, -1.7, 0, -1, -1.1, 0.5};
     public static final double[] MINIMISE_GH = {-11, -0.5, -0.5, 0, -1.5, -0.5, 1};
@@ -80,14 +81,22 @@ public class HeuristicConst {
         heuristicData[0][3] = MAXIMISE_BEETLE;
         heuristicData[0][4] = MAXIMISE_ANT;
         heuristicData[0][5] = MAXIMISE_GENERAL;
-
-        heuristicData[1][0] = MINIMISE_QUEEN;
-        heuristicData[1][1] = MINIMISE_SPIDER;
-        heuristicData[1][2] = MINIMISE_GH;
-        heuristicData[1][3] = MINIMISE_BEETLE;
-        heuristicData[1][4] = MINIMISE_ANT;
-        heuristicData[1][5] = MINIMISE_GENERAL;
+        
+        heuristicData[1][0] = getOppositeValues(MAXIMISE_QUEEN);
+        heuristicData[1][1] = getOppositeValues(MAXIMISE_SPIDER);
+        heuristicData[1][2] = getOppositeValues(MAXIMISE_GH);
+        heuristicData[1][3] = getOppositeValues(MAXIMISE_BEETLE);
+        heuristicData[1][4] = getOppositeValues(MAXIMISE_ANT);
+        heuristicData[1][5] = getOppositeValues(MAXIMISE_GENERAL);
         return heuristicData;
+    }
+    
+    public static double[] getOppositeValues(double[] tab){
+        double[] result = new double[tab.length];
+        for (int i=0 ; i<tab.length ; i++){
+            result[i] = -1*tab[i];
+        }
+        return result;
     }
 
 }

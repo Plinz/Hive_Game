@@ -26,7 +26,7 @@ public class MediumHeuristics extends Heuristics {
         value += heuristicData[0][5][4] * nbPieceOnBoardAI;
         value += heuristicData[0][5][5] * nbPlacementAI;
         value += heuristicData[0][5][6] * nbPinnedAI;
-        //System.out.println("Value apres ajout général IA :"+value);
+        System.out.println("\tValue apres ajout général pour les blanc :" + value);
         value += heuristicData[1][5][0] * (nbMovesOpponent + nbPlacementOpponent);
         value += heuristicData[1][5][1] * nbPlacementOpponent;
         value += heuristicData[1][5][2] * nbMovesOpponent;
@@ -34,7 +34,7 @@ public class MediumHeuristics extends Heuristics {
         value += heuristicData[1][5][4] * nbPieceOnBoardOpponent;
         value += heuristicData[1][5][5] * nbPlacementOpponent;
         value += heuristicData[1][5][6] * nbPinnedOpponent;
-        //System.out.println("Value apres ajout général human :"+value);
+        System.out.println("\tValue apres ajout général pour les noir :" + value);
         for (int player = 0; player < 2; player++) {
             //value += Math.pow(HeuristicConst.QUEEN_NEIGHBOR_FACTOR, heuristicData[player][Consts.QUEEN_TYPE][3]) * heuristicData[player][Consts.QUEEN_TYPE][3];
             for (int pieceId = 0; pieceId < Consts.NB_PIECES_PER_PLAYER; pieceId++) {
@@ -56,25 +56,61 @@ public class MediumHeuristics extends Heuristics {
 
         int pieceType = Consts.getType(pieceId);
         double value = 0;
+        int maxIndex = 0;
+        double temp, maxFieldValue = 0;
         if (pieceType == Consts.BEETLE_TYPE && pieces[player][pieceId].isInGame == 1) {
             Tile beetleTile = getTile(pieceId, player);
             int dist_to_queen = distanceToOpposingQueen(beetleTile) + 1;
-            System.out.println("Distance to queen : "+dist_to_queen);
+            //System.out.println("Distance to queen : "+dist_to_queen);
             if (dist_to_queen == -1) {
                 System.out.println("Probleme appel distance to opp queen");
             } else {
-                value += heuristicData[player][pieceType][0] / dist_to_queen;
+                temp = heuristicData[player][pieceType][0] / dist_to_queen;
+                value += temp;
+                if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+                    maxFieldValue = temp;
+                    maxIndex = 0;
+                }
             }
-        } else if (pieceType != Consts.BEETLE_TYPE){
-            value += heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
+        } else if (pieceType != Consts.BEETLE_TYPE) {
+            temp = heuristicData[player][pieceType][0] * pieces[player][pieceId].nbMoves;
+            value += temp;
+            if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+                maxFieldValue = temp;
+                maxIndex = 0;
+            }
+        } else {
+            value += 0;
         }
 
-        value += heuristicData[player][pieceType][1] * pieces[player][pieceId].nbMoves * (1 - pieces[player][pieceId].isInGame);
-        value += heuristicData[player][pieceType][2] * pieces[player][pieceId].nbMoves * pieces[player][pieceId].isInGame;
-        value += heuristicData[player][pieceType][3] * pieces[player][pieceId].neighbors;
-        value += heuristicData[player][pieceType][4] * (1 - pieces[player][pieceId].isInGame);
-        value += heuristicData[player][pieceType][5] * pieces[player][pieceId].isInGame;
+        temp = heuristicData[player][pieceType][1] * pieces[player][pieceId].nbMoves * (1 - pieces[player][pieceId].isInGame);
+        if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+            maxFieldValue = temp;
+            maxIndex = 1;
+        }
+        temp = heuristicData[player][pieceType][2] * pieces[player][pieceId].nbMoves * pieces[player][pieceId].isInGame;
+        if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+            maxFieldValue = temp;
+            maxIndex = 1;
+        }
+        temp = heuristicData[player][pieceType][3] * pieces[player][pieceId].neighbors;
+        if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+            maxFieldValue = temp;
+            maxIndex = 1;
+        }
+        temp = heuristicData[player][pieceType][4] * (1 - pieces[player][pieceId].isInGame);
+        if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+            maxFieldValue = temp;
+            maxIndex = 1;
+        }
+        temp = heuristicData[player][pieceType][5] * pieces[player][pieceId].isInGame;
+        if (Math.floor(temp) > Math.floor(maxFieldValue)) {
+            maxFieldValue = temp;
+            maxIndex = 1;
+        }
         value += heuristicData[player][pieceType][6] * pieces[player][pieceId].isPinned;
+        System.out.println("\t\tpièce " + Consts.getName(pieceId) +" "+ (player == 0 ? "blanc" : "noir") + ", valeur totale=" + value);
+        System.out.println("\t\t\ten particulier le champ" + maxIndex + "qui vaut" + maxFieldValue);
         return value;
     }
 

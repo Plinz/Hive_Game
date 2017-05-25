@@ -241,12 +241,14 @@ public class Minimax {
         for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
             String[] splitted = moveAndUnmove.split(";");   //  move;unmove
             core.playEmulate(splitted[0], splitted[1]);
-            System.out.println("Move :" + Notation.getHumanDescription(splitted[0], false) + " profondeur " + depth);
+            System.out.println("________________________________________________________________________________");
+            System.out.println("Etude du Move :" + Notation.getHumanDescription(splitted[0], false) + " profondeur " + depth);
+            System.out.println("________________________________________________________________________________");
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth);
-            printIndented("__________________________________________________");
-            printIndented("___________For move : " + Notation.getHumanDescription(child.moveFromParent, false) + "heuristic is finally " + child.heuristicValue);
-            printIndented("__________________________________________________");
+            System.out.println("________________________________________________________________________________");
+            printIndented("Conclusion pour le move " + Notation.getHumanDescription(child.moveFromParent, false) + "--heuristic =" + child.heuristicValue);
+            System.out.println("________________________________________________________________________________");
             children.add(child);
             core.previousState();
         }
