@@ -144,11 +144,11 @@ public class GameScreenController implements Initializable {
             redo.setDisable(true);
         }
         initButtonByInventory();
-        animation = new AnimationTile();
-
+        animation = new AnimationTile(panCanvas,traductor);
         refreshor = new RefreshJavaFX(core, gameCanvas, highlighted, traductor, this);
         initGameCanvas();
         core.setGameScreen(this);
+        
         if (core.getMode() == Consts.AIVP && core.getTurn() == 0){
             core.playAI();
         }
@@ -411,13 +411,15 @@ public class GameScreenController implements Initializable {
 
     /*Méthodes d'initialisation */
     public void giveHand(){
+        initButtonByInventory();
+        /*
         inventoryGroup.getToggles().remove(0, inventoryGroup.getToggles().size());
          
         namePlayer1.setText(core.getPlayers()[0].getName() + " : changement de tour !");
         namePlayer2.setText(core.getPlayers()[1].getName() + " : changement de tour !"); 
         initPlayer1Button();
         initPlayer2Button();
-        
+        */
     }
     
     
@@ -539,18 +541,7 @@ public class GameScreenController implements Initializable {
         highlighted.setHelp(null);
 
         Piece piece = core.getBoard().getTile(coordStart).getPiece();
-
-        CoordGene<Double> start = new CoordGene<>((double) coordStart.getX(), (double) coordStart.getY());
-        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = traductor.axialToPixel(start);
-        end = traductor.axialToPixel(end);
-
-        panCanvas.getChildren().add(animation.getPolygon());
-        Image image = piece.getImage();
-        animation.setImagePolygon(image);
-        animation.setPath(new Path(
-                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), start.getY() + traductor.getMoveOrigin().getY()),
-                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
+        animation.initMovingAnimation(piece.getImage(), coordStart, coordEnd);
         
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
  
@@ -582,18 +573,7 @@ public class GameScreenController implements Initializable {
                 piece = core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i);
             }
         }
-
-        CoordGene<Double> start = new CoordGene<>((double) coordEnd.getX(), (double) 0);
-        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = traductor.axialToPixel(start);
-        end = traductor.axialToPixel(end);
-
-        panCanvas.getChildren().add(animation.getPolygon());
-        Image image = piece.getImage();
-        animation.setImagePolygon(image);
-        animation.setPath(new Path(
-                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), 0),
-                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
+        animation.initPlacingAnimation(piece.getImage(), coordEnd);
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
             @Override
@@ -619,18 +599,7 @@ public class GameScreenController implements Initializable {
         highlighted.setHelp(null);
 
         Piece piece = core.getBoard().getTile(coordStart).getPiece();
-
-        CoordGene<Double> start = new CoordGene<>((double) coordStart.getX(), (double) coordStart.getY());
-        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = traductor.axialToPixel(start);
-        end = traductor.axialToPixel(end);
-
-        panCanvas.getChildren().add(animation.getPolygon());
-        Image image = piece.getImage();
-        animation.setImagePolygon(image);
-        animation.setPath(new Path(
-                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), start.getY() + traductor.getMoveOrigin().getY()),
-                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
+        animation.initMovingAnimation(piece.getImage(), coordStart, coordEnd);
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
             @Override
@@ -661,18 +630,8 @@ public class GameScreenController implements Initializable {
                 piece = core.getPlayers()[core.getCurrentPlayer()].getInventory().get(i);
             }
         }
-
-        CoordGene<Double> start = new CoordGene<>((double) coordEnd.getX(), (double) 0);
-        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
-        start = traductor.axialToPixel(start);
-        end = traductor.axialToPixel(end);
-
-        panCanvas.getChildren().add(animation.getPolygon());
-        Image image = piece.getImage();
-        animation.setImagePolygon(image);
-        animation.setPath(new Path(
-                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), 0),
-                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
+        animation.initPlacingAnimation(piece.getImage(), coordEnd);
+        
         animation.getPathAnimation().setOnFinished(new EventHandler<ActionEvent>() {
 
             @Override

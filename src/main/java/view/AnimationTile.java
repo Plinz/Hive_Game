@@ -9,10 +9,13 @@ import javafx.animation.PathTransition;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 import main.java.engine.OptionManager;
+import main.java.utils.CoordGene;
 
 
 /**
@@ -24,9 +27,10 @@ public class AnimationTile {
     private PathTransition pathAnimation;
     private Polygon polygon;
     private Pane panCanvas;
+    private TraducteurBoard traductor;
     private Hexagon hex;
     
-    public AnimationTile(){
+    public AnimationTile(Pane pane, TraducteurBoard trad){
         hex = new Hexagon(); 
         polygon = new Polygon();
         calculPolygon();        
@@ -36,6 +40,8 @@ public class AnimationTile {
         else
             pathAnimation.setDuration(Duration.seconds(0));
         pathAnimation.setNode(polygon);
+        panCanvas = pane;
+        traductor = trad;
     };
 
     /**
@@ -77,6 +83,7 @@ public class AnimationTile {
         pathAnimation.play();
     }
     private void calculPolygon(){
+        polygon.getPoints().remove(0, polygon.getPoints().size());
         
         hex.setxPixel(0.0);
         hex.setyPixel(0.0);
@@ -94,4 +101,30 @@ public class AnimationTile {
                     x[5], y[5] }); 
     }
     
+    public void initMovingAnimation(Image image,CoordGene<Integer> coordStart, CoordGene<Integer> coordEnd){
+        CoordGene<Double> start = new CoordGene<>((double) coordStart.getX(), (double) coordStart.getY());
+        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
+        start = traductor.axialToPixel(start);
+        end = traductor.axialToPixel(end);
+
+        panCanvas.getChildren().add(this.getPolygon());
+
+        this.setImagePolygon(image);
+        this.setPath(new Path(
+                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), start.getY() + traductor.getMoveOrigin().getY()),
+                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));  
+    }
+    
+    public void initPlacingAnimation(Image image,CoordGene<Integer> coordEnd){
+        CoordGene<Double> start = new CoordGene<>((double) coordEnd.getX(), (double) 0);
+        CoordGene<Double> end = new CoordGene<>((double) coordEnd.getX(), (double) coordEnd.getY());
+        start = traductor.axialToPixel(start);
+        end = traductor.axialToPixel(end);
+
+        panCanvas.getChildren().add(this.getPolygon());
+        this.setImagePolygon(image);
+        this.setPath(new Path(
+                new MoveTo(start.getX() + traductor.getMoveOrigin().getX(), 0),
+                new LineTo(end.getX() + traductor.getMoveOrigin().getX(), end.getY() + traductor.getMoveOrigin().getY())));
+    }
 }
