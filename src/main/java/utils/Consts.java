@@ -84,33 +84,7 @@ public class Consts {
 	public static final int MINIMUM_HEURISTICS = -5000;
 	public static final int BEST_HEURISTICS = 5000;
 
-	public static final int DEPTH_EASY = 1;
-	public static final int DEPTH_MEDIUM = 1;
-	public static final int DEPTH_HARD = 3;
-	// MACRO HEURISTIQUE -> OPENINGS
-	// /!\ la somme des doubles DOIT faire 1 et la taille du tableau = 5
-	// rappel ordre : queen - spider -grasshopper - beetle - ant
-	public static final double[] CHOOSE_QUEEN = { 1, 0, 0, 0, 0 };
-	public static final double[] CHOOSE_WHATEVER = { 0.2, 0.2, 0.2, 0.2, 0.2 };
-
-	public static final double[] EASY_ADD_TURN_1 = { 0.2, 0.3, 0.3, 0.1, 0.1 };
-	public static final double[] EASY_ADD_TURN_2 = { 0.2, 0.3, 0.3, 0.1, 0.1 };
-	public static final double[] EASY_ADD_TURN_3 = { 0.2, 0.2, 0.2, 0.2, 0.2 };
-	public static final double[] EASY_ADD_TURN_4 = { 0, 0.15, 0.15, 0.35, 0.35 };
-
-	public static final double EASY_TURN_4_CHOOSE_TO_ADD = 0.75;
-	public static final double EASY_MID_GAME_CHOOSE_TO_ADD = 0.55;
-
-	public static final double[] MEDIUM_ADD_TURN_1 = { 0.1, 0.4, 0.4, 0.05, 0.05 };
-	public static final double[] MEDIUM_ADD_TURN_2_IF_SPIDER_ON_1 = { 0.4, 0.1, 0.4, 0.05, 0.05 };
-	public static final double[] MEDIUM_ADD_TURN_2_IF_GRASSHOPPER_ON_1 = { 0.4, 0.4, 0.1, 0.05, 0.05 };
-	public static final double[] MEDIUM_ADD_TURN_2_IF_QUEEN_ON_1 = { 0, 0.45, 0.45, 0.05, 0.05 };
-	public static final double[] MEDIUM_ADD_TURN_2_IF_BETTLE_OR_ANT_ON_1 = { 0.4, 0.3, 0.3, 0, 0 };
-	public static final double[] MEDIUM_ADD_TURN_3 = { 0.4, 0.15, 0.15, 0.15, 0.15 };
-	public static final double[] MEDIUM_ADD_TURN_4 = { 0, 0.1, 0.1, 0.4, 0.4 };
-
-	public static final double MEDIUM_TURN_4_CHOOSE_TO_ADD = 0.5;
-
+	
 	// METHODES
 	public static final int getType(int id) {
 		switch (id) {

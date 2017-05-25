@@ -12,7 +12,7 @@ public class MediumHeuristics extends Heuristics {
     public MediumHeuristics(Core core) {
         super(core);
         this.difficulty = Consts.MEDIUM;
-        this.maxdepth = Consts.DEPTH_MEDIUM;
+        this.maxdepth = HeuristicConst.DEPTH_MEDIUM;
     }
 
     @Override

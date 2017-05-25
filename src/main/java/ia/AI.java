@@ -115,7 +115,7 @@ public abstract class AI {
                 }
             }
             if (tileToMove == null) {
-                return addPieceWherever(chooseAPiece(Consts.CHOOSE_WHATEVER));
+                return addPieceWherever(chooseAPiece(HeuristicConst.CHOOSE_WHATEVER));
             }
         }
         possibleDestinations = tileToMove.getPiece().getPossibleMovement(tileToMove, core.getBoard());

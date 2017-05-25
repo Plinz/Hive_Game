@@ -4,13 +4,12 @@
 package main.java.ia;
 
 import main.java.engine.Core;
-import main.java.utils.Consts;
 
 public class EasyHeuristics extends Heuristics {
 
     public EasyHeuristics(Core core) {
         super(core);
-        this.maxdepth = Consts.DEPTH_EASY;
+        this.maxdepth = HeuristicConst.DEPTH_EASY;
     }
 
     public double getHeuristicsValue() {

@@ -6,7 +6,6 @@ package main.java.ia;
 import java.util.List;
 import main.java.engine.Core;
 import main.java.engine.Notation;
-import main.java.utils.Consts;
 
 public class MediumAI extends AI {
 
@@ -52,7 +51,7 @@ public class MediumAI extends AI {
                 case 6://TURN 7 & 8 -> ADD QUEEN IF IT S NOT THE CASE
                 case 7:
                     if (!core.isQueenOnBoard(core.getCurrentPlayer())) {
-                        return addPieceWherever(chooseAPiece(Consts.CHOOSE_QUEEN));
+                        return addPieceWherever(chooseAPiece(HeuristicConst.CHOOSE_QUEEN));
                     }
             }
         }
@@ -85,7 +84,7 @@ public class MediumAI extends AI {
         if (isTimeToFinishOpponent()) {
             System.out.println("Time to finish !!!");
             String moveAndUnmove = tryGetFinishMove();
-            System.out.println("Time to finish : choice ->"+moveAndUnmove);
+            System.out.println("Time to finish : choice ->" + moveAndUnmove);
             if (moveAndUnmove != null) {
                 return moveAndUnmove;
             }
