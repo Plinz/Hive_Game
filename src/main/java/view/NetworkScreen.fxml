@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.NetworkScreenController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.NetworkScreenController">
    <children>
-      <GridPane fx:id="gameTypeChoice" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="720.0" prefWidth="1280.0">
+      <GridPane fx:id="gameTypeChoice" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="730.0" prefWidth="1290.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="499.0" minWidth="10.0" prefWidth="386.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="480.0" minWidth="10.0" prefWidth="480.0" />

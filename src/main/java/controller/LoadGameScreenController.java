@@ -16,6 +16,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import main.java.implement.Main;
 import main.java.engine.Core;
 
@@ -34,6 +46,7 @@ public class LoadGameScreenController implements Initializable {
     private Core core;
     @FXML private ListView saveList;
     @FXML private ImageView saveImage;
+    @FXML private Pane paneSaveImage;
    
     public LoadGameScreenController() {
     }
@@ -69,12 +82,14 @@ public class LoadGameScreenController implements Initializable {
                
                 String imageName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
                 try {
-                    saveImage.setImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))));
+                    BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+                    paneSaveImage.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize)));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(LoadGameScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+        paneSaveImage.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
     }
    
    

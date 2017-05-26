@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoadGameScreenController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.LoadGameScreenController">
    <children>
       <GridPane alignment="TOP_CENTER" layoutX="16.0" layoutY="8.0" prefHeight="708.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -53,8 +53,11 @@
                   <Insets right="50.0" />
                </GridPane.margin>
                <children>
-                  <ImageView fx:id="saveImage" fitHeight="402.0" fitWidth="406.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="saveImage" fitHeight="402.0" fitWidth="406.0" pickOnBounds="true" />
                </children>
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
             </Pane>
             <GridPane GridPane.columnIndex="1">
                <columnConstraints>

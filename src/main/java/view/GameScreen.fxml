@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="imageBackgroundGameScreen" fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1280.0" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.GameScreenController">
+<AnchorPane id="imageBackgroundGameScreen" fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1280.0" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.GameScreenController">
    <children>
       <GridPane prefHeight="780.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -44,17 +44,17 @@
                <children>
                   <GridPane prefHeight="39.0" prefWidth="357.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="89.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="84.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="82.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="73.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="85.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="93.0" minWidth="10.0" prefWidth="90.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="90.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="90.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="90.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="undo" mnemonicParsing="false" onMousePressed="#handleUndoButton" prefHeight="79.0" prefWidth="91.0" styleClass="buttonUndo" GridPane.halignment="CENTER">
+                        <Button fx:id="undo" mnemonicParsing="false" onMousePressed="#handleUndoButton" prefHeight="80.0" prefWidth="80.0" styleClass="buttonUndo" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                            <GridPane.margin>
                               <Insets top="5.0" />
                            </GridPane.margin>
@@ -62,14 +62,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="helpButton" mnemonicParsing="false" onMouseClicked="#handleHelp" prefHeight="80.0" prefWidth="90.0" styleClass="buttonLamp" GridPane.columnIndex="2">
-                           <GridPane.margin>
-                              <Insets top="5.0" />
-                           </GridPane.margin>
-                           <cursor>
-                              <Cursor fx:constant="DEFAULT" />
-                           </cursor></Button>
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="90.0" styleClass="buttonRefresh" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                        <Button fx:id="helpButton" mnemonicParsing="false" onMouseClicked="#handleHelp" prefHeight="80.0" prefWidth="80.0" styleClass="buttonLamp" GridPane.columnIndex="3" GridPane.halignment="CENTER">
                            <GridPane.margin>
                               <Insets top="5.0" />
                            </GridPane.margin>
@@ -90,7 +83,7 @@
                               <Insets top="5.0" />
                            </GridPane.margin>
                         </MenuButton>
-                        <Button fx:id="redo" mnemonicParsing="false" onMousePressed="#handleRedoButton" prefHeight="80.0" prefWidth="90.0" styleClass="buttonRedo" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                        <Button fx:id="redo" mnemonicParsing="false" onMousePressed="#handleRedoButton" prefHeight="80.0" prefWidth="80.0" styleClass="buttonRedo" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                            <GridPane.margin>
                               <Insets top="5.0" />
                            </GridPane.margin>
@@ -229,28 +222,46 @@
                   <Pane fx:id="panCanvas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="myBG" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Path fx:id="path" fill="DODGERBLUE" stroke="BLACK" strokeType="INSIDE" />
-                        <Canvas fx:id="gameCanvas" height="761.0" layoutX="-1.0" width="847.0" />
+                        <Canvas fx:id="gameCanvas" height="761.0" layoutX="-1.0" width="861.0" />
                      </children>
                   </Pane>
-                  <Button id="westArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                  <Button id="northArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleUpButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button id="southArrow" ellipsisString="." mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                  <Button id="westArrow" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleLeftButton" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <Button id="northArrow" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleUpButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <Button id="southArrow" ellipsisString="." maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onDragOver="#handleDownButton" onMouseClicked="#handleDownButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                </children>
             </GridPane>
-            <Button id="eastArrow" ellipsisString="" mnemonicParsing="false" onMouseClicked="#handleRightButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <Button id="eastArrow" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleRightButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Button fx:id="minusButton" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handleMinusButton" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="10.0" right="10.0" />
                </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Button fx:id="plusButton" ellipsisString="" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="40.0" mnemonicParsing="false" onMouseClicked="#handlePlusButton" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="50.0" right="10.0" />
                </GridPane.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
       </GridPane>

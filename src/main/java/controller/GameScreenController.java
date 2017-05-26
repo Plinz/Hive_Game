@@ -9,11 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javax.imageio.ImageIO;
-
-import com.sun.javafx.scene.control.MultiplePropertyChangeListenerHandler;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.embed.swing.SwingFXUtils;
@@ -28,21 +24,9 @@ import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
@@ -50,7 +34,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -62,9 +45,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -83,10 +63,8 @@ import main.java.view.RefreshJavaFX;
 import main.java.view.TraducteurBoard;
 
 public class GameScreenController implements Initializable {
-    @FXML private AnchorPane mainAnchor;
     @FXML private Canvas gameCanvas;
     @FXML private Pane panCanvas;
-    @FXML private Path path;
     @FXML private GridPane inventoryPlayer1;
     @FXML private GridPane inventoryPlayer2;
     @FXML private Text namePlayer1;
@@ -97,7 +75,6 @@ public class GameScreenController implements Initializable {
     @FXML private MenuItem saveMenuItem;
     @FXML private MenuItem lanchNewGame;
     @FXML private MenuItem loadGame;
-    
     @FXML private TextField inputChat;
     @FXML private GridPane textChat;
     @FXML private ScrollPane scrollChat; 
@@ -113,7 +90,6 @@ public class GameScreenController implements Initializable {
     private Highlighter highlighted;
     private TraducteurBoard traductor;
     private BooleanProperty animationPlaying;
-    private boolean endOfGame;
     private ToggleGroup inventoryGroup;
     private RefreshJavaFX refreshor;
     private AnimationTile animation;
@@ -133,7 +109,6 @@ public class GameScreenController implements Initializable {
         lastCoord = new CoordGene<Double>(0.0,0.0);
         animationPlaying = new SimpleBooleanProperty();
         animationPlaying.setValue(false);
-        endOfGame = false;
         nbMessage = 0;
         nbChatRow = 2;
         inventoryGroup = new ToggleGroup();
@@ -212,11 +187,10 @@ public class GameScreenController implements Initializable {
         gameCanvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent m) {
-                if (core.getState() != Consts.ANIMATING || endOfGame) {
+                if (core.getState() != Consts.ANIMATING) {
                     traductor.setMoveOrigin(new CoordGene<Double>(m.getX() - lastCoord.getX(), m.getY() - lastCoord.getY()));
                 }
             }
-
         });
 
         gameCanvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
@@ -458,7 +432,7 @@ public class GameScreenController implements Initializable {
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
 
-            if (core.getCurrentPlayer() == Consts.PLAYER1 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
+            if (core.getCurrentPlayer() == Consts.PLAYER1 && core.getState() == Consts.WAIT_FOR_INPUT) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this,inventory.get(i).getId(), i));
                 eventDragAndDropPiece(b,inventory.get(i).getId());
                 b.getStyleClass().add("buttonInventory");
@@ -491,7 +465,7 @@ public class GameScreenController implements Initializable {
             b.setMinSize(65, 65);
             b.setBackground(new Background(new BackgroundFill(new ImagePattern(piece.getImage()), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            if (core.getCurrentPlayer() == Consts.PLAYER2 && !endOfGame && core.getState() == Consts.WAIT_FOR_INPUT) {
+            if (core.getCurrentPlayer() == Consts.PLAYER2 && core.getState() == Consts.WAIT_FOR_INPUT) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this,inventory.get(i).getId(), i));
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
@@ -653,11 +627,11 @@ public class GameScreenController implements Initializable {
     public void handleNewGame() throws IOException {
         if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous relancer la partie ?", null);
-
+            popup.setTitle("Relancer la partie");
             ButtonType ok = new ButtonType("Relancer",ButtonBar.ButtonData.LEFT);
             ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
             ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-            if(!endOfGame)
+            if(core.getState() != Consts.END_OF_THE_GAME)
                 popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
             else
                 popup.getButtonTypes().addAll(ok,cancel);
@@ -682,11 +656,11 @@ public class GameScreenController implements Initializable {
     public void handleLeaveGame() throws IOException {
         
         Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
-
+        popup.setTitle("Quitter la partie");
         ButtonType ok = new ButtonType("Quitter",ButtonBar.ButtonData.LEFT);
         ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
         ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-        if(!endOfGame && core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP)
+        if(core.getState() != Consts.END_OF_THE_GAME && core.getMode() != Consts.PVEX && core.getMode() != Consts.EXVP)
             popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
         else
             popup.getButtonTypes().addAll(ok,cancel);
@@ -705,11 +679,11 @@ public class GameScreenController implements Initializable {
     public void handleLoadGame() throws IOException {
         if(core.getState() == Consts.WAIT_FOR_INPUT || core.getState() == Consts.END_OF_THE_GAME){
             Alert popup = new Alert(Alert.AlertType.NONE, "Voulez-vous quitter la partie ?", null);
-
+            popup.setTitle("Charger une partie");
             ButtonType ok = new ButtonType("Quitter et charger",ButtonBar.ButtonData.LEFT);
             ButtonType saveAndQuit = new ButtonType("Sauvegarder et quitter",ButtonBar.ButtonData.OTHER);
             ButtonType cancel = new ButtonType("Annuler",ButtonBar.ButtonData.RIGHT);
-            if(!endOfGame)
+            if(core.getState() != Consts.END_OF_THE_GAME)
                 popup.getButtonTypes().addAll(ok,saveAndQuit,cancel);
             else
                 popup.getButtonTypes().addAll(ok,cancel);
@@ -730,7 +704,6 @@ public class GameScreenController implements Initializable {
         saveMenuItem.setDisable(true);
 
         animationPlaying.setValue(false);
-        endOfGame = true;
         highlighted.setListTohighlight(null);    
         initButtonByInventory();
         
