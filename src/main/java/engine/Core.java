@@ -375,19 +375,24 @@ public class Core implements Cloneable {
 		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
 	}
 
-	public void connect(String host, int mode, String playerName) {
+	public int connect(String host, int mode, String playerName) {
+		int error;
 		if (mode == -1) {
 			io = new Client(this);
-			io.connect(host);
-			while (!io.sendInfo(playerName));
-			while (!io.updateInfo());
-			(this.mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
+			error = io.connect(host);
+			System.out.println("Error="+error);
+			if (error == 0){
+				while (!io.sendInfo(playerName));
+				while (!io.updateInfo());
+				(this.mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
+			}
 		} else {
 			this.mode = mode;
 			(mode == Consts.PVEX ? players[Consts.PLAYER1] : players[Consts.PLAYER2]).setName(playerName);
 			io = new Server(this);
-			io.connect(null);
+			error = io.connect(null);
 		}
+		return error;
 	}
 	
 	public void disconnect(){

@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 
 import main.java.engine.Core;
 import main.java.utils.Consts;
@@ -23,16 +24,19 @@ public class Client extends IO {
 	}
 
 	@Override
-	public void connect(String host) {
+	public int connect(String host) {
+		int error = 0;
 		try {
-			socket = new Socket(host, Consts.PORT);
+			socket = new Socket();
+			socket.connect(new InetSocketAddress(host, Consts.PORT), 1000);
 			t = new Thread(new ClientThread(socket));
 			t.start();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+		} catch (SocketTimeoutException e) {
+			error = 1;
 		} catch (IOException e) {
-			e.printStackTrace();
+			error = 2;
 		}
+		return error;
 	}
 
 	
