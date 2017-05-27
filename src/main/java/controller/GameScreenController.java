@@ -434,7 +434,7 @@ public class GameScreenController implements Initializable {
 
             if (core.getCurrentPlayer() == Consts.PLAYER1 && core.getState() == Consts.WAIT_FOR_INPUT) {
                 b.setOnMouseClicked(new ControllerButtonPiece(this,inventory.get(i).getId(), i));
-                eventDragAndDropPiece(b,inventory.get(i).getId());
+                //eventDragAndDropPiece(b,inventory.get(i).getId());
                 b.getStyleClass().add("buttonInventory");
                 b.setCursor(Cursor.HAND);
                 b.setTooltip(new Tooltip(inventory.get(i).getDescription()));
