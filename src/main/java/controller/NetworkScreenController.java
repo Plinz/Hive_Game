@@ -72,7 +72,7 @@ public class NetworkScreenController implements Initializable {
 		int error = core.connect(host, mode, playerName.getText());
 		if (error == 0) {
 			core.playNextTurn();
-			main.showGameScreen(core);
+			main.showGameScreen(core,false);
 		} else if (choiceClient.isSelected()) {
 			hostName.setBackground(
 					new Background(new BackgroundFill(Color.ORANGERED, new CornerRadii(2), new Insets(2))));

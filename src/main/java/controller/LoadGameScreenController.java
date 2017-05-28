@@ -16,11 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -59,7 +54,7 @@ public class LoadGameScreenController implements Initializable {
             String saveName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
             core.load(saveName);
         }
-        main.showGameScreen(core);
+        main.showGameScreen(core,true);
     }
    
     @FXML

@@ -205,7 +205,7 @@ public class GameScreenController implements Initializable {
                     Tile tileTemp = core.getBoard().getTile(coord);
                     List<Tile> listTiles = core.getBoard().getAboveAndBelow(tileTemp);
                     
-                    if (!listTiles.isEmpty() && !popup.isShowing()) {
+                    if (!listTiles.isEmpty()) {
 
                         Rectangle fondPopup = new Rectangle(0,-Consts.SIDE_SIZE,Consts.SIDE_SIZE*2,Consts.SIDE_SIZE*2*(listTiles.size()+1));
                         fondPopup.setArcWidth(20);
@@ -650,7 +650,7 @@ public class GameScreenController implements Initializable {
         c.getPlayers()[0].setName(core.getPlayers()[0].getName());
         c.getPlayers()[1].setName(core.getPlayers()[1].getName());
         refreshor.stop();
-        main.showGameScreen(c);
+        main.showGameScreen(c,false);
     }
 
     public void handleLeaveGame() throws IOException {
@@ -861,10 +861,10 @@ public class GameScreenController implements Initializable {
             newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
         else if (coordEnd.getX() == 0) {
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*1.7);
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*1.725);
         }
         else if(coordEnd.getY() == 0){
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE);
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*0.875);
             newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
         traductor.setMoveOrigin(newOrigin);
@@ -1023,6 +1023,12 @@ public class GameScreenController implements Initializable {
         if (result.get().getButtonData() == ButtonBar.ButtonData.RIGHT) {
         	refreshor.stop();
         	main.showMainMenu();
+        }
+    }
+    
+    public void fixOriginForLoad(){
+        if(core.getTurn() != 0){
+            traductor.setMoveOrigin(new CoordGene<Double>(Consts.SIDE_SIZE,Consts.SIDE_SIZE));
         }
     }
 }

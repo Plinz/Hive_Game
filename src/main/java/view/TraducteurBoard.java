@@ -20,6 +20,7 @@ public class TraducteurBoard {
     private CoordGene<Double> moveOrigin; 
     
     public TraducteurBoard(){
+        Consts.SIDE_SIZE = 50;
         moveOrigin = new CoordGene<Double>(Consts.SIDE_SIZE,Consts.SIDE_SIZE);
     }
  

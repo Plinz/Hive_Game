@@ -158,7 +158,7 @@ public class Main extends Application {
         }
     }
     
-    public void showGameScreen(Core c){
+    public void showGameScreen(Core c, boolean comeFromLoad){
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
@@ -167,6 +167,9 @@ public class Main extends Application {
             
             GameScreenController controller = loader.getController();
             controller.initGame(this, c);
+            if(comeFromLoad){
+                controller.fixOriginForLoad();
+            }
             
             primaryStage.getScene().setRoot(mainAnchor);
             if(OptionManager.isFullscreen())

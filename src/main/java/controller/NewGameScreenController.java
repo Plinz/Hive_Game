@@ -104,7 +104,7 @@ public class NewGameScreenController implements Initializable {
             }
             
         }
-        main.showGameScreen(core);
+        main.showGameScreen(core,false);
         
     }
     
