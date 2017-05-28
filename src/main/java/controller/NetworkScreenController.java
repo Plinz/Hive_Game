@@ -7,12 +7,14 @@ package main.java.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -55,7 +57,15 @@ public class NetworkScreenController implements Initializable {
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		// TODO
+            UnaryOperator<TextFormatter.Change> filter = c -> {
+                String proposedText = c.getControlNewText();
+                 if (proposedText.matches(".{0,15}")) {
+                    return c ;
+                } else {
+                    return null ;
+                }
+            };
+            playerName.setTextFormatter(new TextFormatter<String>(filter));   
 	}
 
 	@FXML
