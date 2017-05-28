@@ -2,6 +2,7 @@ package main.java.model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
@@ -177,8 +178,15 @@ public class Board implements Cloneable{
 			
 			if (coord.getY() == 1){
 				if (!columns.stream().anyMatch(col -> col != null && col.size() >= 2 && col.get(1) != null && !col.get(1).isEmpty() && col.get(1).get(0) != null && col.get(1).get(0).getPiece() != null)){
-					columns.stream().forEach(col -> col.remove(0));
-					y = -1;
+					//columns.stream().forEach(col -> col.remove(0));
+					Iterator it = columns.iterator();
+                                        while(it.hasNext()){
+                                            Column c = (Column)it.next();
+                                            if(c.size() > 0){
+                                                c.remove(0);
+                                            }
+                                        }             
+                                        y = -1;
 					resize = true;
 				}
 			}

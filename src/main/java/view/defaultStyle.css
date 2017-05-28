@@ -492,7 +492,7 @@ and open the template in the editor.
 }
 
 .buttonInventory:selected{
-    -fx-effect: innershadow(one-pass-box, lightblue, 100, 0.1, 1, 1);
+    -fx-effect: innershadow(one-pass-box, blue, 100, 0.1, 1, 1);
 }
 
 #westArrow{
