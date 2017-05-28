@@ -36,7 +36,7 @@
                <children>
                   <GridPane fx:id="gridMenu" prefHeight="596.0" prefWidth="334.0" GridPane.rowIndex="1">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
@@ -125,15 +125,15 @@
                            </cursor>
                         </Label>
                         <Label onMouseClicked="#handleGamePlay" prefHeight="60.0" prefWidth="329.0" styleClass="panelItemTitle" text="Déroulement du jeu" GridPane.rowIndex="2">
-                           <padding>
-                              <Insets left="50.0" />
-                           </padding>
                            <font>
                               <Font name="DejaVu Sans Bold" size="15.0" />
                            </font>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
+                           <padding>
+                              <Insets left="50.0" />
+                           </padding>
                         </Label>
                         <Label onMouseClicked="#handlePiecePositionings" prefHeight="58.0" prefWidth="329.0" styleClass="panelItemTitle" text="Placement des pièces" GridPane.rowIndex="3">
                            <padding>
