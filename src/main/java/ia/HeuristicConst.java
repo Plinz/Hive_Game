@@ -63,8 +63,8 @@ public class HeuristicConst {
     public static final double[] B_MEDIUM_ADD_T1_IF_WQ_T1 = {1, 0, 0, 0, 0};
     public static final double[] B_MEDIUM_ADD_T1_ELSE = {0, 0.5, 0.5, 0, 0};
     public static final double[] B_MEDIUM_ADD_T2 = {1, 0, 0, 0, 0};
-    public static final double[] B_MEDIUM_ADD_T3_IF_W_HAS_MOBILE_ANT = {0, 1, 0, 0, 0};
-    public static final double[] B_MEDIUM_ADD_T3_ELSE = {0, 0, 0, 0, 1};
+    public static final double[] B_MEDIUM_ADD_T3_IF_W_HAS_MOBILE_ANT = {0, .98, 0, 0, 0.02};
+    public static final double[] B_MEDIUM_ADD_T3_ELSE = {0, 0.02, 0, 0, 0.98};
 
     //PLUS ET MOINS INFINI
     public static final double PLUS_INFINI = 50000;
