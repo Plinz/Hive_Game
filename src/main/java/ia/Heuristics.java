@@ -15,7 +15,6 @@ Heuristic Data : heuristicData[player][insect][typeHeuristique]
 package main.java.ia;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,10 +23,7 @@ import main.java.engine.Core;
 import main.java.model.Board;
 import main.java.model.Box;
 import main.java.model.Column;
-import main.java.model.Piece;
-import main.java.model.Player;
 import main.java.model.Tile;
-import main.java.model.piece.Ant;
 import main.java.utils.Consts;
 import main.java.utils.CoordGene;
 
@@ -128,56 +124,6 @@ public class Heuristics {
         return null;
     }
 
-    public int getMobility(Player player) {
-        int result = 0;
-        for (Column column : this.core.getBoard().getBoard()) {
-            for (Box box : column) {
-                for (Tile tile : box) {
-                    if ((tile.getPiece() != null) && (tile.getPiece().getTeam() == player.getTeam())) {
-                        result++;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    public int getValue(int pieceId, int player) {
-        int value = 0;
-        if (isInHand(pieceId, player)) {
-            value += getValuePieceInHand(pieceId, player);
-        } else {
-            value += getValuePieceOnBoard(pieceId, player);
-        }
-        return value;
-    }
-
-    public boolean isPinned(int PieceId) {
-
-        //bug on the ground (ie not beetle or mosquito)
-        for (Column column : this.core.getBoard().getBoard()) {
-            for (Box box : column) {
-                for (Tile tile : box) {
-                    if ((tile.getPiece() != null) && (tile.getPiece().getId() == PieceId)) {
-                        if (tile.getPiece().getPossibleMovement(tile, this.core.getBoard()).isEmpty()) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isInHand(int pieceId, int player) {
-        for (Piece piece : core.getPlayers()[player].getInventory()) {
-            if (piece.getId() == pieceId) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void resetValues() {
         resetGeneralValues();
         for (int player = 0; player < 2; player++) {
@@ -200,48 +146,6 @@ public class Heuristics {
         nbPinnedOpponent = 0;
     }
 
-    public boolean OpponentsQueenSurroundedExceptGates(int player) {
-        if (this.core.getBoard().getNbPieceOnTheBoard() < 0) {
-            return false;
-        }
-
-        //finding northest piece of the hive
-        Tile northest = new Tile();
-        for (Column col : this.core.getBoard().getBoard()) {
-            for (Box box : col) {
-                for (Tile tile : box) {
-                    if (tile.getPiece() != null) {
-                        northest = tile;
-                        break;
-                    }
-                }
-                if (northest.getPiece() != null) {
-                    break;
-                }
-            }
-            if (northest.getPiece() != null) {
-                break;
-            }
-        }
-
-        //adding an extra ant at the north of the hive
-        Piece extraAnt = new Ant(50, this.core.getPlayers()[player].getTeam());
-        this.core.getBoard().addPiece(extraAnt, northest.getCoord().getNorthWest());
-
-        List<CoordGene<Integer>> possibleDest = extraAnt.getPossibleMovement(this.core.getBoard().getTile(northest.getCoord().getNorthWest()), this.core.getBoard());
-        for (CoordGene<Integer> coords : getTile(Consts.QUEEN, 1 - player).getCoord().getNeighbors()) {
-            Tile neighbor = this.core.getBoard().getTile(coords);
-            //if the extra ant can reach a neighbor of the queen 
-            if ((neighbor.getPiece() == null) && (possibleDest.contains(neighbor.getCoord()))) {
-                return false;
-            }
-        }
-        //removing extra piece from the board
-        this.core.getBoard().removePiece(northest.getCoord().getNorthWest());
-
-        return true;
-    }
-
     public boolean isOpponentsQueenNeighbor(int player, Tile tile) {
         for (Tile t : core.getBoard().getNeighbors(getTile(Consts.QUEEN, 1 - player))) {
             if (tile.getCoord() == t.getCoord()) {
@@ -249,42 +153,6 @@ public class Heuristics {
             }
         }
         return false;
-    }
-
-    public ArrayList<CoordGene<Integer>> grassHopperToOpponentsQueensFreeNeighbor(int player, Tile tile) {
-        ArrayList<ArrayList<CoordGene<Integer>>> mainList = new ArrayList<>();
-        mainList.add(new ArrayList<>(Arrays.asList(tile.getCoord())));
-        HashSet<CoordGene<Integer>> markedCoords = new HashSet<>(Arrays.asList(tile.getCoord()));
-        do {
-            for (ArrayList<CoordGene<Integer>> subList : mainList) {
-                List<CoordGene<Integer>> newDests = new ArrayList<>();
-                for (CoordGene<Integer> coord : this.core.getBoard().getTile(subList.get(subList.size() - 1)).getPiece().getPossibleMovement(this.core.getBoard().getTile(subList.get(subList.size() - 1)), this.core.getBoard())) {
-                    if (!(markedCoords.contains(coord))) {
-                        newDests.add(coord);
-                        markedCoords.add(coord);
-                    }
-                }
-                if (newDests.isEmpty()) {
-                    mainList.remove(subList);
-                } else {
-                    for (int i = 0; i < newDests.size() - 1; i++) {
-                        @SuppressWarnings("unchecked")
-                        ArrayList<CoordGene<Integer>> newList = (ArrayList<CoordGene<Integer>>) subList.clone();
-                        newList.add(newDests.get(i));
-                        mainList.add(newList);
-                        if (isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(newDests.get(i)))) {
-                            return newList;
-                        }
-                    }
-                    subList.add(newDests.get(newDests.size() - 1));
-                    if (isOpponentsQueenNeighbor(player, this.core.getBoard().getTile(subList.get(subList.size() - 1)))) {
-                        return subList;
-                    }
-                }
-            }
-        } while (!(mainList.isEmpty()));
-        //reached only when all possible paths have been visited unsuccessfully
-        return null;
     }
 
     public int distanceToOpposingQueen(Tile tile) {
@@ -295,71 +163,73 @@ public class Heuristics {
         Board board = core.getBoard();
         int distance = 0;
         List<Tile> ab = board.getAboveAndBelow(tile);
-        for (Tile t : ab){
-        	System.out.println(t.getPiece());
-        	if (t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam()){
-        		return distance;
-        	}
+        for (Tile t : ab) {
+            if (t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam()) {
+                return distance;
+            }
         }
 
         HashSet<CoordGene<Integer>> visited = new HashSet<>();
         List<CoordGene<Integer>> possibleDest = new ArrayList<>();
-		Set<CoordGene<Integer>> tmp = new HashSet<>();
+        Set<CoordGene<Integer>> tmp = new HashSet<>();
         possibleDest.addAll(beetleMov(tile, tile));
         visited.add(tile.getCoord());
-		while (!possibleDest.isEmpty()) {
+        while (!possibleDest.isEmpty()) {
 
-			for (CoordGene<Integer> coord : possibleDest){
-				ab = board.getAboveAndBelow(board.getTile(coord));
-				ab.add(board.getTile(coord));
-				for (Tile t : ab){
-					if (t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam())
-						return distance;
-				}
-			}
-		
-			visited.addAll(possibleDest);
-			for (CoordGene<Integer> c : possibleDest){
-				List<CoordGene<Integer>> list = beetleMov(board.getTile(c), tile);
-				for (CoordGene<Integer> nextC : list){
-					if (!visited.contains(nextC))
-						tmp.add(nextC);
-				}
-			}
-			possibleDest.clear();
-			possibleDest.addAll(tmp);
-			tmp.clear();
-			distance++;
-		}        
+            for (CoordGene<Integer> coord : possibleDest) {
+                ab = board.getAboveAndBelow(board.getTile(coord));
+                ab.add(board.getTile(coord));
+                for (Tile t : ab) {
+                    if (t.getPiece() != null && t.getPiece().getId() == Consts.QUEEN && t.getPiece().getTeam() != tile.getPiece().getTeam()) {
+                        return distance;
+                    }
+                }
+            }
+
+            visited.addAll(possibleDest);
+            for (CoordGene<Integer> c : possibleDest) {
+                List<CoordGene<Integer>> list = beetleMov(board.getTile(c), tile);
+                for (CoordGene<Integer> nextC : list) {
+                    if (!visited.contains(nextC)) {
+                        tmp.add(nextC);
+                    }
+                }
+            }
+            possibleDest.clear();
+            possibleDest.addAll(tmp);
+            tmp.clear();
+            distance++;
+        }
         return distance;
     }
 
-	public List<CoordGene<Integer>> beetleMov(Tile from, Tile exception) {
-		List<CoordGene<Integer>> list = new ArrayList<>();
-		List<CoordGene<Integer>> neighbors = from.getCoord().getNeighbors();
-		for (int i = 0; i < neighbors.size(); i++) {
-			Tile target = core.getBoard().getTile(neighbors.get(i));
-			CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
-			CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
-			int floor;
-			if (target != null){
-				List<Tile> nei = core.getBoard().getPieceNeighbors(target);
-				if (nei.size()!=1 || nei.get(0).getCoord().equals(exception.getCoord())){
-					if (target.getZ() == 0 && from.getZ() == 0)
-						floor = (target.getPiece() == null) ? 0 : 1;
-					else
-						floor = Math.max(target.getZ(), from.getZ());
-					if (core.getBoard().freedomToMove(floor, left, right, from.getCoord())
-							&& core.getBoard().permanentContact(floor, left, right, from.getCoord())
-							&& !target.equals(exception.getCoord()) && !left.equals(exception.getCoord()) && !right.equals(exception.getCoord()))
-						list.add(target.getCoord());
-				}
-			}
-		}
-		return list;
+    public List<CoordGene<Integer>> beetleMov(Tile from, Tile exception) {
+        List<CoordGene<Integer>> list = new ArrayList<>();
+        List<CoordGene<Integer>> neighbors = from.getCoord().getNeighbors();
+        for (int i = 0; i < neighbors.size(); i++) {
+            Tile target = core.getBoard().getTile(neighbors.get(i));
+            CoordGene<Integer> left = neighbors.get(Math.floorMod(i - 1, 6));
+            CoordGene<Integer> right = neighbors.get(Math.floorMod(i + 1, 6));
+            int floor;
+            if (target != null) {
+                List<Tile> nei = core.getBoard().getPieceNeighbors(target);
+                if (nei.size() != 1 || nei.get(0).getCoord().equals(exception.getCoord())) {
+                    if (target.getZ() == 0 && from.getZ() == 0) {
+                        floor = (target.getPiece() == null) ? 0 : 1;
+                    } else {
+                        floor = Math.max(target.getZ(), from.getZ());
+                    }
+                    if (core.getBoard().freedomToMove(floor, left, right, from.getCoord())
+                            && core.getBoard().permanentContact(floor, left, right, from.getCoord())
+                            && !target.equals(exception.getCoord()) && !left.equals(exception.getCoord()) && !right.equals(exception.getCoord())) {
+                        list.add(target.getCoord());
+                    }
+                }
+            }
+        }
+        return list;
     }
-    
-    
+
 }
 
 //    public int grassHopperToOpponentsQueensFreeNeighbor(int player, Tile tile)

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import main.java.engine.Core;
-import main.java.utils.Consts;
 
 public class EasyAI extends AI {
 
@@ -41,7 +40,7 @@ public class EasyAI extends AI {
                     } else {
                         Random random = new Random();
                         double rand = random.nextDouble();
-                        if (rand < HeuristicConst.EASY_TURN_4_CHOOSE_TO_ADD) {
+                        if (rand < HeuristicConst.EASY_T4_CHOOSE_TO_ADD) {
                             return addPieceWherever(chooseAPiece(HeuristicConst.EASY_ADD_TURN_4));
                         } else {
                             return movePieceNearOpponent(chooseWhateverFreeTileOnBoard(core.getCurrentPlayer()));
@@ -52,6 +51,13 @@ public class EasyAI extends AI {
             }
         }
 
+        if (isTimeToFinishOpponent()) {
+            String moveAndUnmove = tryGetFinishMove();
+            if (moveAndUnmove != null) {
+                return moveAndUnmove;
+            }
+        }
+        
         //////////////////////////////////MID GAME
         Random random = new Random();
         Minimax minimax = new Minimax(core, heuristics);

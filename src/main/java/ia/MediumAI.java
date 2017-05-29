@@ -6,6 +6,7 @@ package main.java.ia;
 import java.util.List;
 import main.java.engine.Core;
 import main.java.engine.Notation;
+import main.java.utils.Consts;
 
 public class MediumAI extends AI {
 
@@ -13,6 +14,15 @@ public class MediumAI extends AI {
         super(core);
         this.heuristics = new MediumHeuristics(core);
         this.choiceDuringOpening = new int[4];
+    }
+    public MediumAI(Core core, int difficulty){
+        super(core);
+        this.choiceDuringOpening = new int[4];
+        if (difficulty == Consts.HARD){            
+            this.heuristics = new MediumHeuristics(core, difficulty);
+        } else {
+            this.heuristics = new MediumHeuristics(core);
+        }
     }
 
     @Override
@@ -56,6 +66,13 @@ public class MediumAI extends AI {
             }
         }
 
+        if (isTimeToFinishOpponent()) {
+            String moveAndUnmove = tryGetFinishMove();
+            if (moveAndUnmove != null) {
+                return moveAndUnmove;
+            }
+        }
+        
         Minimax minimax = new Minimax(core, heuristics);
 
         int sign;
@@ -68,11 +85,7 @@ public class MediumAI extends AI {
         List<Minimax> possibleMovements = minimax.getChildren();
         Minimax chosenOne = possibleMovements.get(0);
         double bestHeuristic = sign * chosenOne.heuristicValue;
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-
+        
         for (Minimax child : possibleMovements) {
             System.out.println("child : move = " + Notation.getHumanDescription(child.moveFromParent, false) + " with h= " + child.heuristicValue);
             if (sign * child.heuristicValue > bestHeuristic) {
@@ -80,20 +93,11 @@ public class MediumAI extends AI {
                 chosenOne = child;
             }
         }
-
-        if (isTimeToFinishOpponent()) {
-            System.out.println("Time to finish !!!");
-            String moveAndUnmove = tryGetFinishMove();
-            System.out.println("Time to finish : choice ->" + moveAndUnmove);
-            if (moveAndUnmove != null) {
-                return moveAndUnmove;
-            }
+       
+        if (isASuicideMove(chosenOne)){
+            chosenOne = chooseDecentMove(possibleMovements);
         }
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-__-_-_-_-_-_-_-_-_-_-_-_-_-");
-        System.out.println("Chosen One : " + chosenOne.moveFromParent + " with heuristic = " + chosenOne.heuristicValue);
         return chosenOne.moveFromParent + ";" + chosenOne.moveToParent;
     }
+
 }

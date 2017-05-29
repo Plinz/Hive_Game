@@ -15,7 +15,7 @@ public class AIFactory {
             case Consts.MEDIUM :
                 return new MediumAI(core);
             case Consts.HARD : 
-                return new EasyAI(core);
+                return new MediumAI(core, Consts.HARD);
             default :
                 System.err.println("Erreur : niveau de difficulté inconnu");
                 return new EasyAI(core);

@@ -18,20 +18,22 @@ public class HeuristicConst {
 
     
     public static final int DEPTH_EASY = 1;
-    public static final int DEPTH_MEDIUM = 1;
+    public static final int DEPTH_MEDIUM = 2;
     public static final int DEPTH_HARD = 3;
     
     
     //CONSTANTES HEURISTIQUES
-    public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -150, 0, 0, -250};
-    public static final double[] MAXIMISE_SPIDER = {0.5, -4.7, 0.5, -8.4, 1, -1.7, -0.5};
+    public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -310, 0, 0, -250};
+    public static final double[] MAXIMISE_SPIDER = {0.5, 0, 0.5, 0, 1, -1.7, -0.5};
     public static final double[] MAXIMISE_GH = {0.5, 0.5, 3.5, 0, 1.5, 0.5, -1};
-    public static final double[] MAXIMISE_BEETLE = {150, -1.7, 0.5, 2, 1, 1.1, -3};
-    public static final double[] MAXIMISE_ANT = {0.3, 1, 0.1, 0, 1, 3, -7};
+    public static final double[] MAXIMISE_BEETLE = {18, 0, 0.5, 2, 1, 1.1, -3};
+    public static final double[] MAXIMISE_ANT = {0.3, 0, 0.1, 0, 1, 12, -7};
     public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0.2, -1};
 
+    public static final double WHITE_VICTORY = 2200;
+    public static final double BLACK_VICTORY = -2200;
     public static final double QUEEN_NEIGHBOR_FACTOR = 1.3;
-    
+    public static final double BEETLE_ON_ENEMY_QUEEN_BONUS = 340;
     //MACROS CONSTANTES HEURISTIQUES
     public static final int NB_MOVE = 0;
     public static final int NB_ADD = 1;
@@ -52,8 +54,6 @@ public class HeuristicConst {
     public static final double[] EASY_ADD_TURN_4 = {0, 0.15, 0.15, 0.35, 0.35};
 
     public static final double EASY_T4_CHOOSE_TO_ADD = 0.75;
-    public static final double EASY_MID_GAME_CHOOSE_TO_ADD = 0.55;
-    public static final double EASY_TURN_4_CHOOSE_TO_ADD = 0.75;
 
     //CONSTANTES OPENING MEDIUM WHITE
     public static final double[] W_MEDIUM_ADD_T1 = {0, 0.5, 0.5, 0, 0};
@@ -69,7 +69,11 @@ public class HeuristicConst {
     public static final double[] B_MEDIUM_ADD_T3_IF_W_HAS_MOBILE_ANT = {0, 1, 0, 0, 0};
     public static final double[] B_MEDIUM_ADD_T3_ELSE = {0, 0, 0, 0, 1};
 
-
+    //PLUS ET MOINS INFINI
+    public static final double PLUS_INFINI = 50000;
+    public static final double MOINS_INFINI = -50000;
+    
+    
     public static final double[][][] getHeuristicDataFromConsts() {
         double[][][] heuristicData = new double[2][6][7];
 
