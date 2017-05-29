@@ -49,7 +49,23 @@ public class History implements Cloneable{
 	public Stack<String> getPrevUnplay(){
 		return prevUnplay;
 	}
+        
+        public Stack<String> getNextPlay(){
+		return nextPlay;
+	}
 	
+	public Stack<String> getNextUnplay(){
+		return nextUnplay;
+	}
+	
+        public void setNextPlay(Stack<String> nextPlay) {
+            this.nextPlay = nextPlay;
+        }
+
+        public void setNextUnplay(Stack<String> nextUnplay) {
+            this.nextUnplay = nextUnplay;
+        }
+        
 	@SuppressWarnings("unchecked")
 	@Override
 	protected History clone() {

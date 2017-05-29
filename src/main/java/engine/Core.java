@@ -372,7 +372,12 @@ public class Core implements Cloneable {
 
 	public HelpMove help() {
 		AI helpAI = AIFactory.buildAI(Consts.MEDIUM, this);
-		return emulator.getMove(helpAI.getNextMove().split(";")[0]);
+                Stack<String> nextplay = (Stack<String>) history.getNextPlay().clone();
+                Stack<String> nextUnplay = (Stack<String>) history.getNextUnplay().clone();
+                HelpMove helpmove = emulator.getMove(helpAI.getNextMove().split(";")[0]);
+                history.setNextPlay(nextplay);
+                history.setNextUnplay(nextUnplay);
+		return helpmove;
 	}
 
 	public int connect(String host, int mode, String playerName) {
