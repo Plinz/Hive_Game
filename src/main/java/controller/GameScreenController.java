@@ -753,9 +753,6 @@ public class GameScreenController implements Initializable {
         }
     }
 
-   
-    /*******************/
-    
     public void handleSaveGame() throws IOException{
        if(core.getState() == Consts.WAIT_FOR_INPUT){
             Dialog<ButtonType> popup = new Dialog<>();
@@ -793,10 +790,9 @@ public class GameScreenController implements Initializable {
                 if (!saveName.getText().equals("")) {
                     saveString = saveName.getText();
                 }
-                core.save(saveString);
-                takeSnapshot(saveString);
+                if (core.save(saveString))
+                    takeSnapshot(saveString);
             }
-            main.getPrimaryStage().requestFocus();
        }
     }
     
@@ -837,8 +833,8 @@ public class GameScreenController implements Initializable {
             if (!saveName.getText().equals("")) {
                 saveString = saveName.getText();
             }
-            core.save(saveString);
-            takeSnapshot(saveString);
+            if (core.save(saveString))
+                takeSnapshot(saveString);
             switch (status) {
                 case (Consts.GO_TO_MAIN):
                     refreshor.stop();
@@ -853,7 +849,6 @@ public class GameScreenController implements Initializable {
                     break;
             }
         }
-        main.getPrimaryStage().requestFocus();
     }
 
     public void handleResize(CoordGene<Integer> coordEnd) {

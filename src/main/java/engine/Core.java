@@ -264,7 +264,7 @@ public class Core implements Cloneable {
 		return false;
 	}
 
-	public void save(String name) {
+	public boolean save(String name) {
 		if (name == null) {
 			if (mode == Consts.PVP)
 				name = players[Consts.PLAYER1].getName() + "-" + players[Consts.PLAYER2].getName() + "-turn" + turn;
@@ -298,8 +298,9 @@ public class Core implements Cloneable {
 				for (int i = 0; i < prevPlay.size(); i++)
 					writer.write(prevPlay.get(i) + ";" + prevUnplay.get(i) + "\n");
 			writer.flush();
+                        return true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			return false;
 		}
 	}
 
