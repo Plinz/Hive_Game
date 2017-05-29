@@ -375,6 +375,26 @@ and open the template in the editor.
     -fx-background-color: transparent;
 }
 
+.buttonDelete{
+    
+    -fx-background-image: url("/main/resources/img/misc/delete.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+.buttonDelete:hover{
+    
+    -fx-background-image: url("/main/resources/img/misc/delete_hover.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
 
 /* GameMenu */
 
@@ -546,6 +566,16 @@ and open the template in the editor.
 
 #minusButton{
     -fx-background-image: url("/main/resources/img/misc/dezoom.png");
+    -fx-background-size:stretch;
+    -fx-background-alignement:center center;
+    -fx-background-insets: 0 0 0 0, 
+        0, 0, 0;
+    -fx-background-radius: 0px, 0px, 0px, 0px;
+    -fx-background-color: transparent;
+}
+
+#centerButton{
+    -fx-background-image: url("/main/resources/img/misc/view.png");
     -fx-background-size:stretch;
     -fx-background-alignement:center center;
     -fx-background-insets: 0 0 0 0, 

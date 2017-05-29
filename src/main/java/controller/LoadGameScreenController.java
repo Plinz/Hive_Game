@@ -4,6 +4,7 @@ package main.java.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.List;
@@ -52,26 +53,50 @@ public class LoadGameScreenController implements Initializable {
     public void handleLaunchGameClick(){
         if(saveList.getSelectionModel().getSelectedItems() != null){
             String saveName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
-            core.load(saveName);
+            if(saveName != null){
+                core.load(saveName);
+                main.showGameScreen(core,true);
+            }
         }
-        main.showGameScreen(core,true);
     }
    
     @FXML
     public void handleMenuClick(){
         main.showMainMenu();
     }
+    
+    @FXML
+    public void handleDeleteClick(){
+        if(saveList.getSelectionModel().getSelectedItems() != null){
+            String name = (String)saveList.getSelectionModel().getSelectedItems().get(0);
+            File fileToDelete = new File("Hive_init/Hive_save_images/"+name+".png");
+            if (fileToDelete.exists()) {
+               fileToDelete.delete();     
+            }
+            fileToDelete = new File("Hive_init/Hive_save/"+name);
+            if (fileToDelete.exists()) {
+               fileToDelete.delete();     
+            }
+        }
+        initSaves();
+    }
 
    
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
     }   
-   
-    public void initGameList(){
+    
+    public void initSaves(){
+        saveList.getItems().remove(0,saveList.getItems().size());
         core = new Core(0, 0);
         List<String> saves = core.load();
         saveList.getItems().addAll(saves);
+        saves.clear();
+    }
+   
+    public void initGameList(){
        
+        initSaves();
         saveList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
 
             @Override
@@ -80,8 +105,17 @@ public class LoadGameScreenController implements Initializable {
                 String imageName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
                 try {
                     //paneSaveImage.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize)));
-                    saveImage.setImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))));
+                    if(imageName != null){
+                        FileInputStream fis = new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"));
+                        saveImage.setImage(new Image(fis));
+                        fis.close();
+                    }
+                    else{
+                        saveImage.setImage(null);
+                    }
                 } catch (FileNotFoundException ex) {
+                    Logger.getLogger(LoadGameScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
                     Logger.getLogger(LoadGameScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

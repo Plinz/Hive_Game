@@ -161,11 +161,17 @@ public class GameScreenController implements Initializable {
                                 possibleMovement = core.getPossibleMovement(coord);
                                 highlighted.setListTohighlight(possibleMovement);
                                 pieceChosenInInventory = -1;
+                                initButtonByInventory();
                             } else {
-                                if (pieceChosenInInventory != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord) && core.canAddPiece(pieceChosenInInventory)) {
-                                    startPlacingAnimation(pieceChosenInInventory,coord);
-                                    undo.setDisable(false);
-                                    redo.setDisable(true);
+                                if (pieceChosenInInventory != -1 && core.getPossibleAdd(core.getCurrentPlayer()).contains(coord)) {
+                                    if(core.canAddPiece(pieceChosenInInventory)){
+                                        startPlacingAnimation(pieceChosenInInventory,coord);
+                                        undo.setDisable(false);
+                                        redo.setDisable(true);
+                                    }
+                                    else{
+                                        queenWarning();
+                                    }
                                 } else {
                                     resetPiece();
                                     initButtonByInventory();
@@ -307,7 +313,7 @@ public class GameScreenController implements Initializable {
                     List<Piece> list = core.getCurrentPlayerObj().getInventory();
                     for (index = 0; index<list.size() && list.get(index).getId() != helpMove.getPieceId(); index++);
                     ToggleButton n = (ToggleButton)((core.getCurrentPlayer() == 0)?inventoryPlayer1:inventoryPlayer2).getChildren().get(index);
-                    n.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));;
+                    n.setBorder(new Border(new BorderStroke(Color.RED, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
             }
         }
     }
@@ -1030,5 +1036,27 @@ public class GameScreenController implements Initializable {
         if(core.getTurn() != 0){
             traductor.setMoveOrigin(new CoordGene<Double>(Consts.SIDE_SIZE,Consts.SIDE_SIZE));
         }
+    }
+    
+    public void queenWarning(){
+        
+        Dialog<ButtonType> popup = new Dialog<>();
+        popup.setTitle("Ajout impossible");
+        ButtonType close = new ButtonType("Fermer", ButtonBar.ButtonData.RIGHT);
+        popup.getDialogPane().getButtonTypes().add(close);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        popup.getDialogPane().setContent(grid);
+        grid.add(new Label("Vous devez jouer votre reine."), 0, 0);
+        popup.show();
+    }
+    
+    public void recenter(){
+        Consts.SIDE_SIZE = 50;
+        traductor.setMoveOrigin(new CoordGene<Double>(Consts.SIDE_SIZE,Consts.SIDE_SIZE));
     }
 }
