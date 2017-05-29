@@ -40,13 +40,17 @@ public class MediumAI extends AI {
                         return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_T1_ELSE));
                     }
                 case 2://turn 2 WHITE
-                    if (core.isQueenOnBoard(1)) {
+                    if (core.isQueenOnBoard(1) && !core.isQueenOnBoard(0)) {
                         return addPieceWherever(chooseAPiece(HeuristicConst.W_MEDIUM_ADD_T2_IF_BQ_T1));
                     } else {
                         return addPieceWherever(chooseAPiece(HeuristicConst.W_MEDIUM_ADD_T2_ELSE));
                     }
                 case 3://TURN 2 BLACK
-                    return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_T2));
+                    if (core.isQueenOnBoard(1)){
+                        return addPieceWherever(chooseAPiece(HeuristicConst.W_MEDIUM_ADD_T3_ELSE));
+                    }else {
+                        return addPieceWherever(chooseAPiece(HeuristicConst.B_MEDIUM_ADD_T2));
+                    }                   
                 case 4://TURN 3 WHITE
                     if (!core.isQueenOnBoard(0)) {
                         return addPieceWherever(chooseAPiece(HeuristicConst.W_MEDIUM_ADD_T3_IF_NO_WQ));
