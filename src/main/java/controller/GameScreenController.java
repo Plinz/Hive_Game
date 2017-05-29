@@ -769,7 +769,20 @@ public class GameScreenController implements Initializable {
             grid.setVgap(10);
             grid.setPadding(new Insets(20, 150, 10, 10));
             TextField saveName = new TextField();
-            saveName.setPromptText("Sauvegarde");
+            
+            String saveString;
+            if (core.getMode() == Consts.PVP) {
+                saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+            } else if (core.getMode() == Consts.PVAI) {
+                saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+                        + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+                        + "-turn" + core.getTurn();
+            }
+            else{
+                saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
+            }
+            
+            saveName.setPromptText(saveString);
 
             popup.getDialogPane().setContent(grid);
             grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
@@ -777,18 +790,8 @@ public class GameScreenController implements Initializable {
 
             Optional<ButtonType> result = popup.showAndWait();
             if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-                String saveString = saveName.getText();
-                if (saveString.equals("")) {
-                    if (core.getMode() == Consts.PVP) {
-                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
-                    } else if (core.getMode() == Consts.PVAI) {
-                        saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
-                                + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
-                                + "-turn" + core.getTurn();
-                    }
-                    else{
-                        saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
-                    }
+                if (!saveName.getText().equals("")) {
+                    saveString = saveName.getText();
                 }
                 core.save(saveString);
                 takeSnapshot(saveString);
@@ -811,7 +814,19 @@ public class GameScreenController implements Initializable {
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
         TextField saveName = new TextField();
-        saveName.setPromptText("Sauvegarde");
+        
+        String saveString;
+        if (core.getMode() == Consts.PVP) {
+            saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
+        } else if (core.getMode() == Consts.PVAI) {
+            saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
+                    + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
+                    + "-turn" + core.getTurn();
+        }
+        else{
+            saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
+        }
+        saveName.setPromptText(saveString);
 
         popup.getDialogPane().setContent(grid);
         grid.add(new Label("Nom de la sauvegarde :"), 0, 0);
@@ -819,18 +834,8 @@ public class GameScreenController implements Initializable {
 
         Optional<ButtonType> result = popup.showAndWait();
         if (result.get().getButtonData() == ButtonBar.ButtonData.LEFT) {
-            String saveString = saveName.getText();
-            if (saveString.equals("")) {
-                if (core.getMode() == Consts.PVP) {
-                    saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-" + core.getPlayers()[Consts.PLAYER2].getName() + "-turn" + core.getTurn();
-                } else if (core.getMode() == Consts.PVAI) {
-                    saveString = core.getPlayers()[Consts.PLAYER1].getName() + "-AI_"
-                            + (core.getDifficulty() == Consts.EASY ? "EASY" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM" : "HARD")
-                            + "-turn" + core.getTurn();
-                }
-                else{
-                    saveString =  "AI_"+ (core.getDifficulty() == Consts.EASY ? "EASY-" : core.getDifficulty() == Consts.MEDIUM ? "MEDIUM-" : "HARD-")+ core.getPlayers()[Consts.PLAYER2].getName()+"-turn" + core.getTurn();
-                }
+            if (!saveName.getText().equals("")) {
+                saveString = saveName.getText();
             }
             core.save(saveString);
             takeSnapshot(saveString);
@@ -1008,8 +1013,7 @@ public class GameScreenController implements Initializable {
 
     public Highlighter getHighlighted() {
         return highlighted;
-    }
-    
+    } 
     
     public GridPane getTextChat() {
         return textChat;

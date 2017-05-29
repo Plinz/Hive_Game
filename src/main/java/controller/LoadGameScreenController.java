@@ -95,7 +95,6 @@ public class LoadGameScreenController implements Initializable {
         String name;
         while(it.hasNext()){
             name = (String)it.next();
-            System.out.println(name.substring(0, 4));
             if(!name.substring(0, 4).equals(".nfs")){
                 saveList.getItems().add(name);
             }
