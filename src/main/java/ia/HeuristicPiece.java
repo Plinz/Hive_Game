@@ -24,8 +24,8 @@ public class HeuristicPiece {
         neighbors = 0;
         nbMoves = nbMove;
     }
-    
-    public void resetValues(){
+
+    public void resetValues() {
         isPinned = 0;
         isInGame = 0;
         neighbors = 0;

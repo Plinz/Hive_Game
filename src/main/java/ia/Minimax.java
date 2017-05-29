@@ -246,25 +246,24 @@ public class Minimax {
         List<Minimax> children = new ArrayList<>();
         double alpha = HeuristicConst.MOINS_INFINI;
         double beta = HeuristicConst.PLUS_INFINI;
-        
+
         for (String moveAndUnmove : getAllPossibleMovesWithHeuristics()) {
             String[] splitted = moveAndUnmove.split(";");   //  move;unmove
-            
+
             core.playEmulate(splitted[0], splitted[1]);
-            
+
             Minimax child = new Minimax(this, splitted[0], splitted[1]);
             child.heuristicValue = child.getHeuristicsValueRecursively(heuristics.maxdepth, alpha, beta);
-            
-            if (AIPlayer == 0){ //max node case -> could modify alpha
-                if (child.heuristicValue >= alpha){
+
+            if (AIPlayer == 0) { //max node case -> could modify alpha
+                if (child.heuristicValue >= alpha) {
                     alpha = child.heuristicValue;
                 }
-            } else { //min node case -> could modify beta
-                if (beta >= child.heuristicValue){
-                    beta = child.heuristicValue;
-                }
+            } else //min node case -> could modify beta
+            if (beta >= child.heuristicValue) {
+                beta = child.heuristicValue;
             }
-                        
+
             children.add(child);
             core.previousState();
         }

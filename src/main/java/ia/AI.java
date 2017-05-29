@@ -348,10 +348,9 @@ public abstract class AI {
         return new Tuple<>(-1, null);
     }
 
-    
     public boolean isASuicideMove(Minimax chosenOne) {
         boolean result;
-        if (AIPlayer == 0){
+        if (AIPlayer == 0) {
             core.playEmulate(chosenOne.moveFromParent, chosenOne.moveToParent);
             result = core.getStatus() == Consts.WIN_TEAM1;
             core.previousState();
@@ -372,28 +371,27 @@ public abstract class AI {
         } else {
             sign = -1;
         }
-        
-        
+
         do {
             bestOption = possibleMovements.get(0);
-            for (Minimax option : possibleMovements){
-                if (option.heuristicValue * sign > bestOption.heuristicValue * sign){
+            for (Minimax option : possibleMovements) {
+                if (option.heuristicValue * sign > bestOption.heuristicValue * sign) {
                     bestOption = option;
                 }
             }
-            if (isASuicideMove(bestOption)){
+            if (isASuicideMove(bestOption)) {
                 possibleMovements.remove(bestOption);
                 bestOption = null;
             }
         } while (bestOption == null && !possibleMovements.isEmpty());
-        if (bestOption != null){
+        if (bestOption != null) {
             return bestOption;
         } else {
             return defaultMove;
         }
-        
+
     }
-    
+
     public Tile getTile(Piece piece) {
         for (Piece pieceInventory : core.getPlayers()[piece.getTeam()].getInventory()) {
             if (piece == pieceInventory) {

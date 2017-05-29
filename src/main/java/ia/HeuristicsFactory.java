@@ -16,7 +16,7 @@ public class HeuristicsFactory {
                 return new MediumHeuristics(core);
             case Consts.HARD:
                 return new MediumHeuristics(core, Consts.HARD);
-            default :
+            default:
                 System.err.println("Erreur : niveau de difficulté inconnu dans la HeuristicsFactory");
                 return new EasyHeuristics(core);
         }

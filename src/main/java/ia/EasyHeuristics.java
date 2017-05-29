@@ -14,13 +14,13 @@ public class EasyHeuristics extends Heuristics {
 
     public double getHeuristicsValue() {
         nbConfigsStudied++;
-        if (!core.isQueenOnBoard(AIPlayer) && !core.isQueenOnBoard(1-AIPlayer)){
+        if (!core.isQueenOnBoard(AIPlayer) && !core.isQueenOnBoard(1 - AIPlayer)) {
             return 0;
         }
         int a = getNbPiecesAroundQueen(1 - AIPlayer);
         int b = getNbPiecesAroundQueen(AIPlayer);
-        int result = a*4 - b*3;
-        System.out.println("heuristics = "+result + "queen opo +"+a+"queen friend "+b);
+        int result = a * 4 - b * 3;
+        System.out.println("heuristics = " + result + "queen opo +" + a + "queen friend " + b);
         return result;
     }
 }

@@ -57,20 +57,20 @@ public class EasyAI extends AI {
                 return moveAndUnmove;
             }
         }
-        
+
         //////////////////////////////////MID GAME
         Random random = new Random();
         Minimax minimax = new Minimax(core, heuristics);
 
         String chosenMove = null;
         String chosenUnplay = null;
-        
+
         List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
 
         List<Minimax> possibleMovesWithBestHeuristics = new ArrayList<>();
         possibleMovesWithBestHeuristics.add(possibleMovements.get(0));
         for (Minimax child : possibleMovements) {
-            System.out.println("move "+child.moveFromParent + ",h ="+child.heuristicValue);
+            System.out.println("move " + child.moveFromParent + ",h =" + child.heuristicValue);
             if (child.heuristicValue > possibleMovesWithBestHeuristics.get(0).heuristicValue) {
                 possibleMovesWithBestHeuristics = new ArrayList<>();
                 possibleMovesWithBestHeuristics.add(child);
@@ -78,11 +78,11 @@ public class EasyAI extends AI {
                 possibleMovesWithBestHeuristics.add(child);
             }
         }
-        
-        for (Minimax child : possibleMovesWithBestHeuristics){
-            System.out.println("best ones move :"+child.moveFromParent+",h : "+child.heuristicValue);
+
+        for (Minimax child : possibleMovesWithBestHeuristics) {
+            System.out.println("best ones move :" + child.moveFromParent + ",h : " + child.heuristicValue);
         }
-        
+
         int rand = random.nextInt(possibleMovesWithBestHeuristics.size());
         chosenMove = possibleMovesWithBestHeuristics.get(rand).moveFromParent;
         chosenUnplay = possibleMovesWithBestHeuristics.get(rand).moveToParent;

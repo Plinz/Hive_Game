@@ -15,10 +15,11 @@ public class MediumAI extends AI {
         this.heuristics = new MediumHeuristics(core);
         this.choiceDuringOpening = new int[4];
     }
-    public MediumAI(Core core, int difficulty){
+
+    public MediumAI(Core core, int difficulty) {
         super(core);
         this.choiceDuringOpening = new int[4];
-        if (difficulty == Consts.HARD){            
+        if (difficulty == Consts.HARD) {
             this.heuristics = new MediumHeuristics(core, difficulty);
         } else {
             this.heuristics = new MediumHeuristics(core);
@@ -72,7 +73,7 @@ public class MediumAI extends AI {
                 return moveAndUnmove;
             }
         }
-        
+
         Minimax minimax = new Minimax(core, heuristics);
 
         int sign;
@@ -85,7 +86,7 @@ public class MediumAI extends AI {
         List<Minimax> possibleMovements = minimax.getChildren();
         Minimax chosenOne = possibleMovements.get(0);
         double bestHeuristic = sign * chosenOne.heuristicValue;
-        
+
         for (Minimax child : possibleMovements) {
             System.out.println("child : move = " + Notation.getHumanDescription(child.moveFromParent, false) + " with h= " + child.heuristicValue);
             if (sign * child.heuristicValue > bestHeuristic) {
@@ -93,8 +94,8 @@ public class MediumAI extends AI {
                 chosenOne = child;
             }
         }
-       
-        if (isASuicideMove(chosenOne)){
+
+        if (isASuicideMove(chosenOne)) {
             chosenOne = chooseDecentMove(possibleMovements);
         }
         return chosenOne.moveFromParent + ";" + chosenOne.moveToParent;

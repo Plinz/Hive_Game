@@ -16,12 +16,10 @@ package main.java.ia;
 
 public class HeuristicConst {
 
-    
     public static final int DEPTH_EASY = 1;
     public static final int DEPTH_MEDIUM = 2;
     public static final int DEPTH_HARD = 3;
-    
-    
+
     //CONSTANTES HEURISTIQUES
     public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -310, 0, 0, -250};
     public static final double[] MAXIMISE_SPIDER = {0.5, 0, 0.5, 0, 1, -1.7, -0.5};
@@ -43,7 +41,6 @@ public class HeuristicConst {
     public static final int ON_BOARD = 5;
     public static final int IS_PINNED = 6;
 
-    
     //CONSTANTES OPENING EASY
     public static final double[] CHOOSE_QUEEN = {1, 0, 0, 0, 0};
     public static final double[] CHOOSE_WHATEVER = {0.2, 0.2, 0.2, 0.2, 0.2};
@@ -72,8 +69,7 @@ public class HeuristicConst {
     //PLUS ET MOINS INFINI
     public static final double PLUS_INFINI = 50000;
     public static final double MOINS_INFINI = -50000;
-    
-    
+
     public static final double[][][] getHeuristicDataFromConsts() {
         double[][][] heuristicData = new double[2][6][7];
 
@@ -118,7 +114,7 @@ public static final double[] MINIMISE_BEETLE = {0.003765849523447537, -1.7489242
 public static final double[] MINIMISE_ANT = {0.92583343413758135, 0.31100406658912494, 1.4088853720734798, -0.30667695965706354, 1.2758077144197426, 0.0470243463776905, 4.194908848724535};
 public static final double[] MINIMISE_GENERAL = {-0.075498979525094087, -0.14202093136339761, -0.34601947869445787, 0.0, 0.0090537986784408053, -0.20045479052286633, -0.049414635353429777};
  */
-/*
+ /*
 ///devenu inutile -> modifier les heurisitiques uniquement pour la partie maximise du tableau
     //la partie minimise vaut -1 * maximise
     public static final double[] MINIMISE_QUEEN = {-0.5, -1.1, -0.5, 150, -1, -0.5, 250};
@@ -128,4 +124,4 @@ public static final double[] MINIMISE_GENERAL = {-0.075498979525094087, -0.14202
     public static final double[] MINIMISE_ANT = {-0.1, -1, -0.1, 0, -1, -3, 7};
     public static final double[] MINIMISE_GENERAL = {-1.8, 4, -0, 0, 0, -2.8, 1.1};
 
-*/
+ */
