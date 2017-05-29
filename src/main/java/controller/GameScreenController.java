@@ -875,7 +875,7 @@ public class GameScreenController implements Initializable {
             List<Column> col = core.getBoard().getBoard();
             for(int i = 0; i< col.size();i++){
                 if(col.size() > 0){
-                    if(col.get(i).size() > 0){
+                    if(col.get(i).size() > 1){
                         Box box = col.get(i).get(1);
                         if(box.size() != 0 && box.get(0).getPiece() != null){
                             nbPieces+= box.size();
