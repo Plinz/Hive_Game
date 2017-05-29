@@ -23,13 +23,9 @@ public abstract class AI {
     Heuristics heuristics;
     int AIPlayer;
     int[] choiceDuringOpening;
-    ArrayList<CoordGene<Integer>> foreseenMoves;
-    Tile foreseenTileToMove;
 
     public AI(Core core) {
         this.core = core;
-        this.foreseenMoves = new ArrayList<>();
-        this.foreseenTileToMove = null;
     }
 
     public String getNextMove() {
@@ -218,57 +214,6 @@ public abstract class AI {
             });
         });
         return result;
-    }
-
-    public Tuple<Integer, CoordGene<Integer>> getNbMovesTillDest(Piece piece, CoordGene<Integer> destination) {
-        int bestDistanceSoFar = 500;
-        Tuple<Integer, CoordGene<Integer>> temp;
-        if (isOnBoard(piece)) {
-            Tile tile = null;
-            for (Column column : core.getBoard().getBoard()) {
-                for (Box box : column) {
-                    for (Tile currentTile : box) {
-                        if (currentTile.getPiece() == piece) {
-                            tile = currentTile;
-                        }
-                    }
-                }
-            }
-            if (tile == null) {
-                return null;//should never happen
-            }
-
-            switch (Consts.getType(piece.getId())) {
-                case Consts.ANT_TYPE:
-                    if (piece.getPossibleMovement(tile, core.getBoard()).contains(destination)) {
-                        return new Tuple<>(1, destination); //should not be useful -> victory always in one turn
-                    }
-                    break;
-                case Consts.BEETLE_TYPE:
-                    //temp = getMoveAndDistance(tile, destination);
-                    break;
-                case Consts.SPIDER_TYPE:
-
-                    break;
-                case Consts.GRASSHOPPER_TYPE:
-                    break;
-            }
-        } else {
-            List<CoordGene<Integer>> possibleAddCoords = core.getPossibleAdd(AIPlayer);
-            switch (Consts.getType(piece.getId())) {
-                case Consts.ANT_TYPE:
-
-                    break;
-                case Consts.BEETLE_TYPE:
-                    break;
-                case Consts.SPIDER_TYPE:
-                    break;
-                case Consts.GRASSHOPPER_TYPE:
-                    break;
-            }
-        }
-
-        return null;
     }
 
     public boolean isOnBoard(Piece piece) {
