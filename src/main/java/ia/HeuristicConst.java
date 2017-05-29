@@ -22,11 +22,11 @@ public class HeuristicConst {
 
     //CONSTANTES HEURISTIQUES
     public static final double[] MAXIMISE_QUEEN = {0.5, 0, 1, -310, 0, 0, -250};
-    public static final double[] MAXIMISE_SPIDER = {0.5, 0, 0.5, 0, 1, -1.7, -0.5};
-    public static final double[] MAXIMISE_GH = {0.5, 0.5, 3.5, 0, 1.5, 0.5, -1};
-    public static final double[] MAXIMISE_BEETLE = {18, 0, 0.5, 2, 1, 1.1, -3};
-    public static final double[] MAXIMISE_ANT = {0.3, 0, 0.1, 0, 1, 12, -7};
-    public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 0.2, -1};
+    public static final double[] MAXIMISE_SPIDER = {0.5, 0, 0.5, 0, 1, 1, -0.5};
+    public static final double[] MAXIMISE_GH = {0.5, 0.5, 3.5, 0, 1.5, 2, -1};
+    public static final double[] MAXIMISE_BEETLE = {18, 0, 0.5, 2, 1, 3, -3};
+    public static final double[] MAXIMISE_ANT = {0.3, 0, 0.1, 0, 1, 10, -7};
+    public static final double[] MAXIMISE_GENERAL = {0, 0, 0, 0, 0, 5, -1};
 
     public static final double WHITE_VICTORY = 2200;
     public static final double BLACK_VICTORY = -2200;
