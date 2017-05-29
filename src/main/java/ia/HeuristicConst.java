@@ -1,10 +1,10 @@
 /*
  *
 Heuristic Data : heuristicData[player][insect][typeHeuristique]
-    avec player 0 -> IA
-         player 1 -> opponent
+    avec player 0 -> white
+         player 1 -> black
                 insect -> 0 queen, 1 spider, 2 grasshopper, 3 beetle, 4 ant, 5 general
-                        et type ->  0 Extra -> position beetle
+                        et type ->  0 distance à la reine ennemie pour le beetle, valid placement + valid movement pour les autres
                                     1 valid placement
                                     2 valid movement (deplacement)
                                     3 voisins (encerclement)

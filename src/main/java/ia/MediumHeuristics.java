@@ -61,7 +61,7 @@ public class MediumHeuristics extends Heuristics {
         return value;
     }
 
-    public double getPieceValue(int player, int pieceId) {
+    private double getPieceValue(int player, int pieceId) {
 
         int pieceType = Consts.getType(pieceId);
         double value = 0;

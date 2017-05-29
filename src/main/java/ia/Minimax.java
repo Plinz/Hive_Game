@@ -16,13 +16,13 @@ import main.java.utils.CoordGene;
 
 public class Minimax {
 
-    Core core;
-    Heuristics heuristics;
-    String moveFromParent;
-    String moveToParent;
-    double heuristicValue;
-    int AIPlayer;
-    int depth;
+    private final Core core;
+    private final Heuristics heuristics;
+    public String moveFromParent;
+    public String moveToParent;
+    public double heuristicValue;
+    private int AIPlayer;
+    private int depth;
 
     public Minimax(Core core1, Heuristics heuristics1) {
         this.core = core1;
@@ -184,12 +184,11 @@ public class Minimax {
         return children;
     }
 
-    public double calculateHeuristics() {
-        if (heuristics.difficulty == Consts.EASY){
+    private double calculateHeuristics() {
+        if (heuristics.difficulty == Consts.EASY) {
             return heuristics.getHeuristicsValue();
         }
-        
-        
+
         //heuristics for pieces in hand of current player
         List<CoordGene<Integer>> possibleAddCurrentPlayer = core.getPossibleAdd(core.getCurrentPlayer());
         int possibleAddSizeCurrentPlayer = possibleAddCurrentPlayer.size();
@@ -231,7 +230,7 @@ public class Minimax {
 
     }
 
-    public void printIndented(String string) {
+    private void printIndented(String string) {
         for (int i = 0; i < depth; i++) {
             System.out.print("    ");
         }
