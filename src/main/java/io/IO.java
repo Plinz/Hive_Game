@@ -10,7 +10,7 @@ public abstract class IO {
 		this.core = core;
 	}
 
-	public abstract void connect(String host);
+	public abstract int connect(String host);
 	public abstract void disconnect();
 	public abstract String getMove();
 	public abstract boolean updateInfo();

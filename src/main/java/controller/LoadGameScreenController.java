@@ -16,6 +16,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import main.java.implement.Main;
 import main.java.engine.Core;
 
@@ -34,6 +42,8 @@ public class LoadGameScreenController implements Initializable {
     private Core core;
     @FXML private ListView saveList;
     @FXML private ImageView saveImage;
+    @FXML private Pane paneSaveImage;
+    @FXML private HBox myBox;
    
     public LoadGameScreenController() {
     }
@@ -44,7 +54,7 @@ public class LoadGameScreenController implements Initializable {
             String saveName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
             core.load(saveName);
         }
-        main.showGameScreen(core);
+        main.showGameScreen(core,true);
     }
    
     @FXML
@@ -69,12 +79,17 @@ public class LoadGameScreenController implements Initializable {
                
                 String imageName = (String)saveList.getSelectionModel().getSelectedItems().get(0);
                 try {
+                    //paneSaveImage.setBackground(new Background(new BackgroundImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize)));
                     saveImage.setImage(new Image(new FileInputStream(new File("Hive_init/Hive_save_images/"+imageName+".png"))));
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(LoadGameScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
+        saveImage.fitWidthProperty().bind(paneSaveImage.widthProperty());
+        saveImage.fitHeightProperty().bind(paneSaveImage.heightProperty());
+
+        myBox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(10), new BorderWidths(3))));
     }
    
    

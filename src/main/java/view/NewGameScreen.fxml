@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.NewGameScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="imageBackground" stylesheets="@defaultStyle.css" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.NewGameScreenController">
    <children>
       <GridPane fx:id="gameTypeChoice" alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -38,7 +38,7 @@
                 <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="namePlayer1" onMouseClicked="#handleClickInputPlayer1" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
+                  <TextField fx:id="namePlayer1" onMouseClicked="#handleClickInputPlayer1" prefHeight="26.0" prefWidth="211.0" text="Anonyme1" GridPane.columnIndex="1" />
                   <Label prefHeight="16.0" prefWidth="248.0" text="Nom du joueur 1 :" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="17.0" />
@@ -139,7 +139,7 @@
                   <RowConstraints maxHeight="142.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <TextField fx:id="namePlayer2" onMouseClicked="#handleClickInputPlayer2" prefHeight="26.0" prefWidth="211.0" text="Anonyme" GridPane.columnIndex="1" />
+                  <TextField fx:id="namePlayer2" onMouseClicked="#handleClickInputPlayer2" prefHeight="26.0" prefWidth="211.0" text="Anonyme2" GridPane.columnIndex="1" />
                   <Label fx:id="labelPlayer2" prefHeight="16.0" prefWidth="248.0" text="Nom du joueur 2 :" textAlignment="CENTER" wrapText="true">
                      <font>
                         <Font name="System Bold" size="17.0" />

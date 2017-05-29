@@ -9,12 +9,14 @@ package main.java.controller;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -104,7 +106,7 @@ public class NewGameScreenController implements Initializable {
             }
             
         }
-        main.showGameScreen(core);
+        main.showGameScreen(core,false);
         
     }
     
@@ -188,10 +190,21 @@ public class NewGameScreenController implements Initializable {
     
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
-        
+        UnaryOperator<TextFormatter.Change> filter = c -> {
+            String proposedText = c.getControlNewText();
+             if (proposedText.matches(".{0,15}")) {
+                return c ;
+            } else {
+                return null ;
+            }
+        };
+        namePlayer1.setTextFormatter(new TextFormatter<String>(filter));
+        namePlayer2.setTextFormatter(new TextFormatter<String>(filter));
     }    
     
     public void setMainApp(Main mainApp) {
         this.main = mainApp;    
     }
+    
+    
 }

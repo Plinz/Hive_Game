@@ -25,14 +25,16 @@ public class Server extends IO {
 	}
 	
 	@Override
-	public void connect(String host) {
+	public int connect(String host) {
+		int error = 0;
 		try {
 			serverSocket = new ServerSocket(Consts.PORT);
 			t = new Thread(new ServerThread(serverSocket));
 			t.start();
 		} catch (IOException e) {
-			e.printStackTrace();
+			error = 2;
 		}
+		return error;
 	}
 
 	@Override
