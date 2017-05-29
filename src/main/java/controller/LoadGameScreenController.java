@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -90,7 +91,15 @@ public class LoadGameScreenController implements Initializable {
         saveList.getItems().remove(0,saveList.getItems().size());
         core = new Core(0, 0);
         List<String> saves = core.load();
-        saveList.getItems().addAll(saves);
+        Iterator it = saves.iterator();
+        String name;
+        while(it.hasNext()){
+            name = (String)it.next();
+            System.out.println(name.substring(0, 4));
+            if(!name.substring(0, 4).equals(".nfs")){
+                saveList.getItems().add(name);
+            }
+        }
         saves.clear();
     }
    

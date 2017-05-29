@@ -116,7 +116,6 @@ public class NewGameScreenController implements Initializable {
                 core.getPlayers()[0].setName(player2);
                 core.getPlayers()[1].setName(player1);
             }
-            
         }
         main.showGameScreen(core,false);
         
