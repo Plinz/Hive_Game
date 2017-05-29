@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import main.java.engine.Core;
 import main.java.implement.Main;
+import main.java.model.Box;
+import main.java.model.Column;
 import main.java.model.HelpMove;
 import main.java.model.Piece;
 import main.java.model.Tile;
@@ -520,8 +523,9 @@ public class GameScreenController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 panCanvas.getChildren().remove(animation.getPolygon());
+                handleResize(coordStart,coordEnd);
                 core.movePiece(pieceToMove, coordEnd);
-                handleResize(coordEnd);
+                
                 resetPiece();
                 clearHelp();
                 animationPlaying.setValue(false);
@@ -552,8 +556,9 @@ public class GameScreenController implements Initializable {
             public void handle(ActionEvent event) {
 
                 panCanvas.getChildren().remove(animation.getPolygon());
+                handleResize(null,coordEnd);
                 core.addPiece(idPiece, coordEnd);
-                handleResize(coordEnd);
+                
                 resetPiece();
                 clearHelp();
                 animationPlaying.setValue(false);
@@ -577,9 +582,10 @@ public class GameScreenController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 panCanvas.getChildren().remove(animation.getPolygon());
+                handleResize(coordStart,coordEnd);
                 core.playEmulate(move,unmove);
                 core.setState(Consts.READY_TO_CHANGE);
-                handleResize(coordEnd);
+               
                 resetPiece();
                 clearHelp();
                 animationPlaying.setValue(false);
@@ -611,7 +617,7 @@ public class GameScreenController implements Initializable {
                 panCanvas.getChildren().remove(animation.getPolygon());
                 core.playEmulate(move,unmove);
                 core.setState(Consts.READY_TO_CHANGE);
-                handleResize(coordEnd);
+                handleResize(null,coordEnd);
                 resetPiece();
                 clearHelp();
                 animationPlaying.setValue(false);
@@ -851,7 +857,7 @@ public class GameScreenController implements Initializable {
         }
     }
 
-    public void handleResize(CoordGene<Integer> coordEnd) {
+    public void handleResize(CoordGene<Integer> coordStart,CoordGene<Integer> coordEnd) {
         CoordGene<Double> newOrigin = traductor.getMoveOrigin();
         if (coordEnd.getX() == 0 && coordEnd.getY() == 0) {
             newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE * 2.6);
@@ -861,9 +867,39 @@ public class GameScreenController implements Initializable {
             newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*1.725);
         }
         else if(coordEnd.getY() == 0){
-            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE*0.875);
+            newOrigin.setX(newOrigin.getX() - Consts.SIDE_SIZE * 0.875);
             newOrigin.setY(newOrigin.getY() - Consts.SIDE_SIZE * 1.5);
         }
+        if(coordStart != null && coordStart.getY() == 1 && coordEnd.getY() != 1){
+            int nbPieces=0;
+            List<Column> col = core.getBoard().getBoard();
+            for(int i = 0; i< col.size();i++){
+                if(col.size() > 0){
+                    Box box = col.get(i).get(1);
+                    if(box.size() != 0 && box.get(0).getPiece() != null){
+                        nbPieces+= box.size();
+                    }
+                }
+            }
+            if(nbPieces == 1){
+                newOrigin.setX(newOrigin.getX() + Consts.SIDE_SIZE*0.875);
+                newOrigin.setY(newOrigin.getY() + Consts.SIDE_SIZE * 1.5);
+            }
+        }
+        
+        if(coordStart != null && coordStart.getX() == 1 && coordEnd.getX() != 1){
+            int nbPieces=0;
+            List<Box> list = core.getBoard().getBoard().get(1);
+            for(int i = 0; i< list.size();i++){
+                    if(list.get(i).size() != 0 && list.get(i).get(0).getPiece() != null){
+                        nbPieces+= list.get(i).size();
+                    }
+                }
+            if(nbPieces == 1){
+                newOrigin.setX(newOrigin.getX() + Consts.SIDE_SIZE*1.725);
+            }
+        }
+        
         traductor.setMoveOrigin(newOrigin);
     }
 
