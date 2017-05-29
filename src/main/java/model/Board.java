@@ -244,6 +244,16 @@ public class Board implements Cloneable{
 				list.add(t);
 		return list;
 	}
+        
+        public int getNbNeighborsOnFloor(Tile tile){
+            List<Tile> AllNeighbors = getPieceNeighbors(tile);
+            int result = 0;
+            for (Tile neighbor : AllNeighbors){
+                if (neighbor.getZ() == 0)
+                    result ++;
+            }
+            return result;
+        }
 
 	public List<Tile> getAboveAndBelow(Tile tile) {
 		Box box = columns.get(tile.getX()).get(tile.getY());
