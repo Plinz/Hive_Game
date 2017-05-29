@@ -27,13 +27,10 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -387,7 +384,6 @@ public class GameScreenController implements Initializable {
             initButtonByInventory();
         }
     }
-    /*Fin des handlers */
 
     /*Méthodes d'initialisation */
     public void giveHand(){
@@ -491,10 +487,6 @@ public class GameScreenController implements Initializable {
             inventoryPlayer2.getChildren().add(b);
             col++;
         }
-    }
-
-    public ToggleGroup getInventoryGroup() {
-        return inventoryGroup;
     }
 
     public void resetPiece() {
@@ -704,7 +696,6 @@ public class GameScreenController implements Initializable {
         }
     }
 
-     
     public void handleEndGame(){
         helpButton.setDisable(true);
         saveMenuItem.setDisable(true);
@@ -886,35 +877,7 @@ public class GameScreenController implements Initializable {
         File file = new File("Hive_init/Hive_save_images/" + name + ".png");
         ImageIO.write(SwingFXUtils.fromFXImage(screenshot, null), "png", file);
     }
-
-    public Main getMain() {
-        return main;
-    }
     
-    public void setMainApp(Main mainApp) {
-        this.main = mainApp;
-    }
-
-    public void setCore(Core c) {
-        this.core = c;
-    }
-
-    public void setPieceToChoose(int pieceChosenInInventory) {
-        this.pieceChosenInInventory = pieceChosenInInventory;
-    }
-
-    public void setPieceToMove(CoordGene<Integer> pieceToMove) {
-        this.pieceToMove = pieceToMove;
-    }
-
-    public void setHighlighted(Highlighter highlighted) {
-        this.highlighted = highlighted;
-    }
-
-    public boolean isFreeze() {
-        return animationPlaying.getValue();
-    }
-
     private void checkHistory() {
         if (core.hasNextState()) {
             redo.setDisable(false);
@@ -927,14 +890,6 @@ public class GameScreenController implements Initializable {
             undo.setDisable(true);
         }
     }
-
-    public Core getCore() {
-        return core;
-    }
-
-    public Highlighter getHighlighted() {
-        return highlighted;
-    }
     
     public void hideButtonsForNetwork(){
         undo.setVisible(false);
@@ -943,10 +898,6 @@ public class GameScreenController implements Initializable {
         saveMenuItem.setVisible(false);
         lanchNewGame.setVisible(false);
         loadGame.setVisible(false);
-    }
-
-    public GridPane getTextChat() {
-        return textChat;
     }
     
     public void updateChat(){
@@ -971,44 +922,6 @@ public class GameScreenController implements Initializable {
             nbMessage = core.getLastMsg().size();
             scrollChat.setVvalue(scrollChat.getVmax());
         }
-    }
-
-    
-    private void eventDragAndDropPiece(ToggleButton b, int indexPiece){
-        
-           b.setOnDragOver(new EventHandler <DragEvent>(){
-               @Override
-               public void handle(DragEvent event){
-                   System.out.print("pouet");
-               }
-           });
-
-           b.setOnDragDetected(new EventHandler<MouseEvent>() {
-               public void handle(MouseEvent event) {
-                    if(core.canAddPiece(pieceChosenInInventory)){
-                        setPieceToChoose(indexPiece);
-                        highlighted.setListTohighlight(core.getPossibleAdd(core.getCurrentPlayer()));
-                        b.setVisible(false);
-                        
-                                                // Initiate a drag-and-drop gesture
-                        Dragboard dragboard = b.startDragAndDrop(TransferMode.ANY);
-/*
-                        // Add the source text to the Dragboard
-                        ClipboardContent content = new ClipboardContent();		
-                        content.putImage(null)
-                        dragboard.setContent(content);		
-                        event.consume();*/
-                    }
-               }
-           });
-           
-           b.setOnMouseDragReleased(new EventHandler<MouseEvent>() {
-               public void handle(MouseEvent event) {
-                    b.setVisible(true);
-                    highlighted.setListTohighlight(null);
-               }
-           });
-
     }
     
     public void disconnected() {
@@ -1058,5 +971,51 @@ public class GameScreenController implements Initializable {
     public void recenter(){
         Consts.SIDE_SIZE = 50;
         traductor.setMoveOrigin(new CoordGene<Double>(Consts.SIDE_SIZE,Consts.SIDE_SIZE));
+    }
+    
+    
+    public Main getMain() {
+        return main;
+    }
+    
+    public void setMainApp(Main mainApp) {
+        this.main = mainApp;
+    }
+
+    public void setCore(Core c) {
+        this.core = c;
+    }
+
+    public void setPieceToChoose(int pieceChosenInInventory) {
+        this.pieceChosenInInventory = pieceChosenInInventory;
+    }
+
+    public void setPieceToMove(CoordGene<Integer> pieceToMove) {
+        this.pieceToMove = pieceToMove;
+    }
+
+    public void setHighlighted(Highlighter highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    public boolean isFreeze() {
+        return animationPlaying.getValue();
+    }
+
+    public Core getCore() {
+        return core;
+    }
+
+    public Highlighter getHighlighted() {
+        return highlighted;
+    }
+    
+    
+    public GridPane getTextChat() {
+        return textChat;
+    }
+    
+    public ToggleGroup getInventoryGroup() {
+        return inventoryGroup;
     }
 }

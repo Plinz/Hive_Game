@@ -96,15 +96,26 @@ public class NewGameScreenController implements Initializable {
         //Sinon si on est en mode PVP
         else{
             core = new Core(Consts.PVP, Consts.EASY);
+            String player1 = "Anonyme1";
+            String player2 = "Anonyme2";
             if(state == Consts.WHITE){
-                core.getPlayers()[0].setName(namePlayer1.getText());
-                core.getPlayers()[1].setName(namePlayer2.getText());
+                if(!namePlayer1.getText().equals(""))
+                    player1 = namePlayer1.getText();
+                    
+                if(!namePlayer2.getText().equals(""))
+                    player2 = namePlayer2.getText();
+                core.getPlayers()[0].setName(player1);
+                core.getPlayers()[1].setName(player2);
             }
             else{
-                core.getPlayers()[0].setName(namePlayer2.getText());
-                core.getPlayers()[1].setName(namePlayer1.getText());
+                if(!namePlayer1.getText().equals(""))
+                    player1 = namePlayer1.getText();
+                    
+                if(!namePlayer2.getText().equals(""))
+                    player2 = namePlayer2.getText();
+                core.getPlayers()[0].setName(player2);
+                core.getPlayers()[1].setName(player1);
             }
-            
         }
         main.showGameScreen(core,false);
         

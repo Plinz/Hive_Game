@@ -75,11 +75,13 @@ public class NetworkScreenController implements Initializable {
 
 	@FXML
 	public void handleLaunchGameClick() {
-
+                String player = "Anonyme";
 		Core core = new Core(-1, -1);
 		String host = choiceClient.isSelected() ? hostName.getText() : null;
 		int mode = choiceHost.isSelected() ? (state == Consts.WHITE ? Consts.PVEX : Consts.EXVP) : -1;
-		int error = core.connect(host, mode, playerName.getText());
+                if(!playerName.getText().equals(""))
+                    player = playerName.getText();
+		int error = core.connect(host, mode, player);
 		if (error == 0) {
 			core.playNextTurn();
 			main.showGameScreen(core,false);
