@@ -65,29 +65,34 @@ public class EasyAI extends AI {
         String chosenMove = null;
         String chosenUnplay = null;
 
-        List<Minimax> possibleMovements = minimax.getChildrenWithHeuristics();
+        List<Minimax> possibleMovements = minimax.getChildren();
 
         List<Minimax> possibleMovesWithBestHeuristics = new ArrayList<>();
-        possibleMovesWithBestHeuristics.add(possibleMovements.get(0));
+        double bestHeuristicSoFar = HeuristicConst.MOINS_INFINI;
+
         for (Minimax child : possibleMovements) {
-            System.out.println("move " + child.moveFromParent + ",h =" + child.heuristicValue);
-            if (child.heuristicValue > possibleMovesWithBestHeuristics.get(0).heuristicValue) {
+            if (child.heuristicValue > bestHeuristicSoFar && !isASuicideMove(child)) {
                 possibleMovesWithBestHeuristics = new ArrayList<>();
                 possibleMovesWithBestHeuristics.add(child);
-            } else if (child.heuristicValue == possibleMovesWithBestHeuristics.get(0).heuristicValue) {
+                bestHeuristicSoFar = child.heuristicValue;
+            } else if (child.heuristicValue == bestHeuristicSoFar && !isASuicideMove(child)) {
                 possibleMovesWithBestHeuristics.add(child);
             }
         }
 
-        for (Minimax child : possibleMovesWithBestHeuristics) {
-            System.out.println("best ones move :" + child.moveFromParent + ",h : " + child.heuristicValue);
+        if (!possibleMovesWithBestHeuristics.isEmpty()) {
+            int rand = random.nextInt(possibleMovesWithBestHeuristics.size());
+            chosenMove = possibleMovesWithBestHeuristics.get(rand).moveFromParent;
+            chosenUnplay = possibleMovesWithBestHeuristics.get(rand).moveToParent;
+            String moveAndUnplay = chosenMove + ";" + chosenUnplay;
+            return moveAndUnplay;
+        } else {
+            int rand = random.nextInt(possibleMovements.size());
+            chosenMove = possibleMovements.get(rand).moveFromParent;
+            chosenUnplay = possibleMovements.get(rand).moveToParent;
+            String moveAndUnplay = chosenMove + ";" + chosenUnplay;
+            return moveAndUnplay;
         }
-
-        int rand = random.nextInt(possibleMovesWithBestHeuristics.size());
-        chosenMove = possibleMovesWithBestHeuristics.get(rand).moveFromParent;
-        chosenUnplay = possibleMovesWithBestHeuristics.get(rand).moveToParent;
-        String moveAndUnplay = chosenMove + ";" + chosenUnplay;
-        return moveAndUnplay;
     }
 }
 

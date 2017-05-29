@@ -46,27 +46,6 @@ public class Minimax {
         this.moveToParent = moveToParent;
     }
 
-    public List<Minimax> getChildrenWithHeuristics() {
-        heuristics.nbConfigsStudied = 0;
-
-        List<Minimax> children = new ArrayList<>();
-        List<String> allPossibleMovesAndUnmoves = getAllPossibleMovesAndUnmoves();
-
-        for (String moveAndUnmove : allPossibleMovesAndUnmoves) {
-            String[] splitted = moveAndUnmove.split(";");   //  move;unmove
-            core.playEmulate(splitted[0], splitted[1]);
-            Minimax child = new Minimax(this, splitted[0], splitted[1]);
-            children.add(child);
-            if (child.heuristics.maxdepth <= 1) {
-                child.heuristicValue = child.heuristics.getHeuristicsValue();
-            } else {
-                child.getHeuristicsValueRecursively(heuristics.maxdepth, HeuristicConst.MOINS_INFINI, HeuristicConst.PLUS_INFINI);
-            }
-            core.previousState();
-        }
-        return children;
-    }
-
     private double getHeuristicsValueRecursively(int maxdepth, double alpha, double beta) {
         double currentHeuristic;
         heuristics.resetValues();
@@ -206,7 +185,11 @@ public class Minimax {
     }
 
     public double calculateHeuristics() {
-
+        if (heuristics.difficulty == Consts.EASY){
+            return heuristics.getHeuristicsValue();
+        }
+        
+        
         //heuristics for pieces in hand of current player
         List<CoordGene<Integer>> possibleAddCurrentPlayer = core.getPossibleAdd(core.getCurrentPlayer());
         int possibleAddSizeCurrentPlayer = possibleAddCurrentPlayer.size();
