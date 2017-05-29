@@ -88,7 +88,6 @@ public class MediumAI extends AI {
         double bestHeuristic = sign * chosenOne.heuristicValue;
 
         for (Minimax child : possibleMovements) {
-            System.out.println("child : move = " + Notation.getHumanDescription(child.moveFromParent, false) + " with h= " + child.heuristicValue);
             if (sign * child.heuristicValue > bestHeuristic) {
                 bestHeuristic = sign * child.heuristicValue;
                 chosenOne = child;
