@@ -8,15 +8,6 @@ L'objectif de ce projet est d’implémenter le jeu de plateau Hive, ainsi qu'un
 
 **TODO**
 
-POUR FAIRE UN PLANNING PREVISIONNEL POUR CHAQUE PARTIES (IHM,MOTEUR,IA)
-
-( Même si c'est en brouillon osef : Lister les différentes parties que l'on aura à développer, le temps que l'on va devoir mettre à les developper, dans un diagramme de Gant )
-
-Mettre à jour la partie project de Github !
-
-MARDI : 10h30 - REUNION
-
-S'inscrire sur Boardgamearena et jouer un peu quand même ! 
 
 **Règles du jeu**
 
